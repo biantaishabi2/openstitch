@@ -1,0 +1,206 @@
+{
+  "type": "Flex",
+  "props": { "className": "flex-col min-h-screen bg-slate-50 max-w-[390px] mx-auto border-x" },
+  "children": [
+    {
+      "type": "Flex",
+      "props": { "className": "h-14 bg-white border-b px-4 items-center justify-between sticky top-0 z-10" },
+      "children": [
+        { "type": "Icon", "props": { "name": "Menu", "className": "text-slate-600" } },
+        { "type": "Text", "props": { "className": "font-semibold" }, "children": "Stitch Store" },
+        { "type": "Flex", "props": { "gap": 4 }, "children": [
+          { "type": "Icon", "props": { "name": "Search", "className": "text-slate-600" } },
+          { "type": "Flex", "props": { "className": "relative" }, "children": [
+            { "type": "Icon", "props": { "name": "ShoppingCart", "className": "text-slate-600" } },
+            { "type": "Div", "props": { "className": "absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center" }, "children": [
+              { "type": "Text", "props": { "className": "text-[10px] text-white font-bold" }, "children": "3" }
+            ]}
+          ]}
+        ]}
+      ]
+    },
+    {
+      "type": "Stack",
+      "props": { "className": "flex-1 pb-20" },
+      "children": [
+        {
+          "type": "Div",
+          "props": { "className": "bg-gradient-to-r from-blue-600 to-purple-600 p-4 mx-4 mt-4 rounded-xl text-white" },
+          "children": [
+            { "type": "Flex", "props": { "justify": "between", "align": "center" }, "children": [
+              { "type": "Stack", "props": { "gap": 1 }, "children": [
+                { "type": "Text", "props": { "className": "text-sm opacity-80" }, "children": "限时特惠" },
+                { "type": "Text", "props": { "className": "text-xl font-bold" }, "children": "新用户专享 8 折" },
+                { "type": "Button", "props": { "size": "sm", "className": "bg-white text-blue-600 hover:bg-slate-100 mt-2 w-fit" }, "children": "立即领取" }
+              ]},
+              { "type": "Text", "props": { "className": "text-5xl font-bold opacity-30" }, "children": "80%" }
+            ]}
+          ]
+        },
+        {
+          "type": "Stack",
+          "props": { "gap": 2, "className": "px-4 mt-6" },
+          "children": [
+            { "type": "Flex", "props": { "justify": "between", "align": "center" }, "children": [
+              { "type": "Text", "props": { "className": "font-semibold" }, "children": "分类" },
+              { "type": "Text", "props": { "className": "text-sm text-blue-600" }, "children": "查看全部" }
+            ]},
+            {
+              "type": "Grid",
+              "props": { "columns": 4, "gap": 3 },
+              "slots": {
+                "1": { "type": "Stack", "props": { "gap": 1, "className": "items-center" }, "children": [
+                  { "type": "Div", "props": { "className": "w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center" }, "children": [
+                    { "type": "Icon", "props": { "name": "Smartphone", "className": "text-blue-600" } }
+                  ]},
+                  { "type": "Text", "props": { "className": "text-xs" }, "children": "手机" }
+                ]},
+                "2": { "type": "Stack", "props": { "gap": 1, "className": "items-center" }, "children": [
+                  { "type": "Div", "props": { "className": "w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center" }, "children": [
+                    { "type": "Icon", "props": { "name": "Laptop", "className": "text-purple-600" } }
+                  ]},
+                  { "type": "Text", "props": { "className": "text-xs" }, "children": "电脑" }
+                ]},
+                "3": { "type": "Stack", "props": { "gap": 1, "className": "items-center" }, "children": [
+                  { "type": "Div", "props": { "className": "w-12 h-12 rounded-full bg-green-100 flex items-center justify-center" }, "children": [
+                    { "type": "Icon", "props": { "name": "Headphones", "className": "text-green-600" } }
+                  ]},
+                  { "type": "Text", "props": { "className": "text-xs" }, "children": "耳机" }
+                ]},
+                "4": { "type": "Stack", "props": { "gap": 1, "className": "items-center" }, "children": [
+                  { "type": "Div", "props": { "className": "w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center" }, "children": [
+                    { "type": "Icon", "props": { "name": "Watch", "className": "text-orange-600" } }
+                  ]},
+                  { "type": "Text", "props": { "className": "text-xs" }, "children": "手表" }
+                ]}
+              }
+            }
+          ]
+        },
+        {
+          "type": "Stack",
+          "props": { "gap": 3, "className": "px-4 mt-6" },
+          "children": [
+            { "type": "Flex", "props": { "justify": "between", "align": "center" }, "children": [
+              { "type": "Text", "props": { "className": "font-semibold" }, "children": "热门商品" },
+              { "type": "Text", "props": { "className": "text-sm text-blue-600" }, "children": "更多" }
+            ]},
+            {
+              "type": "Grid",
+              "props": { "columns": 2, "gap": 3 },
+              "slots": {
+                "1": {
+                  "type": "Card",
+                  "props": { "className": "overflow-hidden" },
+                  "children": [
+                    { "type": "Div", "props": { "className": "h-36 bg-slate-100 flex items-center justify-center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Smartphone", "size": "xl", "className": "text-slate-400" } }
+                    ]},
+                    { "type": "CardContent", "props": { "className": "p-3" }, "children": [
+                      { "type": "Text", "props": { "className": "text-sm font-medium line-clamp-2" }, "children": "iPhone 15 Pro Max 256GB" },
+                      { "type": "Flex", "props": { "justify": "between", "align": "center", "className": "mt-2" }, "children": [
+                        { "type": "Text", "props": { "className": "text-red-500 font-bold" }, "children": "¥9,999" },
+                        { "type": "Text", "props": { "className": "text-xs text-muted-foreground line-through" }, "children": "¥10,999" }
+                      ]},
+                      { "type": "Flex", "props": { "gap": 1, "className": "mt-1" }, "children": [
+                        { "type": "Badge", "props": { "className": "bg-red-50 text-red-500 text-[10px] px-1" }, "children": "热卖" },
+                        { "type": "Text", "props": { "className": "text-[10px] text-muted-foreground" }, "children": "已售 2.3万" }
+                      ]}
+                    ]}
+                  ]
+                },
+                "2": {
+                  "type": "Card",
+                  "props": { "className": "overflow-hidden" },
+                  "children": [
+                    { "type": "Div", "props": { "className": "h-36 bg-slate-100 flex items-center justify-center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Headphones", "size": "xl", "className": "text-slate-400" } }
+                    ]},
+                    { "type": "CardContent", "props": { "className": "p-3" }, "children": [
+                      { "type": "Text", "props": { "className": "text-sm font-medium line-clamp-2" }, "children": "AirPods Pro 第二代" },
+                      { "type": "Flex", "props": { "justify": "between", "align": "center", "className": "mt-2" }, "children": [
+                        { "type": "Text", "props": { "className": "text-red-500 font-bold" }, "children": "¥1,899" },
+                        { "type": "Text", "props": { "className": "text-xs text-muted-foreground line-through" }, "children": "¥1,999" }
+                      ]},
+                      { "type": "Flex", "props": { "gap": 1, "className": "mt-1" }, "children": [
+                        { "type": "Badge", "props": { "className": "bg-blue-50 text-blue-500 text-[10px] px-1" }, "children": "新品" },
+                        { "type": "Text", "props": { "className": "text-[10px] text-muted-foreground" }, "children": "已售 1.8万" }
+                      ]}
+                    ]}
+                  ]
+                },
+                "3": {
+                  "type": "Card",
+                  "props": { "className": "overflow-hidden" },
+                  "children": [
+                    { "type": "Div", "props": { "className": "h-36 bg-slate-100 flex items-center justify-center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Laptop", "size": "xl", "className": "text-slate-400" } }
+                    ]},
+                    { "type": "CardContent", "props": { "className": "p-3" }, "children": [
+                      { "type": "Text", "props": { "className": "text-sm font-medium line-clamp-2" }, "children": "MacBook Pro 14寸 M3" },
+                      { "type": "Flex", "props": { "justify": "between", "align": "center", "className": "mt-2" }, "children": [
+                        { "type": "Text", "props": { "className": "text-red-500 font-bold" }, "children": "¥14,999" },
+                        { "type": "Text", "props": { "className": "text-xs text-muted-foreground line-through" }, "children": "¥16,999" }
+                      ]},
+                      { "type": "Flex", "props": { "gap": 1, "className": "mt-1" }, "children": [
+                        { "type": "Badge", "props": { "className": "bg-orange-50 text-orange-500 text-[10px] px-1" }, "children": "限时" },
+                        { "type": "Text", "props": { "className": "text-[10px] text-muted-foreground" }, "children": "已售 8.5千" }
+                      ]}
+                    ]}
+                  ]
+                },
+                "4": {
+                  "type": "Card",
+                  "props": { "className": "overflow-hidden" },
+                  "children": [
+                    { "type": "Div", "props": { "className": "h-36 bg-slate-100 flex items-center justify-center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Watch", "size": "xl", "className": "text-slate-400" } }
+                    ]},
+                    { "type": "CardContent", "props": { "className": "p-3" }, "children": [
+                      { "type": "Text", "props": { "className": "text-sm font-medium line-clamp-2" }, "children": "Apple Watch Ultra 2" },
+                      { "type": "Flex", "props": { "justify": "between", "align": "center", "className": "mt-2" }, "children": [
+                        { "type": "Text", "props": { "className": "text-red-500 font-bold" }, "children": "¥6,499" },
+                        { "type": "Text", "props": { "className": "text-xs text-muted-foreground line-through" }, "children": "¥6,999" }
+                      ]},
+                      { "type": "Flex", "props": { "gap": 1, "className": "mt-1" }, "children": [
+                        { "type": "Badge", "props": { "className": "bg-green-50 text-green-500 text-[10px] px-1" }, "children": "推荐" },
+                        { "type": "Text", "props": { "className": "text-[10px] text-muted-foreground" }, "children": "已售 5.2千" }
+                      ]}
+                    ]}
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Flex",
+      "props": { "className": "h-16 bg-white border-t fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-6 items-center justify-between" },
+      "children": [
+        { "type": "Stack", "props": { "gap": 0, "className": "items-center" }, "children": [
+          { "type": "Icon", "props": { "name": "Home", "className": "text-blue-600" } },
+          { "type": "Text", "props": { "className": "text-xs text-blue-600" }, "children": "首页" }
+        ]},
+        { "type": "Stack", "props": { "gap": 0, "className": "items-center" }, "children": [
+          { "type": "Icon", "props": { "name": "Grid3X3", "className": "text-slate-400" } },
+          { "type": "Text", "props": { "className": "text-xs text-slate-400" }, "children": "分类" }
+        ]},
+        { "type": "Stack", "props": { "gap": 0, "className": "items-center" }, "children": [
+          { "type": "Div", "props": { "className": "w-12 h-12 -mt-6 rounded-full bg-blue-600 flex items-center justify-center shadow-lg" }, "children": [
+            { "type": "Icon", "props": { "name": "Plus", "className": "text-white" } }
+          ]}
+        ]},
+        { "type": "Stack", "props": { "gap": 0, "className": "items-center" }, "children": [
+          { "type": "Icon", "props": { "name": "ShoppingCart", "className": "text-slate-400" } },
+          { "type": "Text", "props": { "className": "text-xs text-slate-400" }, "children": "购物车" }
+        ]},
+        { "type": "Stack", "props": { "gap": 0, "className": "items-center" }, "children": [
+          { "type": "Icon", "props": { "name": "User", "className": "text-slate-400" } },
+          { "type": "Text", "props": { "className": "text-xs text-slate-400" }, "children": "我的" }
+        ]}
+      ]
+    }
+  ]
+}

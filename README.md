@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Stitch UI
 
-## Getting Started
+JSON Schema 驱动的 UI 渲染引擎。一套 Schema，多端渲染。
 
-First, run the development server:
+## 快速开始
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# 安装依赖
+pnpm install
+
+# 启动开发服务器
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+访问 http://localhost:3002/demo 查看 Demo 页面。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 项目结构
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+stitch/
+├── src/
+│   ├── app/demo/          # Demo 页面
+│   ├── components/ui/     # shadcn/ui 组件
+│   ├── data/schemas/      # JSON Schema 文件
+│   └── lib/renderer/      # 渲染器核心
+├── scripts/
+│   └── export-static.tsx  # 静态 HTML 导出工具
+└── docs/                  # 文档
+```
 
-## Learn More
+## 添加新页面
 
-To learn more about Next.js, take a look at the following resources:
+1. 在 `src/data/schemas/` 目录下创建 JSON 文件，例如 `my-page.json`
+2. 运行导出命令生成静态 HTML
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 静态 HTML 导出
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+导出工具会自动扫描 `src/data/schemas/` 目录下的所有 JSON 文件。
 
-## Deploy on Vercel
+```bash
+# 导出所有页面
+npx tsx scripts/export-static.tsx
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# 查看所有可用的 schema
+npx tsx scripts/export-static.tsx --list
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# 只导出指定页面
+npx tsx scripts/export-static.tsx ppt-cover
+
+# 使用通配符导出
+npx tsx scripts/export-static.tsx admin-*
+```
+
+导出的文件位于 `/home/wangbo/document/zcpg/docs/stitch/`。
+
+## JSON Schema 格式
+
+```json
+{
+  "type": "Card",
+  "props": { "className": "p-4" },
+  "children": [
+    { "type": "Text", "children": "Hello World" }
+  ]
+}
+```
+
+### 支持的组件
+
+**布局组件**: Flex, Stack, Grid, Container, Section, Page, Spacer, Div
+
+**UI 组件**: Card, Button, Badge, Avatar, Input, Checkbox, Switch, Separator, Progress, Tabs, Dialog, Tooltip
+
+**文本组件**: Text, Icon
+
+**表格组件**: Table, TableHeader, TableBody, TableRow, TableHead, TableCell
+
+## 技术栈
+
+- Next.js 15
+- React 19
+- shadcn/ui
+- Tailwind CSS
+- TypeScript

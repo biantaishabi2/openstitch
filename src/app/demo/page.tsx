@@ -1,335 +1,238 @@
 'use client';
 
-import { StitchRenderer } from '@/lib/renderer';
-import type { UINode } from '@/lib/renderer';
+import { useState } from 'react';
+import { StitchRenderer, exportToHTML } from '@/lib/renderer';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 
-// 示例1：三栏架构图
-const architectureSchema: UINode = {
-  type: 'Page',
-  props: { padding: 8 },
-  children: [
-    {
-      type: 'Section',
-      props: { title: 'RLM 核心架构', subtitle: '规划层与执行层的协作机制' },
-      children: [
-        {
-          type: 'Grid',
-          props: { columns: 3, gap: 6 },
-          slots: {
-            '1': {
-              type: 'Card',
-              children: [
-                {
-                  type: 'CardHeader',
-                  children: [
-                    {
-                      type: 'Flex',
-                      props: { align: 'center', gap: 2 },
-                      children: [
-                        { type: 'Icon', props: { name: 'Cpu', size: 'lg' } },
-                        { type: 'CardTitle', children: '规划层' },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  type: 'CardContent',
-                  children: [
-                    { type: 'Text', children: 'Controller.run/2' },
-                    {
-                      type: 'Text',
-                      props: { variant: 'muted' },
-                      children: 'Elixir 控制器，负责迭代循环',
-                    },
-                  ],
-                },
-              ],
-            },
-            '2': {
-              type: 'Card',
-              children: [
-                {
-                  type: 'CardHeader',
-                  children: [
-                    {
-                      type: 'Flex',
-                      props: { align: 'center', gap: 2 },
-                      children: [
-                        { type: 'Icon', props: { name: 'Terminal', size: 'lg' } },
-                        { type: 'CardTitle', children: 'Python REPL' },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  type: 'CardContent',
-                  children: [
-                    { type: 'Text', children: '沙箱执行环境' },
-                    {
-                      type: 'Text',
-                      props: { variant: 'muted' },
-                      children: 'TOOL_REQUEST/RESPONSE 协议',
-                    },
-                  ],
-                },
-              ],
-            },
-            '3': {
-              type: 'Card',
-              children: [
-                {
-                  type: 'CardHeader',
-                  children: [
-                    {
-                      type: 'Flex',
-                      props: { align: 'center', gap: 2 },
-                      children: [
-                        { type: 'Icon', props: { name: 'Wrench', size: 'lg' } },
-                        { type: 'CardTitle', children: '执行层' },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  type: 'CardContent',
-                  children: [
-                    { type: 'Text', children: 'OpenCode / 工具集' },
-                    {
-                      type: 'Text',
-                      props: { variant: 'muted' },
-                      children: 'handle_opencode_call/7',
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-        },
-      ],
-    },
-  ],
-};
+// 导入纯 JSON schemas
+import techDashboard from '@/data/schemas/tech-dashboard.json';
+import cyberpunk from '@/data/schemas/cyberpunk.json';
+import warmFood from '@/data/schemas/warm-food.json';
+import elegant from '@/data/schemas/elegant.json';
+import componentsShowcase from '@/data/schemas/components-showcase.json';
+import pptCover from '@/data/schemas/ppt-cover.json';
+import techRoadmap from '@/data/schemas/tech-roadmap.json';
+import adminDashboard from '@/data/schemas/admin-dashboard.json';
+import adminUsers from '@/data/schemas/admin-users.json';
+import mobileApp from '@/data/schemas/mobile-app.json';
 
-// 示例2：左右分栏
-const splitSchema: UINode = {
-  type: 'Section',
-  props: { title: '代码示例' },
-  children: [
-    {
-      type: 'Split',
-      props: { ratio: '1:1', gap: 6 },
-      slots: {
-        left: {
-          type: 'CodeBlock',
-          props: {
-            language: 'elixir',
-            filename: 'controller.ex',
-            code: `def run(task, opts) do
-  with {:ok, plan} <- Planner.call(task),
-       {:ok, result} <- PythonRepl.exec(plan) do
-    handle_result(result)
-  end
-end`,
-          },
-        },
-        right: {
-          type: 'Stack',
-          props: { gap: 4 },
-          children: [
-            { type: 'Text', props: { variant: 'title' }, children: '核心控制流' },
-            {
-              type: 'Text',
-              children:
-                'Controller.run/2 是 RLM 的主入口，负责协调规划层和执行层的交互。',
-            },
-            {
-              type: 'List',
-              props: { divided: true },
-              children: [
-                {
-                  type: 'ListItem',
-                  props: {
-                    title: 'Planner.call',
-                    description: '调用规划器生成 REPL 代码',
-                  },
-                },
-                {
-                  type: 'ListItem',
-                  props: {
-                    title: 'PythonRepl.exec',
-                    description: '在沙箱中执行代码',
-                  },
-                },
-                {
-                  type: 'ListItem',
-                  props: {
-                    title: 'handle_result',
-                    description: '处理执行结果，决定下一步',
-                  },
-                },
-              ],
-            },
-          ],
-        },
-      },
-    },
-  ],
-};
+interface SchemaItem {
+  name: string;
+  id: string;
+  description: string;
+  theme: string;
+  schema: any;
+}
 
-// 示例3：统计卡片（简化版，不用icon）
-const statisticsSchema: UINode = {
-  type: 'Section',
-  props: { title: '运行统计' },
-  children: [
-    {
-      type: 'Grid',
-      props: { columns: 4, gap: 4 },
-      slots: {
-        '1': {
-          type: 'Card',
-          props: { className: 'p-6' },
-          children: [
-            {
-              type: 'Statistic',
-              props: {
-                title: '总任务数',
-                value: 1234,
-                trend: 'up',
-                trendValue: '+12%',
-              },
-            },
-          ],
-        },
-        '2': {
-          type: 'Card',
-          props: { className: 'p-6' },
-          children: [
-            {
-              type: 'Statistic',
-              props: {
-                title: '成功率',
-                value: '98.5%',
-                trend: 'up',
-                trendValue: '+2.1%',
-              },
-            },
-          ],
-        },
-        '3': {
-          type: 'Card',
-          props: { className: 'p-6' },
-          children: [
-            {
-              type: 'Statistic',
-              props: {
-                title: '平均耗时',
-                value: '2.3s',
-                trend: 'down',
-                trendValue: '-0.5s',
-              },
-            },
-          ],
-        },
-        '4': {
-          type: 'Card',
-          props: { className: 'p-6' },
-          children: [
-            {
-              type: 'Statistic',
-              props: {
-                title: '错误数',
-                value: 18,
-                trend: 'down',
-                trendValue: '-5',
-              },
-            },
-          ],
-        },
-      },
-    },
-  ],
-};
-
-// 示例4：时间线
-const timelineSchema: UINode = {
-  type: 'Section',
-  props: { title: '主循环流程' },
-  children: [
-    {
-      type: 'Timeline',
-      props: { size: 'md' },
-      children: [
-        {
-          type: 'TimelineItem',
-          props: {
-            title: '初始化环境',
-            description: '加载 system_prompt、planner、workspace',
-            status: 'completed',
-          },
-        },
-        {
-          type: 'TimelineItem',
-          props: {
-            title: '动态注入 Anchor',
-            description: '从 REPL 读取 TODO dict，构建目标摘要',
-            status: 'completed',
-          },
-        },
-        {
-          type: 'TimelineItem',
-          props: {
-            title: '调用规划器',
-            description: 'call_planner/3 生成 REPL 代码块',
-            status: 'in-progress',
-          },
-        },
-        {
-          type: 'TimelineItem',
-          props: {
-            title: '执行与回传',
-            description: 'PythonRepl.exec/3 执行代码，结果回灌',
-            status: 'pending',
-          },
-        },
-      ],
-    },
-  ],
-};
+const schemas: SchemaItem[] = [
+  {
+    name: 'Tech Dashboard',
+    id: 'tech-dashboard',
+    description: '科技感的 SaaS 仪表盘界面',
+    theme: '科技/专业',
+    schema: techDashboard,
+  },
+  {
+    name: 'Cyberpunk',
+    id: 'cyberpunk',
+    description: '赛博朋克风格的监控面板',
+    theme: '暗黑/霓虹',
+    schema: cyberpunk,
+  },
+  {
+    name: '暖心食堂',
+    id: 'warm-food',
+    description: '温暖风格的外卖点餐界面',
+    theme: '温暖/食品',
+    schema: warmFood,
+  },
+  {
+    name: 'Elegant Brand',
+    id: 'elegant',
+    description: '高端优雅的奢侈品牌页面',
+    theme: '优雅/奢华',
+    schema: elegant,
+  },
+  {
+    name: '组件展示',
+    id: 'components-showcase',
+    description: '展示所有可用组件的合集',
+    theme: '默认',
+    schema: componentsShowcase,
+  },
+  {
+    name: 'PPT 封面',
+    id: 'ppt-cover',
+    description: 'JSON Schema 驱动的下一代 UI 渲染引擎',
+    theme: '暗黑/演示',
+    schema: pptCover,
+  },
+  {
+    name: '技术路线图',
+    id: 'tech-roadmap',
+    description: '从 JSON Schema 到多端渲染的技术架构',
+    theme: '专业/文档',
+    schema: techRoadmap,
+  },
+  {
+    name: '管理后台',
+    id: 'admin-dashboard',
+    description: '后台管理系统仪表盘',
+    theme: '企业/管理',
+    schema: adminDashboard,
+  },
+  {
+    name: '用户管理',
+    id: 'admin-users',
+    description: '用户列表与管理功能',
+    theme: '企业/管理',
+    schema: adminUsers,
+  },
+  {
+    name: '移动端商城',
+    id: 'mobile-app',
+    description: '手机端电商应用界面',
+    theme: '移动/电商',
+    schema: mobileApp,
+  },
+];
 
 export default function DemoPage() {
+  const [activeTab, setActiveTab] = useState('tech-dashboard');
+  const [showJson, setShowJson] = useState(false);
+  const [exporting, setExporting] = useState(false);
+
+  // 导出单个 HTML
+  const handleExport = async (item: SchemaItem) => {
+    setExporting(true);
+    try {
+      const html = exportToHTML(item.schema, {
+        title: `Stitch Demo - ${item.name}`,
+        includeStyles: true,
+      });
+
+      // 下载 HTML
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${item.id}.html`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      // 下载 JSON
+      const jsonBlob = new Blob([JSON.stringify(item.schema, null, 2)], {
+        type: 'application/json',
+      });
+      const jsonUrl = URL.createObjectURL(jsonBlob);
+      const jsonA = document.createElement('a');
+      jsonA.href = jsonUrl;
+      jsonA.download = `${item.id}.json`;
+      jsonA.click();
+      URL.revokeObjectURL(jsonUrl);
+    } catch (error) {
+      console.error('Export failed:', error);
+      alert('导出失败: ' + (error as Error).message);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  // 导出所有
+  const handleExportAll = async () => {
+    setExporting(true);
+    try {
+      for (const item of schemas) {
+        await handleExport(item);
+        await new Promise((r) => setTimeout(r, 500));
+      }
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero */}
-      <StitchRenderer
-        schema={{
-          type: 'Hero',
-          props: {
-            title: 'Stitch 渲染引擎演示',
-            subtitle: 'JSON → React 组件',
-            description: '通过声明式的 JSON Schema 生成完整的 UI 界面',
-            size: 'md',
-          },
-        }}
-      />
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Stitch Demo</h1>
+            <p className="text-gray-600">JSON Schema 驱动的 UI 渲染引擎演示</p>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setShowJson(!showJson)}>
+              {showJson ? '隐藏 JSON' : '查看 JSON'}
+            </Button>
+            <Button onClick={handleExportAll} disabled={exporting}>
+              {exporting ? '导出中...' : '导出全部'}
+            </Button>
+          </div>
+        </div>
 
-      {/* 架构图 */}
-      <div className="container mx-auto py-8">
-        <StitchRenderer schema={architectureSchema} config={{ debug: true }} />
-      </div>
+        {/* Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="mb-4">
+            {schemas.map((item) => (
+              <TabsTrigger key={item.id} value={item.id}>
+                {item.name}
+              </TabsTrigger>
+            ))}
+          </TabsList>
 
-      {/* 统计卡片 */}
-      <div className="container mx-auto py-8">
-        <StitchRenderer schema={statisticsSchema} />
-      </div>
+          {schemas.map((item) => (
+            <TabsContent key={item.id} value={item.id}>
+              {/* Info Card */}
+              <Card className="mb-4">
+                <CardHeader className="py-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <CardTitle className="text-lg">{item.name}</CardTitle>
+                      <Badge variant="secondary">{item.theme}</Badge>
+                    </div>
+                    <Button
+                      size="sm"
+                      onClick={() => handleExport(item)}
+                      disabled={exporting}
+                    >
+                      导出 HTML + JSON
+                    </Button>
+                  </div>
+                  <p className="text-sm text-gray-500">{item.description}</p>
+                </CardHeader>
+              </Card>
 
-      {/* 代码示例 */}
-      <div className="container mx-auto py-8">
-        <StitchRenderer schema={splitSchema} />
-      </div>
+              {/* JSON Preview */}
+              {showJson && (
+                <Card className="mb-4">
+                  <CardHeader className="py-2">
+                    <CardTitle className="text-sm">JSON Schema</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <pre className="bg-gray-900 text-green-400 p-4 rounded-lg overflow-auto max-h-96 text-xs">
+                      {JSON.stringify(item.schema, null, 2)}
+                    </pre>
+                  </CardContent>
+                </Card>
+              )}
 
-      {/* 时间线 */}
-      <div className="container mx-auto py-8 max-w-2xl">
-        <StitchRenderer schema={timelineSchema} />
+              {/* Rendered Preview */}
+              <Card>
+                <CardHeader className="py-2 border-b">
+                  <CardTitle className="text-sm">渲染预览</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="border rounded-b-lg overflow-hidden">
+                    <StitchRenderer schema={item.schema} />
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          ))}
+        </Tabs>
       </div>
     </div>
   );

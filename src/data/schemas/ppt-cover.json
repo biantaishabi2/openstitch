@@ -1,0 +1,98 @@
+{
+  "type": "Flex",
+  "props": {
+    "className": "min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 items-center justify-center"
+  },
+  "children": [
+    {
+      "type": "Stack",
+      "props": { "gap": 8, "className": "text-center max-w-4xl px-8" },
+      "children": [
+        {
+          "type": "Badge",
+          "props": { "className": "bg-primary/20 text-primary border-primary/30 px-4 py-1 mx-auto" },
+          "children": "Stitch UI Engine"
+        },
+        {
+          "type": "Text",
+          "props": { "as": "h1", "className": "text-6xl font-bold text-white tracking-tight leading-tight" },
+          "children": "JSON Schema 驱动的"
+        },
+        {
+          "type": "Text",
+          "props": { "as": "h1", "className": "text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight" },
+          "children": "下一代 UI 渲染引擎"
+        },
+        {
+          "type": "Text",
+          "props": { "className": "text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed mt-4" },
+          "children": "一套 Schema，多端渲染。支持 React 实时预览、LiveView 服务端运行、静态 HTML 导出，让 AI 能够理解和操控界面。"
+        },
+        {
+          "type": "Flex",
+          "props": { "gap": 4, "className": "justify-center mt-8" },
+          "children": [
+            {
+              "type": "Card",
+              "props": { "className": "bg-white/5 border-white/10 px-6 py-4" },
+              "children": [
+                {
+                  "type": "Stack",
+                  "props": { "gap": 1, "className": "items-center" },
+                  "children": [
+                    { "type": "Icon", "props": { "name": "Layers", "size": "lg", "className": "text-blue-400" } },
+                    { "type": "Text", "props": { "className": "text-white font-semibold" }, "children": "组件化" },
+                    { "type": "Text", "props": { "className": "text-slate-500 text-sm" }, "children": "50+ 预置组件" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Card",
+              "props": { "className": "bg-white/5 border-white/10 px-6 py-4" },
+              "children": [
+                {
+                  "type": "Stack",
+                  "props": { "gap": 1, "className": "items-center" },
+                  "children": [
+                    { "type": "Icon", "props": { "name": "Smartphone", "size": "lg", "className": "text-purple-400" } },
+                    { "type": "Text", "props": { "className": "text-white font-semibold" }, "children": "响应式" },
+                    { "type": "Text", "props": { "className": "text-slate-500 text-sm" }, "children": "多端自适应" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Card",
+              "props": { "className": "bg-white/5 border-white/10 px-6 py-4" },
+              "children": [
+                {
+                  "type": "Stack",
+                  "props": { "gap": 1, "className": "items-center" },
+                  "children": [
+                    { "type": "Icon", "props": { "name": "Zap", "size": "lg", "className": "text-pink-400" } },
+                    { "type": "Text", "props": { "className": "text-white font-semibold" }, "children": "AI 友好" },
+                    { "type": "Text", "props": { "className": "text-slate-500 text-sm" }, "children": "智能组装" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Flex",
+          "props": { "gap": 4, "className": "justify-center mt-8" },
+          "children": [
+            { "type": "Button", "props": { "size": "lg", "className": "bg-white text-slate-900 hover:bg-slate-100 px-8" }, "children": "开始使用" },
+            { "type": "Button", "props": { "variant": "outline", "size": "lg", "className": "border-white/20 text-white hover:bg-white/10 px-8" }, "children": "查看文档" }
+          ]
+        },
+        {
+          "type": "Text",
+          "props": { "className": "text-slate-600 text-sm mt-16" },
+          "children": "2024 · Stitch UI Engine · v1.0"
+        }
+      ]
+    }
+  ]
+}

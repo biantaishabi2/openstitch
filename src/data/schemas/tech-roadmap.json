@@ -1,0 +1,264 @@
+{
+  "type": "Page",
+  "props": { "className": "bg-slate-50 min-h-screen" },
+  "children": [
+    {
+      "type": "Section",
+      "props": { "className": "bg-white border-b" },
+      "children": [
+        {
+          "type": "Container",
+          "props": { "className": "py-16" },
+          "children": [
+            {
+              "type": "Stack",
+              "props": { "gap": 4, "className": "text-center max-w-3xl mx-auto" },
+              "children": [
+                { "type": "Badge", "props": { "variant": "outline" }, "children": "Technical Roadmap" },
+                { "type": "Text", "props": { "as": "h1", "className": "text-4xl font-bold text-foreground" }, "children": "Stitch UI 技术路线图" },
+                { "type": "Text", "props": { "className": "text-lg text-muted-foreground" }, "children": "从 JSON Schema 定义到多端渲染的完整技术架构，分阶段实现设计系统的标准化和自动化。" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "props": { "className": "py-12" },
+      "children": [
+        {
+          "type": "Grid",
+          "props": { "columns": 3, "gap": 8 },
+          "slots": {
+            "1": {
+              "type": "Card",
+              "props": { "className": "relative overflow-hidden" },
+              "children": [
+                { "type": "Div", "props": { "className": "absolute top-0 left-0 w-full h-1 bg-green-500" } },
+                { "type": "CardHeader", "children": [
+                  { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                    { "type": "Badge", "props": { "className": "bg-green-100 text-green-700" }, "children": "已完成" },
+                    { "type": "Text", "props": { "className": "text-sm text-muted-foreground" }, "children": "Phase 1" }
+                  ]},
+                  { "type": "CardTitle", "children": "基础架构" }
+                ]},
+                { "type": "CardContent", "children": [
+                  { "type": "Stack", "props": { "gap": 3 }, "children": [
+                    { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Check", "size": "sm", "className": "text-green-500" } },
+                      { "type": "Text", "props": { "className": "text-sm" }, "children": "JSON Schema 规范定义" }
+                    ]},
+                    { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Check", "size": "sm", "className": "text-green-500" } },
+                      { "type": "Text", "props": { "className": "text-sm" }, "children": "React 渲染器核心实现" }
+                    ]},
+                    { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Check", "size": "sm", "className": "text-green-500" } },
+                      { "type": "Text", "props": { "className": "text-sm" }, "children": "shadcn/ui 组件集成" }
+                    ]},
+                    { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Check", "size": "sm", "className": "text-green-500" } },
+                      { "type": "Text", "props": { "className": "text-sm" }, "children": "静态 HTML 导出" }
+                    ]}
+                  ]}
+                ]}
+              ]
+            },
+            "2": {
+              "type": "Card",
+              "props": { "className": "relative overflow-hidden" },
+              "children": [
+                { "type": "Div", "props": { "className": "absolute top-0 left-0 w-full h-1 bg-blue-500" } },
+                { "type": "CardHeader", "children": [
+                  { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                    { "type": "Badge", "props": { "className": "bg-blue-100 text-blue-700" }, "children": "进行中" },
+                    { "type": "Text", "props": { "className": "text-sm text-muted-foreground" }, "children": "Phase 2" }
+                  ]},
+                  { "type": "CardTitle", "children": "LiveView 集成" }
+                ]},
+                { "type": "CardContent", "children": [
+                  { "type": "Stack", "props": { "gap": 3 }, "children": [
+                    { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Circle", "size": "sm", "className": "text-blue-500" } },
+                      { "type": "Text", "props": { "className": "text-sm" }, "children": "Phoenix 组件库开发" }
+                    ]},
+                    { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Circle", "size": "sm", "className": "text-blue-500" } },
+                      { "type": "Text", "props": { "className": "text-sm" }, "children": "HEEx 导出器实现" }
+                    ]},
+                    { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Circle", "size": "sm", "className": "text-muted-foreground" } },
+                      { "type": "Text", "props": { "className": "text-sm text-muted-foreground" }, "children": "事件映射系统" }
+                    ]},
+                    { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Circle", "size": "sm", "className": "text-muted-foreground" } },
+                      { "type": "Text", "props": { "className": "text-sm text-muted-foreground" }, "children": "CSS 变量主题系统" }
+                    ]}
+                  ]}
+                ]}
+              ]
+            },
+            "3": {
+              "type": "Card",
+              "props": { "className": "relative overflow-hidden" },
+              "children": [
+                { "type": "Div", "props": { "className": "absolute top-0 left-0 w-full h-1 bg-slate-300" } },
+                { "type": "CardHeader", "children": [
+                  { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                    { "type": "Badge", "props": { "variant": "outline" }, "children": "计划中" },
+                    { "type": "Text", "props": { "className": "text-sm text-muted-foreground" }, "children": "Phase 3" }
+                  ]},
+                  { "type": "CardTitle", "children": "AI 智能化" }
+                ]},
+                { "type": "CardContent", "children": [
+                  { "type": "Stack", "props": { "gap": 3 }, "children": [
+                    { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Circle", "size": "sm", "className": "text-muted-foreground" } },
+                      { "type": "Text", "props": { "className": "text-sm text-muted-foreground" }, "children": "Inspector 调试工具" }
+                    ]},
+                    { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Circle", "size": "sm", "className": "text-muted-foreground" } },
+                      { "type": "Text", "props": { "className": "text-sm text-muted-foreground" }, "children": "意图→组件自动映射" }
+                    ]},
+                    { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Circle", "size": "sm", "className": "text-muted-foreground" } },
+                      { "type": "Text", "props": { "className": "text-sm text-muted-foreground" }, "children": "自然语言生成 UI" }
+                    ]},
+                    { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                      { "type": "Icon", "props": { "name": "Circle", "size": "sm", "className": "text-muted-foreground" } },
+                      { "type": "Text", "props": { "className": "text-sm text-muted-foreground" }, "children": "可视化编辑器" }
+                    ]}
+                  ]}
+                ]}
+              ]
+            }
+          }
+        },
+        {
+          "type": "Card",
+          "props": { "className": "mt-12" },
+          "children": [
+            { "type": "CardHeader", "children": [
+              { "type": "CardTitle", "children": "技术架构图" }
+            ]},
+            { "type": "CardContent", "children": [
+              {
+                "type": "Flex",
+                "props": { "className": "justify-center items-center gap-4 py-8" },
+                "children": [
+                  {
+                    "type": "Card",
+                    "props": { "className": "bg-blue-50 border-blue-200 px-6 py-4 text-center" },
+                    "children": [
+                      { "type": "Icon", "props": { "name": "FileJson", "className": "text-blue-600 mx-auto mb-2" } },
+                      { "type": "Text", "props": { "className": "font-semibold text-blue-900" }, "children": "JSON Schema" },
+                      { "type": "Text", "props": { "className": "text-xs text-blue-600" }, "children": "UI 定义层" }
+                    ]
+                  },
+                  { "type": "Icon", "props": { "name": "ArrowRight", "className": "text-muted-foreground" } },
+                  {
+                    "type": "Stack",
+                    "props": { "gap": 2 },
+                    "children": [
+                      {
+                        "type": "Card",
+                        "props": { "className": "bg-green-50 border-green-200 px-6 py-3 text-center" },
+                        "children": [
+                          { "type": "Text", "props": { "className": "font-semibold text-green-900 text-sm" }, "children": "React 渲染器" },
+                          { "type": "Text", "props": { "className": "text-xs text-green-600" }, "children": "设计预览" }
+                        ]
+                      },
+                      {
+                        "type": "Card",
+                        "props": { "className": "bg-purple-50 border-purple-200 px-6 py-3 text-center" },
+                        "children": [
+                          { "type": "Text", "props": { "className": "font-semibold text-purple-900 text-sm" }, "children": "LiveView 渲染器" },
+                          { "type": "Text", "props": { "className": "text-xs text-purple-600" }, "children": "生产运行" }
+                        ]
+                      },
+                      {
+                        "type": "Card",
+                        "props": { "className": "bg-orange-50 border-orange-200 px-6 py-3 text-center" },
+                        "children": [
+                          { "type": "Text", "props": { "className": "font-semibold text-orange-900 text-sm" }, "children": "HTML 导出器" },
+                          { "type": "Text", "props": { "className": "text-xs text-orange-600" }, "children": "静态部署" }
+                        ]
+                      }
+                    ]
+                  },
+                  { "type": "Icon", "props": { "name": "ArrowRight", "className": "text-muted-foreground" } },
+                  {
+                    "type": "Card",
+                    "props": { "className": "bg-slate-100 border-slate-300 px-6 py-4 text-center" },
+                    "children": [
+                      { "type": "Icon", "props": { "name": "Monitor", "className": "text-slate-600 mx-auto mb-2" } },
+                      { "type": "Text", "props": { "className": "font-semibold text-slate-900" }, "children": "用户界面" },
+                      { "type": "Text", "props": { "className": "text-xs text-slate-600" }, "children": "多端呈现" }
+                    ]
+                  }
+                ]
+              }
+            ]}
+          ]
+        },
+        {
+          "type": "Card",
+          "props": { "className": "mt-8" },
+          "children": [
+            { "type": "CardHeader", "children": [
+              { "type": "CardTitle", "children": "核心设计原则" }
+            ]},
+            { "type": "CardContent", "children": [
+              {
+                "type": "Grid",
+                "props": { "columns": 3, "gap": 6 },
+                "slots": {
+                  "1": {
+                    "type": "Stack",
+                    "props": { "gap": 2 },
+                    "children": [
+                      { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                        { "type": "Div", "props": { "className": "w-8 h-8 rounded bg-blue-100 flex items-center justify-center" }, "children": [
+                          { "type": "Text", "props": { "className": "text-blue-600 font-bold" }, "children": "8" }
+                        ]},
+                        { "type": "Text", "props": { "className": "font-semibold" }, "children": "8pt 网格系统" }
+                      ]},
+                      { "type": "Text", "props": { "className": "text-sm text-muted-foreground" }, "children": "所有间距、尺寸均为 8px 倍数，确保视觉对齐一致性。" }
+                    ]
+                  },
+                  "2": {
+                    "type": "Stack",
+                    "props": { "gap": 2 },
+                    "children": [
+                      { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                        { "type": "Div", "props": { "className": "w-8 h-8 rounded bg-purple-100 flex items-center justify-center" }, "children": [
+                          { "type": "Icon", "props": { "name": "Palette", "size": "sm", "className": "text-purple-600" } }
+                        ]},
+                        { "type": "Text", "props": { "className": "font-semibold" }, "children": "语义化色彩" }
+                      ]},
+                      { "type": "Text", "props": { "className": "text-sm text-muted-foreground" }, "children": "Primary/Secondary/Success/Warning/Error 语义明确。" }
+                    ]
+                  },
+                  "3": {
+                    "type": "Stack",
+                    "props": { "gap": 2 },
+                    "children": [
+                      { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+                        { "type": "Div", "props": { "className": "w-8 h-8 rounded bg-green-100 flex items-center justify-center" }, "children": [
+                          { "type": "Icon", "props": { "name": "Accessibility", "size": "sm", "className": "text-green-600" } }
+                        ]},
+                        { "type": "Text", "props": { "className": "font-semibold" }, "children": "无障碍标准" }
+                      ]},
+                      { "type": "Text", "props": { "className": "text-sm text-muted-foreground" }, "children": "WCAG AA 级对比度，确保所有用户可访问。" }
+                    ]
+                  }
+                }
+              }
+            ]}
+          ]
+        }
+      ]
+    }
+  ]
+}

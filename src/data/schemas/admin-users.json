@@ -1,0 +1,227 @@
+{
+  "type": "Flex",
+  "props": { "className": "min-h-screen bg-slate-100" },
+  "children": [
+    {
+      "type": "Stack",
+      "props": { "className": "w-64 bg-slate-900 text-white p-4 shrink-0" },
+      "children": [
+        {
+          "type": "Flex",
+          "props": { "gap": 2, "align": "center", "className": "px-2 py-4 mb-4" },
+          "children": [
+            { "type": "Div", "props": { "className": "w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center" }, "children": [
+              { "type": "Icon", "props": { "name": "LayoutDashboard", "size": "sm", "className": "text-white" } }
+            ]},
+            { "type": "Text", "props": { "className": "font-bold text-lg" }, "children": "Stitch Admin" }
+          ]
+        },
+        { "type": "Text", "props": { "className": "text-xs text-slate-500 uppercase tracking-wider px-2 mb-2" }, "children": "主菜单" },
+        {
+          "type": "Stack",
+          "props": { "gap": 1 },
+          "children": [
+            { "type": "Flex", "props": { "gap": 2, "align": "center", "className": "px-3 py-2 rounded-lg hover:bg-slate-800 cursor-pointer text-slate-400" }, "children": [
+              { "type": "Icon", "props": { "name": "LayoutDashboard", "size": "sm" } },
+              { "type": "Text", "props": { "className": "text-sm" }, "children": "仪表盘" }
+            ]},
+            { "type": "Flex", "props": { "gap": 2, "align": "center", "className": "px-3 py-2 rounded-lg bg-blue-600 cursor-pointer" }, "children": [
+              { "type": "Icon", "props": { "name": "Users", "size": "sm" } },
+              { "type": "Text", "props": { "className": "text-sm" }, "children": "用户管理" }
+            ]},
+            { "type": "Flex", "props": { "gap": 2, "align": "center", "className": "px-3 py-2 rounded-lg hover:bg-slate-800 cursor-pointer text-slate-400" }, "children": [
+              { "type": "Icon", "props": { "name": "Package", "size": "sm" } },
+              { "type": "Text", "props": { "className": "text-sm" }, "children": "产品管理" }
+            ]},
+            { "type": "Flex", "props": { "gap": 2, "align": "center", "className": "px-3 py-2 rounded-lg hover:bg-slate-800 cursor-pointer text-slate-400" }, "children": [
+              { "type": "Icon", "props": { "name": "ShoppingCart", "size": "sm" } },
+              { "type": "Text", "props": { "className": "text-sm" }, "children": "订单管理" }
+            ]}
+          ]
+        },
+        { "type": "Spacer", "props": { "className": "flex-1" } },
+        {
+          "type": "Flex",
+          "props": { "gap": 3, "align": "center", "className": "p-3 bg-slate-800 rounded-lg" },
+          "children": [
+            { "type": "Avatar", "props": { "className": "h-10 w-10" }, "children": [{ "type": "AvatarFallback", "children": "管" }] },
+            { "type": "Stack", "props": { "gap": 0, "className": "flex-1" }, "children": [
+              { "type": "Text", "props": { "className": "text-sm font-medium" }, "children": "管理员" },
+              { "type": "Text", "props": { "className": "text-xs text-slate-500" }, "children": "admin@stitch.io" }
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Stack",
+      "props": { "className": "flex-1" },
+      "children": [
+        {
+          "type": "Flex",
+          "props": { "className": "h-16 bg-white border-b px-6 items-center justify-between" },
+          "children": [
+            { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
+              { "type": "Text", "props": { "className": "text-lg font-semibold" }, "children": "用户管理" },
+              { "type": "Badge", "props": { "variant": "secondary" }, "children": "24,521 位用户" }
+            ]},
+            { "type": "Button", "children": [
+              { "type": "Icon", "props": { "name": "Plus", "size": "sm", "className": "mr-2" } },
+              "添加用户"
+            ]}
+          ]
+        },
+        {
+          "type": "Stack",
+          "props": { "gap": 6, "className": "p-6" },
+          "children": [
+            {
+              "type": "Card",
+              "children": [
+                { "type": "CardHeader", "children": [
+                  { "type": "Flex", "props": { "justify": "between", "align": "center" }, "children": [
+                    { "type": "Flex", "props": { "gap": 4 }, "children": [
+                      { "type": "Flex", "props": { "className": "relative" }, "children": [
+                        { "type": "Input", "props": { "placeholder": "搜索用户...", "className": "w-80 pl-10" } },
+                        { "type": "Icon", "props": { "name": "Search", "size": "sm", "className": "absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" } }
+                      ]},
+                      { "type": "Button", "props": { "variant": "outline" }, "children": [
+                        { "type": "Icon", "props": { "name": "Filter", "size": "sm", "className": "mr-2" } },
+                        "筛选"
+                      ]}
+                    ]},
+                    { "type": "Flex", "props": { "gap": 2 }, "children": [
+                      { "type": "Button", "props": { "variant": "outline", "size": "sm" }, "children": "导出" },
+                      { "type": "Button", "props": { "variant": "outline", "size": "sm" }, "children": "批量操作" }
+                    ]}
+                  ]}
+                ]},
+                { "type": "CardContent", "children": [
+                  {
+                    "type": "Table",
+                    "children": [
+                      { "type": "TableHeader", "children": [
+                        { "type": "TableRow", "children": [
+                          { "type": "TableHead", "props": { "className": "w-12" }, "children": [{ "type": "Checkbox" }] },
+                          { "type": "TableHead", "children": "用户" },
+                          { "type": "TableHead", "children": "邮箱" },
+                          { "type": "TableHead", "children": "角色" },
+                          { "type": "TableHead", "children": "状态" },
+                          { "type": "TableHead", "children": "注册时间" },
+                          { "type": "TableHead", "props": { "className": "text-right" }, "children": "操作" }
+                        ]}
+                      ]},
+                      { "type": "TableBody", "children": [
+                        { "type": "TableRow", "children": [
+                          { "type": "TableCell", "children": [{ "type": "Checkbox" }] },
+                          { "type": "TableCell", "children": [
+                            { "type": "Flex", "props": { "gap": 3, "align": "center" }, "children": [
+                              { "type": "Avatar", "props": { "className": "h-8 w-8" }, "children": [{ "type": "AvatarFallback", "children": "张" }] },
+                              { "type": "Stack", "props": { "gap": 0 }, "children": [
+                                { "type": "Text", "props": { "className": "font-medium" }, "children": "张三" },
+                                { "type": "Text", "props": { "className": "text-xs text-muted-foreground" }, "children": "ID: 10001" }
+                              ]}
+                            ]}
+                          ]},
+                          { "type": "TableCell", "children": "zhangsan@example.com" },
+                          { "type": "TableCell", "children": [{ "type": "Badge", "props": { "variant": "outline" }, "children": "管理员" }] },
+                          { "type": "TableCell", "children": [{ "type": "Badge", "props": { "className": "bg-green-100 text-green-700" }, "children": "活跃" }] },
+                          { "type": "TableCell", "props": { "className": "text-muted-foreground" }, "children": "2024-01-15" },
+                          { "type": "TableCell", "props": { "className": "text-right" }, "children": [
+                            { "type": "Flex", "props": { "gap": 1, "className": "justify-end" }, "children": [
+                              { "type": "Button", "props": { "variant": "ghost", "size": "sm" }, "children": "编辑" },
+                              { "type": "Button", "props": { "variant": "ghost", "size": "sm", "className": "text-red-500 hover:text-red-600" }, "children": "删除" }
+                            ]}
+                          ]}
+                        ]},
+                        { "type": "TableRow", "children": [
+                          { "type": "TableCell", "children": [{ "type": "Checkbox" }] },
+                          { "type": "TableCell", "children": [
+                            { "type": "Flex", "props": { "gap": 3, "align": "center" }, "children": [
+                              { "type": "Avatar", "props": { "className": "h-8 w-8" }, "children": [{ "type": "AvatarFallback", "children": "李" }] },
+                              { "type": "Stack", "props": { "gap": 0 }, "children": [
+                                { "type": "Text", "props": { "className": "font-medium" }, "children": "李四" },
+                                { "type": "Text", "props": { "className": "text-xs text-muted-foreground" }, "children": "ID: 10002" }
+                              ]}
+                            ]}
+                          ]},
+                          { "type": "TableCell", "children": "lisi@example.com" },
+                          { "type": "TableCell", "children": [{ "type": "Badge", "props": { "variant": "outline" }, "children": "普通用户" }] },
+                          { "type": "TableCell", "children": [{ "type": "Badge", "props": { "className": "bg-green-100 text-green-700" }, "children": "活跃" }] },
+                          { "type": "TableCell", "props": { "className": "text-muted-foreground" }, "children": "2024-01-12" },
+                          { "type": "TableCell", "props": { "className": "text-right" }, "children": [
+                            { "type": "Flex", "props": { "gap": 1, "className": "justify-end" }, "children": [
+                              { "type": "Button", "props": { "variant": "ghost", "size": "sm" }, "children": "编辑" },
+                              { "type": "Button", "props": { "variant": "ghost", "size": "sm", "className": "text-red-500 hover:text-red-600" }, "children": "删除" }
+                            ]}
+                          ]}
+                        ]},
+                        { "type": "TableRow", "children": [
+                          { "type": "TableCell", "children": [{ "type": "Checkbox" }] },
+                          { "type": "TableCell", "children": [
+                            { "type": "Flex", "props": { "gap": 3, "align": "center" }, "children": [
+                              { "type": "Avatar", "props": { "className": "h-8 w-8" }, "children": [{ "type": "AvatarFallback", "children": "王" }] },
+                              { "type": "Stack", "props": { "gap": 0 }, "children": [
+                                { "type": "Text", "props": { "className": "font-medium" }, "children": "王五" },
+                                { "type": "Text", "props": { "className": "text-xs text-muted-foreground" }, "children": "ID: 10003" }
+                              ]}
+                            ]}
+                          ]},
+                          { "type": "TableCell", "children": "wangwu@example.com" },
+                          { "type": "TableCell", "children": [{ "type": "Badge", "props": { "variant": "outline" }, "children": "VIP用户" }] },
+                          { "type": "TableCell", "children": [{ "type": "Badge", "props": { "className": "bg-yellow-100 text-yellow-700" }, "children": "待验证" }] },
+                          { "type": "TableCell", "props": { "className": "text-muted-foreground" }, "children": "2024-01-10" },
+                          { "type": "TableCell", "props": { "className": "text-right" }, "children": [
+                            { "type": "Flex", "props": { "gap": 1, "className": "justify-end" }, "children": [
+                              { "type": "Button", "props": { "variant": "ghost", "size": "sm" }, "children": "编辑" },
+                              { "type": "Button", "props": { "variant": "ghost", "size": "sm", "className": "text-red-500 hover:text-red-600" }, "children": "删除" }
+                            ]}
+                          ]}
+                        ]},
+                        { "type": "TableRow", "children": [
+                          { "type": "TableCell", "children": [{ "type": "Checkbox" }] },
+                          { "type": "TableCell", "children": [
+                            { "type": "Flex", "props": { "gap": 3, "align": "center" }, "children": [
+                              { "type": "Avatar", "props": { "className": "h-8 w-8" }, "children": [{ "type": "AvatarFallback", "children": "赵" }] },
+                              { "type": "Stack", "props": { "gap": 0 }, "children": [
+                                { "type": "Text", "props": { "className": "font-medium" }, "children": "赵六" },
+                                { "type": "Text", "props": { "className": "text-xs text-muted-foreground" }, "children": "ID: 10004" }
+                              ]}
+                            ]}
+                          ]},
+                          { "type": "TableCell", "children": "zhaoliu@example.com" },
+                          { "type": "TableCell", "children": [{ "type": "Badge", "props": { "variant": "outline" }, "children": "普通用户" }] },
+                          { "type": "TableCell", "children": [{ "type": "Badge", "props": { "className": "bg-red-100 text-red-700" }, "children": "已禁用" }] },
+                          { "type": "TableCell", "props": { "className": "text-muted-foreground" }, "children": "2024-01-08" },
+                          { "type": "TableCell", "props": { "className": "text-right" }, "children": [
+                            { "type": "Flex", "props": { "gap": 1, "className": "justify-end" }, "children": [
+                              { "type": "Button", "props": { "variant": "ghost", "size": "sm" }, "children": "编辑" },
+                              { "type": "Button", "props": { "variant": "ghost", "size": "sm", "className": "text-red-500 hover:text-red-600" }, "children": "删除" }
+                            ]}
+                          ]}
+                        ]}
+                      ]}
+                    ]
+                  }
+                ]},
+                { "type": "CardFooter", "props": { "className": "border-t pt-4" }, "children": [
+                  { "type": "Flex", "props": { "justify": "between", "align": "center", "className": "w-full" }, "children": [
+                    { "type": "Text", "props": { "className": "text-sm text-muted-foreground" }, "children": "显示 1-10 条，共 24,521 条" },
+                    { "type": "Flex", "props": { "gap": 2 }, "children": [
+                      { "type": "Button", "props": { "variant": "outline", "size": "sm", "disabled": true }, "children": "上一页" },
+                      { "type": "Button", "props": { "variant": "outline", "size": "sm" }, "children": "1" },
+                      { "type": "Button", "props": { "size": "sm" }, "children": "2" },
+                      { "type": "Button", "props": { "variant": "outline", "size": "sm" }, "children": "3" },
+                      { "type": "Button", "props": { "variant": "outline", "size": "sm" }, "children": "..." },
+                      { "type": "Button", "props": { "variant": "outline", "size": "sm" }, "children": "下一页" }
+                    ]}
+                  ]}
+                ]}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
