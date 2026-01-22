@@ -791,11 +791,13 @@ AI 可以在 JSON Schema 中使用 `style.override` 覆盖任何预设：
 | `framer-motion` | ^12.29.0 | 动画库 |
 | `recharts` | ^2.15.4 | 数据可视化图表 |
 | `tw-animate-css` | ^1.4.0 | Tailwind 动画 |
+| `cobe` | - | 3D 地球组件 |
 
-### 13.3 UI 组件 (shadcn/ui)
+### 13.3 UI 组件
 
-已安装 55 个 shadcn/ui 组件：
+**已安装 85 个组件**，包括：
 
+**基础组件 (shadcn/ui)**:
 ```
 accordion, alert, aspect-ratio, avatar, badge, breadcrumb, button,
 calendar, card, carousel, chart, checkbox, code-block, collapsible,
@@ -805,6 +807,17 @@ menubar, navigation-menu, pagination, popover, progress, radio-group,
 resizable, scroll-area, select, separator, sheet, sidebar, skeleton,
 slider, sonner, statistic, stepper, switch, table, tabs, textarea,
 timeline, toggle, toggle-group, tooltip
+```
+
+**Magic UI 布局与动画组件**:
+```
+animated-beam, animated-grid-pattern, animated-shiny-text,
+avatar-circles, bento-grid, blur-fade, border-beam, confetti,
+dock, dot-pattern, globe, grid-pattern, hero-video-dialog,
+hyper-text, icon-cloud, magic-card, marquee, meteors,
+number-ticker, orbiting-circles, particles, rainbow-button,
+retro-grid, ripple, safari, shimmer-button, shine-border,
+text-reveal, typing-animation, word-rotate
 ```
 
 ### 13.4 表单与验证
@@ -836,6 +849,43 @@ timeline, toggle, toggle-group, tooltip
 |------|------|
 | `tailwindcss-claymorphism` | 需要 Tailwind v3，当前 v4 |
 | `@y2k-tech/ui` | npm 上不存在 |
+
+---
+
+## 十四、主题系统文件结构
+
+```
+src/lib/themes/
+├── index.ts          # 入口文件，导出所有模块
+├── tokens.ts         # Layer 1: 基础规格（颜色、间距、圆角、阴影、字体）
+├── presets.ts        # Layer 2: 12 个场景主题预设
+├── override.ts       # Layer 3: 覆盖机制
+├── daisyui-themes.ts # daisyUI 33 个主题映射（26 内置 + 7 自定义）
+└── layouts.ts        # 14 个布局预设（7 页面级 + 7 组件级）
+```
+
+### 主题统计
+
+| 类型 | 数量 | 说明 |
+|------|------|------|
+| **自定义场景主题** | 12 | tech, minimalist, dark, warm, elegant 等 |
+| **daisyUI 内置主题** | 26 | cyberpunk, synthwave, retro, nord 等 |
+| **daisyUI 自定义主题** | 7 | tech, warm, elegant, fresh 等 |
+| **布局预设** | 14 | dashboard, landing, bento-grid 等 |
+| **总计** | **45+ 主题，14 布局** |
+
+### 主题分类
+
+**按场景**:
+- 科技/SaaS: tech, cyberpunk, dracula, nord
+- 金融/商务: business, trustworthy, luxury
+- 餐饮/生活: warm, coffee, autumn, retro
+- 娱乐/创意: synthwave, valentine, fantasy, acid
+- 自然/健康: garden, forest, fresh, aqua
+
+**按明暗**:
+- 浅色 (Light): 16 个
+- 深色 (Dark): 17 个
 
 ---
 
