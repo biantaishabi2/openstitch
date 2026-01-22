@@ -7,6 +7,48 @@ Stitch 是一个 JSON Schema 驱动的 UI 渲染引擎。本文档描述如何�
 - **设计阶段**: 使用 React 渲染器实时预览
 - **部署阶段**: 导出为 LiveView 组件，在 Phoenix 应用中运行
 
+## 项目结构
+
+采用 monorepo 方式组织，React 和 LiveView 实现放在同一仓库：
+
+```
+stitch/
+├── src/                          # React 渲染器（设计预览）
+│   ├── components/ui/            # shadcn 组件
+│   ├── lib/renderer/             # JSON Schema 渲染器
+│   └── data/schemas/             # JSON Schema 示例
+│
+├── packages/
+│   └── liveview/                 # LiveView 组件库（生产运行）
+│       ├── lib/
+│       │   └── stitch_ui/
+│       │       ├── components/   # 组件实现
+│       │       │   ├── button.ex
+│       │       │   ├── card.ex
+│       │       │   ├── badge.ex
+│       │       │   ├── tabs.ex
+│       │       │   └── ...
+│       │       ├── layouts/      # 布局组件
+│       │       │   ├── flex.ex
+│       │       │   ├── stack.ex
+│       │       │   └── grid.ex
+│       │       ├── exporter.ex   # JSON → HEEx 导出器
+│       │       └── stitch_ui.ex  # 主模块
+│       ├── mix.exs
+│       └── README.md
+│
+├── docs/
+│   └── liveview-integration.md   # 本文档
+│
+└── scripts/
+    └── export-static.tsx         # 静态 HTML 导出
+```
+
+**优势：**
+- JSON Schema 定义与两套实现放一起，方便同步
+- 开发时可以同时验证 React 和 LiveView 输出
+- 以后可以将 `packages/liveview` 发布为独立 Hex 包
+
 ## 架构
 
 ```
@@ -476,6 +518,86 @@ defmodule Mix.Tasks.Stitch.Export do
 end
 ```
 
+## 从 shop 项目迁移
+
+shop 项目已有完善的 LiveView 组件库（50+ 组件），可以作为基础进行改造。
+
+### 现有组件清单（shop）
+
+| 类别 | 组件 |
+|-----|------|
+| 基础 | Button, Badge/Tag, Card, Dropdown, Tooltip, Switch |
+| 导航 | Breadcrumb, Tabs, BottomNavigation, MobileNavigation |
+| 表单 | Input, Select, SearchableSelect, DatePicker, RangePicker, Cascader, TreeSelect |
+| 数据 | Table, Timeline, Steps, Statistic, MetricCard, Progress |
+| 反馈 | Modal, Alert, Flash |
+| 图表 | AntVChart, CPU/Memory Gauge |
+
+### 样式系统对比
+
+**shop 当前样式（直接 Tailwind 颜色）：**
+```elixir
+# Tag 组件颜色映射
+%{
+  "primary" => ["bg-orange-100", "text-orange-800", "border-orange-200"],
+  "info" => ["bg-blue-100", "text-blue-800", "border-blue-200"],
+  "success" => ["bg-green-100", "text-green-800", "border-green-200"],
+  "warning" => ["bg-yellow-100", "text-yellow-800", "border-yellow-200"],
+  "danger" => ["bg-red-100", "text-red-800", "border-red-200"]
+}
+
+# Button 组件
+"bg-zinc-900 hover:bg-zinc-700 text-white"
+```
+
+**shadcn/stitch 目标样式（CSS 变量）：**
+```elixir
+# 使用语义化颜色
+%{
+  "default" => ["bg-primary", "text-primary-foreground"],
+  "secondary" => ["bg-secondary", "text-secondary-foreground"],
+  "outline" => ["border", "border-input", "bg-background", "hover:bg-accent"],
+  "ghost" => ["hover:bg-accent", "hover:text-accent-foreground"],
+  "destructive" => ["bg-destructive", "text-destructive-foreground"]
+}
+
+# Button 组件
+"bg-primary hover:bg-primary/90 text-primary-foreground"
+```
+
+### 迁移步骤
+
+1. **复制组件到 stitch**
+   ```bash
+   # 从 shop 复制核心组件
+   cp shop/lib/shop_web/components/card.ex stitch/packages/liveview/lib/stitch_ui/components/
+   cp shop/lib/shop_web/components/tag.ex stitch/packages/liveview/lib/stitch_ui/components/badge.ex
+   cp shop/lib/shop_web/components/tabs.ex stitch/packages/liveview/lib/stitch_ui/components/
+   # ...
+   ```
+
+2. **更新颜色类名**
+   ```elixir
+   # 改前
+   "bg-orange-100 text-orange-800"
+
+   # 改后
+   "bg-primary/10 text-primary"
+   # 或
+   "bg-primary text-primary-foreground"
+   ```
+
+3. **统一 API 命名**
+   ```elixir
+   # shop 风格
+   attr :color, :string, values: ~w(primary info success warning danger)
+
+   # shadcn 风格
+   attr :variant, :string, values: ~w(default secondary outline ghost destructive)
+   ```
+
+4. **添加 CSS 变量支持**
+
 ## CSS 主题配置
 
 在 Phoenix 项目中配置 Tailwind CSS 变量（与 shadcn 一致）：
@@ -550,34 +672,47 @@ module.exports = {
 
 ## 实现路线图
 
-### 阶段 1: 基础组件库
-- [ ] Button, Badge, Alert
-- [ ] Card (Card, CardHeader, CardTitle, CardContent, CardFooter)
+### 阶段 0: 项目初始化
+- [ ] 创建 `packages/liveview` 目录结构
+- [ ] 初始化 mix.exs（stitch_ui 包）
+- [ ] 配置 CSS 变量和 Tailwind
+
+### 阶段 1: 基础组件迁移（从 shop）
+- [ ] Button（shop: core_components.ex → 改造样式）
+- [ ] Badge（shop: tag.ex → 重命名 + 改造）
+- [ ] Card（shop: card.ex → 改造样式）
+- [ ] Alert（shop: core_components.ex → 改造）
 - [ ] Input, Label, Checkbox, Switch
-- [ ] Progress, Skeleton
 
 ### 阶段 2: 布局组件
-- [ ] Stack, Flex, Grid
+- [ ] Stack, Flex, Grid（新建，参考 React 版本）
 - [ ] Columns, Split, Rows
 - [ ] Container, Center, Spacer
 
-### 阶段 3: 复杂组件
-- [ ] Tabs (需要 JS Hook)
-- [ ] Accordion (需要 JS Hook)
-- [ ] Dialog/Modal
-- [ ] Tooltip
+### 阶段 3: 复杂组件迁移
+- [ ] Tabs（shop: tabs.ex → 改造）
+- [ ] Accordion（新建）
+- [ ] Modal/Dialog（shop: core_components.ex → 改造）
+- [ ] Tooltip（shop: tooltip.ex → 改造）
+- [ ] Progress（shop: progress.ex → 改造）
 
-### 阶段 4: 数据展示
-- [ ] Table
-- [ ] Timeline
-- [ ] Statistic
-- [ ] List
+### 阶段 4: 数据展示迁移
+- [ ] Table（shop: table.ex → 改造）
+- [ ] Timeline（shop: timeline.ex → 改造）
+- [ ] Statistic（shop: statistic.ex → 改造）
+- [ ] Steps（shop: steps.ex → 改造）
+- [ ] List（新建）
 
 ### 阶段 5: 导出器
-- [ ] JSON Schema 解析
+- [ ] JSON Schema 解析（Elixir）
 - [ ] HEEx 代码生成
-- [ ] Mix 任务集成
-- [ ] 事件映射
+- [ ] Mix 任务：`mix stitch.export`
+- [ ] 事件映射（onClick → phx-click）
+
+### 阶段 6: 集成测试
+- [ ] 在 zcpg 项目中测试组件
+- [ ] 验证 JSON Schema → LiveView 完整流程
+- [ ] 性能优化
 
 ## 使用示例
 
