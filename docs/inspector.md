@@ -611,3 +611,132 @@ Inspector 选中组件 → 弹出编辑面板 → 修改 props → 实时更新�
 - [ ] 步骤 5: 添加浮动按钮
 - [ ] 进阶: 组件树视图
 - [ ] 进阶: 双向编辑
+
+## 验证步骤
+
+### 步骤 1 验证：渲染器扩展
+
+```bash
+# 1. 启动开发服务器
+pnpm dev
+
+# 2. 访问 demo 页面
+open http://localhost:3002/demo
+
+# 3. 打开浏览器开发者工具，检查元素
+# 确认 HTML 元素上有以下属性：
+#   - data-stitch-type="Button"
+#   - data-stitch-path="children.0.children.1"
+#   - data-stitch-props='{"variant":"primary"}'
+```
+
+**验证标准**：
+- 所有 Stitch 组件都带有 `data-stitch-type` 属性
+- 嵌套组件的 `data-stitch-path` 正确反映层级关系
+- `data-stitch-props` 包含完整的 props JSON
+
+### 步骤 2 验证：Inspector 类
+
+```bash
+# 1. 在浏览器控制台测试
+window.StitchInspector.enable()   # 应显示 "已启用"
+window.StitchInspector.disable()  # 应显示 "已禁用"
+
+# 2. 启用后悬浮测试
+# - 鼠标移到组件上应出现蓝色边框
+# - 应显示组件信息浮层
+# - 浮层应包含 type, path, props
+
+# 3. 点击复制测试
+# - 点击组件后应显示 "已复制" 提示
+# - 粘贴到文本编辑器检查内容格式
+```
+
+**验证标准**：
+- 快捷键 `Ctrl+Shift+I` 可切换 Inspector
+- 悬浮高亮正确跟随鼠标
+- 复制的内容格式正确，可直接传给 AI
+
+### 步骤 3 验证：独立脚本
+
+```bash
+# 1. 打包脚本
+pnpm build:inspector
+
+# 2. 检查输出文件
+ls -la dist/inspector.min.js
+
+# 3. 在纯 HTML 页面测试
+# 创建测试页面，引入脚本，确认功能正常
+```
+
+**验证标准**：
+- 打包后文件大小 < 10KB
+- 可独立在任何 HTML 页面使用
+- 无外部依赖
+
+### 步骤 4 验证：导出集成
+
+```bash
+# 1. 导出带 Inspector 的 HTML
+npx tsx scripts/export-static.tsx --inspector
+
+# 2. 用浏览器打开导出的 HTML 文件
+open /home/wangbo/document/zcpg/docs/stitch/tech-dashboard.html
+
+# 3. 按 Ctrl+Shift+I 启用 Inspector
+# 4. 悬浮检查组件信息
+```
+
+**验证标准**：
+- 导出的 HTML 包含 Inspector 脚本
+- 组件元素包含 data-stitch-* 属性
+- Inspector 功能正常工作
+
+### 步骤 5 验证：浮动按钮
+
+```bash
+# 1. 打开导出的 HTML
+# 2. 检查右下角是否有 "🔍 Inspector" 按钮
+# 3. 点击按钮切换 Inspector 状态
+```
+
+**验证标准**：
+- 按钮位置固定在右下角
+- 点击可切换 Inspector 开关
+- 按钮样式与页面协调
+
+## 端到端测试流程
+
+```bash
+# 完整流程验证
+
+# 1. 创建测试 schema
+cat > src/data/schemas/test-inspector.json << 'EOF'
+{
+  "type": "Card",
+  "id": "test-card",
+  "props": { "className": "p-4" },
+  "children": [
+    { "type": "Button", "id": "test-btn", "props": { "variant": "primary" }, "children": "测试按钮" }
+  ]
+}
+EOF
+
+# 2. 导出 HTML（带 Inspector）
+npx tsx scripts/export-static.tsx test-inspector --inspector
+
+# 3. 打开浏览器验证
+open /home/wangbo/document/zcpg/docs/stitch/test-inspector.html
+
+# 4. 启用 Inspector，点击按钮，检查复制内容：
+# 预期输出：
+# 修改组件：Button
+# ID：test-btn
+# 路径：children.0
+# 当前配置：{
+#   "type": "Button",
+#   "id": "test-btn",
+#   "props": { "variant": "primary" }
+# }
+```

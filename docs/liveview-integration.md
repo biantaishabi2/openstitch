@@ -714,6 +714,393 @@ module.exports = {
 - [ ] 验证 JSON Schema → LiveView 完整流程
 - [ ] 性能优化
 
+---
+
+## 详细实现步骤
+
+### 阶段 0: 项目初始化
+
+#### 步骤 0.1: 创建目录结构
+
+```bash
+# 在 stitch 项目根目录执行
+mkdir -p packages/liveview/lib/stitch_ui/{components,layouts}
+mkdir -p packages/liveview/test/stitch_ui
+```
+
+#### 步骤 0.2: 创建 mix.exs
+
+```bash
+cat > packages/liveview/mix.exs << 'EOF'
+defmodule StitchUI.MixProject do
+  use Mix.Project
+
+  def project do
+    [
+      app: :stitch_ui,
+      version: "0.1.0",
+      elixir: "~> 1.14",
+      deps: deps()
+    ]
+  end
+
+  def application do
+    [extra_applications: [:logger]]
+  end
+
+  defp deps do
+    [
+      {:phoenix_live_view, "~> 0.20"},
+      {:jason, "~> 1.4"}
+    ]
+  end
+end
+EOF
+```
+
+#### 步骤 0.3: 创建主模块
+
+```bash
+cat > packages/liveview/lib/stitch_ui.ex << 'EOF'
+defmodule StitchUI do
+  @moduledoc """
+  Stitch UI 组件库 - shadcn 风格的 Phoenix LiveView 组件
+  """
+
+  defmacro __using__(_opts) do
+    quote do
+      import StitchUI.Components.Button
+      import StitchUI.Components.Card
+      import StitchUI.Components.Badge
+      import StitchUI.Layouts.Stack
+      import StitchUI.Layouts.Flex
+      import StitchUI.Layouts.Grid
+    end
+  end
+end
+EOF
+```
+
+#### 步骤 0.4: 配置 CSS 变量
+
+在目标 Phoenix 项目的 `assets/css/app.css` 添加 CSS 变量（参考上文 CSS 主题配置章节）。
+
+在 `assets/tailwind.config.js` 添加颜色扩展（参考上文配置）。
+
+### 阶段 1: 基础组件迁移
+
+#### 步骤 1.1: Button 组件
+
+```bash
+# 从 shop 复制并改造
+cp /path/to/shop/lib/shop_web/components/button.ex \
+   packages/liveview/lib/stitch_ui/components/button.ex
+
+# 修改内容：
+# 1. 修改模块名为 StitchUI.Components.Button
+# 2. 替换颜色类名为 CSS 变量版本
+# 3. 统一 variant 名称（primary → default）
+```
+
+#### 步骤 1.2: Badge 组件
+
+```bash
+# 从 shop 的 tag.ex 改造
+cp /path/to/shop/lib/shop_web/components/tag.ex \
+   packages/liveview/lib/stitch_ui/components/badge.ex
+
+# 修改内容：
+# 1. 重命名函数 tag → badge
+# 2. 替换 color 属性为 variant
+# 3. 使用 CSS 变量颜色
+```
+
+#### 步骤 1.3: Card 组件
+
+参考上文 "Card 组件" 代码示例，创建完整的 Card 组件族。
+
+### 阶段 2: 布局组件
+
+#### 步骤 2.1: Stack 组件
+
+```elixir
+# packages/liveview/lib/stitch_ui/layouts/stack.ex
+defmodule StitchUI.Layouts.Stack do
+  use Phoenix.Component
+
+  @gaps %{
+    0 => "gap-0",
+    1 => "gap-1",
+    2 => "gap-2",
+    3 => "gap-3",
+    4 => "gap-4",
+    6 => "gap-6",
+    8 => "gap-8"
+  }
+
+  attr :gap, :integer, default: 4
+  attr :class, :string, default: nil
+  slot :inner_block, required: true
+
+  def stack(assigns) do
+    ~H"""
+    <div class={["flex flex-col", @gaps[@gap], @class]}>
+      <%= render_slot(@inner_block) %>
+    </div>
+    """
+  end
+end
+```
+
+#### 步骤 2.2: Flex 组件
+
+```elixir
+# packages/liveview/lib/stitch_ui/layouts/flex.ex
+defmodule StitchUI.Layouts.Flex do
+  use Phoenix.Component
+
+  @justify %{
+    "start" => "justify-start",
+    "center" => "justify-center",
+    "end" => "justify-end",
+    "between" => "justify-between"
+  }
+
+  @align %{
+    "start" => "items-start",
+    "center" => "items-center",
+    "end" => "items-end",
+    "stretch" => "items-stretch"
+  }
+
+  attr :gap, :integer, default: 4
+  attr :justify, :string, default: "start"
+  attr :align, :string, default: "stretch"
+  attr :class, :string, default: nil
+  slot :inner_block, required: true
+
+  def flex(assigns) do
+    ~H"""
+    <div class={[
+      "flex",
+      "gap-#{@gap}",
+      @justify[@justify],
+      @align[@align],
+      @class
+    ]}>
+      <%= render_slot(@inner_block) %>
+    </div>
+    """
+  end
+end
+```
+
+### 阶段 5: 导出器
+
+#### 步骤 5.1: 创建导出模块
+
+```bash
+cat > packages/liveview/lib/stitch_ui/exporter.ex << 'EOF'
+# 参考上文 HEEx 导出器代码
+EOF
+```
+
+#### 步骤 5.2: 创建 Mix 任务
+
+```bash
+mkdir -p packages/liveview/lib/mix/tasks
+cat > packages/liveview/lib/mix/tasks/stitch_export.ex << 'EOF'
+# 参考上文 Mix 任务代码
+EOF
+```
+
+---
+
+## 验证步骤
+
+### 阶段 0 验证：项目初始化
+
+```bash
+# 1. 检查目录结构
+tree packages/liveview
+
+# 预期输出：
+# packages/liveview
+# ├── lib
+# │   └── stitch_ui
+# │       ├── components
+# │       ├── layouts
+# │       ├── exporter.ex
+# │       └── stitch_ui.ex
+# ├── mix.exs
+# └── test
+
+# 2. 编译测试
+cd packages/liveview
+mix deps.get
+mix compile
+
+# 预期：无编译错误
+
+# 3. 在测试项目中引用
+# 在目标项目 mix.exs 添加：
+# {:stitch_ui, path: "../stitch/packages/liveview"}
+# 然后运行 mix deps.get
+```
+
+**验证标准**：
+- 目录结构正确
+- 编译无错误
+- 可被其他项目引用
+
+### 阶段 1 验证：基础组件
+
+```elixir
+# 在目标项目的 LiveView 中测试
+defmodule TestLive do
+  use MyAppWeb, :live_view
+  use StitchUI
+
+  def render(assigns) do
+    ~H"""
+    <.stack gap={4}>
+      <.button variant="default">默认按钮</.button>
+      <.button variant="secondary">次要按钮</.button>
+      <.button variant="outline">边框按钮</.button>
+      <.button variant="destructive">危险按钮</.button>
+      <.badge>标签</.badge>
+      <.badge variant="secondary">次要标签</.badge>
+    </.stack>
+    """
+  end
+end
+```
+
+```bash
+# 启动服务器访问测试页面
+mix phx.server
+open http://localhost:4000/test
+
+# 检查：
+# 1. 按钮样式是否正确（与 shadcn 一致）
+# 2. 颜色是否使用 CSS 变量
+# 3. hover/focus 状态是否正常
+```
+
+**验证标准**：
+- 组件渲染无错误
+- 样式与 React 版本一致
+- 交互状态正常
+
+### 阶段 2 验证：布局组件
+
+```elixir
+# 测试布局组件
+~H"""
+<.flex justify="between" align="center" gap={4}>
+  <.text>左侧</.text>
+  <.text>右侧</.text>
+</.flex>
+
+<.stack gap={2}>
+  <.card>卡片 1</.card>
+  <.card>卡片 2</.card>
+</.stack>
+
+<.grid columns={3} gap={4}>
+  <.card>1</.card>
+  <.card>2</.card>
+  <.card>3</.card>
+</.grid>
+"""
+```
+
+**验证标准**：
+- Flex 布局正确（justify/align 生效）
+- Stack 垂直排列正确
+- Grid 列数正确
+- Gap 间距正确
+
+### 阶段 5 验证：导出器
+
+```bash
+# 1. 创建测试 JSON Schema
+cat > /tmp/test-schema.json << 'EOF'
+{
+  "type": "Card",
+  "children": [
+    {
+      "type": "CardHeader",
+      "children": [
+        { "type": "CardTitle", "children": "测试标题" }
+      ]
+    },
+    {
+      "type": "CardContent",
+      "children": [
+        { "type": "Button", "props": { "variant": "primary" }, "children": "点击" }
+      ]
+    }
+  ]
+}
+EOF
+
+# 2. 运行导出
+cd packages/liveview
+mix stitch.export /tmp/test-schema.json --output /tmp/test.heex
+
+# 3. 检查输出
+cat /tmp/test.heex
+
+# 预期输出：
+# <.card>
+#   <.card_header>
+#     <.card_title>测试标题</.card_title>
+#   </.card_header>
+#   <.card_content>
+#     <.button variant="primary">点击</.button>
+#   </.card_content>
+# </.card>
+```
+
+**验证标准**：
+- JSON 正确解析
+- 组件名正确映射（CardHeader → card_header）
+- 属性正确转换（className → class）
+- 事件正确映射（onClick → phx-click）
+- 缩进格式正确
+
+### 阶段 6 验证：端到端测试
+
+```bash
+# 完整流程测试
+
+# 1. 在 React Demo 中设计页面
+open http://localhost:3002/demo
+# 创建或修改 JSON Schema
+
+# 2. 导出静态 HTML 验证设计
+npx tsx scripts/export-static.tsx my-page
+
+# 3. 导出 HEEx 模板
+mix stitch.export src/data/schemas/my-page.json \
+  --output /path/to/phoenix/lib/my_app_web/components/my_page.heex
+
+# 4. 在 Phoenix 中使用
+# 在 LiveView 中 import 并渲染
+
+# 5. 对比验证
+# - 打开 React 预览和 Phoenix 页面
+# - 对比布局、颜色、间距是否一致
+# - 测试交互功能
+```
+
+**验证标准**：
+- React 和 LiveView 渲染结果视觉一致
+- 交互行为等价（click → phx-click）
+- 响应式布局正常
+- 无 CSS 样式差异
+
 ## 使用示例
 
 ### 在 LiveView 中使用
