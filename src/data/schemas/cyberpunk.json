@@ -1,0 +1,88 @@
+{
+  "type": "Layout",
+  "props": {
+    "direction": "column",
+    "gap": 6,
+    "className": "min-h-screen bg-[#0a0a0f] p-8 text-cyan-100"
+  },
+  "children": [
+    {
+      "type": "Layout",
+      "props": { "direction": "row", "justify": "between", "align": "center" },
+      "children": [
+        {
+          "type": "Text",
+          "props": { "className": "text-3xl font-bold text-cyan-400 tracking-wider font-mono" },
+          "children": "// CYBER_DASHBOARD"
+        },
+        {
+          "type": "Badge",
+          "props": { "className": "bg-pink-500 text-white px-4 py-1 animate-pulse" },
+          "children": "ONLINE"
+        }
+      ]
+    },
+    {
+      "type": "Layout",
+      "props": { "direction": "row", "gap": 4, "className": "grid grid-cols-3" },
+      "children": [
+        {
+          "type": "Card",
+          "props": { "className": "bg-[#12121a] border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.3)]" },
+          "children": [
+            { "type": "CardHeader", "children": [{ "type": "CardTitle", "props": { "className": "text-cyan-400 font-mono" }, "children": "NEURAL_LINK" }] },
+            { "type": "CardContent", "children": [
+              { "type": "Text", "props": { "className": "text-4xl font-bold text-white font-mono" }, "children": "98.7%" },
+              { "type": "Progress", "props": { "value": 98.7, "className": "mt-3 h-1 bg-cyan-900" } },
+              { "type": "Text", "props": { "className": "text-xs text-cyan-600 mt-2 font-mono" }, "children": "CONNECTION_STABLE" }
+            ]}
+          ]
+        },
+        {
+          "type": "Card",
+          "props": { "className": "bg-[#12121a] border-pink-500/30 shadow-[0_0_15px_rgba(236,72,153,0.3)]" },
+          "children": [
+            { "type": "CardHeader", "children": [{ "type": "CardTitle", "props": { "className": "text-pink-400 font-mono" }, "children": "HACK_ATTEMPTS" }] },
+            { "type": "CardContent", "children": [
+              { "type": "Text", "props": { "className": "text-4xl font-bold text-white font-mono" }, "children": "1,337" },
+              { "type": "Text", "props": { "className": "text-xs text-pink-600 mt-2 font-mono" }, "children": "ALL_BLOCKED" }
+            ]}
+          ]
+        },
+        {
+          "type": "Card",
+          "props": { "className": "bg-[#12121a] border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.3)]" },
+          "children": [
+            { "type": "CardHeader", "children": [{ "type": "CardTitle", "props": { "className": "text-purple-400 font-mono" }, "children": "CRYPTO_BALANCE" }] },
+            { "type": "CardContent", "children": [
+              { "type": "Text", "props": { "className": "text-4xl font-bold text-white font-mono" }, "children": "₿ 42.5" },
+              { "type": "Text", "props": { "className": "text-xs text-purple-600 mt-2 font-mono" }, "children": "ENCRYPTED" }
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Card",
+      "props": { "className": "bg-[#0d0d12] border-cyan-800/50 font-mono" },
+      "children": [
+        { "type": "CardHeader", "children": [
+          { "type": "Layout", "props": { "direction": "row", "gap": 2 }, "children": [
+            { "type": "Text", "props": { "className": "w-3 h-3 rounded-full bg-red-500 inline-block" }, "children": "" },
+            { "type": "Text", "props": { "className": "w-3 h-3 rounded-full bg-yellow-500 inline-block" }, "children": "" },
+            { "type": "Text", "props": { "className": "w-3 h-3 rounded-full bg-green-500 inline-block" }, "children": "" }
+          ]}
+        ]},
+        { "type": "CardContent", "props": { "className": "text-sm space-y-1" }, "children": [
+          { "type": "Text", "props": { "className": "text-green-400" }, "children": "> system.init()" },
+          { "type": "Text", "props": { "className": "text-cyan-300" }, "children": "[OK] Neural interface connected" },
+          { "type": "Text", "props": { "className": "text-cyan-300" }, "children": "[OK] Firewall active" },
+          { "type": "Text", "props": { "className": "text-pink-400" }, "children": "[WARN] Intrusion detected at 192.168.1.42" },
+          { "type": "Text", "props": { "className": "text-green-400" }, "children": "> firewall.block(\"192.168.1.42\")" },
+          { "type": "Text", "props": { "className": "text-cyan-300" }, "children": "[OK] Threat neutralized" },
+          { "type": "Text", "props": { "className": "text-cyan-400 animate-pulse" }, "children": "> _" }
+        ]}
+      ]
+    }
+  ]
+}

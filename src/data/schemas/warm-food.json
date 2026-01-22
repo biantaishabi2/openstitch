@@ -1,0 +1,90 @@
+{
+  "type": "Layout",
+  "props": {
+    "direction": "column",
+    "gap": 6,
+    "className": "min-h-screen bg-orange-50 p-8"
+  },
+  "children": [
+    {
+      "type": "Layout",
+      "props": { "direction": "row", "justify": "between", "align": "center" },
+      "children": [
+        {
+          "type": "Layout",
+          "props": { "direction": "row", "gap": 3, "align": "center" },
+          "children": [
+            { "type": "Text", "props": { "className": "text-4xl" }, "children": "🍜" },
+            { "type": "Text", "props": { "className": "text-2xl font-bold text-orange-900" }, "children": "暖心食堂" }
+          ]
+        },
+        {
+          "type": "Layout",
+          "props": { "direction": "row", "gap": 2 },
+          "children": [
+            { "type": "Button", "props": { "variant": "ghost", "className": "text-orange-700" }, "children": "菜单" },
+            { "type": "Button", "props": { "variant": "ghost", "className": "text-orange-700" }, "children": "预约" },
+            { "type": "Button", "props": { "className": "bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6" }, "children": "立即下单" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Card",
+      "props": { "className": "bg-gradient-to-r from-orange-400 to-red-400 text-white border-0 rounded-3xl overflow-hidden" },
+      "children": [
+        { "type": "CardContent", "props": { "className": "p-12" }, "children": [
+          { "type": "Text", "props": { "className": "text-4xl font-bold mb-4" }, "children": "今日特惠" },
+          { "type": "Text", "props": { "className": "text-xl opacity-90 mb-6" }, "children": "红烧牛肉面 + 小菜 + 饮料" },
+          { "type": "Layout", "props": { "direction": "row", "gap": 4, "align": "center" }, "children": [
+            { "type": "Text", "props": { "className": "text-5xl font-bold" }, "children": "¥28" },
+            { "type": "Text", "props": { "className": "text-xl line-through opacity-60" }, "children": "¥45" },
+            { "type": "Badge", "props": { "className": "bg-white text-orange-600 px-3 py-1" }, "children": "6折" }
+          ]}
+        ]}
+      ]
+    },
+    {
+      "type": "Layout",
+      "props": { "direction": "row", "gap": 4, "className": "grid grid-cols-3" },
+      "children": [
+        {
+          "type": "Card",
+          "props": { "className": "bg-white rounded-2xl border-orange-100 hover:shadow-lg transition-shadow cursor-pointer" },
+          "children": [
+            { "type": "CardContent", "props": { "className": "p-6 text-center" }, "children": [
+              { "type": "Text", "props": { "className": "text-6xl mb-4" }, "children": "🍛" },
+              { "type": "Text", "props": { "className": "font-bold text-orange-900 text-lg" }, "children": "咖喱鸡饭" },
+              { "type": "Text", "props": { "className": "text-orange-600 font-bold mt-2" }, "children": "¥22" },
+              { "type": "Text", "props": { "className": "text-yellow-500 mt-2" }, "children": "⭐⭐⭐⭐⭐" }
+            ]}
+          ]
+        },
+        {
+          "type": "Card",
+          "props": { "className": "bg-white rounded-2xl border-orange-100 hover:shadow-lg transition-shadow cursor-pointer" },
+          "children": [
+            { "type": "CardContent", "props": { "className": "p-6 text-center" }, "children": [
+              { "type": "Text", "props": { "className": "text-6xl mb-4" }, "children": "🍝" },
+              { "type": "Text", "props": { "className": "font-bold text-orange-900 text-lg" }, "children": "番茄意面" },
+              { "type": "Text", "props": { "className": "text-orange-600 font-bold mt-2" }, "children": "¥26" },
+              { "type": "Text", "props": { "className": "text-yellow-500 mt-2" }, "children": "⭐⭐⭐⭐" }
+            ]}
+          ]
+        },
+        {
+          "type": "Card",
+          "props": { "className": "bg-white rounded-2xl border-orange-100 hover:shadow-lg transition-shadow cursor-pointer" },
+          "children": [
+            { "type": "CardContent", "props": { "className": "p-6 text-center" }, "children": [
+              { "type": "Text", "props": { "className": "text-6xl mb-4" }, "children": "🥗" },
+              { "type": "Text", "props": { "className": "font-bold text-orange-900 text-lg" }, "children": "健康沙拉" },
+              { "type": "Text", "props": { "className": "text-orange-600 font-bold mt-2" }, "children": "¥18" },
+              { "type": "Text", "props": { "className": "text-yellow-500 mt-2" }, "children": "⭐⭐⭐⭐⭐" }
+            ]}
+          ]
+        }
+      ]
+    }
+  ]
+}

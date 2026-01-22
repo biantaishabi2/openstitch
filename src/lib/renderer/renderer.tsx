@@ -89,6 +89,11 @@ function renderNode(
     ...props,
   };
 
+  // 支持 id 属性用于锚点链接
+  if (id) {
+    finalProps.id = id;
+  }
+
   // 如果有插槽，传递给组件
   if (renderedSlots) {
     finalProps.slots = renderedSlots;

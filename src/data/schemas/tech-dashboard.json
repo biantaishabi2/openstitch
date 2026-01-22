@@ -1,0 +1,167 @@
+{
+  "type": "Layout",
+  "props": {
+    "direction": "column",
+    "gap": 6,
+    "className": "min-h-screen bg-slate-50 p-8"
+  },
+  "children": [
+    {
+      "type": "Layout",
+      "props": { "direction": "row", "justify": "between", "align": "center" },
+      "children": [
+        {
+          "type": "Layout",
+          "props": { "direction": "row", "gap": 3, "align": "center" },
+          "children": [
+            {
+              "type": "Badge",
+              "props": { "className": "bg-blue-600 text-white px-3 py-1" },
+              "children": "Stitch"
+            },
+            {
+              "type": "Text",
+              "props": { "className": "text-2xl font-bold text-slate-900" },
+              "children": "Tech Dashboard"
+            }
+          ]
+        },
+        {
+          "type": "Layout",
+          "props": { "direction": "row", "gap": 2 },
+          "children": [
+            { "type": "Button", "props": { "variant": "outline", "size": "sm" }, "children": "设置" },
+            { "type": "Button", "props": { "variant": "default", "size": "sm", "className": "bg-blue-600" }, "children": "新建" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Layout",
+      "props": { "direction": "row", "gap": 4, "className": "grid grid-cols-4" },
+      "children": [
+        {
+          "type": "Card",
+          "props": { "className": "bg-white border-slate-200" },
+          "children": [
+            { "type": "CardHeader", "children": [{ "type": "CardTitle", "props": { "className": "text-sm text-slate-500" }, "children": "总用户" }] },
+            { "type": "CardContent", "children": [
+              { "type": "Text", "props": { "className": "text-3xl font-bold text-slate-900" }, "children": "12,345" },
+              { "type": "Text", "props": { "className": "text-sm text-green-600" }, "children": "↑ 12.5%" }
+            ]}
+          ]
+        },
+        {
+          "type": "Card",
+          "props": { "className": "bg-white border-slate-200" },
+          "children": [
+            { "type": "CardHeader", "children": [{ "type": "CardTitle", "props": { "className": "text-sm text-slate-500" }, "children": "活跃率" }] },
+            { "type": "CardContent", "children": [
+              { "type": "Text", "props": { "className": "text-3xl font-bold text-slate-900" }, "children": "89.5%" },
+              { "type": "Progress", "props": { "value": 89.5, "className": "mt-2 h-2" } }
+            ]}
+          ]
+        },
+        {
+          "type": "Card",
+          "props": { "className": "bg-white border-slate-200" },
+          "children": [
+            { "type": "CardHeader", "children": [{ "type": "CardTitle", "props": { "className": "text-sm text-slate-500" }, "children": "收入" }] },
+            { "type": "CardContent", "children": [
+              { "type": "Text", "props": { "className": "text-3xl font-bold text-slate-900" }, "children": "¥1.2M" },
+              { "type": "Text", "props": { "className": "text-sm text-green-600" }, "children": "↑ 8.2%" }
+            ]}
+          ]
+        },
+        {
+          "type": "Card",
+          "props": { "className": "bg-white border-slate-200" },
+          "children": [
+            { "type": "CardHeader", "children": [{ "type": "CardTitle", "props": { "className": "text-sm text-slate-500" }, "children": "订单数" }] },
+            { "type": "CardContent", "children": [
+              { "type": "Text", "props": { "className": "text-3xl font-bold text-slate-900" }, "children": "3,842" },
+              { "type": "Text", "props": { "className": "text-sm text-red-600" }, "children": "↓ 2.1%" }
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Layout",
+      "props": { "direction": "row", "gap": 4 },
+      "children": [
+        {
+          "type": "Card",
+          "props": { "className": "flex-1 bg-white" },
+          "children": [
+            { "type": "CardHeader", "children": [{ "type": "CardTitle", "children": "最近订单" }] },
+            { "type": "CardContent", "children": [
+              {
+                "type": "Table",
+                "children": [
+                  {
+                    "type": "TableHeader",
+                    "children": [{
+                      "type": "TableRow",
+                      "children": [
+                        { "type": "TableHead", "children": "订单号" },
+                        { "type": "TableHead", "children": "客户" },
+                        { "type": "TableHead", "children": "金额" },
+                        { "type": "TableHead", "children": "状态" }
+                      ]
+                    }]
+                  },
+                  {
+                    "type": "TableBody",
+                    "children": [
+                      {
+                        "type": "TableRow",
+                        "children": [
+                          { "type": "TableCell", "children": "#ORD-001" },
+                          { "type": "TableCell", "children": "张三" },
+                          { "type": "TableCell", "children": "¥1,299" },
+                          { "type": "TableCell", "children": [{ "type": "Badge", "props": { "className": "bg-green-100 text-green-800" }, "children": "已完成" }] }
+                        ]
+                      },
+                      {
+                        "type": "TableRow",
+                        "children": [
+                          { "type": "TableCell", "children": "#ORD-002" },
+                          { "type": "TableCell", "children": "李四" },
+                          { "type": "TableCell", "children": "¥2,599" },
+                          { "type": "TableCell", "children": [{ "type": "Badge", "props": { "className": "bg-yellow-100 text-yellow-800" }, "children": "处理中" }] }
+                        ]
+                      },
+                      {
+                        "type": "TableRow",
+                        "children": [
+                          { "type": "TableCell", "children": "#ORD-003" },
+                          { "type": "TableCell", "children": "王五" },
+                          { "type": "TableCell", "children": "¥899" },
+                          { "type": "TableCell", "children": [{ "type": "Badge", "props": { "className": "bg-blue-100 text-blue-800" }, "children": "待发货" }] }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]}
+          ]
+        },
+        {
+          "type": "Card",
+          "props": { "className": "w-80 bg-white" },
+          "children": [
+            { "type": "CardHeader", "children": [{ "type": "CardTitle", "children": "快速操作" }] },
+            { "type": "CardContent", "props": { "className": "space-y-3" }, "children": [
+              { "type": "Button", "props": { "variant": "outline", "className": "w-full justify-start" }, "children": "📊 查看报表" },
+              { "type": "Button", "props": { "variant": "outline", "className": "w-full justify-start" }, "children": "👥 用户管理" },
+              { "type": "Button", "props": { "variant": "outline", "className": "w-full justify-start" }, "children": "📦 库存管理" },
+              { "type": "Button", "props": { "variant": "outline", "className": "w-full justify-start" }, "children": "⚙️ 系统设置" }
+            ]}
+          ]
+        }
+      ]
+    }
+  ]
+}
