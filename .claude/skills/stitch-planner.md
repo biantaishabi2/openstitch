@@ -2,6 +2,53 @@
 
 当用户需要创建 UI 页面时，分析需求并输出视觉设计指令。
 
+---
+
+## 平台锁定机制
+
+### 自动判定规则
+
+收到用户第一个请求时，进行语义扫描判定平台：
+
+| 平台 | 触发关键词 |
+|------|-----------|
+| **Web** | PPT、后台、Dashboard、管理系统、官网、报表 |
+| **Mobile** | App、外卖、社交软件、手机端、小程序 |
+
+### 平台锁定原则（强制）
+
+**一个 Session 只能锁定一个平台，不可混用。**
+
+- 一旦判定平台，该对话中所有页面都遵循此平台规范
+- 如果用户请求切换平台（如 Web 项目中要求做 Mobile App），必须回复：
+
+  > "当前对话已锁定为 Web 平台。如需生成移动端界面，请新开一个对话。"
+
+- 切换平台的唯一方式是新开对话（Thread）
+
+### 平台差异
+
+| 特性 | Web | Mobile |
+|------|-----|--------|
+| 布局方向 | 水平为主（Grid, Flex-row） | 垂直为主（Stack） |
+| 屏幕比例 | 16:9 / 宽屏 | 9:16 / 竖屏 |
+| 导航方式 | 侧边栏、顶部导航 | 底部 TabBar |
+| `MOBILE_NAVIGATION` | `None` | `["首页", "发现", "我的"]` |
+
+---
+
+## 共享变量
+
+在 REPL 第一个代码块中设置，后续代码块通过 `locals_store` 访问：
+
+| 变量 | 用途 | 示例值 |
+|------|------|--------|
+| `PLATFORM_TYPE` | 平台类型（锁定后不可变） | `"web"` 或 `"mobile"` |
+| `MOBILE_NAVIGATION` | 移动端底部导航 | Web: `None`，Mobile: `["首页", "发现", "我的"]` |
+| `DESIGN_CONTEXT` | 项目上下文（含风格） | `"后台管理系统，企业风格，主色调蓝色"` |
+
+---
+
 ## 输出格式
 
 输出函数调用格式的 JSON：
@@ -12,14 +59,14 @@
   "arguments": {
     "title": "页面的功能性标题",
     "context": "项目/产品名称（保持风格一致的关键）",
-    "description": "给执行层的视觉剧本，使用自然语言指令集"
+    "description": "给执行层的视觉剧本，使用自然语言指令集",
+    "mobile_navigation": null
   }
 }
 ```
 
-**平台类型**：在 `[Layout]` 指令中指定，不需要单独字段：
-- 桌面端：`[Layout] 桌面端 Web 布局...`
-- 移动端：`[Layout] 移动端布局，底部导航栏包含：首页、发现、我的`
+- **Web 平台**：`mobile_navigation` 传 `null` 或不传
+- **Mobile 平台**：`mobile_navigation` 传导航数组，如 `["首页", "发现", "我的"]`
 
 ---
 
@@ -97,14 +144,18 @@
 
 ### 1. 任务开始时设置共享变量
 
-**第一个代码块**：设置全局设计变量（只执行一次）
+**第一个代码块**：判定平台并设置全局变量（只执行一次）
 
 ```repl
-# 定义共享的设计上下文
-DESIGN_CONTEXT = "RLM 技术文档，专业技术演示风格"
-DESIGN_THEME = "Enterprise Tech 主题，主色调 Blue-600，背景浅灰"
+# 平台锁定（根据用户需求判定，设置后不可更改）
+PLATFORM_TYPE = "web"  # 或 "mobile"
+MOBILE_NAVIGATION = None  # Web 不需要，Mobile 传 ["首页", "发现", "我的"]
 
-print(f"设计上下文已设置: {DESIGN_CONTEXT}")
+# 项目上下文（含风格）
+DESIGN_CONTEXT = "RLM 技术文档，企业风格，主色调蓝色，背景浅灰"
+
+print(f"平台: {PLATFORM_TYPE}")
+print(f"上下文: {DESIGN_CONTEXT}")
 ```
 
 这些变量会保存在 REPL 的 `locals_store` 中，后续代码块可以访问。
@@ -118,9 +169,9 @@ print(f"设计上下文已设置: {DESIGN_CONTEXT}")
 results = opencode_batch([
     {
         "message": f"""生成封面页设计
+Platform: {PLATFORM_TYPE}
 Context: {DESIGN_CONTEXT}
 [Layout] 这是 PPT 封面页，使用 Hero 布局。
-[Theme] {DESIGN_THEME}
 [Content] 标题"RLM 架构概览"，副标题"技术分享"
 """,
         "executor": ["S_PPTX"],
@@ -128,9 +179,9 @@ Context: {DESIGN_CONTEXT}
     },
     {
         "message": f"""生成第2页设计
+Platform: {PLATFORM_TYPE}
 Context: {DESIGN_CONTEXT}
 [Layout] 这是第 2 页，保持与封面一致的配色。
-[Theme] {DESIGN_THEME}
 [Content] 标题"规划层详解"，内容要点...
 """,
         "executor": ["S_PPTX"],
@@ -138,9 +189,9 @@ Context: {DESIGN_CONTEXT}
     },
     {
         "message": f"""生成第3页设计
+Platform: {PLATFORM_TYPE}
 Context: {DESIGN_CONTEXT}
 [Layout] 这是第 3 页。
-[Theme] {DESIGN_THEME}
 [Content] 标题"执行层详解"，内容要点...
 """,
         "executor": ["S_PPTX"],
@@ -153,13 +204,13 @@ for i, r in enumerate(results["results"]):
     print(f"页面{i+1}: ok={r['ok']}")
 ```
 
-### 3. 样式冗余声明
+### 3. 上下文冗余声明
 
-每个任务的 message 都必须重复 `[Theme]` 指令：
+每个任务的 message 都必须重复 `Platform` 和 `Context`：
 
 ```
-✅ 正确：每个任务都写 [Theme] {DESIGN_THEME}
-❌ 错误：第一个任务写 [Theme]，后面省略
+✅ 正确：每个任务都写 Platform: {PLATFORM_TYPE} 和 Context: {DESIGN_CONTEXT}
+❌ 错误：第一个任务写，后面省略
 ```
 
 ### 4. 序列标注
