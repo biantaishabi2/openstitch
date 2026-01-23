@@ -5,6 +5,7 @@ import { pathToFileURL } from 'url';
 const scriptDir = path.dirname(new URL(import.meta.url).pathname);
 const repoRoot = path.resolve(scriptDir, '..');
 const schemaDir = path.join(repoRoot, 'src', 'data', 'schemas');
+const srcDir = path.join(repoRoot, 'src');
 const lucideIndexPath = path.join(
   repoRoot,
   'node_modules',
@@ -22,6 +23,102 @@ const outputPath = path.join(
   'components',
   'lucide_icons.ex'
 );
+const TARGET_ICON_COUNT = 200;
+const COMMON_KEYWORDS = [
+  'Arrow',
+  'Chevron',
+  'Caret',
+  'Corner',
+  'Move',
+  'Rotate',
+  'Refresh',
+  'Undo',
+  'Redo',
+  'Plus',
+  'Minus',
+  'X',
+  'Check',
+  'Search',
+  'Filter',
+  'Sort',
+  'Menu',
+  'Settings',
+  'Sliders',
+  'Edit',
+  'Pen',
+  'Pencil',
+  'Trash',
+  'Copy',
+  'Save',
+  'Download',
+  'Upload',
+  'Share',
+  'Eye',
+  'Lock',
+  'Unlock',
+  'Shield',
+  'Key',
+  'Info',
+  'Alert',
+  'Help',
+  'Circle',
+  'Square',
+  'Triangle',
+  'Play',
+  'Pause',
+  'Stop',
+  'Rewind',
+  'FastForward',
+  'Skip',
+  'User',
+  'Users',
+  'Mail',
+  'Phone',
+  'Message',
+  'Chat',
+  'Bell',
+  'Calendar',
+  'Clock',
+  'Map',
+  'Globe',
+  'Home',
+  'Folder',
+  'File',
+  'Image',
+  'Video',
+  'Camera',
+  'Mic',
+  'Headphones',
+  'Shopping',
+  'Cart',
+  'Credit',
+  'Dollar',
+  'Tag',
+  'Package',
+  'Truck',
+  'Chart',
+  'Graph',
+  'Pie',
+  'Bar',
+  'Trending',
+  'Activity',
+  'Gauge',
+  'Cloud',
+  'Database',
+  'Server',
+  'Cpu',
+  'Terminal',
+  'Code',
+  'Git',
+  'Star',
+  'Heart',
+  'Flag',
+  'Bookmark',
+  'Pin',
+  'Location',
+  'Target',
+  'Compass'
+];
 
 function collectIconNames(node, acc) {
   if (node === null || node === undefined) return;
@@ -37,7 +134,7 @@ function collectIconNames(node, acc) {
   }
 }
 
-function loadIconNames() {
+function loadSchemaIconNames() {
   const names = new Set();
   const files = fs.readdirSync(schemaDir).filter((file) => file.endsWith('.json'));
   files.forEach((file) => {
@@ -45,6 +142,40 @@ function loadIconNames() {
     const data = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
     collectIconNames(data, names);
   });
+  return Array.from(names).sort();
+}
+
+function walkDir(dir, entries) {
+  const list = fs.readdirSync(dir, { withFileTypes: true });
+  list.forEach((entry) => {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      walkDir(fullPath, entries);
+    } else {
+      entries.push(fullPath);
+    }
+  });
+}
+
+function loadReactIconNames() {
+  const names = new Set();
+  const files = [];
+  walkDir(srcDir, files);
+  files
+    .filter((file) => file.endsWith('.ts') || file.endsWith('.tsx') || file.endsWith('.js') || file.endsWith('.jsx'))
+    .forEach((file) => {
+      const text = fs.readFileSync(file, 'utf8');
+      const matches = text.matchAll(/import\s+\{([^}]+)\}\s+from\s+['"]lucide-react['"]/g);
+      for (const match of matches) {
+        const chunk = match[1];
+        chunk.split(',').forEach((part) => {
+          const raw = part.trim();
+          if (!raw) return;
+          const name = raw.split(' as ')[0].trim();
+          if (name) names.add(name);
+        });
+      }
+    });
   return Array.from(names).sort();
 }
 
@@ -69,6 +200,38 @@ function buildIconFileMap() {
     });
   }
   return map;
+}
+
+function buildIconSelection(availableNames, requiredNames) {
+  if (requiredNames.length > TARGET_ICON_COUNT) {
+    throw new Error(`Required icon count (${requiredNames.length}) exceeds target ${TARGET_ICON_COUNT}.`);
+  }
+
+  const availableSet = new Set(availableNames);
+  const selected = [];
+  const selectedSet = new Set();
+
+  const add = (name) => {
+    if (selected.length >= TARGET_ICON_COUNT) return;
+    if (!availableSet.has(name)) return;
+    if (selectedSet.has(name)) return;
+    selectedSet.add(name);
+    selected.push(name);
+  };
+
+  requiredNames.forEach(add);
+
+  COMMON_KEYWORDS.forEach((keyword) => {
+    availableNames.forEach((name) => {
+      if (name.includes(keyword)) {
+        add(name);
+      }
+    });
+  });
+
+  availableNames.forEach(add);
+
+  return selected;
 }
 
 function escapeElixirString(value) {
@@ -137,15 +300,19 @@ async function main() {
     throw new Error(`lucide-react index not found at ${lucideIndexPath}`);
   }
 
-  const iconNames = loadIconNames();
+  const schemaIcons = loadSchemaIconNames();
+  const reactIcons = loadReactIconNames();
   const iconFileMap = buildIconFileMap();
-  const missing = iconNames.filter((name) => !iconFileMap.has(name));
+  const availableNames = Array.from(iconFileMap.keys()).sort();
+  const requiredNames = Array.from(new Set([...schemaIcons, ...reactIcons]));
+  const missingRequired = requiredNames.filter((name) => !iconFileMap.has(name));
 
-  if (missing.length) {
-    console.error('Missing icons in lucide-react:', missing.join(', '));
+  if (missingRequired.length) {
+    console.error('Missing icons in lucide-react:', missingRequired.join(', '));
     process.exit(1);
   }
 
+  const iconNames = buildIconSelection(availableNames, requiredNames);
   const iconNodes = await loadIconNodes(iconNames, iconFileMap);
   const moduleContent = buildElixirModule(iconNodes);
   fs.writeFileSync(outputPath, moduleContent, 'utf8');
