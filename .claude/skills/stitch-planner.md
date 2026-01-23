@@ -262,9 +262,184 @@
 
 ---
 
+## 状态管理机制
+
+### manifest.json 结构
+
+每个设计任务都有一个 `manifest.json` 管理所有页面状态：
+
+```json
+{
+  "platform": "web",
+  "context": "后台管理系统，企业风格，主色调蓝色",
+  "screens": [
+    {
+      "screen_id": "screen_001",
+      "index": 1,
+      "title": "用户管理",
+      "file": "screens/screen_001.json",
+      "status": "done"
+    },
+    {
+      "screen_id": "screen_002",
+      "index": 2,
+      "title": "用户详情",
+      "file": "screens/screen_002.json",
+      "status": "pending"
+    }
+  ]
+}
+```
+
+| 字段 | 说明 |
+|------|------|
+| `platform` | 平台类型（web/mobile），锁定后不可变 |
+| `context` | 项目上下文，含风格描述 |
+| `screens` | 页面数组，单页就一个，多页就多个 |
+| `screen_id` | 页面唯一标识，用于修改时定位 |
+| `file` | Screen JSON 文件路径 |
+| `status` | pending（待生成）/ done（已完成） |
+
+### Screen JSON（执行层生成）
+
+执行层根据规划层的指令，生成 React 组件描述的 JSON：
+
+```json
+{
+  "screen_id": "screen_001",
+  "type": "Page",
+  "layout": "dashboard",
+  "children": [
+    {"type": "Header", "title": "用户管理", "action": {"label": "新增用户", "icon": "user-plus"}},
+    {"type": "StatsRow", "items": [...]},
+    {"type": "Table", "columns": ["用户名", "邮箱", "状态", "操作"]}
+  ]
+}
+```
+
+**screen_id 和文件的关联**：`screen_001` → `screens/screen_001.json`
+
+### 关键原则
+
+**规划层只派活，不直接写文件。** 所有文件操作都通过 `opencode_call` 完成。
+
+---
+
+## 完整工作流程
+
+### 第一步：生成 manifest
+
+规划层调用 opencode_call（无 executor）生成 manifest：
+
+```repl
+result = opencode_call(
+    f"""生成 manifest.json 文件，保存到 {outputs_dir}/manifest.json
+
+内容：
+{{
+  "platform": "web",
+  "context": "后台管理系统，企业风格，主色调蓝色",
+  "screens": [
+    {{
+      "screen_id": "screen_001",
+      "index": 1,
+      "title": "用户管理",
+      "file": "screens/screen_001.json",
+      "status": "pending"
+    }}
+  ]
+}}
+
+同时创建 {outputs_dir}/screens 目录。
+""",
+    description="生成manifest"
+)
+
+# 验证
+import os
+if os.path.exists(f"{outputs_dir}/manifest.json"):
+    print("✅ manifest 已生成")
+else:
+    print("❌ manifest 生成失败，需要重试")
+```
+
+### 第二步：生成页面
+
+规划层调用执行层（S_STITCH）生成 Screen JSON：
+
+```repl
+result = opencode_call(
+    f"""生成页面设计
+screen_id: screen_001
+output_file: {outputs_dir}/screens/screen_001.json
+
+[Layout] Dashboard 布局，顶部统计卡片，下方数据表格。
+[Theme] 企业风格，主色调蓝色，背景浅灰。
+[Content - Header] 标题"用户管理"，右侧"新增用户"按钮，图标 user-plus。
+[Content - Stats] 三个统计卡片：用户总数、活跃用户、新增用户。
+[Content - Table] 用户列表，列：用户名、邮箱、状态（Badge）、操作按钮。
+""",
+    executor=["S_STITCH"],
+    description="生成用户管理页"
+)
+
+# 验证
+if os.path.exists(f"{outputs_dir}/screens/screen_001.json"):
+    print("✅ 页面已生成")
+else:
+    print("❌ 页面生成失败，需要重试")
+```
+
+### 第三步：更新 manifest 状态
+
+```repl
+result = opencode_call(
+    f"""更新 {outputs_dir}/manifest.json
+将 screen_001 的 status 从 "pending" 改为 "done"
+""",
+    description="更新manifest状态"
+)
+
+# 返回给用户
+FINAL(f"页面已生成！\n\n文件路径：{outputs_dir}/screens/screen_001.json")
+```
+
+### 第四步：修改页面（edit）
+
+用户要求修改时，规划层带上 screen_id 调用执行层：
+
+```repl
+result = opencode_call(
+    f"""修改页面
+screen_id: screen_001
+screen_file: {outputs_dir}/screens/screen_001.json
+
+[Edit - Table] 新增「最后登录时间」列，格式为相对时间
+[Edit - Header] 按钮文字改为「添加用户」
+""",
+    executor=["S_STITCH"],
+    description="修改用户管理页"
+)
+
+FINAL(f"页面已修改！\n\n文件路径：{outputs_dir}/screens/screen_001.json")
+```
+
+### 流程总结
+
+| 步骤 | 调用方式 | 做什么 |
+|------|---------|--------|
+| 1 | opencode_call（无 executor） | 生成 manifest.json |
+| 2 | opencode_call + executor=["S_STITCH"] | 生成 Screen JSON |
+| 3 | opencode_call（无 executor） | 更新 manifest 状态 |
+| 4 | opencode_call + executor=["S_STITCH"] | 修改 Screen JSON |
+
+**Preview 由前端程序处理**：读取 `screens/screen_xxx.json` 渲染预览，规划层不管。
+
+---
+
 ## 多轮迭代与差异更新（Diffing）
 
-当用户要求修改已有设计时，使用 `edit_design` 而非重新生成。
+当用户要求修改已有设计时，只描述变更部分。
 
 ### 差异描述原则
 
@@ -278,23 +453,22 @@
 "[Edit - Table] 在用户列表表格中新增一列「最后登录时间」，格式为相对时间"
 ```
 
-### edit_design 格式
+### 修改指令格式
 
-```json
-{
-  "function_call": "edit_design",
-  "arguments": {
-    "target": "用户管理页面",
-    "changes": "[Edit - Table] 新增「最后登录时间」列\n[Edit - Header] 按钮文字改为「添加用户」"
-  }
-}
+```
+screen_id: screen_001
+screen_file: {outputs_dir}/screens/screen_001.json
+
+[Edit - Table] 新增「最后登录时间」列
+[Edit - Header] 按钮文字改为「添加用户」
 ```
 
-### 维持核心上下文
+### 执行层处理逻辑
 
-- 修改时必须指明 `target`（要修改的页面）
-- 执行层会自动合并变更，保留未修改的部分
-- 不要在 changes 中重复已有的布局和内容
+1. 根据 screen_id 读取现有的 Screen JSON
+2. 解析 `[Edit - xxx]` 指令
+3. 修改对应的组件节点
+4. 保存回原文件
 
 ---
 
