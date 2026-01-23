@@ -334,35 +334,192 @@ Phoenix LiveView 代码
 
 ## 组件清单
 
-### 布局组件
-
-| 组件 | 用途 | 实现方式 |
-|------|------|----------|
-| Grid | 网格布局 | `<div class="grid grid-cols-{n} gap-{n}">` |
-| Stack | 垂直堆叠 | `<div class="flex flex-col gap-{n}">` |
-| Split | 分栏布局 | `<div class="grid grid-cols-[3fr_7fr] gap-6">` |
-| Page | 页面容器 | `<div class="min-h-screen bg-background p-6">` |
-
-### UI 组件
+### 布局组件 (layouts/core.ex)
 
 | 组件 | 用途 | 核心 Props |
 |------|------|-----------|
-| `.card` | 卡片容器 | `class` |
-| `.card_header` | 卡片头部 | - |
-| `.card_content` | 卡片内容 | `class` |
-| `.card_title` | 卡片标题 | - |
-| `.button` | 按钮 | `variant`, `size` |
-| `.input` | 输入框 | `type`, `name`, `required` |
-| `.label` | 标签 | - |
-| `.table` | 表格 | - |
-| `.table_header` | 表头 | - |
-| `.table_body` | 表体 | - |
-| `.table_row` | 表行 | - |
-| `.table_head` | 表头单元格 | - |
-| `.table_cell` | 表格单元格 | - |
-| `.badge` | 徽章 | `variant` |
+| `.layout` | 通用布局容器 | `class` |
+| `.grid` | 网格布局 | `cols`, `gap`, `class` |
+| `.columns` | 多列布局 | `cols`, `gap` |
+| `.split` | 分栏布局 | `ratio`, `gap` |
+| `.stack` | 垂直堆叠 | `gap`, `class` |
+| `.flex` | 弹性布局 | `direction`, `gap`, `class` |
+| `.rows` | 行布局 | `gap` |
+| `.page` | 页面容器 | `class` |
+| `.center` | 居中容器 | `class` |
+| `.spacer` | 间距占位 | `size` |
+| `.layout_divider` | 布局分隔线 | - |
+
+### 页面组件 (hero.ex)
+
+| 组件 | 用途 | 核心 Props |
+|------|------|-----------|
+| `.hero` | 主视觉区域 | `class` |
+| `.section` | 内容区块 | `class` |
+| `.container` | 内容容器 | `class` |
+
+### 导航组件
+
+**Breadcrumb 面包屑 (breadcrumb.ex)**
+
+| 组件 | 用途 |
+|------|------|
+| `.breadcrumb` | 面包屑容器 |
+| `.breadcrumb_list` | 面包屑列表 |
+| `.breadcrumb_item` | 面包屑项 |
+| `.breadcrumb_link` | 面包屑链接 |
+| `.breadcrumb_page` | 当前页面 |
+| `.breadcrumb_separator` | 分隔符 |
+
+**Stepper 步骤条 (stepper.ex)**
+
+| 组件 | 用途 | 核心 Props |
+|------|------|-----------|
+| `.stepper` | 步骤条容器 | `current` |
+| `.step` | 步骤项 | `status` |
+
+**Tabs 标签页 (tabs.ex)**
+
+| 组件 | 用途 | 核心 Props |
+|------|------|-----------|
+| `.tabs` | 标签页容器 | `value` |
+| `.tabs_list` | 标签列表 | - |
+| `.tabs_trigger` | 标签触发器 | `value` |
+| `.tabs_content` | 标签内容 | `value` |
+
+### 基础组件 (basic.ex)
+
+| 组件 | 用途 | 核心 Props |
+|------|------|-----------|
+| `.div` | 通用 div | `class` |
+| `.span` | 行内元素 | `class` |
+| `.text` | 文本 | `class` |
+| `.link` | 链接 | `href`, `class` |
+| `.image` | 图片 | `src`, `alt` |
 | `.icon` | 图标 | `name`, `class` |
-| `.form` | 表单 | `for`, `phx-submit` |
+
+### 数据展示组件
+
+**Card 卡片 (card.ex)**
+
+| 组件 | 用途 |
+|------|------|
+| `.card` | 卡片容器 |
+| `.card_header` | 卡片头部 |
+| `.card_title` | 卡片标题 |
+| `.card_description` | 卡片描述 |
+| `.card_content` | 卡片内容 |
+| `.card_footer` | 卡片底部 |
+
+**Table 表格 (table.ex)**
+
+| 组件 | 用途 |
+|------|------|
+| `.table` | 表格容器 |
+| `.table_header` | 表头 |
+| `.table_body` | 表体 |
+| `.table_row` | 表行 |
+| `.table_head` | 表头单元格 |
+| `.table_cell` | 表格单元格 |
+
+**List 列表 (list.ex)**
+
+| 组件 | 用途 | 核心 Props |
+|------|------|-----------|
+| `.list` | 列表容器 | `variant` |
+| `.list_item` | 列表项 | - |
+
+**Timeline 时间线 (timeline.ex)**
+
+| 组件 | 用途 |
+|------|------|
+| `.timeline` | 时间线容器 |
+| `.timeline_item` | 时间线项 |
+| `.timeline_content` | 内容区 |
+| `.timeline_header` | 头部 |
+| `.timeline_title` | 标题 |
+| `.timeline_description` | 描述 |
+| `.timeline_time` | 时间 |
+| `.timeline_connector` | 连接线 |
+| `.timeline_empty` | 空状态 |
+
+**Accordion 折叠面板 (accordion.ex)**
+
+| 组件 | 用途 | 核心 Props |
+|------|------|-----------|
+| `.accordion` | 折叠容器 | `type` |
+| `.accordion_item` | 折叠项 | `value` |
+| `.accordion_trigger` | 触发器 | - |
+| `.accordion_content` | 内容 | - |
+
+**Statistic 统计 (statistic.ex)**
+
+| 组件 | 用途 | 核心 Props |
+|------|------|-----------|
+| `.statistic` | 统计数值 | `label`, `value` |
+| `.statistic_card` | 统计卡片 | `label`, `value`, `icon`, `trend` |
+
+**Avatar 头像 (avatar.ex)**
+
+| 组件 | 用途 | 核心 Props |
+|------|------|-----------|
+| `.avatar` | 头像容器 | `size` |
+| `.avatar_image` | 头像图片 | `src`, `alt` |
+| `.avatar_fallback` | 头像占位 | - |
+
+**CodeBlock 代码块 (code_block.ex)**
+
+| 组件 | 用途 | 核心 Props |
+|------|------|-----------|
+| `.code_block` | 代码块 | `language` |
+| `.inline_code` | 行内代码 | - |
+
+### 表单组件 (forms.ex)
+
+| 组件 | 用途 | 核心 Props |
+|------|------|-----------|
+| `.button` | 按钮 | `variant`, `size`, `disabled` |
+| `.input` | 输入框 | `type`, `name`, `required` |
+| `.label` | 标签 | `for` |
+| `.checkbox` | 复选框 | `name`, `checked` |
+| `.radio_group` | 单选组 | `name`, `value` |
+| `.radio_group_item` | 单选项 | `value` |
+| `.switch` | 开关 | `name`, `checked` |
+| `.slider` | 滑块 | `min`, `max`, `value`, `step` |
+
+### 反馈组件 (feedback.ex)
+
+| 组件 | 用途 | 核心 Props |
+|------|------|-----------|
+| `.alert` | 提示框 | `variant` |
+| `.alert_title` | 提示标题 | - |
+| `.alert_description` | 提示描述 | - |
+| `.badge` | 徽章 | `variant` |
+| `.progress` | 进度条 | `value`, `max` |
+| `.skeleton` | 骨架屏 | `class` |
+| `.empty_state` | 空状态 | `icon`, `title` |
+| `.separator` | 分隔线 | `orientation` |
+
+**Dialog 对话框**
+
+| 组件 | 用途 | 核心 Props |
+|------|------|-----------|
+| `.dialog` | 对话框容器 | `id` |
+| `.dialog_trigger` | 触发器 | `target` |
+| `.dialog_content` | 内容 | - |
+| `.dialog_header` | 头部 | - |
+| `.dialog_title` | 标题 | - |
+| `.dialog_description` | 描述 | - |
+| `.dialog_footer` | 底部 | - |
+
+**Tooltip 提示**
+
+| 组件 | 用途 |
+|------|------|
+| `.tooltip` | 提示容器 |
+| `.tooltip_provider` | 提示提供者 |
+| `.tooltip_trigger` | 触发器 |
+| `.tooltip_content` | 内容 |
 
 ---
 
