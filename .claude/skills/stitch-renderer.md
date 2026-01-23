@@ -197,7 +197,137 @@ Col-3:  1/4宽 (25%)
 - **加载失败**：Error色系图标 + "重试"按钮
 - **弱网**：优先渲染核心内容，非核心显示占位符
 
-## 六、核心原则
+## 六、组件清单与 Props
+
+### 6.1 布局组件
+
+| 组件 | 说明 | 核心 Props |
+|------|------|-----------|
+| `Page` | 页面根容器 | `className` |
+| `Container` | 内容容器，限制最大宽度 | `className` |
+| `Section` | 页面分区 | `className` |
+| `Hero` | 主视觉区域 | `title`, `subtitle`, `className` |
+| `Grid` | 网格布局 | `columns` (1-12), `gap`, `className` |
+| `Columns` | 多列布局 | `columns`, `gap` |
+| `Stack` | 垂直堆叠 | `gap`, `align`, `className` |
+| `Flex` | 弹性布局 | `direction`, `justify`, `align`, `gap` |
+| `Rows` | 行布局 | `gap` |
+| `Split` | 分栏布局 | `ratio` (如 "4:6", "1:1") |
+| `Center` | 居中容器 | `className` |
+| `Spacer` | 间距占位 | `size` |
+| `Div` | 通用容器 | `className` |
+| `Span` | 行内容器 | `className` |
+
+### 6.2 文本组件
+
+| 组件 | 说明 | 核心 Props |
+|------|------|-----------|
+| `Text` | 文本 | `variant` (display/headline/title/subtitle/body/caption), `color`, `align` |
+| `Link` | 链接 | `href`, `target` |
+| `CodeBlock` | 代码块 | `language`, `showLineNumbers` |
+| `InlineCode` | 行内代码 | - |
+
+### 6.3 卡片组件
+
+| 组件 | 说明 | 核心 Props |
+|------|------|-----------|
+| `Card` | 卡片容器 | `className` |
+| `CardHeader` | 卡片头部 | - |
+| `CardTitle` | 卡片标题 | - |
+| `CardDescription` | 卡片描述 | - |
+| `CardContent` | 卡片内容区 | - |
+| `CardFooter` | 卡片底部 | - |
+
+### 6.4 导航组件
+
+| 组件 | 说明 | 核心 Props |
+|------|------|-----------|
+| `Tabs` | 标签页容器 | `defaultValue` |
+| `TabsList` | 标签列表 | - |
+| `TabsTrigger` | 标签按钮 | `value` |
+| `TabsContent` | 标签内容 | `value` |
+| `Breadcrumb` | 面包屑容器 | - |
+| `BreadcrumbList` | 面包屑列表 | - |
+| `BreadcrumbItem` | 面包屑项 | - |
+| `BreadcrumbLink` | 面包屑链接 | `href` |
+| `BreadcrumbPage` | 当前页 | - |
+| `BreadcrumbSeparator` | 分隔符 | - |
+| `Stepper` | 步骤条 | `activeStep` |
+| `Step` | 步骤项 | `title`, `description` |
+
+### 6.5 数据展示组件
+
+| 组件 | 说明 | 核心 Props |
+|------|------|-----------|
+| `Table` | 表格容器 | - |
+| `TableHeader` | 表头 | - |
+| `TableBody` | 表体 | - |
+| `TableRow` | 表格行 | - |
+| `TableHead` | 表头单元格 | - |
+| `TableCell` | 表格单元格 | - |
+| `Timeline` | 时间线容器 | - |
+| `TimelineItem` | 时间线项 | - |
+| `TimelineHeader` | 时间线头部 | - |
+| `TimelineTitle` | 时间线标题 | - |
+| `TimelineDescription` | 时间线描述 | - |
+| `TimelineTime` | 时间线时间 | - |
+| `TimelineConnector` | 时间线连接线 | - |
+| `List` | 列表容器 | - |
+| `ListItem` | 列表项 | `icon` |
+| `Accordion` | 折叠面板容器 | `type` (single/multiple) |
+| `AccordionItem` | 折叠项 | `value` |
+| `AccordionTrigger` | 折叠触发器 | - |
+| `AccordionContent` | 折叠内容 | - |
+| `Statistic` | 统计数值 | `value`, `label`, `prefix`, `suffix` |
+| `StatisticCard` | 统计卡片 | `title`, `value`, `change`, `trend` |
+
+### 6.6 表单组件
+
+| 组件 | 说明 | 核心 Props |
+|------|------|-----------|
+| `Button` | 按钮 | `variant` (default/secondary/outline/ghost/link/destructive), `size` (sm/default/lg/icon) |
+| `Input` | 输入框 | `type`, `placeholder`, `value`, `disabled` |
+| `Label` | 标签 | `for` |
+| `Checkbox` | 复选框 | `checked`, `disabled`, `onCheckedChange` |
+| `RadioGroup` | 单选组 | `value`, `onValueChange` |
+| `RadioGroupItem` | 单选项 | `value` |
+| `Switch` | 开关 | `checked`, `disabled`, `onCheckedChange` |
+| `Slider` | 滑块 | `value`, `min`, `max`, `step` |
+
+### 6.7 反馈组件
+
+| 组件 | 说明 | 核心 Props |
+|------|------|-----------|
+| `Alert` | 提示框 | `variant` (default/destructive) |
+| `AlertTitle` | 提示标题 | - |
+| `AlertDescription` | 提示描述 | - |
+| `Badge` | 徽章 | `variant` (default/secondary/outline/destructive) |
+| `Progress` | 进度条 | `value` (0-100) |
+| `Dialog` | 对话框容器 | - |
+| `DialogTrigger` | 对话框触发器 | - |
+| `DialogContent` | 对话框内容 | - |
+| `DialogHeader` | 对话框头部 | - |
+| `DialogTitle` | 对话框标题 | - |
+| `DialogDescription` | 对话框描述 | - |
+| `DialogFooter` | 对话框底部 | - |
+| `Tooltip` | 提示气泡容器 | - |
+| `TooltipTrigger` | 提示触发器 | - |
+| `TooltipContent` | 提示内容 | - |
+| `Skeleton` | 骨架屏 | `className` |
+| `EmptyState` | 空状态 | `icon`, `title`, `description` |
+
+### 6.8 基础组件
+
+| 组件 | 说明 | 核心 Props |
+|------|------|-----------|
+| `Icon` | 图标 | `name` (Lucide 图标名), `size`, `color` |
+| `Avatar` | 头像容器 | - |
+| `AvatarImage` | 头像图片 | `src`, `alt` |
+| `AvatarFallback` | 头像占位 | - |
+| `Image` | 图片 | `src`, `alt`, `aspectRatio` |
+| `Separator` | 分隔线 | `orientation` (horizontal/vertical) |
+
+## 七、核心原则
 
 1. **一致性**：跨页面、跨终端视觉和交互一致
 2. **易用性**：符合用户习惯，满足无障碍标准
