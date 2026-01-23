@@ -181,9 +181,9 @@ mix stitch.export path/to/schema.json --output output.heex
 
 运行 `npx tsx scripts/export-static.tsx --list` 查看所有可用示例。
 
-## Inspector 调试工具
+## Inspector - AI 协作工具
 
-导出 HTML 时可以注入 Inspector 脚本，用于调试和查看组件结构：
+Inspector 是为 AI Agent 设计的协作工具。当你想让 AI 修改页面某个组件时，可以用 Inspector 快速获取组件信息，复制给 AI，让它知道要改哪里。
 
 ```bash
 # 导出时注入 Inspector（外部脚本）
@@ -197,11 +197,12 @@ npx tsx scripts/export-static.tsx --inspector-inline
 
 ![Inspector](./artifacts/inspector.png)
 
-Inspector 功能：
-- 点击右下角按钮启用检查模式
-- 悬停元素查看其 JSON Schema 路径
-- 显示组件类型、属性、层级
-- 方便调试和定位问题
+**使用流程：**
+1. 点击右下角按钮启用检查模式
+2. 点击你想修改的组件
+3. 复制组件信息（类型、路径、属性）
+4. 粘贴给 AI Agent，告诉它你想怎么改
+5. AI 根据这些信息精准定位并修改 JSON Schema
 
 ## 技术栈
 
