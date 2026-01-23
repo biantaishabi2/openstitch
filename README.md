@@ -2,7 +2,19 @@
 
 JSON Schema 驱动的 UI 渲染引擎。一套 Schema，多端渲染。
 
-## 在线演示
+## 效果预览
+
+**PPT 封面**
+
+![PPT Cover](./artifacts/ppt-cover.png)
+
+**Cyberpunk 风格**
+
+![Cyberpunk](./artifacts/cyberpunk.png)
+
+## 在线演示（Web 版）
+
+> 注：目前 Demo 为 Web 桌面端适配，移动端适配开发中。
 
 👉 [查看所有 Demo](https://biantaishabi2.github.io/openstitch/demo/)
 
@@ -181,8 +193,13 @@ npx tsx scripts/export-static.tsx --inspector
 npx tsx scripts/export-static.tsx --inspector-inline
 ```
 
+**Inspector 效果：**
+
+![Inspector](./artifacts/inspector.png)
+
 Inspector 功能：
-- 点击任意元素查看其 JSON Schema 路径
+- 点击右下角按钮启用检查模式
+- 悬停元素查看其 JSON Schema 路径
 - 显示组件类型、属性、层级
 - 方便调试和定位问题
 
