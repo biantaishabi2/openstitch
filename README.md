@@ -212,23 +212,35 @@ npx tsx scripts/export-static.tsx --inspector-inline
 
 | Skill | 用途 |
 |-------|------|
+| `stitch-planner` | 规划层决策逻辑：文本→组件选型、视觉层级、语义样式 |
 | `stitch-renderer` | 执行层渲染规范：组件样式、布局规则、交互状态、响应式适配 |
 
 ### 使用方式
 
 在 Claude Code 中引用 skill：
 
-```
-@stitch-renderer 帮我创建一个仪表盘页面
+```bash
+# 规划层：将文本内容转换为 UI 结构
+@stitch-planner 把这段产品介绍转成落地页
+
+# 执行层：实现具体的组件渲染
+@stitch-renderer 帮我调整这个卡片的样式
 ```
 
-Skills 位于 `.claude/skills/` 目录，包含：
-- 8pt 网格系统规范
-- 排版和色彩系统
+### 规划层 (`stitch-planner`)
+
+语义到视觉的映射矩阵：
+- **逻辑结构→组件选型**：并列用Grid+Card、时序用Timeline、层级用List
+- **信息密度→视觉层级**：核心观点用Hero、技术细节用CodeBlock、辅助说明用Caption
+- **场景语义→色彩图标**：技术场景用蓝色系、成功用绿色、警告用黄色
+
+### 执行层 (`stitch-renderer`)
+
+组件渲染的原子规范：
+- 8pt 网格系统、排版层级、色彩系统
 - 组件行为规范（容器、导航、展示、反馈）
 - 12列网格和堆叠布局
 - 响应式断点（XL/L/M/S）
-- 语义映射规则（文本→组件/图标）
 - 一致性检查规则
 
 ## 技术栈
