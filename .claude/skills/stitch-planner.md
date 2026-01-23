@@ -97,61 +97,93 @@
 
 ### 1. 任务开始时设置共享变量
 
-在任务开始时，**先执行一段代码**设置全局设计变量：
+**第一个代码块**：设置全局设计变量（只执行一次）
 
-```python
-# 第一步：定义共享的设计上下文（只执行一次）
+```repl
+# 定义共享的设计上下文
 DESIGN_CONTEXT = "RLM 技术文档，专业技术演示风格"
 DESIGN_THEME = "Enterprise Tech 主题，主色调 Blue-600，背景浅灰"
-DESIGN_STYLE = "圆角 rounded-lg，间距 gap-6，阴影 shadow-sm"
+
+print(f"设计上下文已设置: {DESIGN_CONTEXT}")
 ```
 
-这些变量会保存在 REPL 的 `locals_store` 中，整个会话期间持久化共享。
+这些变量会保存在 REPL 的 `locals_store` 中，后续代码块可以访问。
 
-### 2. 后续调用引用共享变量
+### 2. 后续代码块并行派活
 
-所有 `generate_design` 调用都引用这些变量，而不是硬编码：
+**第二个代码块**：引用共享变量，并行生成多个页面
 
-```python
-# 调用1：封面页
-generate_design(
-    title="RLM 架构概览",
-    context=DESIGN_CONTEXT,
-    description=f"[Layout] 这是 PPT 封面页，使用 Hero 布局。\n\n[Theme] {DESIGN_THEME}\n\n..."
-)
+```repl
+# 使用 opencode_batch 并行生成所有页面
+results = opencode_batch([
+    {
+        "message": f"""生成封面页设计
+Context: {DESIGN_CONTEXT}
+[Layout] 这是 PPT 封面页，使用 Hero 布局。
+[Theme] {DESIGN_THEME}
+[Content] 标题"RLM 架构概览"，副标题"技术分享"
+""",
+        "executor": ["S_PPTX"],
+        "description": "封面页"
+    },
+    {
+        "message": f"""生成第2页设计
+Context: {DESIGN_CONTEXT}
+[Layout] 这是第 2 页，保持与封面一致的配色。
+[Theme] {DESIGN_THEME}
+[Content] 标题"规划层详解"，内容要点...
+""",
+        "executor": ["S_PPTX"],
+        "description": "第2页"
+    },
+    {
+        "message": f"""生成第3页设计
+Context: {DESIGN_CONTEXT}
+[Layout] 这是第 3 页。
+[Theme] {DESIGN_THEME}
+[Content] 标题"执行层详解"，内容要点...
+""",
+        "executor": ["S_PPTX"],
+        "description": "第3页"
+    }
+])
 
-# 调用2：内容页（可并行）
-generate_design(
-    title="规划层详解",
-    context=DESIGN_CONTEXT,
-    description=f"[Layout] 这是第 2 页，保持与封面一致的配色。\n\n[Theme] {DESIGN_THEME}\n\n..."
-)
-
-# 调用3：内容页（可并行）
-generate_design(
-    title="执行层详解",
-    context=DESIGN_CONTEXT,
-    description=f"[Layout] 这是第 3 页。\n\n[Theme] {DESIGN_THEME}\n\n..."
-)
+# 检查结果
+for i, r in enumerate(results["results"]):
+    print(f"页面{i+1}: ok={r['ok']}")
 ```
 
 ### 3. 样式冗余声明
 
-每个 `description` 都必须重复 `[Theme]` 指令，不能只在第一页写：
+每个任务的 message 都必须重复 `[Theme]` 指令：
 
 ```
-✅ 正确：每页都写 [Theme] {DESIGN_THEME}
-❌ 错误：第一页写 [Theme]，后面省略
+✅ 正确：每个任务都写 [Theme] {DESIGN_THEME}
+❌ 错误：第一个任务写 [Theme]，后面省略
 ```
 
 ### 4. 序列标注
 
-在 `[Layout]` 中标注页面位置，引导执行层保持连贯：
+在 `[Layout]` 中标注页面位置：
 
 ```
 [Layout] 这是 PPT 封面页，使用 Hero 布局。
 [Layout] 这是第 2 页，保持与封面一致的配色。
 [Layout] 这是结尾页，呼应封面设计。
+```
+
+### 5. 最终交付
+
+```repl
+import os
+
+# 验证文件存在
+pptx_path = f"{outputs_dir}/final/report.pptx"
+if os.path.exists(pptx_path):
+    download_link = f"{outputs_url}/final/report.pptx"
+    FINAL(f"PPT已生成完成！\n\n**下载链接**：{download_link}")
+else:
+    print(f"❌ 文件不存在: {pptx_path}")
 ```
 
 ---
