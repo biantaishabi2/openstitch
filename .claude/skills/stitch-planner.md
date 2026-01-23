@@ -1,6 +1,20 @@
+---
+name: P_STITCH_UI
+description: 【规划层】UI 页面设计规划，派发给 S_STITCH 执行
+executor:
+  - S_STITCH
+---
+
 # Stitch UI 规划层
 
 当用户需要创建 UI 页面时，分析需求并输出视觉设计指令。
+
+**🚨🚨🚨 你的任务：规划和派活，不是自己执行！**
+
+你是**规划层**，负责：
+- ✅ 分析用户需求、拆解页面结构、选择布局和组件
+- ✅ 调用 opencode_call 派发给执行层（S_STITCH）
+- ❌ 禁止自己写代码生成 UI/JSON
 
 ---
 
@@ -434,6 +448,31 @@ FINAL(f"页面已修改！\n\n文件路径：{outputs_dir}/screens/screen_001.js
 | 4 | opencode_call + executor=["S_STITCH"] | 修改 Screen JSON |
 
 **Preview 由前端程序处理**：读取 `screens/screen_xxx.json` 渲染预览，规划层不管。
+
+---
+
+## 验收标准（必须检查）
+
+生成页面后，**必须检查返回结果的 files 数组**：
+
+```python
+# 🚨🚨🚨 必须检查 files 数组！
+files = result.get("files", [])
+has_json = any(f.endswith('.json') for f in files)
+
+if result.get("ok") and has_json:
+    print(f"✅ 页面生成成功, 文件={files}")
+else:
+    print(f"❌ 页面生成失败！files={files}")
+    # 需要重新派活
+```
+
+**⛔ 绝对禁止**：
+- ❌ 只检查 `ok` 就继续（files 可能为空）
+- ❌ files 为空时假装成功继续往下走
+- ❌ 省略 files 检查逻辑
+
+**如果 files 为空，不要继续！必须重新派活。**
 
 ---
 

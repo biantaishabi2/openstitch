@@ -1,19 +1,123 @@
+---
+name: S_STITCH
+description: 【执行层】UI 页面渲染，生成 UINode JSON 供前端渲染
+---
+
 # Stitch UI 执行层
 
-接收规划层的视觉设计指令，解析自然语言描述，渲染成 Phoenix LiveView 代码。
+接收规划层的视觉设计指令，解析自然语言描述，生成 UINode JSON 文件。
 
 ## 工作流程
 
 ```
-规划层输出 (function_call JSON)
+规划层指令 (screen_id + description)
     ↓
 [Step 1] 解析 description 中的指令标签
     ↓
-[Step 2] 映射到组件结构
+[Step 2] 映射到 UINode 组件结构
     ↓
-[Step 3] 渲染 HEEx 代码
+[Step 3] 生成 UINode JSON
     ↓
-Phoenix LiveView 代码
+保存到指定文件 (screens/screen_xxx.json)
+    ↓
+返回文件路径给规划层
+```
+
+## 输入格式
+
+规划层传入的指令：
+```
+screen_id: screen_001
+output_file: {outputs_dir}/screens/screen_001.json
+
+[Layout] Dashboard 布局...
+[Content - Header] ...
+[Content - Table] ...
+```
+
+## 输出格式
+
+### 1. 保存到文件的 UINode JSON
+
+```json
+{
+  "screen_id": "screen_001",
+  "type": "Layout",
+  "props": {
+    "direction": "column",
+    "gap": 6,
+    "className": "min-h-screen bg-background p-6"
+  },
+  "children": [
+    {
+      "type": "Grid",
+      "props": { "columns": 3, "gap": 4 },
+      "children": [
+        { "type": "Card", "children": [...] }
+      ]
+    }
+  ]
+}
+```
+
+### 2. 返回给规划层的信息
+
+执行完成后返回：
+- `ok`: true/false
+- `files`: 生成的文件列表，如 `["{outputs_dir}/screens/screen_001.json"]`
+- `label`: 执行结果描述
+
+前端程序读取 JSON 文件，用 Stitch 渲染器渲染成 React 组件或导出为 HTML/图片。
+
+---
+
+## 修改页面（Edit）处理
+
+当规划层传入 `[Edit - xxx]` 指令时，表示修改已有页面：
+
+### 输入格式
+
+```
+screen_id: screen_001
+screen_file: {outputs_dir}/screens/screen_001.json
+
+[Edit - Table] 新增「最后登录时间」列
+[Edit - Header] 按钮文字改为「添加用户」
+```
+
+### 处理流程
+
+1. **读取现有 JSON**：从 `screen_file` 路径读取现有的 UINode JSON
+2. **解析 Edit 指令**：识别 `[Edit - xxx]` 标签，定位要修改的组件
+3. **修改组件节点**：在 JSON 树中找到对应组件，应用变更
+4. **保存回文件**：将修改后的 JSON 写回原文件
+5. **返回结果**：返回 `ok: true` 和 `files` 数组
+
+### 定位组件的方式
+
+- `[Edit - Table]` → 找 `type: "Table"` 的节点
+- `[Edit - Header]` → 找页面顶部的 Header 区域
+- `[Edit - Stats]` → 找 `type: "StatisticCard"` 或统计卡片区域
+- `[Edit - Card]` → 找 `type: "Card"` 的节点
+
+### 示例：添加表格列
+
+原 JSON：
+```json
+{
+  "type": "Table",
+  "props": { "columns": ["用户名", "邮箱", "状态"] }
+}
+```
+
+指令：`[Edit - Table] 新增「最后登录时间」列`
+
+修改后：
+```json
+{
+  "type": "Table",
+  "props": { "columns": ["用户名", "邮箱", "状态", "最后登录时间"] }
+}
 ```
 
 ---
