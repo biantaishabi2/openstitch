@@ -1,5 +1,6 @@
 defmodule StitchUI.Components.Feedback do
   use Phoenix.Component
+  alias Phoenix.LiveView.JS
 
   @alert_variants %{
     "default" => "bg-card text-card-foreground",
@@ -101,47 +102,98 @@ defmodule StitchUI.Components.Feedback do
     """
   end
 
-  attr :open, :boolean, default: nil
-  attr :default_open, :boolean, default: nil
+  attr :id, :string, required: true
+  attr :open, :boolean, default: false
+  attr :default_open, :boolean, default: false
+  attr :on_cancel, :any, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
   def dialog(assigns) do
+    # 使用 default_open 或 open 来决定初始状态
+    show = assigns.open || assigns.default_open
+
+    assigns =
+      assigns
+      |> assign(:show, show)
+      |> assign_new(:on_cancel, fn -> hide_dialog(assigns.id) end)
+
     ~H"""
-    <div data-slot="dialog" class={@class} {@rest}>
+    <div data-slot="dialog" id={@id} class={@class} {@rest}>
       <%= render_slot(@inner_block) %>
     </div>
     """
   end
 
+  attr :dialog_id, :string, required: true
   attr :class, :string, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
   def dialog_trigger(assigns) do
     ~H"""
-    <button data-slot="dialog-trigger" type="button" class={@class} {@rest}>
+    <button
+      data-slot="dialog-trigger"
+      type="button"
+      phx-click={show_dialog(@dialog_id)}
+      class={@class}
+      {@rest}
+    >
       <%= render_slot(@inner_block) %>
     </button>
     """
   end
 
+  attr :dialog_id, :string, required: true
+  attr :show, :boolean, default: false
+  attr :on_cancel, :any, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
   slot :inner_block, required: true
 
   def dialog_content(assigns) do
+    assigns = assign_new(assigns, :on_cancel, fn -> hide_dialog(assigns.dialog_id) end)
+
     ~H"""
     <div
-      data-slot="dialog-content"
-      class={[
-        "bg-background fixed top-1/2 left-1/2 z-50 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] rounded-lg border p-6 shadow-lg",
-        @class
-      ]}
-      {@rest}
+      id={"#{@dialog_id}-backdrop"}
+      class="hidden fixed inset-0 z-50 bg-black/80"
+      aria-hidden="true"
     >
-      <%= render_slot(@inner_block) %>
+    </div>
+    <div
+      id={"#{@dialog_id}-container"}
+      phx-mounted={@show && show_dialog(@dialog_id)}
+      class="hidden fixed inset-0 z-50 overflow-y-auto"
+      aria-labelledby={"#{@dialog_id}-title"}
+      aria-modal="true"
+      role="dialog"
+    >
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div
+          id={"#{@dialog_id}-content"}
+          data-slot="dialog-content"
+          phx-click-away={@on_cancel}
+          class={[
+            "bg-background relative w-full max-w-lg rounded-lg border p-6 shadow-lg",
+            @class
+          ]}
+          {@rest}
+        >
+          <button
+            type="button"
+            phx-click={@on_cancel}
+            class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring"
+            aria-label="Close"
+          >
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+            </svg>
+          </button>
+          <%= render_slot(@inner_block) %>
+        </div>
+      </div>
     </div>
     """
   end
@@ -319,6 +371,28 @@ defmodule StitchUI.Components.Feedback do
 
   defp alert_variant_class(nil), do: nil
   defp alert_variant_class(value), do: Map.get(@alert_variants, value)
+
+  @doc """
+  显示对话框
+  """
+  def show_dialog(js \\ %JS{}, id) when is_binary(id) do
+    js
+    |> JS.show(to: "##{id}-backdrop", transition: {"ease-out duration-200", "opacity-0", "opacity-100"})
+    |> JS.show(to: "##{id}-container", transition: {"ease-out duration-200", "opacity-0 scale-95", "opacity-100 scale-100"})
+    |> JS.add_class("overflow-hidden", to: "body")
+    |> JS.focus_first(to: "##{id}-content")
+  end
+
+  @doc """
+  隐藏对话框
+  """
+  def hide_dialog(js \\ %JS{}, id) do
+    js
+    |> JS.hide(to: "##{id}-backdrop", transition: {"ease-in duration-150", "opacity-100", "opacity-0"})
+    |> JS.hide(to: "##{id}-container", transition: {"ease-in duration-150", "opacity-100 scale-100", "opacity-0 scale-95"})
+    |> JS.remove_class("overflow-hidden", to: "body")
+    |> JS.pop_focus()
+  end
 
   defp badge_variant_class(nil), do: nil
   defp badge_variant_class(value), do: Map.get(@badge_variants, value)
