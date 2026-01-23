@@ -21,8 +21,12 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
+import {CanvasEditor} from "./canvas_editor"
 
 let Hooks = {}
+
+// Canvas Editor Hook
+Hooks.CanvasEditor = CanvasEditor
 
 Hooks.StitchUI = {
   mounted() {

@@ -18,6 +18,7 @@ defmodule StitchDemoWeb.Router do
     pipe_through :browser
 
     live "/", StitchUI.DemoLive
+    live "/editor", StitchDemoWeb.CanvasEditorLive
   end
 
   # Other scopes may use custom stacks.
