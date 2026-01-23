@@ -2,7 +2,16 @@
 
 JSON Schema 驱动的 UI 渲染引擎。一套 Schema，多端渲染。
 
-![Demo](./artifacts/stitch-demo.png)
+## 在线演示
+
+👉 [查看所有 Demo](https://biantaishabi2.github.io/openstitch/demo/)
+
+| Demo | 链接 |
+|------|------|
+| PPT 封面 | [ppt-cover](https://biantaishabi2.github.io/openstitch/demo/ppt-cover.html) |
+| Cyberpunk 风格 | [cyberpunk](https://biantaishabi2.github.io/openstitch/demo/cyberpunk.html) |
+| 后台仪表盘 | [admin-dashboard](https://biantaishabi2.github.io/openstitch/demo/admin-dashboard.html) |
+| 技术路线图 | [tech-roadmap](https://biantaishabi2.github.io/openstitch/demo/tech-roadmap.html) |
 
 ## 特性
 
@@ -160,6 +169,23 @@ mix stitch.export path/to/schema.json --output output.heex
 
 运行 `npx tsx scripts/export-static.tsx --list` 查看所有可用示例。
 
+## Inspector 调试工具
+
+导出 HTML 时可以注入 Inspector 脚本，用于调试和查看组件结构：
+
+```bash
+# 导出时注入 Inspector（外部脚本）
+npx tsx scripts/export-static.tsx --inspector
+
+# 导出时内联 Inspector（单文件）
+npx tsx scripts/export-static.tsx --inspector-inline
+```
+
+Inspector 功能：
+- 点击任意元素查看其 JSON Schema 路径
+- 显示组件类型、属性、层级
+- 方便调试和定位问题
+
 ## 技术栈
 
 **React 渲染器：**
@@ -172,3 +198,7 @@ mix stitch.export path/to/schema.json --output output.heex
 - Elixir 1.14+
 - Phoenix LiveView 1.0+
 - Tailwind CSS
+
+## License
+
+MIT

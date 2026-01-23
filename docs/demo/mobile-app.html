@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stitch Demo - Mobile App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'hsl(var(--background))',
+            foreground: 'hsl(var(--foreground))',
+            card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+            primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+            secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+            muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+            accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+            destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+            border: 'hsl(var(--border))',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root {
+      --background: 0 0% 100%;
+      --foreground: 240 10% 3.9%;
+      --card: 0 0% 100%;
+      --card-foreground: 240 10% 3.9%;
+      --primary: 240 5.9% 10%;
+      --primary-foreground: 0 0% 98%;
+      --secondary: 240 4.8% 95.9%;
+      --secondary-foreground: 240 5.9% 10%;
+      --muted: 240 4.8% 95.9%;
+      --muted-foreground: 240 3.8% 46.1%;
+      --accent: 240 4.8% 95.9%;
+      --accent-foreground: 240 5.9% 10%;
+      --destructive: 0 84.2% 60.2%;
+      --destructive-foreground: 0 0% 98%;
+      --border: 240 5.9% 90%;
+      --radius: 0.5rem;
+    }
+    * { border-color: hsl(var(--border)); }
+    body { font-family: system-ui, -apple-system, sans-serif; }
+  </style>
+</head>
+<body>
+  <div class="flex justify-start items-stretch gap-0 flex-col min-h-screen bg-slate-50 max-w-[390px] mx-auto border-x" data-stitch-type="Flex" data-stitch-depth="0" data-stitch-props="{&quot;className&quot;:&quot;flex-col min-h-screen bg-slate-50 max-w-[390px] mx-auto border-x&quot;}"><div class="flex flex-row gap-0 h-14 bg-white border-b px-4 items-center justify-between sticky top-0 z-10" data-stitch-type="Flex" data-stitch-depth="1" data-stitch-path="children.0" data-stitch-props="{&quot;className&quot;:&quot;h-14 bg-white border-b px-4 items-center justify-between sticky top-0 z-10&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu h-5 w-5 text-slate-600" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="2" data-stitch-path="children.0.children.0" data-stitch-props="{&quot;name&quot;:&quot;Menu&quot;,&quot;className&quot;:&quot;text-slate-600&quot;}"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg><p class="text-base text-foreground font-semibold" data-stitch-type="Text" data-stitch-depth="2" data-stitch-path="children.0.children.1" data-stitch-props="{&quot;className&quot;:&quot;font-semibold&quot;}">Stitch Store</p><div class="flex flex-row justify-start items-stretch gap-4" data-stitch-type="Flex" data-stitch-depth="2" data-stitch-path="children.0.children.2" data-stitch-props="{&quot;gap&quot;:4}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search h-5 w-5 text-slate-600" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="3" data-stitch-path="children.0.children.2.children.0" data-stitch-props="{&quot;name&quot;:&quot;Search&quot;,&quot;className&quot;:&quot;text-slate-600&quot;}"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg><div class="flex flex-row justify-start items-stretch gap-0 relative" data-stitch-type="Flex" data-stitch-depth="3" data-stitch-path="children.0.children.2.children.1" data-stitch-props="{&quot;className&quot;:&quot;relative&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart h-5 w-5 text-slate-600" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="4" data-stitch-path="children.0.children.2.children.1.children.0" data-stitch-props="{&quot;name&quot;:&quot;ShoppingCart&quot;,&quot;className&quot;:&quot;text-slate-600&quot;}"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg><div class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center" data-stitch-type="Div" data-stitch-depth="4" data-stitch-path="children.0.children.2.children.1.children.1" data-stitch-props="{&quot;className&quot;:&quot;absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center&quot;}"><p class="text-[10px] text-white font-bold" data-stitch-type="Text" data-stitch-depth="5" data-stitch-path="children.0.children.2.children.1.children.1.children.0" data-stitch-props="{&quot;className&quot;:&quot;text-[10px] text-white font-bold&quot;}">3</p></div></div></div></div><div class="flex flex-col gap-4 items-stretch flex-1 pb-20" data-stitch-type="Stack" data-stitch-depth="1" data-stitch-path="children.1" data-stitch-props="{&quot;className&quot;:&quot;flex-1 pb-20&quot;}"><div class="bg-gradient-to-r from-blue-600 to-purple-600 p-4 mx-4 mt-4 rounded-xl text-white" data-stitch-type="Div" data-stitch-depth="2" data-stitch-path="children.1.children.0" data-stitch-props="{&quot;className&quot;:&quot;bg-gradient-to-r from-blue-600 to-purple-600 p-4 mx-4 mt-4 rounded-xl text-white&quot;}"><div class="flex flex-row justify-between items-center gap-0" data-stitch-type="Flex" data-stitch-depth="3" data-stitch-path="children.1.children.0.children.0" data-stitch-props="{&quot;justify&quot;:&quot;between&quot;,&quot;align&quot;:&quot;center&quot;}"><div class="flex flex-col gap-1 items-stretch" data-stitch-type="Stack" data-stitch-depth="4" data-stitch-path="children.1.children.0.children.0.children.0" data-stitch-props="{&quot;gap&quot;:1}"><p class="text-foreground text-sm opacity-80" data-stitch-type="Text" data-stitch-depth="5" data-stitch-path="children.1.children.0.children.0.children.0.children.0" data-stitch-props="{&quot;className&quot;:&quot;text-sm opacity-80&quot;}">限时特惠</p><p class="text-foreground text-xl font-bold" data-stitch-type="Text" data-stitch-depth="5" data-stitch-path="children.1.children.0.children.0.children.0.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-xl font-bold&quot;}">新用户专享 8 折</p><button data-slot="button" data-variant="default" data-size="sm" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-8 rounded-md gap-1.5 px-3 has-[&gt;svg]:px-2.5 bg-white text-blue-600 hover:bg-slate-100 mt-2 w-fit" data-stitch-type="Button" data-stitch-depth="5" data-stitch-path="children.1.children.0.children.0.children.0.children.2" data-stitch-props="{&quot;size&quot;:&quot;sm&quot;,&quot;className&quot;:&quot;bg-white text-blue-600 hover:bg-slate-100 mt-2 w-fit&quot;}">立即领取</button></div><p class="text-foreground text-5xl font-bold opacity-30" data-stitch-type="Text" data-stitch-depth="4" data-stitch-path="children.1.children.0.children.0.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-5xl font-bold opacity-30&quot;}">80%</p></div></div><div class="flex flex-col gap-2 items-stretch px-4 mt-6" data-stitch-type="Stack" data-stitch-depth="2" data-stitch-path="children.1.children.1" data-stitch-props="{&quot;gap&quot;:2,&quot;className&quot;:&quot;px-4 mt-6&quot;}"><div class="flex flex-row justify-between items-center gap-0" data-stitch-type="Flex" data-stitch-depth="3" data-stitch-path="children.1.children.1.children.0" data-stitch-props="{&quot;justify&quot;:&quot;between&quot;,&quot;align&quot;:&quot;center&quot;}"><p class="text-base text-foreground font-semibold" data-stitch-type="Text" data-stitch-depth="4" data-stitch-path="children.1.children.1.children.0.children.0" data-stitch-props="{&quot;className&quot;:&quot;font-semibold&quot;}">分类</p><p class="text-sm text-blue-600" data-stitch-type="Text" data-stitch-depth="4" data-stitch-path="children.1.children.1.children.0.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-sm text-blue-600&quot;}">查看全部</p></div><div class="grid grid-cols-4 gap-3" data-stitch-type="Grid" data-stitch-depth="3" data-stitch-path="children.1.children.1.children.1" data-stitch-props="{&quot;columns&quot;:4,&quot;gap&quot;:3}"><div data-slot="1"><div class="flex flex-col gap-1 items-center" data-stitch-type="Stack" data-stitch-depth="4" data-stitch-path="children.1.children.1.children.1.slots.1" data-stitch-props="{&quot;gap&quot;:1,&quot;className&quot;:&quot;items-center&quot;}"><div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center" data-stitch-type="Div" data-stitch-depth="5" data-stitch-path="children.1.children.1.children.1.slots.1.children.0" data-stitch-props="{&quot;className&quot;:&quot;w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-smartphone h-5 w-5 text-blue-600" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="6" data-stitch-path="children.1.children.1.children.1.slots.1.children.0.children.0" data-stitch-props="{&quot;name&quot;:&quot;Smartphone&quot;,&quot;className&quot;:&quot;text-blue-600&quot;}"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect><path d="M12 18h.01"></path></svg></div><p class="text-foreground text-xs" data-stitch-type="Text" data-stitch-depth="5" data-stitch-path="children.1.children.1.children.1.slots.1.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-xs&quot;}">手机</p></div></div><div data-slot="2"><div class="flex flex-col gap-1 items-center" data-stitch-type="Stack" data-stitch-depth="4" data-stitch-path="children.1.children.1.children.1.slots.2" data-stitch-props="{&quot;gap&quot;:1,&quot;className&quot;:&quot;items-center&quot;}"><div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center" data-stitch-type="Div" data-stitch-depth="5" data-stitch-path="children.1.children.1.children.1.slots.2.children.0" data-stitch-props="{&quot;className&quot;:&quot;w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-laptop h-5 w-5 text-purple-600" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="6" data-stitch-path="children.1.children.1.children.1.slots.2.children.0.children.0" data-stitch-props="{&quot;name&quot;:&quot;Laptop&quot;,&quot;className&quot;:&quot;text-purple-600&quot;}"><path d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z"></path><path d="M20.054 15.987H3.946"></path></svg></div><p class="text-foreground text-xs" data-stitch-type="Text" data-stitch-depth="5" data-stitch-path="children.1.children.1.children.1.slots.2.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-xs&quot;}">电脑</p></div></div><div data-slot="3"><div class="flex flex-col gap-1 items-center" data-stitch-type="Stack" data-stitch-depth="4" data-stitch-path="children.1.children.1.children.1.slots.3" data-stitch-props="{&quot;gap&quot;:1,&quot;className&quot;:&quot;items-center&quot;}"><div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center" data-stitch-type="Div" data-stitch-depth="5" data-stitch-path="children.1.children.1.children.1.slots.3.children.0" data-stitch-props="{&quot;className&quot;:&quot;w-12 h-12 rounded-full bg-green-100 flex items-center justify-center&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-headphones h-5 w-5 text-green-600" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="6" data-stitch-path="children.1.children.1.children.1.slots.3.children.0.children.0" data-stitch-props="{&quot;name&quot;:&quot;Headphones&quot;,&quot;className&quot;:&quot;text-green-600&quot;}"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"></path></svg></div><p class="text-foreground text-xs" data-stitch-type="Text" data-stitch-depth="5" data-stitch-path="children.1.children.1.children.1.slots.3.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-xs&quot;}">耳机</p></div></div><div data-slot="4"><div class="flex flex-col gap-1 items-center" data-stitch-type="Stack" data-stitch-depth="4" data-stitch-path="children.1.children.1.children.1.slots.4" data-stitch-props="{&quot;gap&quot;:1,&quot;className&quot;:&quot;items-center&quot;}"><div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center" data-stitch-type="Div" data-stitch-depth="5" data-stitch-path="children.1.children.1.children.1.slots.4.children.0" data-stitch-props="{&quot;className&quot;:&quot;w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-watch h-5 w-5 text-orange-600" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="6" data-stitch-path="children.1.children.1.children.1.slots.4.children.0.children.0" data-stitch-props="{&quot;name&quot;:&quot;Watch&quot;,&quot;className&quot;:&quot;text-orange-600&quot;}"><path d="M12 10v2.2l1.6 1"></path><path d="m16.13 7.66-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05"></path><path d="m7.88 16.36.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05"></path><circle cx="12" cy="12" r="6"></circle></svg></div><p class="text-foreground text-xs" data-stitch-type="Text" data-stitch-depth="5" data-stitch-path="children.1.children.1.children.1.slots.4.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-xs&quot;}">手表</p></div></div></div></div><div class="flex flex-col gap-3 items-stretch px-4 mt-6" data-stitch-type="Stack" data-stitch-depth="2" data-stitch-path="children.1.children.2" data-stitch-props="{&quot;gap&quot;:3,&quot;className&quot;:&quot;px-4 mt-6&quot;}"><div class="flex flex-row justify-between items-center gap-0" data-stitch-type="Flex" data-stitch-depth="3" data-stitch-path="children.1.children.2.children.0" data-stitch-props="{&quot;justify&quot;:&quot;between&quot;,&quot;align&quot;:&quot;center&quot;}"><p class="text-base text-foreground font-semibold" data-stitch-type="Text" data-stitch-depth="4" data-stitch-path="children.1.children.2.children.0.children.0" data-stitch-props="{&quot;className&quot;:&quot;font-semibold&quot;}">热门商品</p><p class="text-sm text-blue-600" data-stitch-type="Text" data-stitch-depth="4" data-stitch-path="children.1.children.2.children.0.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-sm text-blue-600&quot;}">更多</p></div><div class="grid grid-cols-2 gap-3" data-stitch-type="Grid" data-stitch-depth="3" data-stitch-path="children.1.children.2.children.1" data-stitch-props="{&quot;columns&quot;:2,&quot;gap&quot;:3}"><div data-slot="1"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm overflow-hidden" data-stitch-type="Card" data-stitch-depth="4" data-stitch-path="children.1.children.2.children.1.slots.1" data-stitch-props="{&quot;className&quot;:&quot;overflow-hidden&quot;}"><div class="h-36 bg-slate-100 flex items-center justify-center" data-stitch-type="Div" data-stitch-depth="5" data-stitch-path="children.1.children.2.children.1.slots.1.children.0" data-stitch-props="{&quot;className&quot;:&quot;h-36 bg-slate-100 flex items-center justify-center&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-smartphone h-8 w-8 text-slate-400" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.1.children.0.children.0" data-stitch-props="{&quot;name&quot;:&quot;Smartphone&quot;,&quot;size&quot;:&quot;xl&quot;,&quot;className&quot;:&quot;text-slate-400&quot;}"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect><path d="M12 18h.01"></path></svg></div><div data-slot="card-content" class="p-3" data-stitch-type="CardContent" data-stitch-depth="5" data-stitch-path="children.1.children.2.children.1.slots.1.children.1" data-stitch-props="{&quot;className&quot;:&quot;p-3&quot;}"><p class="text-foreground text-sm font-medium line-clamp-2" data-stitch-type="Text" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.1.children.1.children.0" data-stitch-props="{&quot;className&quot;:&quot;text-sm font-medium line-clamp-2&quot;}">iPhone 15 Pro Max 256GB</p><div class="flex flex-row justify-between items-center gap-0 mt-2" data-stitch-type="Flex" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.1.children.1.children.1" data-stitch-props="{&quot;justify&quot;:&quot;between&quot;,&quot;align&quot;:&quot;center&quot;,&quot;className&quot;:&quot;mt-2&quot;}"><p class="text-base text-red-500 font-bold" data-stitch-type="Text" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.1.children.1.children.1.children.0" data-stitch-props="{&quot;className&quot;:&quot;text-red-500 font-bold&quot;}">¥9,999</p><p class="text-xs text-muted-foreground line-through" data-stitch-type="Text" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.1.children.1.children.1.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-xs text-muted-foreground line-through&quot;}">¥10,999</p></div><div class="flex flex-row justify-start items-stretch gap-1 mt-1" data-stitch-type="Flex" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.1.children.1.children.2" data-stitch-props="{&quot;gap&quot;:1,&quot;className&quot;:&quot;mt-1&quot;}"><span data-slot="badge" class="inline-flex items-center justify-center rounded-full border py-0.5 font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent [a&amp;]:hover:bg-primary/90 bg-red-50 text-red-500 text-[10px] px-1" data-stitch-type="Badge" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.1.children.1.children.2.children.0" data-stitch-props="{&quot;className&quot;:&quot;bg-red-50 text-red-500 text-[10px] px-1&quot;}">热卖</span><p class="text-[10px] text-muted-foreground" data-stitch-type="Text" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.1.children.1.children.2.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-[10px] text-muted-foreground&quot;}">已售 2.3万</p></div></div></div></div><div data-slot="2"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm overflow-hidden" data-stitch-type="Card" data-stitch-depth="4" data-stitch-path="children.1.children.2.children.1.slots.2" data-stitch-props="{&quot;className&quot;:&quot;overflow-hidden&quot;}"><div class="h-36 bg-slate-100 flex items-center justify-center" data-stitch-type="Div" data-stitch-depth="5" data-stitch-path="children.1.children.2.children.1.slots.2.children.0" data-stitch-props="{&quot;className&quot;:&quot;h-36 bg-slate-100 flex items-center justify-center&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-headphones h-8 w-8 text-slate-400" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.2.children.0.children.0" data-stitch-props="{&quot;name&quot;:&quot;Headphones&quot;,&quot;size&quot;:&quot;xl&quot;,&quot;className&quot;:&quot;text-slate-400&quot;}"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"></path></svg></div><div data-slot="card-content" class="p-3" data-stitch-type="CardContent" data-stitch-depth="5" data-stitch-path="children.1.children.2.children.1.slots.2.children.1" data-stitch-props="{&quot;className&quot;:&quot;p-3&quot;}"><p class="text-foreground text-sm font-medium line-clamp-2" data-stitch-type="Text" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.2.children.1.children.0" data-stitch-props="{&quot;className&quot;:&quot;text-sm font-medium line-clamp-2&quot;}">AirPods Pro 第二代</p><div class="flex flex-row justify-between items-center gap-0 mt-2" data-stitch-type="Flex" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.2.children.1.children.1" data-stitch-props="{&quot;justify&quot;:&quot;between&quot;,&quot;align&quot;:&quot;center&quot;,&quot;className&quot;:&quot;mt-2&quot;}"><p class="text-base text-red-500 font-bold" data-stitch-type="Text" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.2.children.1.children.1.children.0" data-stitch-props="{&quot;className&quot;:&quot;text-red-500 font-bold&quot;}">¥1,899</p><p class="text-xs text-muted-foreground line-through" data-stitch-type="Text" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.2.children.1.children.1.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-xs text-muted-foreground line-through&quot;}">¥1,999</p></div><div class="flex flex-row justify-start items-stretch gap-1 mt-1" data-stitch-type="Flex" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.2.children.1.children.2" data-stitch-props="{&quot;gap&quot;:1,&quot;className&quot;:&quot;mt-1&quot;}"><span data-slot="badge" class="inline-flex items-center justify-center rounded-full border py-0.5 font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent [a&amp;]:hover:bg-primary/90 bg-blue-50 text-blue-500 text-[10px] px-1" data-stitch-type="Badge" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.2.children.1.children.2.children.0" data-stitch-props="{&quot;className&quot;:&quot;bg-blue-50 text-blue-500 text-[10px] px-1&quot;}">新品</span><p class="text-[10px] text-muted-foreground" data-stitch-type="Text" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.2.children.1.children.2.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-[10px] text-muted-foreground&quot;}">已售 1.8万</p></div></div></div></div><div data-slot="3"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm overflow-hidden" data-stitch-type="Card" data-stitch-depth="4" data-stitch-path="children.1.children.2.children.1.slots.3" data-stitch-props="{&quot;className&quot;:&quot;overflow-hidden&quot;}"><div class="h-36 bg-slate-100 flex items-center justify-center" data-stitch-type="Div" data-stitch-depth="5" data-stitch-path="children.1.children.2.children.1.slots.3.children.0" data-stitch-props="{&quot;className&quot;:&quot;h-36 bg-slate-100 flex items-center justify-center&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-laptop h-8 w-8 text-slate-400" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.3.children.0.children.0" data-stitch-props="{&quot;name&quot;:&quot;Laptop&quot;,&quot;size&quot;:&quot;xl&quot;,&quot;className&quot;:&quot;text-slate-400&quot;}"><path d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z"></path><path d="M20.054 15.987H3.946"></path></svg></div><div data-slot="card-content" class="p-3" data-stitch-type="CardContent" data-stitch-depth="5" data-stitch-path="children.1.children.2.children.1.slots.3.children.1" data-stitch-props="{&quot;className&quot;:&quot;p-3&quot;}"><p class="text-foreground text-sm font-medium line-clamp-2" data-stitch-type="Text" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.3.children.1.children.0" data-stitch-props="{&quot;className&quot;:&quot;text-sm font-medium line-clamp-2&quot;}">MacBook Pro 14寸 M3</p><div class="flex flex-row justify-between items-center gap-0 mt-2" data-stitch-type="Flex" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.3.children.1.children.1" data-stitch-props="{&quot;justify&quot;:&quot;between&quot;,&quot;align&quot;:&quot;center&quot;,&quot;className&quot;:&quot;mt-2&quot;}"><p class="text-base text-red-500 font-bold" data-stitch-type="Text" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.3.children.1.children.1.children.0" data-stitch-props="{&quot;className&quot;:&quot;text-red-500 font-bold&quot;}">¥14,999</p><p class="text-xs text-muted-foreground line-through" data-stitch-type="Text" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.3.children.1.children.1.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-xs text-muted-foreground line-through&quot;}">¥16,999</p></div><div class="flex flex-row justify-start items-stretch gap-1 mt-1" data-stitch-type="Flex" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.3.children.1.children.2" data-stitch-props="{&quot;gap&quot;:1,&quot;className&quot;:&quot;mt-1&quot;}"><span data-slot="badge" class="inline-flex items-center justify-center rounded-full border py-0.5 font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent [a&amp;]:hover:bg-primary/90 bg-orange-50 text-orange-500 text-[10px] px-1" data-stitch-type="Badge" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.3.children.1.children.2.children.0" data-stitch-props="{&quot;className&quot;:&quot;bg-orange-50 text-orange-500 text-[10px] px-1&quot;}">限时</span><p class="text-[10px] text-muted-foreground" data-stitch-type="Text" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.3.children.1.children.2.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-[10px] text-muted-foreground&quot;}">已售 8.5千</p></div></div></div></div><div data-slot="4"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm overflow-hidden" data-stitch-type="Card" data-stitch-depth="4" data-stitch-path="children.1.children.2.children.1.slots.4" data-stitch-props="{&quot;className&quot;:&quot;overflow-hidden&quot;}"><div class="h-36 bg-slate-100 flex items-center justify-center" data-stitch-type="Div" data-stitch-depth="5" data-stitch-path="children.1.children.2.children.1.slots.4.children.0" data-stitch-props="{&quot;className&quot;:&quot;h-36 bg-slate-100 flex items-center justify-center&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-watch h-8 w-8 text-slate-400" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.4.children.0.children.0" data-stitch-props="{&quot;name&quot;:&quot;Watch&quot;,&quot;size&quot;:&quot;xl&quot;,&quot;className&quot;:&quot;text-slate-400&quot;}"><path d="M12 10v2.2l1.6 1"></path><path d="m16.13 7.66-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05"></path><path d="m7.88 16.36.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05"></path><circle cx="12" cy="12" r="6"></circle></svg></div><div data-slot="card-content" class="p-3" data-stitch-type="CardContent" data-stitch-depth="5" data-stitch-path="children.1.children.2.children.1.slots.4.children.1" data-stitch-props="{&quot;className&quot;:&quot;p-3&quot;}"><p class="text-foreground text-sm font-medium line-clamp-2" data-stitch-type="Text" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.4.children.1.children.0" data-stitch-props="{&quot;className&quot;:&quot;text-sm font-medium line-clamp-2&quot;}">Apple Watch Ultra 2</p><div class="flex flex-row justify-between items-center gap-0 mt-2" data-stitch-type="Flex" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.4.children.1.children.1" data-stitch-props="{&quot;justify&quot;:&quot;between&quot;,&quot;align&quot;:&quot;center&quot;,&quot;className&quot;:&quot;mt-2&quot;}"><p class="text-base text-red-500 font-bold" data-stitch-type="Text" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.4.children.1.children.1.children.0" data-stitch-props="{&quot;className&quot;:&quot;text-red-500 font-bold&quot;}">¥6,499</p><p class="text-xs text-muted-foreground line-through" data-stitch-type="Text" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.4.children.1.children.1.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-xs text-muted-foreground line-through&quot;}">¥6,999</p></div><div class="flex flex-row justify-start items-stretch gap-1 mt-1" data-stitch-type="Flex" data-stitch-depth="6" data-stitch-path="children.1.children.2.children.1.slots.4.children.1.children.2" data-stitch-props="{&quot;gap&quot;:1,&quot;className&quot;:&quot;mt-1&quot;}"><span data-slot="badge" class="inline-flex items-center justify-center rounded-full border py-0.5 font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent [a&amp;]:hover:bg-primary/90 bg-green-50 text-green-500 text-[10px] px-1" data-stitch-type="Badge" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.4.children.1.children.2.children.0" data-stitch-props="{&quot;className&quot;:&quot;bg-green-50 text-green-500 text-[10px] px-1&quot;}">推荐</span><p class="text-[10px] text-muted-foreground" data-stitch-type="Text" data-stitch-depth="7" data-stitch-path="children.1.children.2.children.1.slots.4.children.1.children.2.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-[10px] text-muted-foreground&quot;}">已售 5.2千</p></div></div></div></div></div></div></div><div class="flex flex-row gap-0 h-16 bg-white border-t fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-6 items-center justify-between" data-stitch-type="Flex" data-stitch-depth="1" data-stitch-path="children.2" data-stitch-props="{&quot;className&quot;:&quot;h-16 bg-white border-t fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-6 items-center justify-between&quot;}"><div class="flex flex-col gap-0 items-center" data-stitch-type="Stack" data-stitch-depth="2" data-stitch-path="children.2.children.0" data-stitch-props="{&quot;gap&quot;:0,&quot;className&quot;:&quot;items-center&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house h-5 w-5 text-blue-600" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="3" data-stitch-path="children.2.children.0.children.0" data-stitch-props="{&quot;name&quot;:&quot;Home&quot;,&quot;className&quot;:&quot;text-blue-600&quot;}"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg><p class="text-xs text-blue-600" data-stitch-type="Text" data-stitch-depth="3" data-stitch-path="children.2.children.0.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-xs text-blue-600&quot;}">首页</p></div><div class="flex flex-col gap-0 items-center" data-stitch-type="Stack" data-stitch-depth="2" data-stitch-path="children.2.children.1" data-stitch-props="{&quot;gap&quot;:0,&quot;className&quot;:&quot;items-center&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-grid3x3 lucide-grid-3x3 h-5 w-5 text-slate-400" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="3" data-stitch-path="children.2.children.1.children.0" data-stitch-props="{&quot;name&quot;:&quot;Grid3X3&quot;,&quot;className&quot;:&quot;text-slate-400&quot;}"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M3 9h18"></path><path d="M3 15h18"></path><path d="M9 3v18"></path><path d="M15 3v18"></path></svg><p class="text-xs text-slate-400" data-stitch-type="Text" data-stitch-depth="3" data-stitch-path="children.2.children.1.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-xs text-slate-400&quot;}">分类</p></div><div class="flex flex-col gap-0 items-center" data-stitch-type="Stack" data-stitch-depth="2" data-stitch-path="children.2.children.2" data-stitch-props="{&quot;gap&quot;:0,&quot;className&quot;:&quot;items-center&quot;}"><div class="w-12 h-12 -mt-6 rounded-full bg-blue-600 flex items-center justify-center shadow-lg" data-stitch-type="Div" data-stitch-depth="3" data-stitch-path="children.2.children.2.children.0" data-stitch-props="{&quot;className&quot;:&quot;w-12 h-12 -mt-6 rounded-full bg-blue-600 flex items-center justify-center shadow-lg&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus h-5 w-5 text-white" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="4" data-stitch-path="children.2.children.2.children.0.children.0" data-stitch-props="{&quot;name&quot;:&quot;Plus&quot;,&quot;className&quot;:&quot;text-white&quot;}"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></div></div><div class="flex flex-col gap-0 items-center" data-stitch-type="Stack" data-stitch-depth="2" data-stitch-path="children.2.children.3" data-stitch-props="{&quot;gap&quot;:0,&quot;className&quot;:&quot;items-center&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart h-5 w-5 text-slate-400" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="3" data-stitch-path="children.2.children.3.children.0" data-stitch-props="{&quot;name&quot;:&quot;ShoppingCart&quot;,&quot;className&quot;:&quot;text-slate-400&quot;}"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg><p class="text-xs text-slate-400" data-stitch-type="Text" data-stitch-depth="3" data-stitch-path="children.2.children.3.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-xs text-slate-400&quot;}">购物车</p></div><div class="flex flex-col gap-0 items-center" data-stitch-type="Stack" data-stitch-depth="2" data-stitch-path="children.2.children.4" data-stitch-props="{&quot;gap&quot;:0,&quot;className&quot;:&quot;items-center&quot;}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user h-5 w-5 text-slate-400" aria-hidden="true" data-stitch-type="Icon" data-stitch-depth="3" data-stitch-path="children.2.children.4.children.0" data-stitch-props="{&quot;name&quot;:&quot;User&quot;,&quot;className&quot;:&quot;text-slate-400&quot;}"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><p class="text-xs text-slate-400" data-stitch-type="Text" data-stitch-depth="3" data-stitch-path="children.2.children.4.children.1" data-stitch-props="{&quot;className&quot;:&quot;text-xs text-slate-400&quot;}">我的</p></div></div></div>
+  <script>(function () {
+  'use strict';
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function safeJsonParse(value) {
+    try {
+      return JSON.parse(value);
+    } catch (_err) {
+      return value;
+    }
+  }
+
+  function coerceState(enabled) {
+    return enabled ? 'checked' : 'unchecked';
+  }
+
+  function StitchInspector() {
+    this.enabled = false;
+    this.overlay = null;
+    this.tooltip = null;
+    this.currentElement = null;
+    this.button = null;
+    // 触摸支持
+    this.touchTimer = null;
+    this.touchTarget = null;
+    this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    this.createOverlay();
+    this.createTooltip();
+    this.createButton();
+    this.bindEvents();
+  }
+
+  StitchInspector.prototype.createOverlay = function () {
+    var overlay = document.createElement('div');
+    overlay.id = 'stitch-inspector-overlay';
+    overlay.setAttribute('data-stitch-inspector', 'true');
+    overlay.style.cssText = [
+      'position: fixed',
+      'pointer-events: none',
+      'border: 2px solid #2563eb',
+      'background: rgba(37, 99, 235, 0.12)',
+      'z-index: 99998',
+      'display: none',
+      'transition: all 0.08s ease'
+    ].join(';');
+    document.body.appendChild(overlay);
+    this.overlay = overlay;
+  };
+
+  StitchInspector.prototype.createTooltip = function () {
+    var tooltip = document.createElement('div');
+    tooltip.id = 'stitch-inspector-tooltip';
+    tooltip.setAttribute('data-stitch-inspector', 'true');
+    tooltip.style.cssText = [
+      'position: fixed',
+      'background: #0f172a',
+      'color: #e2e8f0',
+      'padding: 12px 14px',
+      'border-radius: 8px',
+      'font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+      'font-size: 12px',
+      'z-index: 99999',
+      'display: none',
+      'max-width: 420px',
+      'box-shadow: 0 10px 24px rgba(15, 23, 42, 0.35)'
+    ].join(';');
+    document.body.appendChild(tooltip);
+    this.tooltip = tooltip;
+  };
+
+  StitchInspector.prototype.createButton = function () {
+    if (document.getElementById('stitch-inspector-toggle')) {
+      return;
+    }
+
+    var button = document.createElement('button');
+    button.id = 'stitch-inspector-toggle';
+    button.type = 'button';
+    button.setAttribute('data-stitch-inspector', 'true');
+    button.textContent = '○ Inspector';
+    button.style.cssText = [
+      'position: fixed',
+      'right: 18px',
+      'bottom: 18px',
+      'z-index: 99997',
+      'border: 1px solid rgba(15, 23, 42, 0.2)',
+      'background: #ffffff',
+      'color: #1e293b',
+      'padding: 8px 12px',
+      'border-radius: 999px',
+      'font-size: 12px',
+      'font-weight: 600',
+      'box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12)',
+      'cursor: pointer'
+    ].join(';');
+
+    var self = this;
+    button.addEventListener('click', function (event) {
+      event.preventDefault();
+      self.toggle();
+    });
+
+    document.body.appendChild(button);
+    this.button = button;
+  };
+
+  StitchInspector.prototype.bindEvents = function () {
+    var self = this;
+
+    document.addEventListener('mousemove', function (event) {
+      if (!self.enabled) {
+        return;
+      }
+
+      var target = self.findTarget(event.target);
+      if (target && target !== self.currentElement) {
+        self.highlight(target);
+        self.showTooltip(target, event);
+        return;
+      }
+
+      if (!target) {
+        self.hide();
+      }
+    });
+
+    document.addEventListener('click', function (event) {
+      if (!self.enabled) {
+        return;
+      }
+
+      var target = self.findTarget(event.target);
+      if (!target) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      self.copyComponentInfo(target);
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if ((event.ctrlKey || event.metaKey) && event.shiftKey && (event.key === 'I' || event.key === 'i')) {
+        event.preventDefault();
+        self.toggle();
+        return;
+      }
+
+      if (event.key === 'Escape' && self.enabled) {
+        self.disable();
+      }
+    });
+
+    window.addEventListener('scroll', function () {
+      if (self.enabled && self.currentElement) {
+        self.highlight(self.currentElement);
+      }
+    }, { passive: true });
+
+    window.addEventListener('resize', function () {
+      if (self.enabled && self.currentElement) {
+        self.highlight(self.currentElement);
+      }
+    });
+
+    // 触摸事件支持（手机端）
+    document.addEventListener('touchstart', function (event) {
+      if (!self.enabled) {
+        return;
+      }
+
+      var touch = event.touches[0];
+      var target = self.findTarget(document.elementFromPoint(touch.clientX, touch.clientY));
+
+      if (!target) {
+        self.hide();
+        return;
+      }
+
+      self.touchTarget = target;
+
+      // 长按 400ms 显示组件信息
+      self.touchTimer = setTimeout(function () {
+        self.highlight(target);
+        self.showTooltipAtCenter(target);
+      }, 400);
+    }, { passive: true });
+
+    document.addEventListener('touchmove', function (event) {
+      // 移动时取消长按
+      if (self.touchTimer) {
+        clearTimeout(self.touchTimer);
+        self.touchTimer = null;
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchend', function (event) {
+      if (!self.enabled) {
+        return;
+      }
+
+      // 清除长按计时器
+      if (self.touchTimer) {
+        clearTimeout(self.touchTimer);
+        self.touchTimer = null;
+      }
+
+      // 如果当前有显示的组件，点击复制
+      if (self.currentElement && self.touchTarget === self.currentElement) {
+        event.preventDefault();
+        self.copyComponentInfo(self.currentElement);
+      }
+
+      self.touchTarget = null;
+    });
+  };
+
+  StitchInspector.prototype.findTarget = function (target) {
+    if (!target || !(target instanceof Element)) {
+      return null;
+    }
+
+    if (target.closest('[data-stitch-inspector]')) {
+      return null;
+    }
+
+    return target.closest('[data-stitch-type]');
+  };
+
+  StitchInspector.prototype.parseComponentInfo = function (element) {
+    var props = element.dataset.stitchProps ? safeJsonParse(element.dataset.stitchProps) : null;
+    return {
+      type: element.dataset.stitchType || 'Unknown',
+      id: element.dataset.stitchId || null,
+      path: element.dataset.stitchPath || null,
+      props: props,
+      depth: element.dataset.stitchDepth ? parseInt(element.dataset.stitchDepth, 10) : null,
+      element: element
+    };
+  };
+
+  StitchInspector.prototype.highlight = function (element) {
+    this.currentElement = element;
+    var rect = element.getBoundingClientRect();
+
+    if (!this.overlay) {
+      return;
+    }
+
+    this.overlay.style.display = 'block';
+    this.overlay.style.top = rect.top + 'px';
+    this.overlay.style.left = rect.left + 'px';
+    this.overlay.style.width = rect.width + 'px';
+    this.overlay.style.height = rect.height + 'px';
+  };
+
+  StitchInspector.prototype.showTooltip = function (element, event) {
+    var info = this.parseComponentInfo(element);
+
+    if (!this.tooltip) {
+      return;
+    }
+
+    this.tooltip.innerHTML = this.renderTooltipContent(info);
+    this.tooltip.style.display = 'block';
+
+    var x = event.clientX + 14;
+    var y = event.clientY + 14;
+    var rect = this.tooltip.getBoundingClientRect();
+    var maxX = window.innerWidth - rect.width - 12;
+    var maxY = window.innerHeight - rect.height - 12;
+
+    this.tooltip.style.left = Math.min(x, maxX) + 'px';
+    this.tooltip.style.top = Math.min(y, maxY) + 'px';
+  };
+
+  // 手机端：在元素下方居中显示 tooltip
+  StitchInspector.prototype.showTooltipAtCenter = function (element) {
+    var info = this.parseComponentInfo(element);
+
+    if (!this.tooltip) {
+      return;
+    }
+
+    this.tooltip.innerHTML = this.renderTooltipContent(info, true);
+    this.tooltip.style.display = 'block';
+
+    var elemRect = element.getBoundingClientRect();
+    var tooltipRect = this.tooltip.getBoundingClientRect();
+
+    // 优先显示在元素下方
+    var y = elemRect.bottom + 10;
+    // 如果下方空间不够，显示在上方
+    if (y + tooltipRect.height > window.innerHeight - 12) {
+      y = elemRect.top - tooltipRect.height - 10;
+    }
+    // 如果上方也不够，固定在底部
+    if (y < 12) {
+      y = window.innerHeight - tooltipRect.height - 60;
+    }
+
+    // 水平居中
+    var x = (window.innerWidth - tooltipRect.width) / 2;
+
+    this.tooltip.style.left = Math.max(12, x) + 'px';
+    this.tooltip.style.top = Math.max(12, y) + 'px';
+  };
+
+  StitchInspector.prototype.renderTooltipContent = function (info, isMobile) {
+    var lines = [];
+
+    lines.push('<div style="color:#93c5fd;font-weight:600;font-size:13px;margin-bottom:8px;">&lt;' + escapeHtml(info.type) + ' /&gt;</div>');
+
+    if (info.id) {
+      lines.push('<div style="margin-bottom:4px;"><span style="color:#94a3b8;">id:</span> <span style="color:#fbbf24;">"' + escapeHtml(info.id) + '"</span></div>');
+    }
+
+    if (info.path) {
+      lines.push('<div style="margin-bottom:4px;"><span style="color:#94a3b8;">path:</span> <span style="color:#34d399;">' + escapeHtml(info.path) + '</span></div>');
+    }
+
+    if (info.props && typeof info.props === 'object') {
+      var keys = Object.keys(info.props);
+      if (keys.length) {
+        lines.push('<div style="margin-bottom:4px;"><span style="color:#94a3b8;">props:</span></div>');
+        for (var i = 0; i < keys.length; i++) {
+          var key = keys[i];
+          var value = info.props[key];
+          lines.push('<div style="padding-left:12px;color:#e2e8f0;">' + escapeHtml(key) + ': <span style="color:#f472b6;">' + escapeHtml(JSON.stringify(value)) + '</span></div>');
+        }
+      }
+    } else if (info.props) {
+      lines.push('<div style="margin-bottom:4px;"><span style="color:#94a3b8;">props:</span> <span style="color:#f472b6;">' + escapeHtml(JSON.stringify(info.props)) + '</span></div>');
+    }
+
+    // 根据设备类型显示不同提示
+    var hint = isMobile
+      ? 'Tap to copy | Tap elsewhere to close'
+      : 'Click to copy | ESC to exit | Ctrl+Shift+I to toggle';
+    lines.push('<div style="margin-top:10px;padding-top:8px;border-top:1px solid #1e293b;color:#94a3b8;font-size:11px;">' + hint + '</div>');
+
+    return lines.join('');
+  };
+
+  StitchInspector.prototype.copyComponentInfo = function (element) {
+    var info = this.parseComponentInfo(element);
+    var payload = {
+      type: info.type
+    };
+
+    if (info.id) {
+      payload.id = info.id;
+    }
+
+    if (info.props && typeof info.props === 'object') {
+      payload.props = info.props;
+    }
+
+    var lines = [
+      'Component: ' + info.type
+    ];
+
+    if (info.id) {
+      lines.push('ID: ' + info.id);
+    }
+
+    if (info.path) {
+      lines.push('Path: ' + info.path);
+    }
+
+    lines.push('Props: ' + JSON.stringify(payload, null, 2));
+
+    var text = lines.join('\n');
+    var self = this;
+
+    this.copyText(text)
+      .then(function () {
+        self.showCopyFeedback('Copied component info');
+      })
+      .catch(function () {
+        self.showCopyFeedback('Copy failed');
+      });
+  };
+
+  StitchInspector.prototype.copyText = function (text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+
+    return new Promise(function (resolve, reject) {
+      try {
+        var textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', 'readonly');
+        textarea.style.position = 'absolute';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        var success = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        if (success) {
+          resolve();
+        } else {
+          reject(new Error('copy failed'));
+        }
+      } catch (err) {
+        reject(err);
+      }
+    });
+  };
+
+  StitchInspector.prototype.showCopyFeedback = function (message) {
+    var toast = document.createElement('div');
+    toast.setAttribute('data-stitch-inspector', 'true');
+    toast.textContent = message;
+    toast.style.cssText = [
+      'position: fixed',
+      'top: 18px',
+      'left: 50%',
+      'transform: translateX(-50%)',
+      'background: #0f172a',
+      'color: #e2e8f0',
+      'padding: 8px 14px',
+      'border-radius: 999px',
+      'font-size: 12px',
+      'font-weight: 600',
+      'z-index: 100000',
+      'box-shadow: 0 8px 18px rgba(15, 23, 42, 0.25)'
+    ].join(';');
+
+    document.body.appendChild(toast);
+
+    setTimeout(function () {
+      if (toast && toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 1600);
+  };
+
+  StitchInspector.prototype.hide = function () {
+    this.currentElement = null;
+    if (this.overlay) {
+      this.overlay.style.display = 'none';
+    }
+    if (this.tooltip) {
+      this.tooltip.style.display = 'none';
+    }
+  };
+
+  StitchInspector.prototype.enable = function () {
+    this.enabled = true;
+    document.body.style.cursor = 'crosshair';
+    if (this.button) {
+      this.button.setAttribute('data-state', coerceState(true));
+      this.button.style.background = '#2563eb';
+      this.button.style.color = '#ffffff';
+      this.button.style.borderColor = '#1d4ed8';
+      this.button.textContent = '● Inspector ON';
+    }
+    console.log('[Stitch Inspector] enabled');
+  };
+
+  StitchInspector.prototype.disable = function () {
+    this.enabled = false;
+    this.hide();
+    document.body.style.cursor = '';
+    if (this.button) {
+      this.button.setAttribute('data-state', coerceState(false));
+      this.button.style.background = '#ffffff';
+      this.button.style.color = '#1e293b';
+      this.button.style.borderColor = 'rgba(15, 23, 42, 0.2)';
+      this.button.textContent = '○ Inspector';
+    }
+    console.log('[Stitch Inspector] disabled');
+  };
+
+  StitchInspector.prototype.toggle = function () {
+    if (this.enabled) {
+      this.disable();
+    } else {
+      this.enable();
+    }
+  };
+
+  function initInspector() {
+    if (window.StitchInspector) {
+      return;
+    }
+
+    window.StitchInspector = new StitchInspector();
+    console.log('[Stitch Inspector] ready. Press Ctrl+Shift+I to toggle.');
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initInspector);
+  } else {
+    initInspector();
+  }
+})();
+</script>
+  <div style="text-align: center; padding: 2rem; color: #999; font-size: 0.875rem;">
+    <p>Stitch UI Rendering Engine</p>
+    <p><a href="index.html" style="color: #3b82f6;">← 返回首页</a></p>
+  </div>
+</body>
+</html>

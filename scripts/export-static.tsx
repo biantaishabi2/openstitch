@@ -17,7 +17,7 @@ import { renderToString } from 'react-dom/server';
 import { render } from '../src/lib/renderer/renderer';
 
 // 默认输出目录
-const OUTPUT_DIR = '/home/wangbo/document/zcpg/docs/stitch';
+const OUTPUT_DIR = path.join(__dirname, '../docs/demo');
 
 // schemas 目录
 const SCHEMAS_DIR = path.join(__dirname, '../src/data/schemas');

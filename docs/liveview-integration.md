@@ -674,17 +674,17 @@ module.exports = {
 
 ## 组件覆盖范围（Components Showcase）
 
-先覆盖 `components-showcase` 中出现的组件类型（共 69 个），确保页面可完整渲染。当前已全部覆盖。
+先覆盖 `components-showcase` 中出现的组件类型（共 93 个），确保页面可完整渲染。当前已全部覆盖。
 
 **覆盖清单（按类别）**：
 
-- 布局/结构：Div, Stack, Flex, Grid, Columns, Rows, Split, Center, Spacer, LayoutDivider, Section, Hero
+- 布局/结构：Div, Span, Layout, Stack, Flex, Grid, Columns, Rows, Split, Center, Spacer, LayoutDivider, Page, Section, Container, Hero
 - 元素/媒体：Text, Link, Image, Icon, Avatar, AvatarImage, AvatarFallback
 - 卡片：Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter
 - 导航：Tabs, TabsList, TabsTrigger, TabsContent, Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, Stepper, Step
-- 数据展示：Table, TableHeader, TableBody, TableRow, TableHead, TableCell, List, ListItem, Timeline, TimelineItem, Statistic, CodeBlock
+- 数据展示：Table, TableHeader, TableBody, TableRow, TableHead, TableCell, List, ListItem, Timeline, TimelineItem, TimelineContent, TimelineHeader, TimelineTitle, TimelineTime, TimelineDescription, TimelineConnector, TimelineEmpty, Statistic, StatisticCard, CodeBlock, InlineCode
 - 表单/控件：Button, Input, Label, Checkbox, RadioGroup, RadioGroupItem, Switch, Slider
-- 反馈/杂项：Alert, AlertTitle, AlertDescription, Badge, Progress, Skeleton, EmptyState, Separator
+- 反馈/杂项：Alert, AlertTitle, AlertDescription, Badge, Progress, Skeleton, EmptyState, Separator, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, Tooltip, TooltipProvider, TooltipTrigger, TooltipContent
 - 折叠：Accordion, AccordionItem, AccordionTrigger, AccordionContent
 
 ## 实现原则（LiveView）
@@ -696,7 +696,7 @@ module.exports = {
 
 ## TODO
 
-- [x] 覆盖 `components-showcase` 的 69 个组件类型（按上方清单）
+- [x] 覆盖 `components-showcase` 的 93 个组件类型（按上方清单）
 - [x] Tabs/Accordion/Stepper 用纯 LiveView（无 hook）实现基础交互
 - [ ] 表单控件交互示例：Checkbox/Radio/Switch/Slider 的 LiveView 状态与事件
 - [ ] CodeBlock 语法高亮与 Copy 行为（需要 JS 或服务器推送提示）
