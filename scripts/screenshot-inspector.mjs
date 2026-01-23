@@ -6,7 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function main() {
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+  const page = await browser.newPage({ viewport: { width: 1024, height: 768 } });
 
   // 打开 cyberpunk 页面
   await page.goto(`file://${path.join(__dirname, '../docs/demo/cyberpunk.html')}`);
