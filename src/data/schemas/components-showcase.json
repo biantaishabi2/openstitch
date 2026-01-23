@@ -296,653 +296,746 @@
           },
           "children": [
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Div",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Div"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Span",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Span"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Text",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Text"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Link",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Link"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Image",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Image"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Layout",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Layout"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Grid",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Grid"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Columns",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Columns"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Split",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Split"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Stack",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Stack"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Flex",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Flex"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Rows",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Rows"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Page",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Page"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Center",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Center"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Spacer",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Spacer"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-LayoutDivider",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "LayoutDivider"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Hero",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Hero"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Section",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Section"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Container",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Container"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Card",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Card"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-CardHeader",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "CardHeader"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-CardTitle",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "CardTitle"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-CardDescription",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "CardDescription"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-CardContent",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "CardContent"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-CardFooter",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "CardFooter"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Tabs",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Tabs"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TabsList",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TabsList"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TabsTrigger",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TabsTrigger"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TabsContent",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TabsContent"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Breadcrumb",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Breadcrumb"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-BreadcrumbList",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "BreadcrumbList"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-BreadcrumbItem",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "BreadcrumbItem"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-BreadcrumbLink",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "BreadcrumbLink"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-BreadcrumbPage",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "BreadcrumbPage"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-BreadcrumbSeparator",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "BreadcrumbSeparator"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Stepper",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Stepper"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Step",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Step"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Table",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Table"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TableHeader",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TableHeader"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TableBody",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TableBody"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TableRow",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TableRow"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TableHead",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TableHead"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TableCell",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TableCell"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Timeline",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Timeline"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TimelineItem",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TimelineItem"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TimelineContent",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TimelineContent"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TimelineHeader",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TimelineHeader"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TimelineTitle",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TimelineTitle"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TimelineDescription",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TimelineDescription"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TimelineTime",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TimelineTime"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TimelineConnector",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TimelineConnector"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TimelineEmpty",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TimelineEmpty"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Accordion",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Accordion"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-AccordionItem",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "AccordionItem"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-AccordionTrigger",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "AccordionTrigger"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-AccordionContent",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "AccordionContent"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-List",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "List"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-ListItem",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "ListItem"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Statistic",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Statistic"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-StatisticCard",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "StatisticCard"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-CodeBlock",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "CodeBlock"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-InlineCode",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "InlineCode"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Button",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Button"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Input",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Input"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Label",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Label"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Checkbox",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Checkbox"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-RadioGroup",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "RadioGroup"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-RadioGroupItem",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "RadioGroupItem"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Switch",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Switch"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Slider",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Slider"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Alert",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Alert"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-AlertTitle",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "AlertTitle"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-AlertDescription",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "AlertDescription"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Badge",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Badge"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Progress",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Progress"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Dialog",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Dialog"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-DialogTrigger",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "DialogTrigger"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-DialogContent",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "DialogContent"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-DialogHeader",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "DialogHeader"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-DialogTitle",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "DialogTitle"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-DialogDescription",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "DialogDescription"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-DialogFooter",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "DialogFooter"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Tooltip",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Tooltip"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TooltipProvider",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TooltipProvider"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TooltipTrigger",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TooltipTrigger"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-TooltipContent",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "TooltipContent"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Skeleton",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Skeleton"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-EmptyState",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "EmptyState"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Icon",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Icon"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Avatar",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Avatar"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-AvatarImage",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "AvatarImage"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-AvatarFallback",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "AvatarFallback"
             },
             {
-              "type": "Span",
+              "type": "Link",
               "props": {
-                "className": "rounded bg-muted px-1.5 py-0.5"
+                "href": "#component-Separator",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "Separator"
             }
@@ -966,13 +1059,22 @@
               "children": [
                 {
                   "type": "CardTitle",
-                  "children": "Hero 主视觉"
+                  "children": "Hero 主视觉",
+                  "id": "component-CardTitle"
                 },
                 {
                   "type": "CardDescription",
-                  "children": "页面顶部的主视觉区域"
+                  "children": [
+                    {
+                      "type": "Span",
+                      "id": "component-Span",
+                      "children": "页面顶部的主视觉区域"
+                    }
+                  ],
+                  "id": "component-CardDescription"
                 }
-              ]
+              ],
+              "id": "component-CardHeader"
             },
             {
               "type": "CardContent",
@@ -984,9 +1086,33 @@
                     "subtitle": "JSON Schema 驱动",
                     "description": "完整展示所有可用组件，点击左侧导航快速跳转",
                     "size": "sm"
-                  }
+                  },
+                  "id": "component-Hero"
+                },
+                {
+                  "type": "Div",
+                  "id": "component-Div",
+                  "props": {
+                    "className": "mt-4 flex items-center gap-2 text-sm text-muted-foreground"
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "children": "了解更多："
+                    },
+                    {
+                      "type": "Link",
+                      "id": "component-Link",
+                      "props": {
+                        "href": "#",
+                        "className": "text-primary underline"
+                      },
+                      "children": "组件文档"
+                    }
+                  ]
                 }
-              ]
+              ],
+              "id": "component-CardContent"
             }
           ]
         },
@@ -999,13 +1125,16 @@
               "children": [
                 {
                   "type": "CardTitle",
-                  "children": "Section 区块"
+                  "children": "Section 区块",
+                  "id": "component-CardTitle"
                 },
                 {
                   "type": "CardDescription",
-                  "children": "页面内容分区组件"
+                  "children": "页面内容分区组件",
+                  "id": "component-CardDescription"
                 }
-              ]
+              ],
+              "id": "component-CardHeader"
             },
             {
               "type": "CardContent",
@@ -1022,11 +1151,14 @@
                       "props": {
                         "className": "text-muted-foreground"
                       },
-                      "children": "Section 组件用于组织页面内容，支持标题和副标题。"
+                      "children": "Section 组件用于组织页面内容，支持标题和副标题。",
+                      "id": "component-Text"
                     }
-                  ]
+                  ],
+                  "id": "component-Section"
                 }
-              ]
+              ],
+              "id": "component-CardContent"
             }
           ]
         },
@@ -1061,7 +1193,8 @@
                       "type": "Text",
                       "children": "sm 容器宽度示例"
                     }
-                  ]
+                  ],
+                  "id": "component-Container"
                 }
               ]
             }
@@ -1101,12 +1234,15 @@
                               "props": {
                                 "href": "#"
                               },
-                              "children": "首页"
+                              "children": "首页",
+                              "id": "component-BreadcrumbLink"
                             }
-                          ]
+                          ],
+                          "id": "component-BreadcrumbItem"
                         },
                         {
-                          "type": "BreadcrumbSeparator"
+                          "type": "BreadcrumbSeparator",
+                          "id": "component-BreadcrumbSeparator"
                         },
                         {
                           "type": "BreadcrumbItem",
@@ -1116,25 +1252,31 @@
                               "props": {
                                 "href": "#"
                               },
-                              "children": "组件"
+                              "children": "组件",
+                              "id": "component-BreadcrumbLink"
                             }
-                          ]
+                          ],
+                          "id": "component-BreadcrumbItem"
                         },
                         {
-                          "type": "BreadcrumbSeparator"
+                          "type": "BreadcrumbSeparator",
+                          "id": "component-BreadcrumbSeparator"
                         },
                         {
                           "type": "BreadcrumbItem",
                           "children": [
                             {
                               "type": "BreadcrumbPage",
-                              "children": "面包屑"
+                              "children": "面包屑",
+                              "id": "component-BreadcrumbPage"
                             }
                           ]
                         }
-                      ]
+                      ],
+                      "id": "component-BreadcrumbList"
                     }
-                  ]
+                  ],
+                  "id": "component-Breadcrumb"
                 }
               ]
             }
@@ -1171,14 +1313,16 @@
                       "props": {
                         "title": "基本信息",
                         "description": "填写账号信息"
-                      }
+                      },
+                      "id": "component-Step"
                     },
                     {
                       "type": "Step",
                       "props": {
                         "title": "身份验证",
                         "description": "验证手机号"
-                      }
+                      },
+                      "id": "component-Step"
                     },
                     {
                       "type": "Step",
@@ -1187,7 +1331,8 @@
                         "description": "设置密码"
                       }
                     }
-                  ]
+                  ],
+                  "id": "component-Stepper"
                 }
               ]
             }
@@ -1227,14 +1372,16 @@
                           "props": {
                             "value": "overview"
                           },
-                          "children": "概览"
+                          "children": "概览",
+                          "id": "component-TabsTrigger"
                         },
                         {
                           "type": "TabsTrigger",
                           "props": {
                             "value": "analytics"
                           },
-                          "children": "分析"
+                          "children": "分析",
+                          "id": "component-TabsTrigger"
                         },
                         {
                           "type": "TabsTrigger",
@@ -1250,7 +1397,8 @@
                           },
                           "children": "设置"
                         }
-                      ]
+                      ],
+                      "id": "component-TabsList"
                     },
                     {
                       "type": "TabsContent",
@@ -1273,7 +1421,8 @@
                           },
                           "children": "这里显示项目的总体概况和关键指标。"
                         }
-                      ]
+                      ],
+                      "id": "component-TabsContent"
                     },
                     {
                       "type": "TabsContent",
@@ -1296,7 +1445,8 @@
                           },
                           "children": "这里显示详细的数据分析图表。"
                         }
-                      ]
+                      ],
+                      "id": "component-TabsContent"
                     },
                     {
                       "type": "TabsContent",
@@ -1344,7 +1494,8 @@
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "id": "component-Tabs"
                 }
               ]
             }
@@ -1388,14 +1539,16 @@
                           "props": {
                             "variant": "default"
                           },
-                          "children": "Default"
+                          "children": "Default",
+                          "id": "component-Button"
                         },
                         {
                           "type": "Button",
                           "props": {
                             "variant": "secondary"
                           },
-                          "children": "Secondary"
+                          "children": "Secondary",
+                          "id": "component-Button"
                         },
                         {
                           "type": "Button",
@@ -1425,7 +1578,8 @@
                           },
                           "children": "Destructive"
                         }
-                      ]
+                      ],
+                      "id": "component-Flex"
                     },
                     {
                       "type": "Flex",
@@ -1495,14 +1649,16 @@
                       "props": {
                         "variant": "default"
                       },
-                      "children": "Default"
+                      "children": "Default",
+                      "id": "component-Badge"
                     },
                     {
                       "type": "Badge",
                       "props": {
                         "variant": "secondary"
                       },
-                      "children": "Secondary"
+                      "children": "Secondary",
+                      "id": "component-Badge"
                     },
                     {
                       "type": "Badge",
@@ -1578,14 +1734,16 @@
                       "props": {
                         "name": "Home",
                         "size": "md"
-                      }
+                      },
+                      "id": "component-Icon"
                     },
                     {
                       "type": "Icon",
                       "props": {
                         "name": "Settings",
                         "size": "md"
-                      }
+                      },
+                      "id": "component-Icon"
                     },
                     {
                       "type": "Icon",
@@ -1700,7 +1858,8 @@
                         "src": "https://picsum.photos/200/200",
                         "alt": "示例图片",
                         "className": "w-32 h-32 object-cover"
-                      }
+                      },
+                      "id": "component-Image"
                     },
                     {
                       "type": "Image",
@@ -1709,7 +1868,8 @@
                         "alt": "圆角图片",
                         "rounded": true,
                         "className": "w-32 h-32 object-cover"
-                      }
+                      },
+                      "id": "component-Image"
                     },
                     {
                       "type": "Image",
@@ -1760,22 +1920,27 @@
                           "type": "AvatarImage",
                           "props": {
                             "src": "https://github.com/shadcn.png"
-                          }
+                          },
+                          "id": "component-AvatarImage"
                         },
                         {
                           "type": "AvatarFallback",
-                          "children": "CN"
+                          "children": "CN",
+                          "id": "component-AvatarFallback"
                         }
-                      ]
+                      ],
+                      "id": "component-Avatar"
                     },
                     {
                       "type": "Avatar",
                       "children": [
                         {
                           "type": "AvatarFallback",
-                          "children": "AB"
+                          "children": "AB",
+                          "id": "component-AvatarFallback"
                         }
-                      ]
+                      ],
+                      "id": "component-Avatar"
                     },
                     {
                       "type": "Avatar",
@@ -1875,9 +2040,11 @@
                               },
                               "children": "确定"
                             }
-                          ]
+                          ],
+                          "id": "component-CardFooter"
                         }
-                      ]
+                      ],
+                      "id": "component-Card"
                     },
                     "2": {
                       "type": "Card",
@@ -1913,7 +2080,8 @@
                             }
                           ]
                         }
-                      ]
+                      ],
+                      "id": "component-Card"
                     },
                     "3": {
                       "type": "Card",
@@ -1938,7 +2106,8 @@
                         }
                       ]
                     }
-                  }
+                  },
+                  "id": "component-Grid"
                 }
               ]
             }
@@ -1990,7 +2159,8 @@
                                 "value": "12,345",
                                 "trend": "up",
                                 "trendValue": "+15%"
-                              }
+                              },
+                              "id": "component-Statistic"
                             }
                           ]
                         },
@@ -2007,7 +2177,8 @@
                                 "value": "89.5%",
                                 "trend": "up",
                                 "trendValue": "+3.2%"
-                              }
+                              },
+                              "id": "component-Statistic"
                             }
                           ]
                         },
@@ -2045,7 +2216,8 @@
                             }
                           ]
                         }
-                      }
+                      },
+                      "id": "component-Grid"
                     },
                     {
                       "type": "Grid",
@@ -2056,6 +2228,7 @@
                       "slots": {
                         "1": {
                           "type": "StatisticCard",
+                          "id": "component-StatisticCard",
                           "props": {
                             "title": "新增用户",
                             "value": "1,024",
@@ -2111,11 +2284,13 @@
                           "children": [
                             {
                               "type": "TableHead",
-                              "children": "ID"
+                              "children": "ID",
+                              "id": "component-TableHead"
                             },
                             {
                               "type": "TableHead",
-                              "children": "名称"
+                              "children": "名称",
+                              "id": "component-TableHead"
                             },
                             {
                               "type": "TableHead",
@@ -2129,9 +2304,11 @@
                               "type": "TableHead",
                               "children": "操作"
                             }
-                          ]
+                          ],
+                          "id": "component-TableRow"
                         }
-                      ]
+                      ],
+                      "id": "component-TableHeader"
                     },
                     {
                       "type": "TableBody",
@@ -2141,11 +2318,13 @@
                           "children": [
                             {
                               "type": "TableCell",
-                              "children": "001"
+                              "children": "001",
+                              "id": "component-TableCell"
                             },
                             {
                               "type": "TableCell",
-                              "children": "项目 Alpha"
+                              "children": "项目 Alpha",
+                              "id": "component-TableCell"
                             },
                             {
                               "type": "TableCell",
@@ -2176,7 +2355,8 @@
                                 }
                               ]
                             }
-                          ]
+                          ],
+                          "id": "component-TableRow"
                         },
                         {
                           "type": "TableRow",
@@ -2262,9 +2442,11 @@
                             }
                           ]
                         }
-                      ]
+                      ],
+                      "id": "component-TableBody"
                     }
-                  ]
+                  ],
+                  "id": "component-Table"
                 }
               ]
             }
@@ -2301,14 +2483,16 @@
                       "props": {
                         "title": "列表项一",
                         "description": "这是第一个列表项的描述"
-                      }
+                      },
+                      "id": "component-ListItem"
                     },
                     {
                       "type": "ListItem",
                       "props": {
                         "title": "列表项二",
                         "description": "这是第二个列表项的描述"
-                      }
+                      },
+                      "id": "component-ListItem"
                     },
                     {
                       "type": "ListItem",
@@ -2317,7 +2501,8 @@
                         "description": "这是第三个列表项的描述"
                       }
                     }
-                  ]
+                  ],
+                  "id": "component-List"
                 }
               ]
             }
@@ -2358,7 +2543,8 @@
                             "title": "项目启动",
                             "description": "完成项目立项和团队组建",
                             "status": "completed"
-                          }
+                          },
+                          "id": "component-TimelineItem"
                         },
                         {
                           "type": "TimelineItem",
@@ -2366,7 +2552,8 @@
                             "title": "需求分析",
                             "description": "完成用户调研和需求文档",
                             "status": "completed"
-                          }
+                          },
+                          "id": "component-TimelineItem"
                         },
                         {
                           "type": "TimelineItem",
@@ -2384,7 +2571,8 @@
                             "status": "pending"
                           }
                         }
-                      ]
+                      ],
+                      "id": "component-Timeline"
                     },
                     {
                       "type": "Card",
@@ -2409,21 +2597,26 @@
                                       "children": [
                                         {
                                           "type": "TimelineTitle",
-                                          "children": "里程碑说明"
+                                          "children": "里程碑说明",
+                                          "id": "component-TimelineTitle"
                                         },
                                         {
                                           "type": "TimelineTime",
                                           "props": {
                                             "date": "2024-01-20"
-                                          }
+                                          },
+                                          "id": "component-TimelineTime"
                                         }
-                                      ]
+                                      ],
+                                      "id": "component-TimelineHeader"
                                     },
                                     {
                                       "type": "TimelineDescription",
-                                      "children": "演示子组件结构化排版"
+                                      "children": "演示子组件结构化排版",
+                                      "id": "component-TimelineDescription"
                                     }
-                                  ]
+                                  ],
+                                  "id": "component-TimelineContent"
                                 },
                                 {
                                   "type": "Flex",
@@ -2437,7 +2630,8 @@
                                       "props": {
                                         "status": "in-progress",
                                         "className": "h-8"
-                                      }
+                                      },
+                                      "id": "component-TimelineConnector"
                                     },
                                     {
                                       "type": "Text",
@@ -2450,7 +2644,8 @@
                                 },
                                 {
                                   "type": "TimelineEmpty",
-                                  "children": "暂无事件"
+                                  "children": "暂无事件",
+                                  "id": "component-TimelineEmpty"
                                 }
                               ]
                             }
@@ -2499,13 +2694,16 @@
                       "children": [
                         {
                           "type": "AccordionTrigger",
-                          "children": "什么是 Stitch？"
+                          "children": "什么是 Stitch？",
+                          "id": "component-AccordionTrigger"
                         },
                         {
                           "type": "AccordionContent",
-                          "children": "Stitch 是一个 JSON Schema 驱动的 UI 渲染引擎，可以通过 JSON 配置快速构建用户界面。"
+                          "children": "Stitch 是一个 JSON Schema 驱动的 UI 渲染引擎，可以通过 JSON 配置快速构建用户界面。",
+                          "id": "component-AccordionContent"
                         }
-                      ]
+                      ],
+                      "id": "component-AccordionItem"
                     },
                     {
                       "type": "AccordionItem",
@@ -2515,13 +2713,16 @@
                       "children": [
                         {
                           "type": "AccordionTrigger",
-                          "children": "支持哪些组件？"
+                          "children": "支持哪些组件？",
+                          "id": "component-AccordionTrigger"
                         },
                         {
                           "type": "AccordionContent",
-                          "children": "支持布局、表单、数据展示、反馈等多种类型的组件，基于 shadcn/ui 构建。"
+                          "children": "支持布局、表单、数据展示、反馈等多种类型的组件，基于 shadcn/ui 构建。",
+                          "id": "component-AccordionContent"
                         }
-                      ]
+                      ],
+                      "id": "component-AccordionItem"
                     },
                     {
                       "type": "AccordionItem",
@@ -2539,7 +2740,8 @@
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "id": "component-Accordion"
                 }
               ]
             }
@@ -2586,13 +2788,15 @@
                           "children": [
                             {
                               "type": "Label",
-                              "children": "输入框 Input"
+                              "children": "输入框 Input",
+                              "id": "component-Label"
                             },
                             {
                               "type": "Input",
                               "props": {
                                 "placeholder": "请输入内容"
-                              }
+                              },
+                              "id": "component-Input"
                             }
                           ]
                         },
@@ -2604,7 +2808,8 @@
                           "children": [
                             {
                               "type": "Label",
-                              "children": "复选框 Checkbox"
+                              "children": "复选框 Checkbox",
+                              "id": "component-Checkbox"
                             },
                             {
                               "type": "Flex",
@@ -2624,7 +2829,8 @@
                                   "props": {
                                     "htmlFor": "c1"
                                   },
-                                  "children": "选项一"
+                                  "children": "选项一",
+                                  "id": "component-Label"
                                 }
                               ]
                             },
@@ -2671,7 +2877,8 @@
                               },
                               "children": [
                                 {
-                                  "type": "Switch"
+                                  "type": "Switch",
+                                  "id": "component-Switch"
                                 },
                                 {
                                   "type": "Text",
@@ -2710,7 +2917,8 @@
                                 ],
                                 "max": 100,
                                 "step": 1
-                              }
+                              },
+                              "id": "component-Slider"
                             }
                           ]
                         },
@@ -2751,7 +2959,8 @@
                                       },
                                       "children": "选项 A"
                                     }
-                                  ]
+                                  ],
+                                  "id": "component-RadioGroupItem"
                                 },
                                 {
                                   "type": "Flex",
@@ -2776,7 +2985,8 @@
                                     }
                                   ]
                                 }
-                              ]
+                              ],
+                              "id": "component-RadioGroup"
                             }
                           ]
                         }
@@ -2819,13 +3029,16 @@
                       "children": [
                         {
                           "type": "AlertTitle",
-                          "children": "提示"
+                          "children": "提示",
+                          "id": "component-AlertTitle"
                         },
                         {
                           "type": "AlertDescription",
-                          "children": "这是一条默认提示信息"
+                          "children": "这是一条默认提示信息",
+                          "id": "component-AlertDescription"
                         }
-                      ]
+                      ],
+                      "id": "component-Alert"
                     },
                     {
                       "type": "Alert",
@@ -2835,13 +3048,16 @@
                       "children": [
                         {
                           "type": "AlertTitle",
-                          "children": "成功"
+                          "children": "成功",
+                          "id": "component-AlertTitle"
                         },
                         {
                           "type": "AlertDescription",
-                          "children": "操作已成功完成"
+                          "children": "操作已成功完成",
+                          "id": "component-AlertDescription"
                         }
-                      ]
+                      ],
+                      "id": "component-Alert"
                     },
                     {
                       "type": "Alert",
@@ -2924,7 +3140,8 @@
                           "type": "Progress",
                           "props": {
                             "value": 75
-                          }
+                          },
+                          "id": "component-Progress"
                         }
                       ]
                     },
@@ -2945,7 +3162,8 @@
                           "type": "Progress",
                           "props": {
                             "value": 45
-                          }
+                          },
+                          "id": "component-Progress"
                         }
                       ]
                     },
@@ -3007,7 +3225,8 @@
                       "type": "Skeleton",
                       "props": {
                         "className": "h-12 w-12 rounded-full"
-                      }
+                      },
+                      "id": "component-Skeleton"
                     },
                     {
                       "type": "Stack",
@@ -3020,7 +3239,8 @@
                           "type": "Skeleton",
                           "props": {
                             "className": "h-4 w-3/4"
-                          }
+                          },
+                          "id": "component-Skeleton"
                         },
                         {
                           "type": "Skeleton",
@@ -3061,7 +3281,8 @@
                   "props": {
                     "title": "暂无数据",
                     "description": "当前没有任何记录，请稍后再试"
-                  }
+                  },
+                  "id": "component-EmptyState"
                 }
               ]
             }
@@ -3098,7 +3319,8 @@
                       "props": {
                         "className": "inline-flex items-center justify-center rounded-md border px-3 py-1.5 text-sm"
                       },
-                      "children": "打开对话框 →"
+                      "children": "打开对话框 →",
+                      "id": "component-DialogTrigger"
                     },
                     {
                       "type": "DialogContent",
@@ -3108,13 +3330,16 @@
                           "children": [
                             {
                               "type": "DialogTitle",
-                              "children": "确认操作"
+                              "children": "确认操作",
+                              "id": "component-DialogTitle"
                             },
                             {
                               "type": "DialogDescription",
-                              "children": "这是一个模态对话框示例，用于确认重要操作。"
+                              "children": "这是一个模态对话框示例，用于确认重要操作。",
+                              "id": "component-DialogDescription"
                             }
-                          ]
+                          ],
+                          "id": "component-DialogHeader"
                         },
                         {
                           "type": "Text",
@@ -3137,11 +3362,14 @@
                               "type": "Button",
                               "children": "确认"
                             }
-                          ]
+                          ],
+                          "id": "component-DialogFooter"
                         }
-                      ]
+                      ],
+                      "id": "component-DialogContent"
                     }
-                  ]
+                  ],
+                  "id": "component-Dialog"
                 }
               ]
             }
@@ -3181,15 +3409,19 @@
                           "props": {
                             "className": "inline-flex items-center justify-center rounded-md border px-3 py-1.5 text-sm"
                           },
-                          "children": "悬停查看提示"
+                          "children": "悬停查看提示",
+                          "id": "component-TooltipTrigger"
                         },
                         {
                           "type": "TooltipContent",
-                          "children": "这是一个工具提示"
+                          "children": "这是一个工具提示",
+                          "id": "component-TooltipContent"
                         }
-                      ]
+                      ],
+                      "id": "component-Tooltip"
                     }
-                  ]
+                  ],
+                  "id": "component-TooltipProvider"
                 }
               ]
             }
@@ -3227,7 +3459,8 @@
                         "使用 ",
                         {
                           "type": "InlineCode",
-                          "children": "InlineCode"
+                          "children": "InlineCode",
+                          "id": "component-InlineCode"
                         },
                         " 标记行内代码。"
                       ]
@@ -3237,7 +3470,8 @@
                       "props": {
                         "language": "typescript",
                         "code": "const greeting = 'Hello, Stitch!';\nconsole.log(greeting);\n\n// JSON Schema 渲染引擎\nfunction render(schema: UINode) {\n  return createElement(schema);\n}"
-                      }
+                      },
+                      "id": "component-CodeBlock"
                     }
                   ]
                 }
@@ -3276,7 +3510,8 @@
                       "children": "上方内容"
                     },
                     {
-                      "type": "Separator"
+                      "type": "Separator",
+                      "id": "component-Separator"
                     },
                     {
                       "type": "Text",
@@ -3420,7 +3655,8 @@
                       "type": "Badge",
                       "children": "Row C"
                     }
-                  ]
+                  ],
+                  "id": "component-Layout"
                 }
               ]
             }
@@ -3454,7 +3690,8 @@
                       "type": "Text",
                       "children": "Page 容器示例"
                     }
-                  ]
+                  ],
+                  "id": "component-Page"
                 }
               ]
             }
@@ -3594,7 +3831,8 @@
                         }
                       ]
                     }
-                  }
+                  },
+                  "id": "component-Columns"
                 }
               ]
             }
@@ -3646,7 +3884,8 @@
                         }
                       ]
                     }
-                  }
+                  },
+                  "id": "component-Split"
                 }
               ]
             }
@@ -3699,7 +3938,8 @@
                         }
                       ]
                     }
-                  }
+                  },
+                  "id": "component-Split"
                 }
               ]
             }
@@ -3762,7 +4002,8 @@
                         }
                       ]
                     }
-                  }
+                  },
+                  "id": "component-Rows"
                 }
               ]
             }
@@ -3802,7 +4043,8 @@
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "id": "component-Center"
                 }
               ]
             }
@@ -3837,7 +4079,8 @@
                       "type": "Spacer",
                       "props": {
                         "size": 4
-                      }
+                      },
+                      "id": "component-Spacer"
                     },
                     {
                       "type": "Badge",
@@ -3847,7 +4090,8 @@
                       "type": "Spacer",
                       "props": {
                         "size": 8
-                      }
+                      },
+                      "id": "component-Spacer"
                     },
                     {
                       "type": "Badge",
@@ -3885,7 +4129,8 @@
                       "children": "段落一"
                     },
                     {
-                      "type": "LayoutDivider"
+                      "type": "LayoutDivider",
+                      "id": "component-LayoutDivider"
                     },
                     {
                       "type": "Text",
@@ -3895,7 +4140,8 @@
                       "type": "LayoutDivider",
                       "props": {
                         "label": "分节标题"
-                      }
+                      },
+                      "id": "component-LayoutDivider"
                     },
                     {
                       "type": "Text",
@@ -3907,7 +4153,8 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "component-Stack"
     }
   ]
 }
