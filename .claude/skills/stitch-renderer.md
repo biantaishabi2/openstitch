@@ -64,6 +64,23 @@ Phoenix LiveView 代码
 | 箭头指示 | `<.icon name="arrow-right" />` |
 | Badge 组件 | `<.badge variant={...}>` |
 
+### 主题映射 [Theme]
+
+执行层根据 `[Theme]` 指令和 `context` 自行判断实现方式：
+
+- **同一 `context` 下的页面应保持风格一致**
+- 优先使用 Tailwind CSS 变量（`bg-background`, `text-foreground`）
+- 色彩遵循规划层的语义色指令
+
+| 主题描述 | 实现参考 |
+|----------|----------|
+| 暗色主题 | `<html class="dark">` + dark 模式变量 |
+| 主色调蓝色 | 按钮 `bg-blue-600`，链接 `text-blue-600` |
+| 企业风格 | 圆角 `rounded-md`，间距 `gap-4` |
+| 清新简约 | 圆角 `rounded-xl`，大量留白 `gap-8` |
+
+**注意**：具体实现由执行层自行决定，不需要写死。
+
 ---
 
 ## Step 3: HEEx 渲染规则
@@ -317,6 +334,17 @@ Phoenix LiveView 代码
 
 ## 组件清单
 
+### 布局组件
+
+| 组件 | 用途 | 实现方式 |
+|------|------|----------|
+| Grid | 网格布局 | `<div class="grid grid-cols-{n} gap-{n}">` |
+| Stack | 垂直堆叠 | `<div class="flex flex-col gap-{n}">` |
+| Split | 分栏布局 | `<div class="grid grid-cols-[3fr_7fr] gap-6">` |
+| Page | 页面容器 | `<div class="min-h-screen bg-background p-6">` |
+
+### UI 组件
+
 | 组件 | 用途 | 核心 Props |
 |------|------|-----------|
 | `.card` | 卡片容器 | `class` |
@@ -335,6 +363,30 @@ Phoenix LiveView 代码
 | `.badge` | 徽章 | `variant` |
 | `.icon` | 图标 | `name`, `class` |
 | `.form` | 表单 | `for`, `phx-submit` |
+
+---
+
+## 一致性保障
+
+当处理多页面任务（如 PPT、多页应用）时：
+
+### Context 作为 Theme Key
+
+同一 `context` 下的所有页面，使用同一套：
+- 色板（主色、强调色、背景色）
+- 圆角规范
+- 字体和间距
+
+### 序列感知
+
+解析 `[Layout]` 中的序列标注：
+- **"封面页"** → Hero 布局，可以更大胆
+- **"中间页"** → 保持与前页一致
+- **"结尾页"** → 呼应封面设计
+
+### 组件库单例
+
+同一会话中，所有 `Card`、`Button` 等组件映射到同一套样式定义，确保跨页面一致。
 
 ---
 

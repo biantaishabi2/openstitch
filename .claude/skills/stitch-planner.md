@@ -12,11 +12,14 @@
   "arguments": {
     "title": "页面的功能性标题",
     "context": "项目/产品名称（保持风格一致的关键）",
-    "description": "给执行层的视觉剧本，使用自然语言指令集",
-    "mobile_navigation": ["导航项1", "导航项2"]
+    "description": "给执行层的视觉剧本，使用自然语言指令集"
   }
 }
 ```
+
+**平台类型**：在 `[Layout]` 指令中指定，不需要单独字段：
+- 桌面端：`[Layout] 桌面端 Web 布局...`
+- 移动端：`[Layout] 移动端布局，底部导航栏包含：首页、发现、我的`
 
 ---
 
@@ -85,6 +88,71 @@
 
 ### 4. 上下文一致性 (Contextual Consistency)
 每一页的 `context` 必须重复项目名称，确保执行层在整个项目中保持统一的视觉风格。
+
+---
+
+## 并行调用规范
+
+当需要同时生成多个页面（如 PPT、多页应用）时，必须通过 REPL 变量共享机制保证视觉一致性。
+
+### 1. 任务开始时设置共享变量
+
+在任务开始时，**先执行一段代码**设置全局设计变量：
+
+```python
+# 第一步：定义共享的设计上下文（只执行一次）
+DESIGN_CONTEXT = "RLM 技术文档，专业技术演示风格"
+DESIGN_THEME = "Enterprise Tech 主题，主色调 Blue-600，背景浅灰"
+DESIGN_STYLE = "圆角 rounded-lg，间距 gap-6，阴影 shadow-sm"
+```
+
+这些变量会保存在 REPL 的 `locals_store` 中，整个会话期间持久化共享。
+
+### 2. 后续调用引用共享变量
+
+所有 `generate_design` 调用都引用这些变量，而不是硬编码：
+
+```python
+# 调用1：封面页
+generate_design(
+    title="RLM 架构概览",
+    context=DESIGN_CONTEXT,
+    description=f"[Layout] 这是 PPT 封面页，使用 Hero 布局。\n\n[Theme] {DESIGN_THEME}\n\n..."
+)
+
+# 调用2：内容页（可并行）
+generate_design(
+    title="规划层详解",
+    context=DESIGN_CONTEXT,
+    description=f"[Layout] 这是第 2 页，保持与封面一致的配色。\n\n[Theme] {DESIGN_THEME}\n\n..."
+)
+
+# 调用3：内容页（可并行）
+generate_design(
+    title="执行层详解",
+    context=DESIGN_CONTEXT,
+    description=f"[Layout] 这是第 3 页。\n\n[Theme] {DESIGN_THEME}\n\n..."
+)
+```
+
+### 3. 样式冗余声明
+
+每个 `description` 都必须重复 `[Theme]` 指令，不能只在第一页写：
+
+```
+✅ 正确：每页都写 [Theme] {DESIGN_THEME}
+❌ 错误：第一页写 [Theme]，后面省略
+```
+
+### 4. 序列标注
+
+在 `[Layout]` 中标注页面位置，引导执行层保持连贯：
+
+```
+[Layout] 这是 PPT 封面页，使用 Hero 布局。
+[Layout] 这是第 2 页，保持与封面一致的配色。
+[Layout] 这是结尾页，呼应封面设计。
+```
 
 ---
 
