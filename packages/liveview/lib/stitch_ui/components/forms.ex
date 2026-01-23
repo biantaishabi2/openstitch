@@ -96,8 +96,29 @@ defmodule StitchUI.Components.Forms do
     """
   end
 
+  @doc """
+  复选框组件
+
+  ## 属性
+  - `checked` - 是否选中（由父组件/LiveView管理）
+  - `name` - 字段名称，用于事件中区分不同checkbox
+  - `on_change` - phx-click事件名称，点击时发送 `%{"name" => name}`
+
+  ## 示例
+
+      <.checkbox name="agree" checked={@agree} on_change="toggle-checkbox" />
+
+      # 在LiveView中处理:
+      def handle_event("toggle-checkbox", %{"name" => name}, socket) do
+        key = String.to_existing_atom(name)
+        {:noreply, assign(socket, key, !socket.assigns[key])}
+      end
+  """
   attr :checked, :boolean, default: false
   attr :id, :string, default: nil
+  attr :name, :string, default: nil
+  attr :on_change, :string, default: nil
+  attr :disabled, :boolean, default: false
   attr :class, :string, default: nil
   attr :rest, :global
 
@@ -113,13 +134,16 @@ defmodule StitchUI.Components.Forms do
       id={@id}
       data-slot="checkbox"
       data-state={@state}
+      disabled={@disabled}
+      phx-click={@on_change}
+      phx-value-name={@name}
       class={[
         "peer border-input dark:bg-input/30 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground dark:data-[state=checked]:bg-primary data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
         @class
       ]}
       {@rest}
     >
-      <span data-slot="checkbox-indicator" class="grid place-content-center text-current transition-none">
+      <span data-slot="checkbox-indicator" class={["grid place-content-center text-current transition-none", @state != "checked" && "invisible"]}>
         <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
           <path d="M20 6 9 17l-5-5" />
         </svg>
@@ -144,9 +168,28 @@ defmodule StitchUI.Components.Forms do
     """
   end
 
+  @doc """
+  单选按钮项
+
+  ## 属性
+  - `value` - 选项值
+  - `checked` - 是否选中（由父组件/LiveView管理）
+  - `on_change` - phx-click事件名称，点击时发送 `%{"val" => value}`
+
+  ## 示例
+
+      <.radio_group_item value="option-1" checked={@radio_value == "option-1"} on_change="select-radio" />
+
+      # 在LiveView中处理:
+      def handle_event("select-radio", %{"val" => value}, socket) do
+        {:noreply, assign(socket, radio_value: value)}
+      end
+  """
   attr :id, :string, default: nil
   attr :value, :string, required: true
   attr :checked, :boolean, default: false
+  attr :on_change, :string, default: nil
+  attr :disabled, :boolean, default: false
   attr :class, :string, default: nil
   attr :rest, :global
 
@@ -163,14 +206,17 @@ defmodule StitchUI.Components.Forms do
       data-slot="radio-group-item"
       data-state={@state}
       data-value={@value}
+      disabled={@disabled}
+      phx-click={@on_change}
+      phx-value-val={@value}
       class={[
         "border-input text-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 aspect-square size-4 shrink-0 rounded-full border shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
         @class
       ]}
       {@rest}
     >
-      <span data-slot="radio-group-indicator" class="relative flex items-center justify-center">
-        <svg class="fill-primary absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2" viewBox="0 0 24 24">
+      <span data-slot="radio-group-indicator" class={["relative flex items-center justify-center text-primary", @state != "checked" && "invisible"]}>
+        <svg class="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2" fill="currentColor" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="10"></circle>
         </svg>
       </span>
@@ -178,7 +224,29 @@ defmodule StitchUI.Components.Forms do
     """
   end
 
+  @doc """
+  开关组件
+
+  ## 属性
+  - `checked` - 是否开启（由父组件/LiveView管理）
+  - `name` - 字段名称，用于事件中区分不同switch
+  - `on_change` - phx-click事件名称，点击时发送 `%{"name" => name}`
+
+  ## 示例
+
+      <.switch name="notifications" checked={@notifications} on_change="toggle-switch" />
+
+      # 在LiveView中处理:
+      def handle_event("toggle-switch", %{"name" => name}, socket) do
+        key = String.to_existing_atom(name)
+        {:noreply, assign(socket, key, !socket.assigns[key])}
+      end
+  """
   attr :checked, :boolean, default: false
+  attr :id, :string, default: nil
+  attr :name, :string, default: nil
+  attr :on_change, :string, default: nil
+  attr :disabled, :boolean, default: false
   attr :class, :string, default: nil
   attr :rest, :global
 
@@ -191,8 +259,12 @@ defmodule StitchUI.Components.Forms do
       type="button"
       role="switch"
       aria-checked={@checked}
+      id={@id}
       data-slot="switch"
       data-state={@state}
+      disabled={@disabled}
+      phx-click={@on_change}
+      phx-value-name={@name}
       class={[
         "peer data-[state=checked]:bg-primary data-[state=unchecked]:bg-input focus-visible:border-ring focus-visible:ring-ring/50 dark:data-[state=unchecked]:bg-input/80 inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
         @class
@@ -201,6 +273,7 @@ defmodule StitchUI.Components.Forms do
     >
       <span
         data-slot="switch-thumb"
+        data-state={@state}
         class="bg-background dark:data-[state=unchecked]:bg-foreground dark:data-[state=checked]:bg-primary-foreground pointer-events-none block size-4 rounded-full ring-0 transition-transform data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0"
       ></span>
     </button>

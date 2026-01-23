@@ -1048,15 +1048,15 @@
                   复选框 Checkbox
                 </.label>
                 <.flex align="center" gap={2}>
-                  <.checkbox id="c1" />
+                  <.checkbox id="c1" name="checkbox_1" checked={@checkbox_1} on_change="toggle-checkbox" />
                   <.label for="c1" id="component-Label">
                     选项一
                   </.label>
                 </.flex>
                 <.flex align="center" gap={2}>
-                  <.checkbox checked={true} id="c2" />
+                  <.checkbox id="c2" name="checkbox_2" checked={@checkbox_2} on_change="toggle-checkbox" />
                   <.label for="c2">
-                    选项二（已选）
+                    选项二
                   </.label>
                 </.flex>
               </.stack>
@@ -1065,7 +1065,7 @@
                   开关 Switch
                 </.label>
                 <.flex align="center" gap={2}>
-                  <.switch id="component-Switch" />
+                  <.switch id="component-Switch" name="switch_1" checked={@switch_1} on_change="toggle-switch" />
                   <.text class="text-sm">
                     启用通知
                   </.text>
@@ -1085,15 +1085,15 @@
                 <.label>
                   单选框 RadioGroup
                 </.label>
-                <.radio_group default_value="option1" id="component-RadioGroup">
+                <.radio_group value={@radio_value} id="component-RadioGroup">
                   <.flex align="center" gap={2} id="component-RadioGroupItem">
-                    <.radio_group_item id="r1" value="option1" />
+                    <.radio_group_item id="r1" value="option-one" checked={@radio_value == "option-one"} on_change="select-radio" />
                     <.label for="r1">
                       选项 A
                     </.label>
                   </.flex>
                   <.flex align="center" gap={2}>
-                    <.radio_group_item id="r2" value="option2" />
+                    <.radio_group_item id="r2" value="option-two" checked={@radio_value == "option-two"} on_change="select-radio" />
                     <.label for="r2">
                       选项 B
                     </.label>
