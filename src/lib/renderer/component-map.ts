@@ -81,6 +81,54 @@ import {
   LayoutDivider,
 } from '@/components/ui/layout';
 
+// 通用 Layout 组件（支持 direction, gap, justify, align）
+interface LayoutProps extends React.HTMLAttributes<HTMLDivElement> {
+  direction?: 'row' | 'column';
+  gap?: number;
+  justify?: 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly';
+  align?: 'start' | 'end' | 'center' | 'stretch' | 'baseline';
+  wrap?: boolean;
+}
+
+const justifyMap: Record<string, string> = {
+  start: 'justify-start',
+  end: 'justify-end',
+  center: 'justify-center',
+  between: 'justify-between',
+  around: 'justify-around',
+  evenly: 'justify-evenly',
+};
+
+const alignMap: Record<string, string> = {
+  start: 'items-start',
+  end: 'items-end',
+  center: 'items-center',
+  stretch: 'items-stretch',
+  baseline: 'items-baseline',
+};
+
+const Layout: React.FC<LayoutProps> = ({
+  direction = 'row',
+  gap = 0,
+  justify,
+  align,
+  wrap,
+  className,
+  children,
+  ...props
+}) => {
+  const classes = cn(
+    'flex',
+    direction === 'column' ? 'flex-col' : 'flex-row',
+    gap > 0 && `gap-${gap}`,
+    justify && justifyMap[justify],
+    align && alignMap[align],
+    wrap && 'flex-wrap',
+    className
+  );
+  return React.createElement('div', { className: classes, ...props }, children);
+};
+
 // 自定义扩展组件
 import {
   Timeline,
@@ -223,6 +271,7 @@ export const componentMap: ComponentMap = {
   Image,
 
   // ========== 布局组件 ==========
+  Layout,
   Grid,
   Columns,
   Split,

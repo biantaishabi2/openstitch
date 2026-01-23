@@ -672,6 +672,37 @@ module.exports = {
 
 ## 实现路线图
 
+## 组件覆盖范围（Components Showcase）
+
+先覆盖 `components-showcase` 中出现的组件类型（共 69 个），确保页面可完整渲染。当前已全部覆盖。
+
+**覆盖清单（按类别）**：
+
+- 布局/结构：Div, Stack, Flex, Grid, Columns, Rows, Split, Center, Spacer, LayoutDivider, Section, Hero
+- 元素/媒体：Text, Link, Image, Icon, Avatar, AvatarImage, AvatarFallback
+- 卡片：Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter
+- 导航：Tabs, TabsList, TabsTrigger, TabsContent, Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, Stepper, Step
+- 数据展示：Table, TableHeader, TableBody, TableRow, TableHead, TableCell, List, ListItem, Timeline, TimelineItem, Statistic, CodeBlock
+- 表单/控件：Button, Input, Label, Checkbox, RadioGroup, RadioGroupItem, Switch, Slider
+- 反馈/杂项：Alert, AlertTitle, AlertDescription, Badge, Progress, Skeleton, EmptyState, Separator
+- 折叠：Accordion, AccordionItem, AccordionTrigger, AccordionContent
+
+## 实现原则（LiveView）
+
+- **纯 LiveView**：不使用 `phx-hook`/自定义 JS，交互组件用 `phx-` 事件 + assigns 管理状态（Tabs demo 使用 `tabs-change`；Accordion 走 `<details>` 原生折叠，可选 `on_toggle` 事件）。
+- **主题方案**：默认使用全局 CSS 变量（shadcn tokens）；保留根容器 `theme`/`style` 覆盖作为可选扩展。
+- **导出器映射**：HEEx 导出需覆盖以上 69 个类型及其 slots/children 规则。
+- **行为差异**：如遇无法纯 LiveView 复刻的交互，需明确降级行为并记录。
+
+## TODO
+
+- [x] 覆盖 `components-showcase` 的 69 个组件类型（按上方清单）
+- [x] Tabs/Accordion/Stepper 用纯 LiveView（无 hook）实现基础交互
+- [ ] 表单控件交互示例：Checkbox/Radio/Switch/Slider 的 LiveView 状态与事件
+- [ ] CodeBlock 语法高亮与 Copy 行为（需要 JS 或服务器推送提示）
+- [ ] 主题方案 helper：Elixir 侧生成 CSS 变量（当前仅支持 style/data-theme 透传）
+- [ ] 记录不可纯 LiveView 复刻的交互（Dialog/Tooltip 等）及降级方案
+
 ### 阶段 0: 项目初始化
 - [ ] 创建 `packages/liveview` 目录结构
 - [ ] 初始化 mix.exs（stitch_ui 包）
@@ -1173,6 +1204,50 @@ mix stitch.export dashboard.json --output lib/my_app_web/components/dashboard.he
     </.card_content>
   </.card>
 </.stack>
+```
+
+### Demo 页面（用于对比 React 导出）
+
+已提供 `StitchUI.DemoLive` 和内置的 `components_showcase.html.heex`：
+
+```elixir
+# router.ex
+live "/stitch-demo", StitchUI.DemoLive
+```
+
+访问 `http://localhost:4000/stitch-demo`，对比 `components-showcase.html` 的导出效果。
+
+### 最小 Demo App（本仓库）
+
+为了直接浏览器对比，仓库内新增了 Phoenix demo：
+
+```bash
+cd examples/stitch_demo
+mix deps.get
+mix assets.setup
+mix assets.build
+mix phx.server
+```
+
+访问 `http://localhost:4000/`。
+
+该 Demo 在根容器上挂载了 `phx-hook="StitchUI"`，用于在浏览器侧补齐 Tabs/Accordion/Slider/CodeBlock 的交互体验（见 `examples/stitch_demo/assets/js/app.js`）。
+
+### 交互状态（纯 LiveView）
+
+- Tabs: 在 `TabsTrigger` 上传 `on_change`，服务器更新 `@active_tab` 后传给 `active_value`
+- Accordion: 在 `AccordionTrigger` 上传 `on_toggle`，服务器更新 `@open_items`
+- Stepper: 通过 `current_step` 驱动，Step 会自动计算 `status`/`step_number`
+
+```elixir
+<.tabs value={@active_tab}>
+  <.tabs_list>
+    <.tabs_trigger value="overview" active_value={@active_tab} on_change="tabs:change">
+      概览
+    </.tabs_trigger>
+  </.tabs_list>
+  <.tabs_content value="overview" active_value={@active_tab}>...</.tabs_content>
+</.tabs>
 ```
 
 ## 总结

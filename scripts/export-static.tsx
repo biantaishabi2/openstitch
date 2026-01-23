@@ -21,6 +21,7 @@ const OUTPUT_DIR = '/home/wangbo/document/zcpg/docs/stitch';
 
 // schemas 目录
 const SCHEMAS_DIR = path.join(__dirname, '../src/data/schemas');
+const INSPECTOR_SOURCE = path.join(__dirname, '../public/inspector.min.js');
 
 interface SchemaInfo {
   id: string;
@@ -45,7 +46,16 @@ function scanSchemas(): SchemaInfo[] {
 }
 
 // HTML 模板
-function wrapHTML(content: string, title: string): string {
+function wrapHTML(
+  content: string,
+  title: string,
+  options?: { inspector?: boolean; inspectorInline?: boolean; inspectorScript?: string }
+): string {
+  const inspectorScript = options?.inspector
+    ? options.inspectorInline
+      ? `<script>${options.inspectorScript ?? ''}</script>`
+      : '<script src="./inspector.min.js" defer></script>'
+    : '';
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -97,6 +107,7 @@ function wrapHTML(content: string, title: string): string {
 </head>
 <body>
   ${content}
+  ${inspectorScript}
   <div style="text-align: center; padding: 2rem; color: #999; font-size: 0.875rem;">
     <p>Stitch UI Rendering Engine</p>
     <p><a href="index.html" style="color: #3b82f6;">← 返回首页</a></p>
@@ -106,16 +117,19 @@ function wrapHTML(content: string, title: string): string {
 }
 
 // 导出单个 schema
-function exportSchema(info: SchemaInfo): void {
+function exportSchema(
+  info: SchemaInfo,
+  options?: { inspector?: boolean; inspectorInline?: boolean; inspectorScript?: string }
+): void {
   const schemaPath = path.join(SCHEMAS_DIR, info.file);
   const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf-8'));
 
   // 渲染 React 组件
-  const element = render(schema);
+  const element = render(schema, options?.inspector ? { debug: true } : undefined);
   const html = renderToString(element);
 
   // 包装成完整 HTML
-  const fullHTML = wrapHTML(html, info.name);
+  const fullHTML = wrapHTML(html, info.name, options);
 
   // 写入文件
   const outputPath = path.join(OUTPUT_DIR, `${info.id}.html`);
@@ -176,6 +190,8 @@ Stitch 静态 HTML 导出工具
   --list, -l     列出所有可用的 schemas
   --help, -h     显示帮助信息
   --output, -o   指定输出目录 (默认: ${OUTPUT_DIR})
+  --inspector    输出 Inspector 脚本并注入 HTML
+  --inspector-inline  内联 Inspector 脚本到 HTML
 
 示例:
   npx tsx scripts/export-static.tsx              # 导出所有 schemas
@@ -188,6 +204,11 @@ Stitch 静态 HTML 导出工具
 // 主函数
 async function main() {
   const args = process.argv.slice(2);
+  const inspectorEnabled = args.includes('--inspector') || args.includes('--inspector-inline');
+  const inspectorInline = args.includes('--inspector-inline');
+  const inspectorScript = inspectorInline
+    ? fs.readFileSync(INSPECTOR_SOURCE, 'utf-8')
+    : undefined;
 
   // 处理选项
   if (args.includes('--help') || args.includes('-h')) {
@@ -240,10 +261,21 @@ async function main() {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   }
 
+  if (inspectorEnabled && !inspectorInline) {
+    if (!fs.existsSync(INSPECTOR_SOURCE)) {
+      throw new Error(`Inspector script not found: ${INSPECTOR_SOURCE}`);
+    }
+    fs.copyFileSync(INSPECTOR_SOURCE, path.join(OUTPUT_DIR, 'inspector.min.js'));
+  }
+
   // 导出选定的 schemas
   for (const info of schemasToExport) {
     try {
-      exportSchema(info);
+      exportSchema(info, {
+        inspector: inspectorEnabled,
+        inspectorInline,
+        inspectorScript,
+      });
     } catch (err) {
       console.error(`✗ Failed: ${info.id}`, err);
     }

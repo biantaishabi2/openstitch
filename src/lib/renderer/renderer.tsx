@@ -47,7 +47,7 @@ function renderNode(
   }
 
   // 4. 创建新的上下文
-  const childContext: RenderContext = {
+  const childContextBase: RenderContext = {
     ...context,
     depth: context.depth + 1,
     parentType: type,
@@ -58,7 +58,13 @@ function renderNode(
   if (slots && typeof slots === 'object') {
     renderedSlots = {};
     for (const [slotName, slotNode] of Object.entries(slots)) {
-      renderedSlots[slotName] = renderNode(slotNode, childContext);
+      const slotPath = context.path
+        ? `${context.path}.slots.${slotName}`
+        : `slots.${slotName}`;
+      renderedSlots[slotName] = renderNode(slotNode, {
+        ...childContextBase,
+        path: slotPath,
+      });
     }
   }
 
@@ -68,7 +74,13 @@ function renderNode(
     if (Array.isArray(children)) {
       // 数组：递归渲染每个子节点
       renderedChildren = children.map((child, index) => {
-        const rendered = renderNode(child, childContext);
+        const childPath = context.path
+          ? `${context.path}.children.${index}`
+          : `children.${index}`;
+        const rendered = renderNode(child, {
+          ...childContextBase,
+          path: childPath,
+        });
         // 为每个子节点添加 key
         if (React.isValidElement(rendered)) {
           return React.cloneElement(rendered, { key: index });
@@ -77,7 +89,11 @@ function renderNode(
       });
     } else if (typeof children === 'object') {
       // 单个对象节点
-      renderedChildren = renderNode(children as UINode, childContext);
+      const childPath = context.path ? `${context.path}.children` : 'children';
+      renderedChildren = renderNode(children as UINode, {
+        ...childContextBase,
+        path: childPath,
+      });
     } else {
       // 字符串或其他
       renderedChildren = children;
@@ -103,8 +119,18 @@ function renderNode(
   if (context.config.debug) {
     finalProps['data-stitch-type'] = type;
     finalProps['data-stitch-depth'] = context.depth;
+    if (context.path) {
+      finalProps['data-stitch-path'] = context.path;
+    }
     if (id) {
       finalProps['data-stitch-id'] = id;
+    }
+    if (props && Object.keys(props).length > 0) {
+      try {
+        finalProps['data-stitch-props'] = JSON.stringify(props);
+      } catch {
+        // ignore serialization issues
+      }
     }
   }
 

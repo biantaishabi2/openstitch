@@ -43,6 +43,9 @@ export interface RenderContext {
   // 父节点类型
   parentType?: string;
 
+  // 当前节点路径
+  path?: string;
+
   // 配置
   config: RendererConfig;
 }

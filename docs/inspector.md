@@ -435,28 +435,23 @@ if (typeof window !== 'undefined') {
 }
 ```
 
-### 步骤 3: 创建可注入的脚本
+### 步骤 3: 生成独立脚本（相对引用）
+
+将 Inspector 打包成独立文件，导出时以相对路径引入（单文件 HTML 也可选 inline）。
 
 创建 `src/lib/inspector/inject.ts`（用于导出到静态 HTML）：
 
 ```typescript
 /**
- * 可注入到静态 HTML 的 Inspector 脚本（压缩版）
+ * 生成带 Inspector 的 HTML（默认相对路径引用）
  */
-export const INSPECTOR_SCRIPT = `
-<script>
-(function(){
-  // ... 压缩后的 inspector 代码
-  // 或者从 CDN 加载
-})();
-</script>
-`;
-
-/**
- * 生成带 Inspector 的 HTML
- */
-export function injectInspector(html: string): string {
-  return html.replace('</body>', `${INSPECTOR_SCRIPT}</body>`);
+export function injectInspector(
+  html: string,
+  options?: { scriptSrc?: string }
+): string {
+  const src = options?.scriptSrc ?? './inspector.min.js';
+  const tag = `<script src="${src}" defer></script>`;
+  return html.replace('</body>', `${tag}</body>`);
 }
 ```
 
@@ -465,11 +460,11 @@ export function injectInspector(html: string): string {
 修改 `scripts/export-static.tsx`，添加 inspector 注入选项：
 
 ```typescript
-// 在 wrapHTML 函数中添加 inspector 脚本
+// 在 wrapHTML 函数中添加 inspector 脚本（相对路径）
 function wrapHTML(content: string, title: string, options?: { inspector?: boolean }): string {
-  const inspectorScript = options?.inspector ? `
-    <script src="https://unpkg.com/stitch-inspector/dist/inspector.min.js"></script>
-  ` : '';
+  const inspectorScript = options?.inspector
+    ? '<script src="./inspector.min.js" defer></script>'
+    : '';
 
   return `<!DOCTYPE html>
 <html>
@@ -486,6 +481,9 @@ function exportSchema(info: SchemaInfo): void {
   const element = render(schema, { debug: true });  // 启用 debug
   // ...
 }
+
+// 如果启用 inspector，同步拷贝打包产物到导出目录
+// outputDir/inspector.min.js
 ```
 
 ### 步骤 5: 添加快捷启动按钮
@@ -667,7 +665,7 @@ pnpm build:inspector
 ls -la dist/inspector.min.js
 
 # 3. 在纯 HTML 页面测试
-# 创建测试页面，引入脚本，确认功能正常
+# 创建测试页面，引入 ./inspector.min.js，确认功能正常
 ```
 
 **验证标准**：
@@ -689,7 +687,8 @@ open /home/wangbo/document/zcpg/docs/stitch/tech-dashboard.html
 ```
 
 **验证标准**：
-- 导出的 HTML 包含 Inspector 脚本
+- 导出的 HTML 通过相对路径加载 Inspector 脚本
+- 导出目录下存在 `inspector.min.js`
 - 组件元素包含 data-stitch-* 属性
 - Inspector 功能正常工作
 

@@ -1,6 +1,8 @@
 {
   "type": "Flex",
-  "props": { "className": "min-h-screen bg-background" },
+  "props": {
+    "className": "min-h-screen bg-background"
+  },
   "children": [
     {
       "type": "Stack",
@@ -9,846 +11,3376 @@
         "className": "w-56 border-r bg-muted/30 p-4 sticky top-0 h-screen overflow-y-auto shrink-0"
       },
       "children": [
-        { "type": "Text", "props": { "className": "font-bold text-lg mb-4" }, "children": "Stitch 组件库" },
-        { "type": "Text", "props": { "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2" }, "children": "页面组件" },
-        { "type": "Link", "props": { "href": "#hero", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Hero 主视觉" },
-        { "type": "Link", "props": { "href": "#section", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Section 区块" },
-        { "type": "Text", "props": { "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2" }, "children": "导航组件" },
-        { "type": "Link", "props": { "href": "#breadcrumb", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Breadcrumb 面包屑" },
-        { "type": "Link", "props": { "href": "#stepper", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Stepper 步骤条" },
-        { "type": "Link", "props": { "href": "#tabs", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Tabs 标签页" },
-        { "type": "Text", "props": { "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2" }, "children": "基础组件" },
-        { "type": "Link", "props": { "href": "#button", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Button 按钮" },
-        { "type": "Link", "props": { "href": "#badge", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Badge 徽章" },
-        { "type": "Link", "props": { "href": "#icon", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Icon 图标" },
-        { "type": "Link", "props": { "href": "#image", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Image 图片" },
-        { "type": "Link", "props": { "href": "#avatar", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Avatar 头像" },
-        { "type": "Text", "props": { "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2" }, "children": "数据展示" },
-        { "type": "Link", "props": { "href": "#card", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Card 卡片" },
-        { "type": "Link", "props": { "href": "#statistic", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Statistic 统计" },
-        { "type": "Link", "props": { "href": "#table", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Table 表格" },
-        { "type": "Link", "props": { "href": "#list", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "List 列表" },
-        { "type": "Link", "props": { "href": "#timeline", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Timeline 时间线" },
-        { "type": "Link", "props": { "href": "#accordion", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Accordion 折叠" },
-        { "type": "Text", "props": { "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2" }, "children": "表单组件" },
-        { "type": "Link", "props": { "href": "#form", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Form 表单" },
-        { "type": "Text", "props": { "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2" }, "children": "反馈组件" },
-        { "type": "Link", "props": { "href": "#alert", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Alert 提示" },
-        { "type": "Link", "props": { "href": "#progress", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Progress 进度" },
-        { "type": "Link", "props": { "href": "#skeleton", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Skeleton 骨架屏" },
-        { "type": "Link", "props": { "href": "#empty", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "EmptyState 空状态" },
-        { "type": "Link", "props": { "href": "#dialog", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Dialog 对话框" },
-        { "type": "Link", "props": { "href": "#tooltip", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Tooltip 提示" },
-        { "type": "Text", "props": { "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2" }, "children": "布局组件" },
-        { "type": "Link", "props": { "href": "#layout", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Layout 布局" },
-        { "type": "Text", "props": { "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2" }, "children": "其他" },
-        { "type": "Link", "props": { "href": "#separator", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "Separator 分隔线" },
-        { "type": "Link", "props": { "href": "#codeblock", "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }, "children": "CodeBlock 代码块" }
+        {
+          "type": "Text",
+          "props": {
+            "className": "font-bold text-lg mb-4"
+          },
+          "children": "Stitch 组件库"
+        },
+        {
+          "type": "Text",
+          "props": {
+            "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+          },
+          "children": "页面组件"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#hero",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Hero 主视觉"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#section",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Section 区块"
+        },
+        {
+          "type": "Text",
+          "props": {
+            "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+          },
+          "children": "导航组件"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#breadcrumb",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Breadcrumb 面包屑"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#stepper",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Stepper 步骤条"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#tabs",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Tabs 标签页"
+        },
+        {
+          "type": "Text",
+          "props": {
+            "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+          },
+          "children": "基础组件"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#button",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Button 按钮"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#badge",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Badge 徽章"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#icon",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Icon 图标"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#image",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Image 图片"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#avatar",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Avatar 头像"
+        },
+        {
+          "type": "Text",
+          "props": {
+            "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+          },
+          "children": "数据展示"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#card",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Card 卡片"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#statistic",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Statistic 统计"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#table",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Table 表格"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#list",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "List 列表"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#timeline",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Timeline 时间线"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#accordion",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Accordion 折叠"
+        },
+        {
+          "type": "Text",
+          "props": {
+            "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+          },
+          "children": "表单组件"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#form",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Form 表单"
+        },
+        {
+          "type": "Text",
+          "props": {
+            "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+          },
+          "children": "反馈组件"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#alert",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Alert 提示"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#progress",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Progress 进度"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#skeleton",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Skeleton 骨架屏"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#empty",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "EmptyState 空状态"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#dialog",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Dialog 对话框"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#tooltip",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Tooltip 提示"
+        },
+        {
+          "type": "Text",
+          "props": {
+            "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+          },
+          "children": "布局组件"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#layout",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Layout 布局"
+        },
+        {
+          "type": "Text",
+          "props": {
+            "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+          },
+          "children": "其他"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#separator",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Separator 分隔线"
+        },
+        {
+          "type": "Link",
+          "props": {
+            "href": "#codeblock",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "CodeBlock 代码块"
+        },
+        {
+          "type": "Text",
+          "props": {
+            "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+          },
+          "children": "组件清单"
+        },
+        {
+          "type": "Div",
+          "props": {
+            "className": "grid grid-cols-2 gap-1 text-[11px] text-muted-foreground"
+          },
+          "children": [
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Div"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Span"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Text"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Link"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Image"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Layout"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Grid"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Columns"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Split"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Stack"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Flex"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Rows"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Page"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Center"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Spacer"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "LayoutDivider"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Hero"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Section"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Container"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Card"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "CardHeader"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "CardTitle"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "CardDescription"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "CardContent"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "CardFooter"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Tabs"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TabsList"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TabsTrigger"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TabsContent"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Breadcrumb"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "BreadcrumbList"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "BreadcrumbItem"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "BreadcrumbLink"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "BreadcrumbPage"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "BreadcrumbSeparator"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Stepper"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Step"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Table"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TableHeader"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TableBody"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TableRow"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TableHead"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TableCell"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Timeline"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TimelineItem"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TimelineContent"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TimelineHeader"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TimelineTitle"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TimelineDescription"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TimelineTime"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TimelineConnector"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TimelineEmpty"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Accordion"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "AccordionItem"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "AccordionTrigger"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "AccordionContent"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "List"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "ListItem"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Statistic"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "StatisticCard"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "CodeBlock"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "InlineCode"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Button"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Input"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Label"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Checkbox"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "RadioGroup"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "RadioGroupItem"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Switch"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Slider"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Alert"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "AlertTitle"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "AlertDescription"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Badge"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Progress"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Dialog"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "DialogTrigger"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "DialogContent"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "DialogHeader"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "DialogTitle"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "DialogDescription"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "DialogFooter"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Tooltip"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TooltipProvider"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TooltipTrigger"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "TooltipContent"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Skeleton"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "EmptyState"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Icon"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Avatar"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "AvatarImage"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "AvatarFallback"
+            },
+            {
+              "type": "Span",
+              "props": {
+                "className": "rounded bg-muted px-1.5 py-0.5"
+              },
+              "children": "Separator"
+            }
+          ]
+        }
       ]
     },
     {
       "type": "Stack",
-      "props": { "gap": 8, "className": "flex-1 p-8 overflow-y-auto" },
+      "props": {
+        "gap": 8,
+        "className": "flex-1 p-8 overflow-y-auto"
+      },
       "children": [
         {
           "type": "Card",
           "id": "hero",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Hero 主视觉" },
-              { "type": "CardDescription", "children": "页面顶部的主视觉区域" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Hero",
-                "props": {
-                  "title": "Stitch 组件库",
-                  "subtitle": "JSON Schema 驱动",
-                  "description": "完整展示所有可用组件，点击左侧导航快速跳转",
-                  "size": "sm"
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Hero 主视觉"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "页面顶部的主视觉区域"
                 }
-              }
-            ]}
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Hero",
+                  "props": {
+                    "title": "Stitch 组件库",
+                    "subtitle": "JSON Schema 驱动",
+                    "description": "完整展示所有可用组件，点击左侧导航快速跳转",
+                    "size": "sm"
+                  }
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "section",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Section 区块" },
-              { "type": "CardDescription", "children": "页面内容分区组件" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Section",
-                "props": { "title": "功能特性", "subtitle": "我们提供的核心能力" },
-                "children": [
-                  { "type": "Text", "props": { "className": "text-muted-foreground" }, "children": "Section 组件用于组织页面内容，支持标题和副标题。" }
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Section 区块"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "页面内容分区组件"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Section",
+                  "props": {
+                    "title": "功能特性",
+                    "subtitle": "我们提供的核心能力"
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "className": "text-muted-foreground"
+                      },
+                      "children": "Section 组件用于组织页面内容，支持标题和副标题。"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Card",
+          "id": "container",
+          "children": [
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Container 容器"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "内容宽度限制与内边距"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "size": "sm",
+                    "className": "bg-muted/40 rounded p-4"
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "children": "sm 容器宽度示例"
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "breadcrumb",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Breadcrumb 面包屑" },
-              { "type": "CardDescription", "children": "页面层级导航" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Breadcrumb",
-                "children": [
-                  {
-                    "type": "BreadcrumbList",
-                    "children": [
-                      { "type": "BreadcrumbItem", "children": [{ "type": "BreadcrumbLink", "props": { "href": "#" }, "children": "首页" }] },
-                      { "type": "BreadcrumbSeparator" },
-                      { "type": "BreadcrumbItem", "children": [{ "type": "BreadcrumbLink", "props": { "href": "#" }, "children": "组件" }] },
-                      { "type": "BreadcrumbSeparator" },
-                      { "type": "BreadcrumbItem", "children": [{ "type": "BreadcrumbPage", "children": "面包屑" }] }
-                    ]
-                  }
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Breadcrumb 面包屑"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "页面层级导航"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Breadcrumb",
+                  "children": [
+                    {
+                      "type": "BreadcrumbList",
+                      "children": [
+                        {
+                          "type": "BreadcrumbItem",
+                          "children": [
+                            {
+                              "type": "BreadcrumbLink",
+                              "props": {
+                                "href": "#"
+                              },
+                              "children": "首页"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "BreadcrumbSeparator"
+                        },
+                        {
+                          "type": "BreadcrumbItem",
+                          "children": [
+                            {
+                              "type": "BreadcrumbLink",
+                              "props": {
+                                "href": "#"
+                              },
+                              "children": "组件"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "BreadcrumbSeparator"
+                        },
+                        {
+                          "type": "BreadcrumbItem",
+                          "children": [
+                            {
+                              "type": "BreadcrumbPage",
+                              "children": "面包屑"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "stepper",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Stepper 步骤条" },
-              { "type": "CardDescription", "children": "引导用户完成多步骤流程" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Stepper",
-                "props": { "currentStep": 2 },
-                "children": [
-                  { "type": "Step", "props": { "title": "基本信息", "description": "填写账号信息" } },
-                  { "type": "Step", "props": { "title": "身份验证", "description": "验证手机号" } },
-                  { "type": "Step", "props": { "title": "完成注册", "description": "设置密码" } }
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Stepper 步骤条"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "引导用户完成多步骤流程"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Stepper",
+                  "props": {
+                    "currentStep": 2
+                  },
+                  "children": [
+                    {
+                      "type": "Step",
+                      "props": {
+                        "title": "基本信息",
+                        "description": "填写账号信息"
+                      }
+                    },
+                    {
+                      "type": "Step",
+                      "props": {
+                        "title": "身份验证",
+                        "description": "验证手机号"
+                      }
+                    },
+                    {
+                      "type": "Step",
+                      "props": {
+                        "title": "完成注册",
+                        "description": "设置密码"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "tabs",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Tabs 标签页" },
-              { "type": "CardDescription", "children": "切换不同内容面板的标签导航" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Tabs",
-                "props": { "defaultValue": "overview" },
-                "children": [
-                  {
-                    "type": "TabsList",
-                    "children": [
-                      { "type": "TabsTrigger", "props": { "value": "overview" }, "children": "概览" },
-                      { "type": "TabsTrigger", "props": { "value": "analytics" }, "children": "分析" },
-                      { "type": "TabsTrigger", "props": { "value": "reports" }, "children": "报告" },
-                      { "type": "TabsTrigger", "props": { "value": "settings" }, "children": "设置" }
-                    ]
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Tabs 标签页"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "切换不同内容面板的标签导航"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Tabs",
+                  "props": {
+                    "defaultValue": "overview"
                   },
-                  { "type": "TabsContent", "props": { "value": "overview", "className": "p-4 border rounded-lg mt-2" }, "children": [
-                    { "type": "Text", "props": { "className": "font-medium" }, "children": "概览面板" },
-                    { "type": "Text", "props": { "className": "text-muted-foreground text-sm mt-1" }, "children": "这里显示项目的总体概况和关键指标。" }
-                  ]},
-                  { "type": "TabsContent", "props": { "value": "analytics", "className": "p-4 border rounded-lg mt-2" }, "children": [
-                    { "type": "Text", "props": { "className": "font-medium" }, "children": "分析面板" },
-                    { "type": "Text", "props": { "className": "text-muted-foreground text-sm mt-1" }, "children": "这里显示详细的数据分析图表。" }
-                  ]},
-                  { "type": "TabsContent", "props": { "value": "reports", "className": "p-4 border rounded-lg mt-2" }, "children": [
-                    { "type": "Text", "props": { "className": "font-medium" }, "children": "报告面板" },
-                    { "type": "Text", "props": { "className": "text-muted-foreground text-sm mt-1" }, "children": "这里显示生成的各类报告。" }
-                  ]},
-                  { "type": "TabsContent", "props": { "value": "settings", "className": "p-4 border rounded-lg mt-2" }, "children": [
-                    { "type": "Text", "props": { "className": "font-medium" }, "children": "设置面板" },
-                    { "type": "Text", "props": { "className": "text-muted-foreground text-sm mt-1" }, "children": "这里可以调整项目的各项设置。" }
-                  ]}
-                ]
-              }
-            ]}
+                  "children": [
+                    {
+                      "type": "TabsList",
+                      "children": [
+                        {
+                          "type": "TabsTrigger",
+                          "props": {
+                            "value": "overview"
+                          },
+                          "children": "概览"
+                        },
+                        {
+                          "type": "TabsTrigger",
+                          "props": {
+                            "value": "analytics"
+                          },
+                          "children": "分析"
+                        },
+                        {
+                          "type": "TabsTrigger",
+                          "props": {
+                            "value": "reports"
+                          },
+                          "children": "报告"
+                        },
+                        {
+                          "type": "TabsTrigger",
+                          "props": {
+                            "value": "settings"
+                          },
+                          "children": "设置"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "TabsContent",
+                      "props": {
+                        "value": "overview",
+                        "className": "p-4 border rounded-lg mt-2"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "className": "font-medium"
+                          },
+                          "children": "概览面板"
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "className": "text-muted-foreground text-sm mt-1"
+                          },
+                          "children": "这里显示项目的总体概况和关键指标。"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "TabsContent",
+                      "props": {
+                        "value": "analytics",
+                        "className": "p-4 border rounded-lg mt-2"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "className": "font-medium"
+                          },
+                          "children": "分析面板"
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "className": "text-muted-foreground text-sm mt-1"
+                          },
+                          "children": "这里显示详细的数据分析图表。"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "TabsContent",
+                      "props": {
+                        "value": "reports",
+                        "className": "p-4 border rounded-lg mt-2"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "className": "font-medium"
+                          },
+                          "children": "报告面板"
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "className": "text-muted-foreground text-sm mt-1"
+                          },
+                          "children": "这里显示生成的各类报告。"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "TabsContent",
+                      "props": {
+                        "value": "settings",
+                        "className": "p-4 border rounded-lg mt-2"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "className": "font-medium"
+                          },
+                          "children": "设置面板"
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "className": "text-muted-foreground text-sm mt-1"
+                          },
+                          "children": "这里可以调整项目的各项设置。"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "button",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Button 按钮" },
-              { "type": "CardDescription", "children": "各种变体和尺寸的按钮组件" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Stack",
-                "props": { "gap": 4 },
-                "children": [
-                  {
-                    "type": "Flex",
-                    "props": { "gap": 2, "wrap": true },
-                    "children": [
-                      { "type": "Button", "props": { "variant": "default" }, "children": "Default" },
-                      { "type": "Button", "props": { "variant": "secondary" }, "children": "Secondary" },
-                      { "type": "Button", "props": { "variant": "outline" }, "children": "Outline" },
-                      { "type": "Button", "props": { "variant": "ghost" }, "children": "Ghost" },
-                      { "type": "Button", "props": { "variant": "link" }, "children": "Link" },
-                      { "type": "Button", "props": { "variant": "destructive" }, "children": "Destructive" }
-                    ]
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Button 按钮"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "各种变体和尺寸的按钮组件"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Stack",
+                  "props": {
+                    "gap": 4
                   },
-                  {
-                    "type": "Flex",
-                    "props": { "gap": 2, "wrap": true },
-                    "children": [
-                      { "type": "Button", "props": { "size": "sm" }, "children": "Small" },
-                      { "type": "Button", "props": { "size": "default" }, "children": "Default" },
-                      { "type": "Button", "props": { "size": "lg" }, "children": "Large" }
-                    ]
-                  }
-                ]
-              }
-            ]}
+                  "children": [
+                    {
+                      "type": "Flex",
+                      "props": {
+                        "gap": 2,
+                        "wrap": true
+                      },
+                      "children": [
+                        {
+                          "type": "Button",
+                          "props": {
+                            "variant": "default"
+                          },
+                          "children": "Default"
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "variant": "secondary"
+                          },
+                          "children": "Secondary"
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "variant": "outline"
+                          },
+                          "children": "Outline"
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "variant": "ghost"
+                          },
+                          "children": "Ghost"
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "variant": "link"
+                          },
+                          "children": "Link"
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "variant": "destructive"
+                          },
+                          "children": "Destructive"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Flex",
+                      "props": {
+                        "gap": 2,
+                        "wrap": true
+                      },
+                      "children": [
+                        {
+                          "type": "Button",
+                          "props": {
+                            "size": "sm"
+                          },
+                          "children": "Small"
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "size": "default"
+                          },
+                          "children": "Default"
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "size": "lg"
+                          },
+                          "children": "Large"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "badge",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Badge 徽章" },
-              { "type": "CardDescription", "children": "用于标记状态或分类的徽章" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Flex",
-                "props": { "gap": 2, "wrap": true },
-                "children": [
-                  { "type": "Badge", "props": { "variant": "default" }, "children": "Default" },
-                  { "type": "Badge", "props": { "variant": "secondary" }, "children": "Secondary" },
-                  { "type": "Badge", "props": { "variant": "outline" }, "children": "Outline" },
-                  { "type": "Badge", "props": { "variant": "destructive" }, "children": "Destructive" },
-                  { "type": "Badge", "props": { "className": "bg-green-100 text-green-800" }, "children": "成功" },
-                  { "type": "Badge", "props": { "className": "bg-yellow-100 text-yellow-800" }, "children": "警告" },
-                  { "type": "Badge", "props": { "className": "bg-blue-100 text-blue-800" }, "children": "信息" }
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Badge 徽章"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "用于标记状态或分类的徽章"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Flex",
+                  "props": {
+                    "gap": 2,
+                    "wrap": true
+                  },
+                  "children": [
+                    {
+                      "type": "Badge",
+                      "props": {
+                        "variant": "default"
+                      },
+                      "children": "Default"
+                    },
+                    {
+                      "type": "Badge",
+                      "props": {
+                        "variant": "secondary"
+                      },
+                      "children": "Secondary"
+                    },
+                    {
+                      "type": "Badge",
+                      "props": {
+                        "variant": "outline"
+                      },
+                      "children": "Outline"
+                    },
+                    {
+                      "type": "Badge",
+                      "props": {
+                        "variant": "destructive"
+                      },
+                      "children": "Destructive"
+                    },
+                    {
+                      "type": "Badge",
+                      "props": {
+                        "className": "bg-green-100 text-green-800"
+                      },
+                      "children": "成功"
+                    },
+                    {
+                      "type": "Badge",
+                      "props": {
+                        "className": "bg-yellow-100 text-yellow-800"
+                      },
+                      "children": "警告"
+                    },
+                    {
+                      "type": "Badge",
+                      "props": {
+                        "className": "bg-blue-100 text-blue-800"
+                      },
+                      "children": "信息"
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "icon",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Icon 图标" },
-              { "type": "CardDescription", "children": "基于 Lucide 的图标组件" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Flex",
-                "props": { "gap": 4, "wrap": true, "align": "center" },
-                "children": [
-                  { "type": "Icon", "props": { "name": "Home", "size": "md" } },
-                  { "type": "Icon", "props": { "name": "Settings", "size": "md" } },
-                  { "type": "Icon", "props": { "name": "User", "size": "md" } },
-                  { "type": "Icon", "props": { "name": "Mail", "size": "md" } },
-                  { "type": "Icon", "props": { "name": "Bell", "size": "md" } },
-                  { "type": "Icon", "props": { "name": "Search", "size": "md" } },
-                  { "type": "Icon", "props": { "name": "Heart", "size": "md" } },
-                  { "type": "Icon", "props": { "name": "Star", "size": "md" } },
-                  { "type": "Icon", "props": { "name": "Check", "size": "lg", "className": "text-green-500" } },
-                  { "type": "Icon", "props": { "name": "X", "size": "lg", "className": "text-red-500" } },
-                  { "type": "Icon", "props": { "name": "AlertCircle", "size": "lg", "className": "text-yellow-500" } },
-                  { "type": "Icon", "props": { "name": "Info", "size": "lg", "className": "text-blue-500" } }
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Icon 图标"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "基于 Lucide 的图标组件"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Flex",
+                  "props": {
+                    "gap": 4,
+                    "wrap": true,
+                    "align": "center"
+                  },
+                  "children": [
+                    {
+                      "type": "Icon",
+                      "props": {
+                        "name": "Home",
+                        "size": "md"
+                      }
+                    },
+                    {
+                      "type": "Icon",
+                      "props": {
+                        "name": "Settings",
+                        "size": "md"
+                      }
+                    },
+                    {
+                      "type": "Icon",
+                      "props": {
+                        "name": "User",
+                        "size": "md"
+                      }
+                    },
+                    {
+                      "type": "Icon",
+                      "props": {
+                        "name": "Mail",
+                        "size": "md"
+                      }
+                    },
+                    {
+                      "type": "Icon",
+                      "props": {
+                        "name": "Bell",
+                        "size": "md"
+                      }
+                    },
+                    {
+                      "type": "Icon",
+                      "props": {
+                        "name": "Search",
+                        "size": "md"
+                      }
+                    },
+                    {
+                      "type": "Icon",
+                      "props": {
+                        "name": "Heart",
+                        "size": "md"
+                      }
+                    },
+                    {
+                      "type": "Icon",
+                      "props": {
+                        "name": "Star",
+                        "size": "md"
+                      }
+                    },
+                    {
+                      "type": "Icon",
+                      "props": {
+                        "name": "Check",
+                        "size": "lg",
+                        "className": "text-green-500"
+                      }
+                    },
+                    {
+                      "type": "Icon",
+                      "props": {
+                        "name": "X",
+                        "size": "lg",
+                        "className": "text-red-500"
+                      }
+                    },
+                    {
+                      "type": "Icon",
+                      "props": {
+                        "name": "AlertCircle",
+                        "size": "lg",
+                        "className": "text-yellow-500"
+                      }
+                    },
+                    {
+                      "type": "Icon",
+                      "props": {
+                        "name": "Info",
+                        "size": "lg",
+                        "className": "text-blue-500"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "image",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Image 图片" },
-              { "type": "CardDescription", "children": "图片展示组件，支持圆角和宽高比" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Flex",
-                "props": { "gap": 4, "wrap": true },
-                "children": [
-                  { "type": "Image", "props": { "src": "https://picsum.photos/200/200", "alt": "示例图片", "className": "w-32 h-32 object-cover" } },
-                  { "type": "Image", "props": { "src": "https://picsum.photos/201/201", "alt": "圆角图片", "rounded": true, "className": "w-32 h-32 object-cover" } },
-                  { "type": "Image", "props": { "src": "https://picsum.photos/300/169", "alt": "16:9 图片", "aspectRatio": "16:9", "className": "w-48" } }
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Image 图片"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "图片展示组件，支持圆角和宽高比"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Flex",
+                  "props": {
+                    "gap": 4,
+                    "wrap": true
+                  },
+                  "children": [
+                    {
+                      "type": "Image",
+                      "props": {
+                        "src": "https://picsum.photos/200/200",
+                        "alt": "示例图片",
+                        "className": "w-32 h-32 object-cover"
+                      }
+                    },
+                    {
+                      "type": "Image",
+                      "props": {
+                        "src": "https://picsum.photos/201/201",
+                        "alt": "圆角图片",
+                        "rounded": true,
+                        "className": "w-32 h-32 object-cover"
+                      }
+                    },
+                    {
+                      "type": "Image",
+                      "props": {
+                        "src": "https://picsum.photos/300/169",
+                        "alt": "16:9 图片",
+                        "aspectRatio": "16:9",
+                        "className": "w-48"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "avatar",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Avatar 头像" },
-              { "type": "CardDescription", "children": "用户头像展示组件" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Flex",
-                "props": { "gap": 4, "align": "center" },
-                "children": [
-                  { "type": "Avatar", "children": [
-                    { "type": "AvatarImage", "props": { "src": "https://github.com/shadcn.png" } },
-                    { "type": "AvatarFallback", "children": "CN" }
-                  ]},
-                  { "type": "Avatar", "children": [{ "type": "AvatarFallback", "children": "AB" }]},
-                  { "type": "Avatar", "children": [{ "type": "AvatarFallback", "children": "CD" }]},
-                  { "type": "Avatar", "props": { "className": "h-16 w-16" }, "children": [{ "type": "AvatarFallback", "children": "大" }]}
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Avatar 头像"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "用户头像展示组件"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Flex",
+                  "props": {
+                    "gap": 4,
+                    "align": "center"
+                  },
+                  "children": [
+                    {
+                      "type": "Avatar",
+                      "children": [
+                        {
+                          "type": "AvatarImage",
+                          "props": {
+                            "src": "https://github.com/shadcn.png"
+                          }
+                        },
+                        {
+                          "type": "AvatarFallback",
+                          "children": "CN"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Avatar",
+                      "children": [
+                        {
+                          "type": "AvatarFallback",
+                          "children": "AB"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Avatar",
+                      "children": [
+                        {
+                          "type": "AvatarFallback",
+                          "children": "CD"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Avatar",
+                      "props": {
+                        "className": "h-16 w-16"
+                      },
+                      "children": [
+                        {
+                          "type": "AvatarFallback",
+                          "children": "大"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "card",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Card 卡片" },
-              { "type": "CardDescription", "children": "容器组件，用于展示相关内容" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Grid",
-                "props": { "columns": 3, "gap": 4 },
-                "slots": {
-                  "1": {
-                    "type": "Card",
-                    "children": [
-                      { "type": "CardHeader", "children": [
-                        { "type": "CardTitle", "children": "基础卡片" },
-                        { "type": "CardDescription", "children": "这是卡片描述" }
-                      ]},
-                      { "type": "CardContent", "children": [{ "type": "Text", "children": "卡片内容区域" }]},
-                      { "type": "CardFooter", "children": [
-                        { "type": "Button", "props": { "variant": "outline", "size": "sm" }, "children": "取消" },
-                        { "type": "Button", "props": { "size": "sm", "className": "ml-2" }, "children": "确定" }
-                      ]}
-                    ]
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Card 卡片"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "容器组件，用于展示相关内容"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Grid",
+                  "props": {
+                    "columns": 3,
+                    "gap": 4
                   },
-                  "2": {
-                    "type": "Card",
-                    "props": { "className": "bg-primary text-primary-foreground" },
-                    "children": [
-                      { "type": "CardHeader", "children": [{ "type": "CardTitle", "children": "高亮卡片" }]},
-                      { "type": "CardContent", "children": [
-                        { "type": "Text", "props": { "className": "text-4xl font-bold" }, "children": "99.9%" },
-                        { "type": "Text", "props": { "className": "text-sm opacity-80" }, "children": "系统可用性" }
-                      ]}
-                    ]
-                  },
-                  "3": {
-                    "type": "Card",
-                    "props": { "className": "border-dashed" },
-                    "children": [
-                      { "type": "CardContent", "props": { "className": "flex items-center justify-center h-32" }, "children": [
-                        { "type": "Text", "props": { "className": "text-muted-foreground" }, "children": "+ 添加新卡片" }
-                      ]}
-                    ]
+                  "slots": {
+                    "1": {
+                      "type": "Card",
+                      "children": [
+                        {
+                          "type": "CardHeader",
+                          "children": [
+                            {
+                              "type": "CardTitle",
+                              "children": "基础卡片"
+                            },
+                            {
+                              "type": "CardDescription",
+                              "children": "这是卡片描述"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "CardContent",
+                          "children": [
+                            {
+                              "type": "Text",
+                              "children": "卡片内容区域"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "CardFooter",
+                          "children": [
+                            {
+                              "type": "Button",
+                              "props": {
+                                "variant": "outline",
+                                "size": "sm"
+                              },
+                              "children": "取消"
+                            },
+                            {
+                              "type": "Button",
+                              "props": {
+                                "size": "sm",
+                                "className": "ml-2"
+                              },
+                              "children": "确定"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "2": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-primary text-primary-foreground"
+                      },
+                      "children": [
+                        {
+                          "type": "CardHeader",
+                          "children": [
+                            {
+                              "type": "CardTitle",
+                              "children": "高亮卡片"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "CardContent",
+                          "children": [
+                            {
+                              "type": "Text",
+                              "props": {
+                                "className": "text-4xl font-bold"
+                              },
+                              "children": "99.9%"
+                            },
+                            {
+                              "type": "Text",
+                              "props": {
+                                "className": "text-sm opacity-80"
+                              },
+                              "children": "系统可用性"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "3": {
+                      "type": "Card",
+                      "props": {
+                        "className": "border-dashed"
+                      },
+                      "children": [
+                        {
+                          "type": "CardContent",
+                          "props": {
+                            "className": "flex items-center justify-center h-32"
+                          },
+                          "children": [
+                            {
+                              "type": "Text",
+                              "props": {
+                                "className": "text-muted-foreground"
+                              },
+                              "children": "+ 添加新卡片"
+                            }
+                          ]
+                        }
+                      ]
+                    }
                   }
                 }
-              }
-            ]}
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "statistic",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Statistic 统计卡片" },
-              { "type": "CardDescription", "children": "展示关键数据指标" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Grid",
-                "props": { "columns": 4, "gap": 4 },
-                "slots": {
-                  "1": { "type": "Card", "props": { "className": "p-6" }, "children": [
-                    { "type": "Statistic", "props": { "title": "总用户", "value": "12,345", "trend": "up", "trendValue": "+15%" }}
-                  ]},
-                  "2": { "type": "Card", "props": { "className": "p-6" }, "children": [
-                    { "type": "Statistic", "props": { "title": "活跃率", "value": "89.5%", "trend": "up", "trendValue": "+3.2%" }}
-                  ]},
-                  "3": { "type": "Card", "props": { "className": "p-6" }, "children": [
-                    { "type": "Statistic", "props": { "title": "转化率", "value": "23.8%", "trend": "down", "trendValue": "-1.5%" }}
-                  ]},
-                  "4": { "type": "Card", "props": { "className": "p-6" }, "children": [
-                    { "type": "Statistic", "props": { "title": "收入", "value": "¥1.2M", "trend": "up", "trendValue": "+28%" }}
-                  ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Statistic 统计卡片"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "展示关键数据指标"
                 }
-              }
-            ]}
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Stack",
+                  "props": {
+                    "gap": 6
+                  },
+                  "children": [
+                    {
+                      "type": "Grid",
+                      "props": {
+                        "columns": 4,
+                        "gap": 4
+                      },
+                      "slots": {
+                        "1": {
+                          "type": "Card",
+                          "props": {
+                            "className": "p-6"
+                          },
+                          "children": [
+                            {
+                              "type": "Statistic",
+                              "props": {
+                                "title": "总用户",
+                                "value": "12,345",
+                                "trend": "up",
+                                "trendValue": "+15%"
+                              }
+                            }
+                          ]
+                        },
+                        "2": {
+                          "type": "Card",
+                          "props": {
+                            "className": "p-6"
+                          },
+                          "children": [
+                            {
+                              "type": "Statistic",
+                              "props": {
+                                "title": "活跃率",
+                                "value": "89.5%",
+                                "trend": "up",
+                                "trendValue": "+3.2%"
+                              }
+                            }
+                          ]
+                        },
+                        "3": {
+                          "type": "Card",
+                          "props": {
+                            "className": "p-6"
+                          },
+                          "children": [
+                            {
+                              "type": "Statistic",
+                              "props": {
+                                "title": "转化率",
+                                "value": "23.8%",
+                                "trend": "down",
+                                "trendValue": "-1.5%"
+                              }
+                            }
+                          ]
+                        },
+                        "4": {
+                          "type": "Card",
+                          "props": {
+                            "className": "p-6"
+                          },
+                          "children": [
+                            {
+                              "type": "Statistic",
+                              "props": {
+                                "title": "收入",
+                                "value": "¥1.2M",
+                                "trend": "up",
+                                "trendValue": "+28%"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "Grid",
+                      "props": {
+                        "columns": 2,
+                        "gap": 4
+                      },
+                      "slots": {
+                        "1": {
+                          "type": "StatisticCard",
+                          "props": {
+                            "title": "新增用户",
+                            "value": "1,024",
+                            "trend": "up",
+                            "trendValue": "+8%"
+                          }
+                        },
+                        "2": {
+                          "type": "StatisticCard",
+                          "props": {
+                            "title": "流失率",
+                            "value": "2.1%",
+                            "trend": "down",
+                            "trendValue": "-0.4%"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "table",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Table 数据表格" },
-              { "type": "CardDescription", "children": "展示结构化数据" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Table",
-                "children": [
-                  { "type": "TableHeader", "children": [{
-                    "type": "TableRow",
-                    "children": [
-                      { "type": "TableHead", "children": "ID" },
-                      { "type": "TableHead", "children": "名称" },
-                      { "type": "TableHead", "children": "状态" },
-                      { "type": "TableHead", "children": "金额" },
-                      { "type": "TableHead", "children": "操作" }
-                    ]
-                  }]},
-                  { "type": "TableBody", "children": [
-                    { "type": "TableRow", "children": [
-                      { "type": "TableCell", "children": "001" },
-                      { "type": "TableCell", "children": "项目 Alpha" },
-                      { "type": "TableCell", "children": [{ "type": "Badge", "props": { "className": "bg-green-100 text-green-800" }, "children": "进行中" }]},
-                      { "type": "TableCell", "children": "¥12,000" },
-                      { "type": "TableCell", "children": [{ "type": "Button", "props": { "variant": "ghost", "size": "sm" }, "children": "查看" }]}
-                    ]},
-                    { "type": "TableRow", "children": [
-                      { "type": "TableCell", "children": "002" },
-                      { "type": "TableCell", "children": "项目 Beta" },
-                      { "type": "TableCell", "children": [{ "type": "Badge", "props": { "className": "bg-yellow-100 text-yellow-800" }, "children": "待审核" }]},
-                      { "type": "TableCell", "children": "¥8,500" },
-                      { "type": "TableCell", "children": [{ "type": "Button", "props": { "variant": "ghost", "size": "sm" }, "children": "查看" }]}
-                    ]},
-                    { "type": "TableRow", "children": [
-                      { "type": "TableCell", "children": "003" },
-                      { "type": "TableCell", "children": "项目 Gamma" },
-                      { "type": "TableCell", "children": [{ "type": "Badge", "props": { "className": "bg-blue-100 text-blue-800" }, "children": "已完成" }]},
-                      { "type": "TableCell", "children": "¥25,000" },
-                      { "type": "TableCell", "children": [{ "type": "Button", "props": { "variant": "ghost", "size": "sm" }, "children": "查看" }]}
-                    ]}
-                  ]}
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Table 数据表格"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "展示结构化数据"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Table",
+                  "children": [
+                    {
+                      "type": "TableHeader",
+                      "children": [
+                        {
+                          "type": "TableRow",
+                          "children": [
+                            {
+                              "type": "TableHead",
+                              "children": "ID"
+                            },
+                            {
+                              "type": "TableHead",
+                              "children": "名称"
+                            },
+                            {
+                              "type": "TableHead",
+                              "children": "状态"
+                            },
+                            {
+                              "type": "TableHead",
+                              "children": "金额"
+                            },
+                            {
+                              "type": "TableHead",
+                              "children": "操作"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "TableBody",
+                      "children": [
+                        {
+                          "type": "TableRow",
+                          "children": [
+                            {
+                              "type": "TableCell",
+                              "children": "001"
+                            },
+                            {
+                              "type": "TableCell",
+                              "children": "项目 Alpha"
+                            },
+                            {
+                              "type": "TableCell",
+                              "children": [
+                                {
+                                  "type": "Badge",
+                                  "props": {
+                                    "className": "bg-green-100 text-green-800"
+                                  },
+                                  "children": "进行中"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "TableCell",
+                              "children": "¥12,000"
+                            },
+                            {
+                              "type": "TableCell",
+                              "children": [
+                                {
+                                  "type": "Button",
+                                  "props": {
+                                    "variant": "ghost",
+                                    "size": "sm"
+                                  },
+                                  "children": "查看"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "TableRow",
+                          "children": [
+                            {
+                              "type": "TableCell",
+                              "children": "002"
+                            },
+                            {
+                              "type": "TableCell",
+                              "children": "项目 Beta"
+                            },
+                            {
+                              "type": "TableCell",
+                              "children": [
+                                {
+                                  "type": "Badge",
+                                  "props": {
+                                    "className": "bg-yellow-100 text-yellow-800"
+                                  },
+                                  "children": "待审核"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "TableCell",
+                              "children": "¥8,500"
+                            },
+                            {
+                              "type": "TableCell",
+                              "children": [
+                                {
+                                  "type": "Button",
+                                  "props": {
+                                    "variant": "ghost",
+                                    "size": "sm"
+                                  },
+                                  "children": "查看"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "TableRow",
+                          "children": [
+                            {
+                              "type": "TableCell",
+                              "children": "003"
+                            },
+                            {
+                              "type": "TableCell",
+                              "children": "项目 Gamma"
+                            },
+                            {
+                              "type": "TableCell",
+                              "children": [
+                                {
+                                  "type": "Badge",
+                                  "props": {
+                                    "className": "bg-blue-100 text-blue-800"
+                                  },
+                                  "children": "已完成"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "TableCell",
+                              "children": "¥25,000"
+                            },
+                            {
+                              "type": "TableCell",
+                              "children": [
+                                {
+                                  "type": "Button",
+                                  "props": {
+                                    "variant": "ghost",
+                                    "size": "sm"
+                                  },
+                                  "children": "查看"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "list",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "List 列表" },
-              { "type": "CardDescription", "children": "简洁的列表展示" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "List",
-                "props": { "divided": true },
-                "children": [
-                  { "type": "ListItem", "props": { "title": "列表项一", "description": "这是第一个列表项的描述" }},
-                  { "type": "ListItem", "props": { "title": "列表项二", "description": "这是第二个列表项的描述" }},
-                  { "type": "ListItem", "props": { "title": "列表项三", "description": "这是第三个列表项的描述" }}
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "List 列表"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "简洁的列表展示"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "List",
+                  "props": {
+                    "divided": true
+                  },
+                  "children": [
+                    {
+                      "type": "ListItem",
+                      "props": {
+                        "title": "列表项一",
+                        "description": "这是第一个列表项的描述"
+                      }
+                    },
+                    {
+                      "type": "ListItem",
+                      "props": {
+                        "title": "列表项二",
+                        "description": "这是第二个列表项的描述"
+                      }
+                    },
+                    {
+                      "type": "ListItem",
+                      "props": {
+                        "title": "列表项三",
+                        "description": "这是第三个列表项的描述"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "timeline",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Timeline 时间线" },
-              { "type": "CardDescription", "children": "展示时间顺序的事件" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Timeline",
-                "children": [
-                  { "type": "TimelineItem", "props": { "title": "项目启动", "description": "完成项目立项和团队组建", "status": "completed" }},
-                  { "type": "TimelineItem", "props": { "title": "需求分析", "description": "完成用户调研和需求文档", "status": "completed" }},
-                  { "type": "TimelineItem", "props": { "title": "开发阶段", "description": "正在进行核心功能开发", "status": "in-progress" }},
-                  { "type": "TimelineItem", "props": { "title": "测试上线", "description": "等待开发完成后进行测试", "status": "pending" }}
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Timeline 时间线"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "展示时间顺序的事件"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Stack",
+                  "props": {
+                    "gap": 6
+                  },
+                  "children": [
+                    {
+                      "type": "Timeline",
+                      "children": [
+                        {
+                          "type": "TimelineItem",
+                          "props": {
+                            "title": "项目启动",
+                            "description": "完成项目立项和团队组建",
+                            "status": "completed"
+                          }
+                        },
+                        {
+                          "type": "TimelineItem",
+                          "props": {
+                            "title": "需求分析",
+                            "description": "完成用户调研和需求文档",
+                            "status": "completed"
+                          }
+                        },
+                        {
+                          "type": "TimelineItem",
+                          "props": {
+                            "title": "开发阶段",
+                            "description": "正在进行核心功能开发",
+                            "status": "in-progress"
+                          }
+                        },
+                        {
+                          "type": "TimelineItem",
+                          "props": {
+                            "title": "测试上线",
+                            "description": "等待开发完成后进行测试",
+                            "status": "pending"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Card",
+                      "props": {
+                        "className": "border-dashed"
+                      },
+                      "children": [
+                        {
+                          "type": "CardContent",
+                          "children": [
+                            {
+                              "type": "Stack",
+                              "props": {
+                                "gap": 3
+                              },
+                              "children": [
+                                {
+                                  "type": "TimelineContent",
+                                  "children": [
+                                    {
+                                      "type": "TimelineHeader",
+                                      "children": [
+                                        {
+                                          "type": "TimelineTitle",
+                                          "children": "里程碑说明"
+                                        },
+                                        {
+                                          "type": "TimelineTime",
+                                          "props": {
+                                            "date": "2024-01-20"
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "TimelineDescription",
+                                      "children": "演示子组件结构化排版"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "Flex",
+                                  "props": {
+                                    "gap": 2,
+                                    "align": "center"
+                                  },
+                                  "children": [
+                                    {
+                                      "type": "TimelineConnector",
+                                      "props": {
+                                        "status": "in-progress",
+                                        "className": "h-8"
+                                      }
+                                    },
+                                    {
+                                      "type": "Text",
+                                      "props": {
+                                        "className": "text-xs text-muted-foreground"
+                                      },
+                                      "children": "连接线示例"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "TimelineEmpty",
+                                  "children": "暂无事件"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "accordion",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Accordion 折叠面板" },
-              { "type": "CardDescription", "children": "可折叠的内容区域" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Accordion",
-                "props": { "type": "single", "collapsible": true },
-                "children": [
-                  { "type": "AccordionItem", "props": { "value": "item-1" }, "children": [
-                    { "type": "AccordionTrigger", "children": "什么是 Stitch？" },
-                    { "type": "AccordionContent", "children": "Stitch 是一个 JSON Schema 驱动的 UI 渲染引擎，可以通过 JSON 配置快速构建用户界面。" }
-                  ]},
-                  { "type": "AccordionItem", "props": { "value": "item-2" }, "children": [
-                    { "type": "AccordionTrigger", "children": "支持哪些组件？" },
-                    { "type": "AccordionContent", "children": "支持布局、表单、数据展示、反馈等多种类型的组件，基于 shadcn/ui 构建。" }
-                  ]},
-                  { "type": "AccordionItem", "props": { "value": "item-3" }, "children": [
-                    { "type": "AccordionTrigger", "children": "如何使用？" },
-                    { "type": "AccordionContent", "children": "编写 JSON Schema 描述 UI 结构，然后使用渲染器将其转换为 React 组件。" }
-                  ]}
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Accordion 折叠面板"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "可折叠的内容区域"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Accordion",
+                  "props": {
+                    "type": "single",
+                    "collapsible": true
+                  },
+                  "children": [
+                    {
+                      "type": "AccordionItem",
+                      "props": {
+                        "value": "item-1"
+                      },
+                      "children": [
+                        {
+                          "type": "AccordionTrigger",
+                          "children": "什么是 Stitch？"
+                        },
+                        {
+                          "type": "AccordionContent",
+                          "children": "Stitch 是一个 JSON Schema 驱动的 UI 渲染引擎，可以通过 JSON 配置快速构建用户界面。"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "AccordionItem",
+                      "props": {
+                        "value": "item-2"
+                      },
+                      "children": [
+                        {
+                          "type": "AccordionTrigger",
+                          "children": "支持哪些组件？"
+                        },
+                        {
+                          "type": "AccordionContent",
+                          "children": "支持布局、表单、数据展示、反馈等多种类型的组件，基于 shadcn/ui 构建。"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "AccordionItem",
+                      "props": {
+                        "value": "item-3"
+                      },
+                      "children": [
+                        {
+                          "type": "AccordionTrigger",
+                          "children": "如何使用？"
+                        },
+                        {
+                          "type": "AccordionContent",
+                          "children": "编写 JSON Schema 描述 UI 结构，然后使用渲染器将其转换为 React 组件。"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "form",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "表单组件" },
-              { "type": "CardDescription", "children": "Input、Checkbox、Switch、Slider、RadioGroup" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Grid",
-                "props": { "columns": 2, "gap": 6 },
-                "slots": {
-                  "1": {
-                    "type": "Stack",
-                    "props": { "gap": 4 },
-                    "children": [
-                      { "type": "Stack", "props": { "gap": 2 }, "children": [
-                        { "type": "Label", "children": "输入框 Input" },
-                        { "type": "Input", "props": { "placeholder": "请输入内容" }}
-                      ]},
-                      { "type": "Stack", "props": { "gap": 2 }, "children": [
-                        { "type": "Label", "children": "复选框 Checkbox" },
-                        { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
-                          { "type": "Checkbox", "props": { "id": "c1" }},
-                          { "type": "Label", "props": { "htmlFor": "c1" }, "children": "选项一" }
-                        ]},
-                        { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
-                          { "type": "Checkbox", "props": { "id": "c2", "checked": true }},
-                          { "type": "Label", "props": { "htmlFor": "c2" }, "children": "选项二（已选）" }
-                        ]}
-                      ]},
-                      { "type": "Stack", "props": { "gap": 2 }, "children": [
-                        { "type": "Label", "children": "开关 Switch" },
-                        { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
-                          { "type": "Switch" },
-                          { "type": "Text", "props": { "className": "text-sm" }, "children": "启用通知" }
-                        ]}
-                      ]}
-                    ]
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "表单组件"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "Input、Checkbox、Switch、Slider、RadioGroup"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Grid",
+                  "props": {
+                    "columns": 2,
+                    "gap": 6
                   },
-                  "2": {
-                    "type": "Stack",
-                    "props": { "gap": 4 },
-                    "children": [
-                      { "type": "Stack", "props": { "gap": 2 }, "children": [
-                        { "type": "Label", "children": "滑块 Slider" },
-                        { "type": "Slider", "props": { "defaultValue": [50], "max": 100, "step": 1 }}
-                      ]},
-                      { "type": "Stack", "props": { "gap": 2 }, "children": [
-                        { "type": "Label", "children": "单选框 RadioGroup" },
-                        { "type": "RadioGroup", "props": { "defaultValue": "option1" }, "children": [
-                          { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
-                            { "type": "RadioGroupItem", "props": { "value": "option1", "id": "r1" }},
-                            { "type": "Label", "props": { "htmlFor": "r1" }, "children": "选项 A" }
-                          ]},
-                          { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
-                            { "type": "RadioGroupItem", "props": { "value": "option2", "id": "r2" }},
-                            { "type": "Label", "props": { "htmlFor": "r2" }, "children": "选项 B" }
-                          ]}
-                        ]}
-                      ]}
-                    ]
+                  "slots": {
+                    "1": {
+                      "type": "Stack",
+                      "props": {
+                        "gap": 4
+                      },
+                      "children": [
+                        {
+                          "type": "Stack",
+                          "props": {
+                            "gap": 2
+                          },
+                          "children": [
+                            {
+                              "type": "Label",
+                              "children": "输入框 Input"
+                            },
+                            {
+                              "type": "Input",
+                              "props": {
+                                "placeholder": "请输入内容"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Stack",
+                          "props": {
+                            "gap": 2
+                          },
+                          "children": [
+                            {
+                              "type": "Label",
+                              "children": "复选框 Checkbox"
+                            },
+                            {
+                              "type": "Flex",
+                              "props": {
+                                "gap": 2,
+                                "align": "center"
+                              },
+                              "children": [
+                                {
+                                  "type": "Checkbox",
+                                  "props": {
+                                    "id": "c1"
+                                  }
+                                },
+                                {
+                                  "type": "Label",
+                                  "props": {
+                                    "htmlFor": "c1"
+                                  },
+                                  "children": "选项一"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Flex",
+                              "props": {
+                                "gap": 2,
+                                "align": "center"
+                              },
+                              "children": [
+                                {
+                                  "type": "Checkbox",
+                                  "props": {
+                                    "id": "c2",
+                                    "checked": true
+                                  }
+                                },
+                                {
+                                  "type": "Label",
+                                  "props": {
+                                    "htmlFor": "c2"
+                                  },
+                                  "children": "选项二（已选）"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Stack",
+                          "props": {
+                            "gap": 2
+                          },
+                          "children": [
+                            {
+                              "type": "Label",
+                              "children": "开关 Switch"
+                            },
+                            {
+                              "type": "Flex",
+                              "props": {
+                                "gap": 2,
+                                "align": "center"
+                              },
+                              "children": [
+                                {
+                                  "type": "Switch"
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "className": "text-sm"
+                                  },
+                                  "children": "启用通知"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "2": {
+                      "type": "Stack",
+                      "props": {
+                        "gap": 4
+                      },
+                      "children": [
+                        {
+                          "type": "Stack",
+                          "props": {
+                            "gap": 2
+                          },
+                          "children": [
+                            {
+                              "type": "Label",
+                              "children": "滑块 Slider"
+                            },
+                            {
+                              "type": "Slider",
+                              "props": {
+                                "defaultValue": [
+                                  50
+                                ],
+                                "max": 100,
+                                "step": 1
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Stack",
+                          "props": {
+                            "gap": 2
+                          },
+                          "children": [
+                            {
+                              "type": "Label",
+                              "children": "单选框 RadioGroup"
+                            },
+                            {
+                              "type": "RadioGroup",
+                              "props": {
+                                "defaultValue": "option1"
+                              },
+                              "children": [
+                                {
+                                  "type": "Flex",
+                                  "props": {
+                                    "gap": 2,
+                                    "align": "center"
+                                  },
+                                  "children": [
+                                    {
+                                      "type": "RadioGroupItem",
+                                      "props": {
+                                        "value": "option1",
+                                        "id": "r1"
+                                      }
+                                    },
+                                    {
+                                      "type": "Label",
+                                      "props": {
+                                        "htmlFor": "r1"
+                                      },
+                                      "children": "选项 A"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "Flex",
+                                  "props": {
+                                    "gap": 2,
+                                    "align": "center"
+                                  },
+                                  "children": [
+                                    {
+                                      "type": "RadioGroupItem",
+                                      "props": {
+                                        "value": "option2",
+                                        "id": "r2"
+                                      }
+                                    },
+                                    {
+                                      "type": "Label",
+                                      "props": {
+                                        "htmlFor": "r2"
+                                      },
+                                      "children": "选项 B"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
                   }
                 }
-              }
-            ]}
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "alert",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Alert 提示" },
-              { "type": "CardDescription", "children": "各种类型的提示信息" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Stack",
-                "props": { "gap": 4 },
-                "children": [
-                  { "type": "Alert", "children": [
-                    { "type": "AlertTitle", "children": "提示" },
-                    { "type": "AlertDescription", "children": "这是一条默认提示信息" }
-                  ]},
-                  { "type": "Alert", "props": { "className": "border-green-500 bg-green-50 text-green-900" }, "children": [
-                    { "type": "AlertTitle", "children": "成功" },
-                    { "type": "AlertDescription", "children": "操作已成功完成" }
-                  ]},
-                  { "type": "Alert", "props": { "className": "border-yellow-500 bg-yellow-50 text-yellow-900" }, "children": [
-                    { "type": "AlertTitle", "children": "警告" },
-                    { "type": "AlertDescription", "children": "请注意检查您的输入" }
-                  ]},
-                  { "type": "Alert", "props": { "className": "border-red-500 bg-red-50 text-red-900" }, "children": [
-                    { "type": "AlertTitle", "children": "错误" },
-                    { "type": "AlertDescription", "children": "发生了一些错误，请稍后重试" }
-                  ]}
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Alert 提示"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "各种类型的提示信息"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Stack",
+                  "props": {
+                    "gap": 4
+                  },
+                  "children": [
+                    {
+                      "type": "Alert",
+                      "children": [
+                        {
+                          "type": "AlertTitle",
+                          "children": "提示"
+                        },
+                        {
+                          "type": "AlertDescription",
+                          "children": "这是一条默认提示信息"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Alert",
+                      "props": {
+                        "className": "border-green-500 bg-green-50 text-green-900"
+                      },
+                      "children": [
+                        {
+                          "type": "AlertTitle",
+                          "children": "成功"
+                        },
+                        {
+                          "type": "AlertDescription",
+                          "children": "操作已成功完成"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Alert",
+                      "props": {
+                        "className": "border-yellow-500 bg-yellow-50 text-yellow-900"
+                      },
+                      "children": [
+                        {
+                          "type": "AlertTitle",
+                          "children": "警告"
+                        },
+                        {
+                          "type": "AlertDescription",
+                          "children": "请注意检查您的输入"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Alert",
+                      "props": {
+                        "className": "border-red-500 bg-red-50 text-red-900"
+                      },
+                      "children": [
+                        {
+                          "type": "AlertTitle",
+                          "children": "错误"
+                        },
+                        {
+                          "type": "AlertDescription",
+                          "children": "发生了一些错误，请稍后重试"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "progress",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Progress 进度条" },
-              { "type": "CardDescription", "children": "展示操作进度" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Stack",
-                "props": { "gap": 4 },
-                "children": [
-                  { "type": "Stack", "props": { "gap": 2 }, "children": [
-                    { "type": "Text", "props": { "className": "text-sm" }, "children": "项目进度 75%" },
-                    { "type": "Progress", "props": { "value": 75 }}
-                  ]},
-                  { "type": "Stack", "props": { "gap": 2 }, "children": [
-                    { "type": "Text", "props": { "className": "text-sm" }, "children": "存储空间 45%" },
-                    { "type": "Progress", "props": { "value": 45 }}
-                  ]},
-                  { "type": "Stack", "props": { "gap": 2 }, "children": [
-                    { "type": "Text", "props": { "className": "text-sm" }, "children": "下载进度 90%" },
-                    { "type": "Progress", "props": { "value": 90 }}
-                  ]}
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Progress 进度条"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "展示操作进度"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Stack",
+                  "props": {
+                    "gap": 4
+                  },
+                  "children": [
+                    {
+                      "type": "Stack",
+                      "props": {
+                        "gap": 2
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "className": "text-sm"
+                          },
+                          "children": "项目进度 75%"
+                        },
+                        {
+                          "type": "Progress",
+                          "props": {
+                            "value": 75
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Stack",
+                      "props": {
+                        "gap": 2
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "className": "text-sm"
+                          },
+                          "children": "存储空间 45%"
+                        },
+                        {
+                          "type": "Progress",
+                          "props": {
+                            "value": 45
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Stack",
+                      "props": {
+                        "gap": 2
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "className": "text-sm"
+                          },
+                          "children": "下载进度 90%"
+                        },
+                        {
+                          "type": "Progress",
+                          "props": {
+                            "value": 90
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "skeleton",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Skeleton 骨架屏" },
-              { "type": "CardDescription", "children": "加载状态占位" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Flex",
-                "props": { "gap": 4, "align": "center" },
-                "children": [
-                  { "type": "Skeleton", "props": { "className": "h-12 w-12 rounded-full" }},
-                  { "type": "Stack", "props": { "gap": 2, "className": "flex-1" }, "children": [
-                    { "type": "Skeleton", "props": { "className": "h-4 w-3/4" }},
-                    { "type": "Skeleton", "props": { "className": "h-4 w-1/2" }}
-                  ]}
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Skeleton 骨架屏"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "加载状态占位"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Flex",
+                  "props": {
+                    "gap": 4,
+                    "align": "center"
+                  },
+                  "children": [
+                    {
+                      "type": "Skeleton",
+                      "props": {
+                        "className": "h-12 w-12 rounded-full"
+                      }
+                    },
+                    {
+                      "type": "Stack",
+                      "props": {
+                        "gap": 2,
+                        "className": "flex-1"
+                      },
+                      "children": [
+                        {
+                          "type": "Skeleton",
+                          "props": {
+                            "className": "h-4 w-3/4"
+                          }
+                        },
+                        {
+                          "type": "Skeleton",
+                          "props": {
+                            "className": "h-4 w-1/2"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "empty",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "EmptyState 空状态" },
-              { "type": "CardDescription", "children": "无数据时的展示" }
-            ]},
-            { "type": "CardContent", "children": [
-              { "type": "EmptyState", "props": { "title": "暂无数据", "description": "当前没有任何记录，请稍后再试" }}
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "EmptyState 空状态"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "无数据时的展示"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "EmptyState",
+                  "props": {
+                    "title": "暂无数据",
+                    "description": "当前没有任何记录，请稍后再试"
+                  }
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "dialog",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Dialog 对话框" },
-              { "type": "CardDescription", "children": "模态对话框组件（静态预览）" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Stack",
-                "props": { "gap": 4 },
-                "children": [
-                  { "type": "Button", "props": { "variant": "outline" }, "children": "打开对话框 →" },
-                  {
-                    "type": "Card",
-                    "props": { "className": "max-w-md mx-auto shadow-lg" },
-                    "children": [
-                      { "type": "CardHeader", "children": [
-                        { "type": "CardTitle", "children": "确认操作" },
-                        { "type": "CardDescription", "children": "这是一个模态对话框示例，用于确认重要操作。" }
-                      ]},
-                      { "type": "CardContent", "children": [
-                        { "type": "Text", "props": { "className": "text-muted-foreground" }, "children": "对话框内容区域，可以放置表单或其他内容。" }
-                      ]},
-                      { "type": "CardFooter", "props": { "className": "flex justify-end gap-2" }, "children": [
-                        { "type": "Button", "props": { "variant": "outline" }, "children": "取消" },
-                        { "type": "Button", "children": "确认" }
-                      ]}
-                    ]
-                  }
-                ]
-              }
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Dialog 对话框"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "模态对话框组件（静态预览）"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Dialog",
+                  "props": {
+                    "defaultOpen": true
+                  },
+                  "children": [
+                    {
+                      "type": "DialogTrigger",
+                      "props": {
+                        "className": "inline-flex items-center justify-center rounded-md border px-3 py-1.5 text-sm"
+                      },
+                      "children": "打开对话框 →"
+                    },
+                    {
+                      "type": "DialogContent",
+                      "children": [
+                        {
+                          "type": "DialogHeader",
+                          "children": [
+                            {
+                              "type": "DialogTitle",
+                              "children": "确认操作"
+                            },
+                            {
+                              "type": "DialogDescription",
+                              "children": "这是一个模态对话框示例，用于确认重要操作。"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "className": "text-muted-foreground"
+                          },
+                          "children": "对话框内容区域，可以放置表单或其他内容。"
+                        },
+                        {
+                          "type": "DialogFooter",
+                          "children": [
+                            {
+                              "type": "Button",
+                              "props": {
+                                "variant": "outline"
+                              },
+                              "children": "取消"
+                            },
+                            {
+                              "type": "Button",
+                              "children": "确认"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "tooltip",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Tooltip 工具提示" },
-              { "type": "CardDescription", "children": "鼠标悬停时显示提示信息（静态预览）" }
-            ]},
-            { "type": "CardContent", "children": [
-              {
-                "type": "Stack",
-                "props": { "gap": 4 },
-                "children": [
-                  {
-                    "type": "Flex",
-                    "props": { "gap": 4, "wrap": true },
-                    "children": [
-                      { "type": "Button", "props": { "variant": "outline" }, "children": "悬停查看提示" },
-                      { "type": "Button", "props": { "variant": "secondary" }, "children": "带图标提示" }
-                    ]
-                  },
-                  {
-                    "type": "Flex",
-                    "props": { "gap": 4, "wrap": true, "align": "start" },
-                    "children": [
-                      {
-                        "type": "Stack",
-                        "props": { "gap": 1, "align": "center" },
-                        "children": [
-                          { "type": "Card", "props": { "className": "bg-foreground text-background px-3 py-1.5 text-sm rounded-md" }, "children": [
-                            { "type": "Text", "props": { "className": "text-xs" }, "children": "这是一个工具提示" }
-                          ]},
-                          { "type": "Div", "props": { "className": "w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-foreground" }}
-                        ]
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Tooltip 工具提示"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "鼠标悬停时显示提示信息（静态预览）"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "TooltipProvider",
+                  "children": [
+                    {
+                      "type": "Tooltip",
+                      "props": {
+                        "defaultOpen": true
                       },
-                      {
-                        "type": "Stack",
-                        "props": { "gap": 1, "align": "center" },
-                        "children": [
-                          { "type": "Card", "props": { "className": "bg-foreground text-background px-3 py-1.5 rounded-md" }, "children": [
-                            { "type": "Flex", "props": { "gap": 2, "align": "center" }, "children": [
-                              { "type": "Icon", "props": { "name": "Info", "size": "sm", "className": "text-background" } },
-                              { "type": "Text", "props": { "className": "text-xs" }, "children": "帮助信息" }
-                            ]}
-                          ]},
-                          { "type": "Div", "props": { "className": "w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-foreground" }}
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]}
+                      "children": [
+                        {
+                          "type": "TooltipTrigger",
+                          "props": {
+                            "className": "inline-flex items-center justify-center rounded-md border px-3 py-1.5 text-sm"
+                          },
+                          "children": "悬停查看提示"
+                        },
+                        {
+                          "type": "TooltipContent",
+                          "children": "这是一个工具提示"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "codeblock",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "CodeBlock 代码块" },
-              { "type": "CardDescription", "children": "代码展示组件" }
-            ]},
-            { "type": "CardContent", "children": [
-              { "type": "CodeBlock", "props": { "language": "typescript", "code": "const greeting = 'Hello, Stitch!';\nconsole.log(greeting);\n\n// JSON Schema 渲染引擎\nfunction render(schema: UINode) {\n  return createElement(schema);\n}" }}
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "CodeBlock 代码块"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "代码展示组件"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Stack",
+                  "props": {
+                    "gap": 3
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "children": [
+                        "使用 ",
+                        {
+                          "type": "InlineCode",
+                          "children": "InlineCode"
+                        },
+                        " 标记行内代码。"
+                      ]
+                    },
+                    {
+                      "type": "CodeBlock",
+                      "props": {
+                        "language": "typescript",
+                        "code": "const greeting = 'Hello, Stitch!';\nconsole.log(greeting);\n\n// JSON Schema 渲染引擎\nfunction render(schema: UINode) {\n  return createElement(schema);\n}"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "id": "separator",
           "children": [
-            { "type": "CardHeader", "children": [
-              { "type": "CardTitle", "children": "Separator 分隔线" },
-              { "type": "CardDescription", "children": "内容分隔" }
-            ]},
-            { "type": "CardContent", "children": [
-              { "type": "Stack", "props": { "gap": 4 }, "children": [
-                { "type": "Text", "children": "上方内容" },
-                { "type": "Separator" },
-                { "type": "Text", "children": "下方内容" }
-              ]}
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Separator 分隔线"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "内容分隔"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Stack",
+                  "props": {
+                    "gap": 4
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "children": "上方内容"
+                    },
+                    {
+                      "type": "Separator"
+                    },
+                    {
+                      "type": "Text",
+                      "children": "下方内容"
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Text",
           "id": "layout",
-          "props": { "className": "text-2xl font-bold mt-8 mb-4" },
+          "props": {
+            "className": "text-2xl font-bold mt-8 mb-4"
+          },
           "children": "布局组件"
         },
         {
           "type": "Grid",
-          "props": { "columns": 2, "gap": 4 },
+          "props": {
+            "columns": 2,
+            "gap": 4
+          },
           "slots": {
             "1": {
               "type": "Card",
               "children": [
-                { "type": "CardHeader", "children": [{ "type": "CardTitle", "children": "Flex 弹性布局" }]},
-                { "type": "CardContent", "children": [
-                  { "type": "Flex", "props": { "justify": "between", "className": "bg-muted p-4 rounded" }, "children": [
-                    { "type": "Badge", "children": "Left" },
-                    { "type": "Badge", "children": "Center" },
-                    { "type": "Badge", "children": "Right" }
-                  ]}
-                ]}
+                {
+                  "type": "CardHeader",
+                  "children": [
+                    {
+                      "type": "CardTitle",
+                      "children": "Flex 弹性布局"
+                    }
+                  ]
+                },
+                {
+                  "type": "CardContent",
+                  "children": [
+                    {
+                      "type": "Flex",
+                      "props": {
+                        "justify": "between",
+                        "className": "bg-muted p-4 rounded"
+                      },
+                      "children": [
+                        {
+                          "type": "Badge",
+                          "children": "Left"
+                        },
+                        {
+                          "type": "Badge",
+                          "children": "Center"
+                        },
+                        {
+                          "type": "Badge",
+                          "children": "Right"
+                        }
+                      ]
+                    }
+                  ]
+                }
               ]
             },
             "2": {
               "type": "Card",
               "children": [
-                { "type": "CardHeader", "children": [{ "type": "CardTitle", "children": "Stack 堆叠布局" }]},
-                { "type": "CardContent", "children": [
-                  { "type": "Stack", "props": { "gap": 2, "className": "bg-muted p-4 rounded" }, "children": [
-                    { "type": "Badge", "children": "Top" },
-                    { "type": "Badge", "children": "Middle" },
-                    { "type": "Badge", "children": "Bottom" }
-                  ]}
-                ]}
+                {
+                  "type": "CardHeader",
+                  "children": [
+                    {
+                      "type": "CardTitle",
+                      "children": "Stack 堆叠布局"
+                    }
+                  ]
+                },
+                {
+                  "type": "CardContent",
+                  "children": [
+                    {
+                      "type": "Stack",
+                      "props": {
+                        "gap": 2,
+                        "className": "bg-muted p-4 rounded"
+                      },
+                      "children": [
+                        {
+                          "type": "Badge",
+                          "children": "Top"
+                        },
+                        {
+                          "type": "Badge",
+                          "children": "Middle"
+                        },
+                        {
+                          "type": "Badge",
+                          "children": "Bottom"
+                        }
+                      ]
+                    }
+                  ]
+                }
               ]
             }
           }
@@ -856,106 +3388,523 @@
         {
           "type": "Card",
           "children": [
-            { "type": "CardHeader", "children": [{ "type": "CardTitle", "children": "Grid 网格布局" }]},
-            { "type": "CardContent", "children": [
-              { "type": "Grid", "props": { "columns": 4, "gap": 2 }, "slots": {
-                "1": { "type": "Card", "props": { "className": "bg-blue-50 p-4 text-center" }, "children": [{ "type": "Text", "children": "1" }]},
-                "2": { "type": "Card", "props": { "className": "bg-green-50 p-4 text-center" }, "children": [{ "type": "Text", "children": "2" }]},
-                "3": { "type": "Card", "props": { "className": "bg-yellow-50 p-4 text-center" }, "children": [{ "type": "Text", "children": "3" }]},
-                "4": { "type": "Card", "props": { "className": "bg-red-50 p-4 text-center" }, "children": [{ "type": "Text", "children": "4" }]}
-              }}
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Layout 通用布局"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Layout",
+                  "props": {
+                    "direction": "column",
+                    "gap": 2,
+                    "className": "bg-muted p-4 rounded"
+                  },
+                  "children": [
+                    {
+                      "type": "Badge",
+                      "children": "Row A"
+                    },
+                    {
+                      "type": "Badge",
+                      "children": "Row B"
+                    },
+                    {
+                      "type": "Badge",
+                      "children": "Row C"
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "children": [
-            { "type": "CardHeader", "children": [{ "type": "CardTitle", "children": "Columns 多栏布局 (1:2:1 比例)" }]},
-            { "type": "CardContent", "children": [
-              { "type": "Columns", "props": { "layout": "1:2:1", "gap": 4 }, "slots": {
-                "1": { "type": "Card", "props": { "className": "bg-blue-50 p-4" }, "children": [{ "type": "Text", "children": "左栏 (1份)" }]},
-                "2": { "type": "Card", "props": { "className": "bg-green-50 p-4" }, "children": [{ "type": "Text", "children": "中栏 (2份)" }]},
-                "3": { "type": "Card", "props": { "className": "bg-yellow-50 p-4" }, "children": [{ "type": "Text", "children": "右栏 (1份)" }]}
-              }}
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Page 页面容器"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Page",
+                  "props": {
+                    "fullHeight": false,
+                    "centered": true,
+                    "padding": 4,
+                    "className": "border rounded bg-muted/20"
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "children": "Page 容器示例"
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "children": [
-            { "type": "CardHeader", "children": [{ "type": "CardTitle", "children": "Split 分割布局（左右）" }]},
-            { "type": "CardContent", "children": [
-              { "type": "Split", "props": { "ratio": "1:2", "gap": 4 }, "slots": {
-                "left": { "type": "Card", "props": { "className": "bg-purple-50 p-4 h-20" }, "children": [{ "type": "Text", "children": "左侧 (1份)" }]},
-                "right": { "type": "Card", "props": { "className": "bg-pink-50 p-4 h-20" }, "children": [{ "type": "Text", "children": "右侧 (2份)" }]}
-              }}
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Grid 网格布局"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Grid",
+                  "props": {
+                    "columns": 4,
+                    "gap": 2
+                  },
+                  "slots": {
+                    "1": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-blue-50 p-4 text-center"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "1"
+                        }
+                      ]
+                    },
+                    "2": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-green-50 p-4 text-center"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "2"
+                        }
+                      ]
+                    },
+                    "3": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-yellow-50 p-4 text-center"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "3"
+                        }
+                      ]
+                    },
+                    "4": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-red-50 p-4 text-center"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "4"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "children": [
-            { "type": "CardHeader", "children": [{ "type": "CardTitle", "children": "Split 分割布局（上下）" }]},
-            { "type": "CardContent", "children": [
-              { "type": "Split", "props": { "vertical": true, "ratio": "1:1", "gap": 4 }, "slots": {
-                "top": { "type": "Card", "props": { "className": "bg-cyan-50 p-4" }, "children": [{ "type": "Text", "children": "上方区域" }]},
-                "bottom": { "type": "Card", "props": { "className": "bg-orange-50 p-4" }, "children": [{ "type": "Text", "children": "下方区域" }]}
-              }}
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Columns 多栏布局 (1:2:1 比例)"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Columns",
+                  "props": {
+                    "layout": "1:2:1",
+                    "gap": 4
+                  },
+                  "slots": {
+                    "1": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-blue-50 p-4"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "左栏 (1份)"
+                        }
+                      ]
+                    },
+                    "2": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-green-50 p-4"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "中栏 (2份)"
+                        }
+                      ]
+                    },
+                    "3": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-yellow-50 p-4"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "右栏 (1份)"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "children": [
-            { "type": "CardHeader", "children": [{ "type": "CardTitle", "children": "Rows 行布局" }]},
-            { "type": "CardContent", "children": [
-              { "type": "Rows", "props": { "gap": 2 }, "slots": {
-                "1": { "type": "Card", "props": { "className": "bg-slate-100 p-3" }, "children": [{ "type": "Text", "children": "第一行" }]},
-                "2": { "type": "Card", "props": { "className": "bg-slate-200 p-3" }, "children": [{ "type": "Text", "children": "第二行" }]},
-                "3": { "type": "Card", "props": { "className": "bg-slate-300 p-3" }, "children": [{ "type": "Text", "children": "第三行" }]}
-              }}
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Split 分割布局（左右）"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Split",
+                  "props": {
+                    "ratio": "1:2",
+                    "gap": 4
+                  },
+                  "slots": {
+                    "left": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-purple-50 p-4 h-20"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "左侧 (1份)"
+                        }
+                      ]
+                    },
+                    "right": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-pink-50 p-4 h-20"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "右侧 (2份)"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "children": [
-            { "type": "CardHeader", "children": [{ "type": "CardTitle", "children": "Center 居中布局" }]},
-            { "type": "CardContent", "children": [
-              { "type": "Center", "props": { "maxWidth": "md", "className": "bg-muted py-8" }, "children": [
-                { "type": "Card", "props": { "className": "w-full p-4 text-center" }, "children": [{ "type": "Text", "children": "内容居中，最大宽度 md" }]}
-              ]}
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Split 分割布局（上下）"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Split",
+                  "props": {
+                    "vertical": true,
+                    "ratio": "1:1",
+                    "gap": 4
+                  },
+                  "slots": {
+                    "top": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-cyan-50 p-4"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "上方区域"
+                        }
+                      ]
+                    },
+                    "bottom": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-orange-50 p-4"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "下方区域"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "children": [
-            { "type": "CardHeader", "children": [{ "type": "CardTitle", "children": "Spacer 间距组件" }]},
-            { "type": "CardContent", "children": [
-              { "type": "Stack", "props": { "className": "bg-muted p-4 rounded" }, "children": [
-                { "type": "Badge", "children": "上方内容" },
-                { "type": "Spacer", "props": { "size": 4 }},
-                { "type": "Badge", "children": "间隔4后" },
-                { "type": "Spacer", "props": { "size": 8 }},
-                { "type": "Badge", "children": "间隔8后" }
-              ]}
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Rows 行布局"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Rows",
+                  "props": {
+                    "gap": 2
+                  },
+                  "slots": {
+                    "1": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-slate-100 p-3"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "第一行"
+                        }
+                      ]
+                    },
+                    "2": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-slate-200 p-3"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "第二行"
+                        }
+                      ]
+                    },
+                    "3": {
+                      "type": "Card",
+                      "props": {
+                        "className": "bg-slate-300 p-3"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "第三行"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
           ]
         },
         {
           "type": "Card",
           "children": [
-            { "type": "CardHeader", "children": [{ "type": "CardTitle", "children": "LayoutDivider 布局分割线" }]},
-            { "type": "CardContent", "children": [
-              { "type": "Stack", "props": { "gap": 4 }, "children": [
-                { "type": "Text", "children": "段落一" },
-                { "type": "LayoutDivider" },
-                { "type": "Text", "children": "段落二" },
-                { "type": "LayoutDivider", "props": { "label": "分节标题" }},
-                { "type": "Text", "children": "段落三" }
-              ]}
-            ]}
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Center 居中布局"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Center",
+                  "props": {
+                    "maxWidth": "md",
+                    "className": "bg-muted py-8"
+                  },
+                  "children": [
+                    {
+                      "type": "Card",
+                      "props": {
+                        "className": "w-full p-4 text-center"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "children": "内容居中，最大宽度 md"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Card",
+          "children": [
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Spacer 间距组件"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Stack",
+                  "props": {
+                    "className": "bg-muted p-4 rounded"
+                  },
+                  "children": [
+                    {
+                      "type": "Badge",
+                      "children": "上方内容"
+                    },
+                    {
+                      "type": "Spacer",
+                      "props": {
+                        "size": 4
+                      }
+                    },
+                    {
+                      "type": "Badge",
+                      "children": "间隔4后"
+                    },
+                    {
+                      "type": "Spacer",
+                      "props": {
+                        "size": 8
+                      }
+                    },
+                    {
+                      "type": "Badge",
+                      "children": "间隔8后"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Card",
+          "children": [
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "LayoutDivider 布局分割线"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Stack",
+                  "props": {
+                    "gap": 4
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "children": "段落一"
+                    },
+                    {
+                      "type": "LayoutDivider"
+                    },
+                    {
+                      "type": "Text",
+                      "children": "段落二"
+                    },
+                    {
+                      "type": "LayoutDivider",
+                      "props": {
+                        "label": "分节标题"
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "children": "段落三"
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         }
       ]
