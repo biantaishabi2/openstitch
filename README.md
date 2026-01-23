@@ -204,6 +204,33 @@ npx tsx scripts/export-static.tsx --inspector-inline
 4. 粘贴给 AI Agent，告诉它你想怎么改
 5. AI 根据这些信息精准定位并修改 JSON Schema
 
+## Claude Code Skills
+
+本项目包含 Claude Code Skills，用于指导 AI 正确生成和渲染 Stitch UI 界面。
+
+### 可用 Skills
+
+| Skill | 用途 |
+|-------|------|
+| `stitch-renderer` | 执行层渲染规范：组件样式、布局规则、交互状态、响应式适配 |
+
+### 使用方式
+
+在 Claude Code 中引用 skill：
+
+```
+@stitch-renderer 帮我创建一个仪表盘页面
+```
+
+Skills 位于 `.claude/skills/` 目录，包含：
+- 8pt 网格系统规范
+- 排版和色彩系统
+- 组件行为规范（容器、导航、展示、反馈）
+- 12列网格和堆叠布局
+- 响应式断点（XL/L/M/S）
+- 语义映射规则（文本→组件/图标）
+- 一致性检查规则
+
 ## 技术栈
 
 **React 渲染器：**
