@@ -332,10 +332,61 @@ src/lib/compiler/
 - 参考：`docs/compiler-architecture.md` L675-L942
 
 ### 5. 组件工厂（待做）
-- 文件：`factory/component-factory.tsx`、`factory/ir.ts`、`factory/optimizer.ts` 等
+- 文件：
+  ```
+  factory/
+  ├── types.ts              # IR 类型定义 (UINode)
+  ├── type-map.ts           # AST type → component-map key 映射
+  ├── ir-generator.ts       # AST → IR (UINode) 转换
+  ├── props-normalizer.ts   # Props 归一化 (size→className)
+  ├── slot-distributor.ts   # 插槽分发 (children→slots)
+  ├── event-stubs.ts        # 事件桩函数注入
+  ├── theme-provider.tsx    # ThemeProvider + useTheme
+  ├── component-factory.tsx # 组件工厂主入口
+  └── index.ts              # 导出
+  ```
 - 做什么：AST + Tokens → IR (UINode JSON) → React 组件树
+- 复用：使用现有 `src/lib/renderer/` 的组件注册表和渲染逻辑
 - 验证：组件树可正常渲染，测试用例 TC-FACTORY-01 ~ TC-FACTORY-05 通过
 - 参考：`docs/compiler-architecture.md` L943-L1393
+
+#### 组件类型映射
+
+AST ComponentType (26 种) → component-map (70+ 组件) 的映射关系：
+
+| AST 类型 | component-map | 备注 |
+|----------|---------------|------|
+| Section | Section | 直接映射 |
+| Card | Card | 复合组件，需插槽分发 |
+| Button | Button | 需事件桩 |
+| Text | Text | 直接映射 |
+| Input | Input | 需事件桩 |
+| Table | Table | 复合组件，需处理 columns/rows |
+| Modal | Dialog | 名称映射 |
+| Divider | Separator | 名称映射 |
+| Code | CodeBlock | 名称映射 |
+| ... | ... | 其余直接映射 |
+
+#### 复合组件插槽分发规则
+
+| 组件 | 子组件结构 | 分发规则 |
+|------|-----------|---------|
+| Card | CardHeader, CardContent, CardFooter | title/icon→Header, content→Content, Button→Footer |
+| Alert | AlertTitle, AlertDescription | title→AlertTitle, content→AlertDescription |
+| Dialog | DialogHeader, DialogContent, DialogFooter | 同 Card |
+| Tabs | TabsList, TabsTrigger, TabsContent | 需解析 tabs 数组定义 |
+| Table | TableHeader, TableBody, TableRow, TableCell | 需处理 columns + data |
+
+#### 事件桩函数配置
+
+| 组件 | 事件 | 桩函数 |
+|------|------|-------|
+| Button | onClick | `() => console.log('Button clicked', id)` |
+| Input | onChange | `(e) => console.log('Input changed', e.target.value)` |
+| Checkbox | onCheckedChange | `(v) => console.log('Checked', v)` |
+| Switch | onCheckedChange | `(v) => console.log('Switch', v)` |
+| Tabs | onValueChange | `(v) => console.log('Tab changed', v)` |
+| Dialog | onOpenChange | `(v) => console.log('Dialog', v ? 'opened' : 'closed')` |
 
 ### 6. SSR 引擎（待做）
 - 文件：`ssr/renderer.ts`、`ssr/bundler.ts`、`ssr/codegen/`

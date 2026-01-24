@@ -1485,6 +1485,203 @@ const ComponentRegistry = new Map<string, React.ComponentType<any>>([
 ]);
 ```
 
+### 与现有渲染器的集成
+
+组件工厂**复用**现有 `src/lib/renderer/` 的基础设施：
+
+```
+现有渲染器 (src/lib/renderer/)
+├── component-map.ts    # 70+ shadcn 组件注册表 ← 复用
+├── renderer.tsx        # UINode → React 渲染逻辑 ← 复用
+└── types.ts            # UINode 类型定义 ← 复用
+
+组件工厂职责
+├── AST → UINode 转换   # 新增
+├── Props 归一化        # 新增
+├── 插槽分发            # 新增
+├── 事件桩注入          # 新增
+└── ThemeProvider 包裹  # 新增
+```
+
+### AST 类型 → component-map 映射
+
+AST 使用大写单词（如 `Card`），component-map 也使用相同命名，但有几个例外需要映射：
+
+```typescript
+/** AST type → component-map key 映射 */
+const TYPE_MAP: Record<string, string> = {
+  // 直接映射（AST type 与 component-map key 相同）
+  Section: 'Section',
+  Card: 'Card',
+  Button: 'Button',
+  Text: 'Text',
+  Input: 'Input',
+  Table: 'Table',
+  List: 'List',
+  Image: 'Image',
+  Icon: 'Icon',
+  Badge: 'Badge',
+  Alert: 'Alert',
+  Tabs: 'Tabs',
+  Grid: 'Grid',
+  Flex: 'Flex',
+  Spacer: 'Spacer',
+  Container: 'Container',
+  Link: 'Link',
+
+  // 名称映射（AST type 与 component-map key 不同）
+  Modal: 'Dialog',        // Modal → Dialog
+  Divider: 'Separator',   // Divider → Separator
+  Code: 'CodeBlock',      // Code → CodeBlock
+  Heading: 'Text',        // Heading → Text (variant="title")
+  Quote: 'Text',          // Quote → Text (variant="muted", as="blockquote")
+
+  // 缺失组件（需要组合实现）
+  Form: 'Stack',          // Form → Stack (direction="column")
+  Header: 'Flex',         // Header → Flex
+  Footer: 'Flex',         // Footer → Flex
+  Sidebar: 'Stack',       // Sidebar → Stack
+  Nav: 'Flex',            // Nav → Flex
+};
+```
+
+### 复合组件插槽分发规则
+
+部分组件是**复合组件**，需要将 AST children 分发到不同的子组件插槽：
+
+```typescript
+/** 插槽分发规则配置 */
+const SLOT_RULES: Record<string, SlotRule> = {
+  Card: {
+    slots: ['header', 'content', 'footer'],
+    distribute: (child) => {
+      if (['Heading', 'Text'].includes(child.type) && child.props.title) return 'header';
+      if (child.type === 'Button') return 'footer';
+      return 'content';
+    },
+    render: {
+      header: 'CardHeader',   // header slot → <CardHeader>
+      content: 'CardContent', // content slot → <CardContent>
+      footer: 'CardFooter',   // footer slot → <CardFooter>
+    },
+  },
+
+  Alert: {
+    slots: ['title', 'description'],
+    distribute: (child) => {
+      if (child.props.title) return 'title';
+      return 'description';
+    },
+    render: {
+      title: 'AlertTitle',
+      description: 'AlertDescription',
+    },
+  },
+
+  Dialog: {
+    slots: ['header', 'content', 'footer'],
+    distribute: (child) => {
+      if (['Heading', 'Text'].includes(child.type) && child.props.title) return 'header';
+      if (child.type === 'Button') return 'footer';
+      return 'content';
+    },
+    render: {
+      header: 'DialogHeader',
+      content: 'DialogContent',
+      footer: 'DialogFooter',
+    },
+  },
+
+  // Tabs 需要特殊处理：从 props.tabs 数组生成 TabsList + TabsContent
+  Tabs: {
+    special: true,
+    // 实现见 slot-distributor.ts
+  },
+
+  // Table 需要特殊处理：从 props.columns + props.data 生成完整表格
+  Table: {
+    special: true,
+    // 实现见 slot-distributor.ts
+  },
+};
+```
+
+### 事件桩函数配置
+
+为交互组件注入桩函数，使 UI 可交互：
+
+```typescript
+/** 事件桩函数配置 */
+const EVENT_STUBS: Record<string, EventStubConfig> = {
+  Button: {
+    onClick: (id) => () => console.log(`[Stitch] Button clicked: ${id}`),
+  },
+
+  Input: {
+    onChange: (id) => (e) => console.log(`[Stitch] Input changed: ${id}`, e.target.value),
+    onFocus: (id) => () => console.log(`[Stitch] Input focused: ${id}`),
+    onBlur: (id) => () => console.log(`[Stitch] Input blurred: ${id}`),
+  },
+
+  Checkbox: {
+    onCheckedChange: (id) => (checked) => console.log(`[Stitch] Checkbox: ${id}`, checked),
+  },
+
+  Switch: {
+    onCheckedChange: (id) => (checked) => console.log(`[Stitch] Switch: ${id}`, checked),
+  },
+
+  Tabs: {
+    onValueChange: (id) => (value) => console.log(`[Stitch] Tab changed: ${id}`, value),
+  },
+
+  Dialog: {
+    onOpenChange: (id) => (open) => console.log(`[Stitch] Dialog: ${id}`, open ? 'opened' : 'closed'),
+  },
+
+  Select: {
+    onValueChange: (id) => (value) => console.log(`[Stitch] Select: ${id}`, value),
+  },
+};
+```
+
+### Props 归一化规则
+
+将 AST 的语义化 props 转换为 component-map 组件期望的格式：
+
+```typescript
+/** Props 归一化规则 */
+const PROPS_NORMALIZERS: Record<string, PropsNormalizer> = {
+  // 尺寸转换
+  size: (value, tokens) => {
+    const sizeMap = {
+      xs: { className: 'text-xs', style: { fontSize: tokens['--font-size-xs'] } },
+      sm: { className: 'text-sm', style: { fontSize: tokens['--font-size-sm'] } },
+      md: { className: 'text-base', style: { fontSize: tokens['--font-size-base'] } },
+      lg: { className: 'text-lg', style: { fontSize: tokens['--font-size-lg'] } },
+      xl: { className: 'text-xl', style: { fontSize: tokens['--font-size-xl'] } },
+    };
+    return sizeMap[value] || sizeMap.md;
+  },
+
+  // 间距转换
+  spacing: (value, tokens) => {
+    const spacingMap = {
+      compact: tokens['--spacing-sm'],
+      normal: tokens['--spacing-md'],
+      spacious: tokens['--spacing-lg'],
+    };
+    return { style: { gap: spacingMap[value] || spacingMap.normal } };
+  },
+
+  // 变体直接透传
+  variant: (value) => ({ variant: value }),
+
+  // 图标转换为 Icon 组件
+  icon: (value) => ({ icon: value }), // 由组件内部处理
+};
+```
+
 ---
 
 ## SSR 引擎层 (Server Side Rendering Engine)
