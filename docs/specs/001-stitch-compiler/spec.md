@@ -323,10 +323,12 @@ src/lib/compiler/
 - 验证：测试用例 TC-ZOD-01 ~ TC-ZOD-05 通过
 - 参考：`docs/compiler-architecture.md` L663-L710
 
-### 4. 视觉引擎 - 设计系统合成器（待做）
-- 文件：`visual/synthesizer.ts`、`visual/session.ts`
+### 4. 视觉引擎 - 设计系统合成器 ✅
+- 文件：`visual/synthesizer.ts`、`visual/session.ts`、`visual/types.ts`
 - 做什么：context + Hash 种子 + Session State → Design Tokens (5 维度)
-- 验证：同样输入产出同样 Tokens，测试用例 TC-TOKENS-01 ~ TC-TOKENS-03 通过
+- 5 维度：空间尺度、字体排版、形状边框、装饰纹理、语义颜色
+- 场景感知：技术/金融/医疗/教育/创意/企业 6 种场景自动识别
+- 验证：测试用例 TC-TOKENS-01 ~ TC-TOKENS-03 通过 (22 个测试)
 - 参考：`docs/compiler-architecture.md` L675-L942
 
 ### 5. 组件工厂（待做）
@@ -355,11 +357,11 @@ src/lib/compiler/
 
 - [x] 安装依赖 (Chevrotain, Zod, PurgeCSS)
 - [x] 逻辑引擎 (logic/): Chevrotain 词法/语法 + Zod 语义收敛 → AST
-- [ ] 视觉引擎 (visual/): Design Tokens 生成 + Session State
+- [x] 视觉引擎 (visual/): Design Tokens 生成 + Session State
 - [ ] 组件工厂 (factory/): IR 生成 + 优化器 + Props归一化/插槽分发/事件桩函数/Context注入
 - [ ] SSR 引擎 (ssr/): 代码生成器 + 打包器 + 脱水渲染/样式萃取/资源固化
 - [ ] 集成测试
 
 ## Next
 
-- 实现视觉引擎 (visual/synthesizer.ts, visual/session.ts)
+- 实现组件工厂 (factory/component-factory.tsx, factory/ir.ts)
