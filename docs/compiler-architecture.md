@@ -2770,6 +2770,76 @@ console.log(JSON.stringify(ast, null, 2));
 | **布局与样式解耦** | AST 只定义"这里有一个 Section，它要居中"，不定义具体像素值 |
 | **React 友好** | `props` 字段可直接透传给 React 组件 |
 
+### ⚠️ 工程注意事项
+
+#### 1. 循环引用风险（递归处理）
+
+Zod Schema 必须使用 `z.lazy()` 处理递归的 `children` 嵌套：
+
+```typescript
+// ✅ 正确：使用 z.lazy() 支持无限嵌套
+const CSTNodeSchema: z.ZodType<any> = z.lazy(() =>
+  z.object({
+    children: z.array(CSTNodeSchema).optional(), // 递归引用自身
+  })
+);
+
+// ❌ 错误：直接引用会导致 ReferenceError
+const CSTNodeSchema = z.object({
+  children: z.array(CSTNodeSchema).optional(), // 💥 CSTNodeSchema 未定义
+});
+```
+
+#### 2. Token 预注入的优先级（The Cascade）
+
+`props-normalizer.ts` 必须实现样式优先级算法：
+
+```
+DSL 显式属性 > Context 动态 Token > 组件库默认值
+```
+
+```typescript
+// 优先级算法示例
+function normalizeProps(dslProps, contextTokens, componentDefaults) {
+  return {
+    ...componentDefaults,  // 3. 最低优先级
+    ...contextTokens,      // 2. 中等优先级
+    ...dslProps,           // 1. 最高优先级（DSL 显式写的必须覆盖）
+  };
+}
+
+// 例：DSL 写了 COLOR("RED")，必须覆盖 context 注入的 blue-600
+// ATTR: COLOR("RED") → props.color = "red" ✅
+// 而不是被 defaultPrimaryColor 覆盖
+```
+
+#### 3. ID 稳定性（Deterministic IDs）
+
+简单计数器（`card_1`, `card_2`）在 `edit_design` 插入节点时会导致 ID 漂移：
+
+```
+原始：[card_1] [card_2] [card_3]
+插入：[card_1] [NEW]   [card_2→card_3] [card_3→card_4] 💥 ID 漂移
+```
+
+解决方案：使用**组件路径哈希**生成稳定 ID：
+
+```typescript
+// ✅ 稳定 ID：基于路径，插入节点不影响兄弟节点
+function generateStableId(path: string[], type: string, index: number): string {
+  // root.section_1.card_1 → 即使插入新节点，原有节点 ID 不变
+  return [...path, `${type.toLowerCase()}_${index}`].join('.');
+}
+
+// 或使用内容哈希（更稳定）
+function generateContentHash(node: CSTNode): string {
+  const content = JSON.stringify({ type: node.tag, attrs: node.attrs });
+  return `${node.tag.toLowerCase()}_${hash(content).slice(0, 8)}`;
+}
+```
+
+这样即使在中间插入新卡片，原有节点的 ID 保持稳定，React Diff 不会失效。
+
 ---
 
 ## 技术选型：AST 解析
