@@ -963,6 +963,457 @@ AI 输出标签化 DSL（容错性高），编译器转成结构化 AST（确定
 
 ---
 
+## 组件工厂层 (Component Factory)
+
+### 核心定位
+
+组件工厂是编译器的**第三层**，负责把"骨头"（AST）和"皮肤"（Design Tokens）组装成活的 React 组件树。
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  如果把 UI 比作一辆车：                                          │
+│                                                                  │
+│  规划层      → 图纸                                              │
+│  视觉引擎    → 调色漆和选内饰                                    │
+│  工厂层      → 组装车间                                          │
+│               ├─ 零件匹配：把图纸上的"轮子"对应到"米其林轮胎"    │
+│               ├─ 灌浆组装：把零件焊在一起（构建 DOM 树）         │
+│               ├─ 通电测试：接通电路（绑定交互事件）              │
+│               └─ 最后喷漆：根据内饰方案刷漆（注入 Design Tokens）│
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### 输入与输出
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                  │
+│  输入                                                            │
+│  ────                                                            │
+│  1. AST (来自逻辑综合层)                                         │
+│     {                                                            │
+│       type: "PAGE",                                              │
+│       children: [                                                │
+│         { type: "HEADER", children: [...] },                    │
+│         { type: "TABLE", attrs: { columns: [...] } }            │
+│       ]                                                          │
+│     }                                                            │
+│                                                                  │
+│  2. Design Tokens (来自视觉引擎)                                 │
+│     {                                                            │
+│       "--primary-color": "#1a73e8",                             │
+│       "--spacing-md": "16px",                                   │
+│       "--radius-md": "8px",                                     │
+│       ...                                                        │
+│     }                                                            │
+│                                                                  │
+│  ─────────────────────────────────────────────────────────────  │
+│                                                                  │
+│  输出                                                            │
+│  ────                                                            │
+│  React 组件树 (可直接渲染的 ReactNode)                           │
+│                                                                  │
+│  <ThemeProvider tokens={designTokens}>                          │
+│    <Page>                                                        │
+│      <Header>                                                    │
+│        <Title>用户管理</Title>                                   │
+│        <Button onClick={stub}>新增用户</Button>                  │
+│      </Header>                                                   │
+│      <Table columns={normalizedColumns} />                      │
+│    </Page>                                                       │
+│  </ThemeProvider>                                                │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### 四大核心职责
+
+#### 1. 属性转换与归一化 (Props Normalization)
+
+规划层发出的 DSL 参数是**语义化**的，底层 React 组件需要的是**具体值**。
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  DSL 语义参数              →              React 具体值           │
+│  ─────────────────────────────────────────────────────────────  │
+│                                                                  │
+│  size: "large"            →    className="text-lg p-4"          │
+│  size: "small"            →    className="text-sm p-2"          │
+│                                                                  │
+│  spacing: "compact"       →    className="p-2 gap-1"            │
+│  spacing: "comfortable"   →    className="p-4 gap-3"            │
+│                                                                  │
+│  color: "primary"         →    style={{ color: tokens.primary }}│
+│  color: "danger"          →    style={{ color: tokens.danger }} │
+│                                                                  │
+│  variant: "outlined"      →    className="border border-primary │
+│                                           bg-transparent"       │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**实现方式**：
+
+```typescript
+function transformProps(
+  astProps: Record<string, any>,
+  tokens: DesignTokens
+): Record<string, any> {
+  const result: Record<string, any> = {};
+
+  // 尺寸转换
+  if (astProps.size) {
+    const sizeMap = {
+      small: { className: "text-sm p-2", style: { fontSize: tokens["--font-size-sm"] } },
+      medium: { className: "text-base p-3", style: { fontSize: tokens["--font-size-base"] } },
+      large: { className: "text-lg p-4", style: { fontSize: tokens["--font-size-lg"] } },
+    };
+    Object.assign(result, sizeMap[astProps.size] || sizeMap.medium);
+  }
+
+  // 间距转换
+  if (astProps.spacing) {
+    const spacingMap = {
+      compact: `gap-[${tokens["--spacing-sm"]}]`,
+      comfortable: `gap-[${tokens["--spacing-md"]}]`,
+      spacious: `gap-[${tokens["--spacing-lg"]}]`,
+    };
+    result.className = `${result.className || ""} ${spacingMap[astProps.spacing]}`;
+  }
+
+  // 颜色转换
+  if (astProps.color) {
+    result.style = {
+      ...result.style,
+      "--btn-color": tokens[`--${astProps.color}-color`] || tokens["--primary-color"],
+    };
+  }
+
+  return result;
+}
+```
+
+#### 2. 插槽分发与布局递归 (Slot Distribution & Recursion)
+
+工厂层不是一次性把页面拍扁，而是**递归地**构建组件树，并处理**插槽分发**。
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  AST 子节点                        Card 组件插槽                 │
+│  ─────────────────────────────────────────────────────────────  │
+│                                                                  │
+│  children: [                       ┌─────────────────────┐      │
+│    { type: "TITLE", ... },    ──→  │ header slot         │      │
+│    { type: "TEXT", ... },     ──→  │ body slot           │      │
+│    { type: "BUTTON", ... }    ──→  │ footer slot         │      │
+│  ]                                 └─────────────────────┘      │
+│                                                                  │
+│  分发规则：                                                      │
+│  - 带 TITLE/HEADING 的节点 → header                             │
+│  - 带 BUTTON/ACTION 的节点 → footer                             │
+│  - 其他节点 → body                                               │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**条件渲染**：如果某个插槽没有内容，工厂层会自动决定不渲染该容器：
+
+```typescript
+function distributeSlots(children: ASTNode[]): SlotDistribution {
+  const slots: SlotDistribution = {
+    header: [],
+    body: [],
+    footer: [],
+  };
+
+  for (const child of children) {
+    if (["TITLE", "HEADING", "BREADCRUMB"].includes(child.type)) {
+      slots.header.push(child);
+    } else if (["BUTTON", "ACTION", "LINK"].includes(child.type)) {
+      slots.footer.push(child);
+    } else {
+      slots.body.push(child);
+    }
+  }
+
+  return slots;
+}
+
+// 渲染时：条件渲染空插槽
+function renderCard(slots: SlotDistribution) {
+  return (
+    <Card>
+      {slots.header.length > 0 && (
+        <CardHeader>{slots.header.map(render)}</CardHeader>
+      )}
+      <CardBody>{slots.body.map(render)}</CardBody>
+      {slots.footer.length > 0 && (
+        <CardFooter>{slots.footer.map(render)}</CardFooter>
+      )}
+    </Card>
+  );
+}
+```
+
+#### 3. 事件与交互的桩函数注入 (Event Stubbing)
+
+为了让 UI 看起来"像真的"，工厂层需要注入交互逻辑。
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  桩函数注入                                                      │
+│  ─────────────────────────────────────────────────────────────  │
+│                                                                  │
+│  Button                                                          │
+│  ├─ onClick: () => console.log("Button clicked")                │
+│  ├─ onHover: 状态变化（高亮效果）                                │
+│  └─ disabled 状态处理                                            │
+│                                                                  │
+│  Input                                                           │
+│  ├─ onChange: (e) => setValue(e.target.value)                   │
+│  ├─ onFocus: 聚焦样式                                            │
+│  └─ onBlur: 失焦验证                                             │
+│                                                                  │
+│  Menu (左侧导航)                                                 │
+│  ├─ onClick: (item) => setActiveItem(item)                      │
+│  └─ 联动：右侧内容区根据 activeItem 变化                         │
+│                                                                  │
+│  Modal                                                           │
+│  ├─ onOpen / onClose                                            │
+│  └─ 背景遮罩点击关闭                                             │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**状态同步逻辑**（组件间通信隧道）：
+
+```typescript
+// 在工厂层组装时，建立组件间的通信隧道
+function createInteractionContext() {
+  const [state, setState] = useState({
+    activeMenuItem: null,
+    modalOpen: false,
+    selectedRows: [],
+  });
+
+  return {
+    // 菜单 → 内容区联动
+    onMenuClick: (item: string) => {
+      setState(s => ({ ...s, activeMenuItem: item }));
+    },
+    getActiveContent: () => state.activeMenuItem,
+
+    // Modal 控制
+    openModal: () => setState(s => ({ ...s, modalOpen: true })),
+    closeModal: () => setState(s => ({ ...s, modalOpen: false })),
+    isModalOpen: () => state.modalOpen,
+
+    // 表格行选择
+    onRowSelect: (rows: string[]) => {
+      setState(s => ({ ...s, selectedRows: rows }));
+    },
+    getSelectedRows: () => state.selectedRows,
+  };
+}
+```
+
+#### 4. 运行时上下文注入 (Context Injection)
+
+这是保证页面风格一致的**最后一关**。
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  ThemeProvider 包裹整棵树                                        │
+│  ─────────────────────────────────────────────────────────────  │
+│                                                                  │
+│  <ThemeProvider value={designTokens}>     ← 顶层注入             │
+│    │                                                             │
+│    ├─ <Page>                                                    │
+│    │   ├─ <Header>                                              │
+│    │   │   └─ <Button />  ← useTheme() 获取 tokens              │
+│    │   │                                                        │
+│    │   └─ <Table>                                               │
+│    │       └─ <Cell />    ← useTheme() 获取 tokens              │
+│    │                                                            │
+│    └─ 任何深层组件都能通过 useTheme() 知道自己该用什么颜色       │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**实现方式**：
+
+```typescript
+// 创建 Theme Context
+const ThemeContext = React.createContext<DesignTokens | null>(null);
+
+// Provider 组件
+export function ThemeProvider({
+  tokens,
+  children,
+}: {
+  tokens: DesignTokens;
+  children: React.ReactNode;
+}) {
+  // 将 tokens 注入 CSS 变量
+  const style = useMemo(() => {
+    const vars: Record<string, string> = {};
+    for (const [key, value] of Object.entries(tokens)) {
+      vars[key] = value;
+    }
+    return vars as React.CSSProperties;
+  }, [tokens]);
+
+  return (
+    <ThemeContext.Provider value={tokens}>
+      <div style={style}>{children}</div>
+    </ThemeContext.Provider>
+  );
+}
+
+// Hook：任何组件都能获取 tokens
+export function useTheme(): DesignTokens {
+  const tokens = useContext(ThemeContext);
+  if (!tokens) {
+    throw new Error("useTheme must be used within ThemeProvider");
+  }
+  return tokens;
+}
+
+// 使用示例：Button 组件自动获取主题色
+function Button({ children, variant = "primary" }) {
+  const tokens = useTheme();
+
+  return (
+    <button
+      style={{
+        backgroundColor: tokens[`--${variant}-color`],
+        borderRadius: tokens["--radius-md"],
+        padding: `${tokens["--spacing-sm"]} ${tokens["--spacing-md"]}`,
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+```
+
+### 完整的工厂函数
+
+把四个职责整合在一起：
+
+```typescript
+/**
+ * 组件工厂：把 AST + Design Tokens 组装成 React 组件树
+ */
+function ComponentFactory(
+  astNode: ASTNode,
+  tokens: DesignTokens,
+  interactionCtx: InteractionContext
+): React.ReactNode {
+  // 1. 找到对应的 React 组件
+  const Component = ComponentRegistry.get(astNode.type);
+
+  if (!Component) {
+    console.warn(`Unknown component: ${astNode.type}`);
+    return null;
+  }
+
+  // 2. 属性转换（DSL Props → React Props）
+  const normalizedProps = transformProps(astNode.attrs, tokens);
+
+  // 3. 注入事件桩函数
+  const propsWithEvents = injectEventStubs(
+    normalizedProps,
+    astNode.type,
+    interactionCtx
+  );
+
+  // 4. 处理插槽分发（如果组件支持插槽）
+  let children: React.ReactNode = null;
+  if (astNode.children && astNode.children.length > 0) {
+    if (Component.slots) {
+      // 有插槽的组件：分发子节点到不同插槽
+      const slots = distributeSlots(astNode.children, Component.slots);
+      children = renderSlots(slots, tokens, interactionCtx);
+    } else {
+      // 普通组件：递归渲染子节点
+      children = astNode.children.map((child, index) => (
+        <React.Fragment key={index}>
+          {ComponentFactory(child, tokens, interactionCtx)}
+        </React.Fragment>
+      ));
+    }
+  }
+
+  // 5. 返回组装好的 React 实例
+  return <Component {...propsWithEvents}>{children}</Component>;
+}
+
+/**
+ * 顶层入口：包裹 ThemeProvider
+ */
+export function renderPage(
+  ast: ASTNode,
+  tokens: DesignTokens
+): React.ReactNode {
+  const interactionCtx = createInteractionContext();
+
+  return (
+    <ThemeProvider tokens={tokens}>
+      <InteractionProvider value={interactionCtx}>
+        {ComponentFactory(ast, tokens, interactionCtx)}
+      </InteractionProvider>
+    </ThemeProvider>
+  );
+}
+```
+
+### 组件注册表 (Component Registry)
+
+工厂层需要一个**组件映射表**，把 AST 节点类型映射到真实的 React 组件：
+
+```typescript
+const ComponentRegistry = new Map<string, React.ComponentType<any>>([
+  // 布局组件
+  ["PAGE", Page],
+  ["SECTION", Section],
+  ["CARD", Card],
+  ["GRID", Grid],
+  ["STACK", Stack],
+
+  // 内容组件
+  ["HEADER", Header],
+  ["TITLE", Title],
+  ["TEXT", Text],
+  ["IMAGE", Image],
+
+  // 交互组件
+  ["BUTTON", Button],
+  ["INPUT", Input],
+  ["SELECT", Select],
+  ["CHECKBOX", Checkbox],
+
+  // 数据展示
+  ["TABLE", Table],
+  ["LIST", List],
+  ["STATS", StatsCard],
+  ["CHART", Chart],
+
+  // 导航组件
+  ["MENU", Menu],
+  ["TABS", Tabs],
+  ["BREADCRUMB", Breadcrumb],
+
+  // 反馈组件
+  ["MODAL", Modal],
+  ["TOAST", Toast],
+  ["ALERT", Alert],
+]);
+```
+
+---
+
 ## 视觉引擎版本规划
 
 ### V1：静态别名映射（当前实现）
