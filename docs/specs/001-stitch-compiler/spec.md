@@ -11,12 +11,10 @@ feature
 ## Task Scope
 
 **In scope**：
-- 逻辑综合层：词法分析(Chevrotain)、语法分析(Chevrotain)、语义收敛(Zod)
-- 中端层：设计系统合成器、IR 生成器、优化器
-- 后端层：代码生成器（React/HTML/HEEx）、资源打包器
-- 视觉引擎：5 维度 Design Tokens 生成
-- 组件工厂：Props 归一化、插槽分发、事件桩函数、Context 注入
-- SSR 引擎：脱水渲染、样式萃取、资源固化
+- 逻辑引擎（并行）：词法分析(Chevrotain)、语法分析(Chevrotain)、语义收敛(Zod) → AST
+- 视觉引擎（并行）：5 维度 Design Tokens 生成、Session State 管理
+- 组件工厂（汇合点）：IR 生成、优化器、Props 归一化、插槽分发、事件桩函数、Context 注入
+- SSR 引擎：代码生成器（React/HTML/HEEx）、资源打包器、脱水渲染、样式萃取、资源固化
 
 **Out of scope**：
 - 规划层 AI（由 Gemini 等外部 AI 负责）
@@ -73,34 +71,34 @@ feature
 
 ```
 src/lib/compiler/
-├── frontend/                     # 逻辑综合层
+├── logic/                        # 逻辑引擎（并行）
 │   ├── lexer.ts                  # 词法分析器 (Chevrotain)
 │   ├── parser.ts                 # 语法分析器 (Chevrotain)
 │   ├── semantic.ts               # 语义收敛器 (Zod)
 │   └── ast.ts                    # AST 类型定义
-├── middle/
-│   ├── synthesizer.ts        # 设计系统合成器
-│   ├── session.ts            # Session State 管理
-│   ├── ir.ts                 # IR 生成器
-│   └── optimizer.ts          # 优化器
-├── backend/
+├── visual/                       # 视觉引擎（并行）
+│   ├── synthesizer.ts            # 设计系统合成器
+│   └── session.ts                # Session State 管理
+├── factory/                      # 组件工厂（汇合点）
+│   ├── component-factory.tsx     # 组件工厂
+│   ├── ir.ts                     # IR 生成器（AST + Tokens → UINode）
+│   ├── optimizer.ts              # 优化器
+│   ├── props-normalizer.ts       # Props 归一化
+│   ├── slot-distributor.ts       # 插槽分发
+│   └── event-stubs.ts            # 事件桩函数
+├── ssr/                          # SSR 引擎
 │   ├── codegen/
-│   │   ├── react.tsx         # React 后端
-│   │   ├── html.ts           # HTML 后端
-│   │   └── heex.ts           # HEEx 后端
-│   ├── bundler.ts            # 资源打包器
-│   └── ssr.ts                # SSR 引擎
-├── factory/
-│   ├── component-factory.tsx # 组件工厂
-│   ├── props-normalizer.ts   # Props 归一化
-│   ├── slot-distributor.ts   # 插槽分发
-│   └── event-stubs.ts        # 事件桩函数
-└── index.ts                  # 编译器入口
+│   │   ├── react.tsx             # React 后端
+│   │   ├── html.ts               # HTML 后端
+│   │   └── heex.ts               # HEEx 后端
+│   ├── bundler.ts                # 资源打包器
+│   └── renderer.ts               # 脱水渲染
+└── index.ts                      # 编译器入口
 ```
 
 ### 修改文件
 
-- `src/lib/renderer/renderer.tsx` - 重构为 React 后端
+- `src/lib/renderer/renderer.tsx` - 重构为 SSR 引擎的 React 后端 (`ssr/codegen/react.tsx`)
 
 ## Files to Reference
 
@@ -305,39 +303,45 @@ src/lib/compiler/
 - 做什么：`npm install chevrotain purgecss`
 - 验证：`npm ls chevrotain` 显示版本
 
-### 1. 实现词法分析器（待做）
+### 1. 逻辑引擎 - 词法分析器（待做）
+- 文件：`logic/lexer.ts`
 - 做什么：解析 `[TAG: id]`、`{ key: "value" }`、`ATTR:`、`CONTENT:` 等标签
 - 验证：测试用例 TC-LEXER-01 通过，Token 流正确
 - 参考：`docs/compiler-architecture.md` L2323-L2400
 
-### 2. 实现语法分析器（待做）
+### 2. 逻辑引擎 - 语法分析器（待做）
+- 文件：`logic/parser.ts`
 - 做什么：将 Token 流构建为 CST（具体语法树）
 - 验证：测试用例 TC-PARSER-01 通过，CST 结构正确
 - 参考：`docs/compiler-architecture.md` L2400-L2500
 
-### 2.5 实现语义收敛器（待做）
+### 3. 逻辑引擎 - 语义收敛器（待做）
+- 文件：`logic/semantic.ts`
 - 做什么：用 Zod 将 CST 转换为标准化 AST（`type`/`id`/`props`/`children`）
 - 验证：测试用例 TC-ZOD-01 ~ TC-ZOD-05 通过
 - 参考：`docs/compiler-architecture.md` L663-L710
 
-### 3. 实现设计系统合成器（待做）
-- 做什么：Hash 种子 + Session State → Design Tokens
-- 验证：同样输入产出同样 Tokens
+### 4. 视觉引擎 - 设计系统合成器（待做）
+- 文件：`visual/synthesizer.ts`、`visual/session.ts`
+- 做什么：context + Hash 种子 + Session State → Design Tokens (5 维度)
+- 验证：同样输入产出同样 Tokens，测试用例 TC-TOKENS-01 ~ TC-TOKENS-03 通过
 - 参考：`docs/compiler-architecture.md` L675-L942
 
-### 4. 实现组件工厂（待做）
-- 做什么：AST + Tokens → React 组件树
-- 验证：组件树可正常渲染
+### 5. 组件工厂（待做）
+- 文件：`factory/component-factory.tsx`、`factory/ir.ts`、`factory/optimizer.ts` 等
+- 做什么：AST + Tokens → IR (UINode JSON) → React 组件树
+- 验证：组件树可正常渲染，测试用例 TC-FACTORY-01 ~ TC-FACTORY-05 通过
 - 参考：`docs/compiler-architecture.md` L943-L1393
 
-### 5. 实现 SSR 引擎（待做）
+### 6. SSR 引擎（待做）
+- 文件：`ssr/renderer.ts`、`ssr/bundler.ts`、`ssr/codegen/`
 - 做什么：React 树 → 单文件 HTML
-- 验证：HTML 可离线运行，CSS < 10KB
+- 验证：HTML 可离线运行，CSS < 10KB，测试用例 TC-SSR-01 ~ TC-SSR-03 通过
 - 参考：`docs/compiler-architecture.md` L1394-L1688
 
-### 6. 集成测试（待做）
+### 7. 集成测试（待做）
 - 做什么：端到端测试完整编译流程
-- 验证：DSL → AST → Tokens → React → HTML 全链路通过
+- 验证：DSL → AST → Tokens → React → HTML 全链路通过，测试用例 TC-E2E-01 ~ TC-E2E-02 通过
 
 ## Notes
 
@@ -348,14 +352,13 @@ src/lib/compiler/
 ## Progress
 
 - [ ] 安装依赖 (Chevrotain, Zod, PurgeCSS)
-- [ ] 逻辑综合层 (Chevrotain 词法/语法 + Zod 语义收敛)
-- [ ] 视觉引擎层 (Design Tokens 生成)
-- [ ] 组件工厂层 (Props归一化/插槽分发/事件桩函数/Context注入)
-- [ ] SSR 引擎层 (脱水渲染/样式萃取/资源固化)
-- [ ] 后端层（代码生成器/打包器）
+- [ ] 逻辑引擎 (logic/): Chevrotain 词法/语法 + Zod 语义收敛 → AST
+- [ ] 视觉引擎 (visual/): Design Tokens 生成 + Session State
+- [ ] 组件工厂 (factory/): IR 生成 + 优化器 + Props归一化/插槽分发/事件桩函数/Context注入
+- [ ] SSR 引擎 (ssr/): 代码生成器 + 打包器 + 脱水渲染/样式萃取/资源固化
 - [ ] 集成测试
 
 ## Next
 
 - 安装 Chevrotain 依赖
-- 实现词法分析器
+- 实现逻辑引擎 (logic/lexer.ts)
