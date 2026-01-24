@@ -110,23 +110,119 @@ src/lib/compiler/
 
 ## QA Acceptance Criteria
 
-### TC-COMPILER-01: DSL 解析
+### 前端层测试
+
+#### TC-LEXER-01: 词法分析
 
 - **操作**：输入 `[Layout] Dashboard 布局\n[Content - Header] 标题"用户管理"`
+- **预期**：生成正确的 Token 流
+- **验证**：`[LAYOUT_TAG, TEXT, CONTENT_TAG("Header"), TEXT]`
+
+#### TC-PARSER-01: 语法分析
+
+- **操作**：Token 流输入 Parser
 - **预期**：生成正确的 AST 结构
 - **验证**：AST 包含 PAGE → HEADER → TITLE 节点层级
 
-### TC-COMPILER-02: Design Tokens 确定性
+#### TC-SEMANTIC-01: 语义校验
+
+- **操作**：输入非法嵌套（Button 包含 Table）
+- **预期**：报错或自动修正
+- **验证**：错误列表包含嵌套非法警告
+
+### 视觉引擎测试
+
+#### TC-TOKENS-01: Design Tokens 确定性
 
 - **操作**：相同 context + session_id 调用两次 `generateDesignTokens()`
 - **预期**：两次输出完全一致
 - **验证**：`JSON.stringify(tokens1) === JSON.stringify(tokens2)`
 
-### TC-COMPILER-03: SSR 输出
+#### TC-TOKENS-02: 不同 context 产生不同 Tokens
 
-- **操作**：编译一个简单页面并导出 HTML
-- **预期**：单文件 HTML，无外部依赖，CSS < 10KB
-- **验证**：双击 HTML 文件可在浏览器正常显示
+- **操作**：context="技术调研" 和 context="儿童教育" 分别生成 Tokens
+- **预期**：两套 Tokens 的色相、圆角、间距不同
+- **验证**：`tokens1["--primary-color"] !== tokens2["--primary-color"]`
+
+#### TC-TOKENS-03: 5 维度完整性
+
+- **操作**：生成 Design Tokens
+- **预期**：包含空间/字体/形状/装饰/语义 5 个维度
+- **验证**：Tokens 包含 `--spacing-*`, `--font-*`, `--radius-*`, `--pattern-*`, `--primary-*`
+
+### 组件工厂测试
+
+#### TC-FACTORY-01: Props 归一化
+
+- **操作**：输入 `{ size: "large", spacing: "compact" }`
+- **预期**：转换为具体 CSS 类名或像素值
+- **验证**：输出包含 `className="text-lg p-4"` 或等效样式
+
+#### TC-FACTORY-02: 插槽分发
+
+- **操作**：输入 Card 组件，children 包含 TITLE 和 BUTTON
+- **预期**：TITLE 分发到 header 插槽，BUTTON 分发到 footer 插槽
+- **验证**：渲染结果中 TITLE 在 CardHeader 内，BUTTON 在 CardFooter 内
+
+#### TC-FACTORY-03: 空插槽不渲染
+
+- **操作**：输入 Card 组件，无 BUTTON 类子节点
+- **预期**：footer 插槽不渲染
+- **验证**：输出 HTML 不包含 CardFooter 元素
+
+#### TC-FACTORY-04: 事件桩函数注入
+
+- **操作**：渲染包含 Button 的页面
+- **预期**：Button 有 onClick 事件绑定
+- **验证**：点击 Button 触发桩函数（console.log 或状态变化）
+
+#### TC-FACTORY-05: Context 注入
+
+- **操作**：渲染组件树
+- **预期**：顶层包裹 ThemeProvider，深层组件可获取 Tokens
+- **验证**：深层 Button 使用 `--primary-color` 渲染正确颜色
+
+### SSR 引擎测试
+
+#### TC-SSR-01: 脱水渲染
+
+- **操作**：React 组件树调用 `renderToString()`
+- **预期**：生成 HTML 字符串
+- **验证**：输出为有效 HTML，包含预期标签结构
+
+#### TC-SSR-02: 样式萃取
+
+- **操作**：编译页面并萃取 CSS
+- **预期**：CSS 仅包含页面实际使用的类名
+- **验证**：CSS 体积 < 10KB，不包含未使用的 Tailwind 类
+
+#### TC-SSR-03: 资源固化
+
+- **操作**：导出 HTML 文件
+- **预期**：单文件 HTML，无外部依赖
+- **验证**：HTML 包含内联 CSS 和 Base64 图片，双击可在浏览器正常显示
+
+### 并行执行测试
+
+#### TC-PARALLEL-01: AST 和 Tokens 并行生成
+
+- **操作**：同时启动逻辑解析和视觉引擎
+- **预期**：两者独立完成，无阻塞
+- **验证**：Promise.all([parseAST(), generateTokens()]) 成功返回
+
+### 集成测试
+
+#### TC-E2E-01: 完整编译流程
+
+- **操作**：输入完整 DSL，执行端到端编译
+- **预期**：DSL → AST → Tokens → React → HTML 全链路通过
+- **验证**：输出 HTML 可正常渲染，样式正确
+
+#### TC-E2E-02: 增量编译
+
+- **操作**：修改 DSL 中的按钮文字，重新编译
+- **预期**：仅更新相关节点，其他部分不变
+- **验证**：Diff 结果仅包含 Button 节点变更
 
 ## Step-by-step Validation
 
