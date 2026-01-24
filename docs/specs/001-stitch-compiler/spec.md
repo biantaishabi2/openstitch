@@ -40,7 +40,7 @@ feature
 | 章节 | 行号 | 内容 |
 |------|------|------|
 | 概述 | L3 | 编译器定位与职责 |
-| 整体架构 | L15 | 输入层→前端层→中端层→后端层→输出层 |
+| 整体架构 | L15 | 逻辑引擎 ∥ 视觉引擎 → 组件工厂 → SSR 引擎 |
 | 模块详解 | L106 | 各模块详细职责 |
 | 增量编译 | L265 | Edit Design 的 Diff 机制 |
 | 目录结构 | L290 | `src/lib/compiler/` 目录规划 |
@@ -108,7 +108,7 @@ src/lib/compiler/
 
 ## QA Acceptance Criteria
 
-### 逻辑综合层测试 (Chevrotain + Zod)
+### 逻辑引擎测试 (Chevrotain + Zod)
 
 #### TC-LEXER-01: 词法分析 (Chevrotain)
 

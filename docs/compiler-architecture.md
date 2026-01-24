@@ -147,6 +147,17 @@ Stitch 不是一个简单的"JSON 转 HTML"渲染器，而是一个完整的 **U
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
+> **架构对应关系**：上图是编译器内部处理流程的详细展开。与"两路并行"简化视图的对应关系：
+>
+> | 详细架构 | 简化视图 | 目录 |
+> |---------|---------|------|
+> | 逻辑综合层 (Lexer → Parser → Semantic) | 逻辑引擎 | `logic/` |
+> | 中端层 - 设计系统合成器 | 视觉引擎 | `visual/` |
+> | 中端层 - IR 生成器 + 优化器 | 组件工厂 | `factory/` |
+> | 后端层 (代码生成器 + 打包器) | SSR 引擎 | `ssr/` |
+>
+> 逻辑引擎和视觉引擎**并行执行**，在组件工厂汇合。
+
 ---
 
 ## 模块详解
@@ -337,24 +348,31 @@ Edit 指令: [Edit - Table] 新增一列"登录时间"
 
 ```
 src/lib/compiler/
-├── frontend/                 # 逻辑综合层
-│   ├── lexer.ts             # 词法分析器
-│   ├── parser.ts            # 语法分析器
-│   ├── semantic.ts          # 语义分析器
+├── logic/                    # 逻辑引擎（并行）
+│   ├── lexer.ts             # 词法分析器 (Chevrotain)
+│   ├── parser.ts            # 语法分析器 (Chevrotain)
+│   ├── semantic.ts          # 语义收敛器 (Zod)
 │   └── ast.ts               # AST 类型定义
 │
-├── middle/                   # 中端层
+├── visual/                   # 视觉引擎（并行）
 │   ├── synthesizer.ts       # 设计系统合成器
-│   ├── session.ts           # Session State 管理
-│   ├── ir.ts                # IR 生成器
-│   └── optimizer.ts         # 优化器
+│   └── session.ts           # Session State 管理
 │
-├── backend/                  # 后端层
+├── factory/                  # 组件工厂（汇合点）
+│   ├── component-factory.tsx # 组件工厂
+│   ├── ir.ts                # IR 生成器（AST + Tokens → UINode）
+│   ├── optimizer.ts         # 优化器
+│   ├── props-normalizer.ts  # Props 归一化
+│   ├── slot-distributor.ts  # 插槽分发
+│   └── event-stubs.ts       # 事件桩函数
+│
+├── ssr/                      # SSR 引擎
 │   ├── codegen/
 │   │   ├── react.tsx        # React 后端
 │   │   ├── html.ts          # HTML 后端
 │   │   └── heex.ts          # HEEx 后端
-│   └── bundler.ts           # 资源打包器
+│   ├── bundler.ts           # 资源打包器
+│   └── renderer.ts          # 脱水渲染
 │
 ├── themes/                   # 主题系统（已有）
 │   ├── tokens.ts
@@ -766,18 +784,24 @@ AI 输出结构化 DSL，编译器转成标准化 AST（直接喂给 React）。
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                                                                  │
-│  第一层：逻辑综合层              第二层：视觉引擎                │
+│  逻辑引擎 (logic/)              视觉引擎 (visual/)              │
 │  ────────────────────           ────────────────────            │
 │  处理"是什么"和"在哪里"          处理"整体感觉"                  │
 │                                                                  │
 │  输入: DSL                       输入: context + hash seed      │
 │  输出: AST (结构树)              输出: Design Tokens (CSS 变量)  │
 │                                                                  │
-│       │                               │                          │
-│       └───────────┬───────────────────┘                          │
-│                   ▼                                              │
-│          第三层：组件工厂                                        │
-│          把"皮肤"贴在"骨头"上                                    │
+│       │          ┌──────────────┐     │                          │
+│       │          │   并行执行   │     │                          │
+│       │          └──────────────┘     │                          │
+│       └───────────────┬───────────────┘                          │
+│                       ▼                                          │
+│              组件工厂 (factory/)                                 │
+│              AST + Tokens → React 组件树                         │
+│                       │                                          │
+│                       ▼                                          │
+│              SSR 引擎 (ssr/)                                     │
+│              React → HTML                                        │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 
@@ -3055,7 +3079,7 @@ function cstToAst(cst: any): StitchAST {
 #### 4. 使用示例
 
 ```typescript
-import { parse } from "./compiler/frontend/ast";
+import { parse } from "./compiler/logic/ast";
 
 const input = `
 [Layout] Dashboard 布局，顶部统计卡片，下方数据表格
