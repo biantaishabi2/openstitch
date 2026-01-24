@@ -2475,7 +2475,7 @@ Stitch 是云端版本，但 DSL 存在服务器文件系统，不用数据库�
 │  - 属性收敛：Title("xxx") → title: "xxx"                        │
 │  - 别名映射：Align("Center") → align: "center"                  │
 │  - 默认值补全：Button 无 variant → variant: "primary"           │
-│  - 视觉 Token 预注入：根据 context 注入 defaultPrimaryColor 等  │
+│  - ID 自动生成：DSL 没写 ID → 自动生成 card_1, btn_2 等        │
 │                                                                  │
 │  输出 AST：                                                      │
 │  {                                                               │
@@ -2602,22 +2602,6 @@ function generateId(type: string): string {
   return `${key}_${idCounters[key]}`;
 }
 
-// 视觉 Token 预注入（根据 context 注入默认颜色）
-function injectVisualTokenDefaults(
-  props: Record<string, any>,
-  type: string,
-  context?: string
-): void {
-  // 如果没有指定颜色，根据 context 注入默认主色
-  if (!props.color && !props.variant) {
-    if (context?.includes("技术") || context?.includes("架构")) {
-      props.defaultPrimaryColor = "blue-600";
-    } else if (context?.includes("儿童") || context?.includes("教育")) {
-      props.defaultPrimaryColor = "orange-400";
-    }
-  }
-}
-
 // CST → AST 转换 Schema
 const CSTNodeSchema: z.ZodType<any> = z.lazy(() =>
   z.object({
@@ -2665,14 +2649,10 @@ const CSTNodeSchema: z.ZodType<any> = z.lazy(() =>
       }
     }
 
-    // 4. 视觉 Token 预注入（根据 context 注入默认颜色）
-    // 注意：context 需要从外部传入，这里简化示例
-    injectVisualTokenDefaults(props, type);
-
-    // 5. 递归处理 children
+    // 4. 递归处理 children
     const children = cst.children?.map(child => CSTNodeSchema.parse(child));
 
-    // 6. 组装 AST 节点
+    // 5. 组装 AST 节点
     // 💡 如果 DSL 没写 ID，自动生成（方便 edit_design Diff）
     const nodeId = cst.id || generateId(type);
 
@@ -2820,9 +2800,9 @@ function normalizeProps(dslProps, contextTokens, componentDefaults) {
   };
 }
 
-// 例：DSL 写了 COLOR("RED")，必须覆盖 context 注入的 blue-600
-// ATTR: COLOR("RED") → props.color = "red" ✅
-// 而不是被 defaultPrimaryColor 覆盖
+// 例：DSL 写了 Variant("Outline")，覆盖默认值
+// ATTR: Variant("Outline") → props.variant = "outline" ✅
+// 而不是被默认值 "primary" 覆盖
 ```
 
 #### 3. ID 稳定性（Deterministic IDs）

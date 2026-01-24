@@ -299,25 +299,27 @@ src/lib/compiler/
 
 ## Step-by-step Validation
 
-### 0. 安装依赖（待做）
+### 0. 安装依赖 ✅
 - 做什么：`npm install chevrotain purgecss`
 - 验证：`npm ls chevrotain` 显示版本
 
-### 1. 逻辑引擎 - 词法分析器（待做）
+### 1. 逻辑引擎 - 词法分析器 ✅
 - 文件：`logic/lexer.ts`
 - 做什么：解析 `[TAG: id]`、`{ key: "value" }`、`ATTR:`、`CONTENT:` 等标签
 - 验证：测试用例 TC-LEXER-01 通过，Token 流正确
 - 参考：`docs/compiler-architecture.md` L2323-L2400
 
-### 2. 逻辑引擎 - 语法分析器（待做）
+### 2. 逻辑引擎 - 语法分析器 ✅
 - 文件：`logic/parser.ts`
 - 做什么：将 Token 流构建为 CST（具体语法树）
 - 验证：测试用例 TC-PARSER-01 通过，CST 结构正确
 - 参考：`docs/compiler-architecture.md` L2400-L2500
 
-### 3. 逻辑引擎 - 语义收敛器（待做）
+### 3. 逻辑引擎 - 语义收敛器 ✅
 - 文件：`logic/semantic.ts`
 - 做什么：用 Zod 将 CST 转换为标准化 AST（`type`/`id`/`props`/`children`）
+- 职责：属性收敛、别名映射、默认值补全、ID 自动生成、嵌套校验
+- 注意：视觉相关决策（如根据 context 决定配色）由视觉引擎负责，逻辑引擎不处理
 - 验证：测试用例 TC-ZOD-01 ~ TC-ZOD-05 通过
 - 参考：`docs/compiler-architecture.md` L663-L710
 
@@ -351,8 +353,8 @@ src/lib/compiler/
 
 ## Progress
 
-- [ ] 安装依赖 (Chevrotain, Zod, PurgeCSS)
-- [ ] 逻辑引擎 (logic/): Chevrotain 词法/语法 + Zod 语义收敛 → AST
+- [x] 安装依赖 (Chevrotain, Zod, PurgeCSS)
+- [x] 逻辑引擎 (logic/): Chevrotain 词法/语法 + Zod 语义收敛 → AST
 - [ ] 视觉引擎 (visual/): Design Tokens 生成 + Session State
 - [ ] 组件工厂 (factory/): IR 生成 + 优化器 + Props归一化/插槽分发/事件桩函数/Context注入
 - [ ] SSR 引擎 (ssr/): 代码生成器 + 打包器 + 脱水渲染/样式萃取/资源固化
@@ -360,5 +362,4 @@ src/lib/compiler/
 
 ## Next
 
-- 安装 Chevrotain 依赖
-- 实现逻辑引擎 (logic/lexer.ts)
+- 实现视觉引擎 (visual/synthesizer.ts, visual/session.ts)
