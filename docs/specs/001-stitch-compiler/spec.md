@@ -331,7 +331,7 @@ src/lib/compiler/
 - 验证：测试用例 TC-TOKENS-01 ~ TC-TOKENS-03 通过 (22 个测试)
 - 参考：`docs/compiler-architecture.md` L675-L942
 
-### 5. 组件工厂（待做）
+### 5. 组件工厂 ✅
 - 文件：
   ```
   factory/
@@ -347,7 +347,7 @@ src/lib/compiler/
   ```
 - 做什么：AST + Tokens → IR (UINode JSON) → React 组件树
 - 复用：使用现有 `src/lib/renderer/` 的组件注册表和渲染逻辑
-- 验证：组件树可正常渲染，测试用例 TC-FACTORY-01 ~ TC-FACTORY-05 通过
+- 验证：组件树可正常渲染，测试用例 TC-FACTORY-01 ~ TC-FACTORY-05 通过 (33 个测试)
 - 参考：`docs/compiler-architecture.md` L943-L1393
 
 #### 组件类型映射
@@ -409,7 +409,7 @@ AST ComponentType (26 种) → component-map (70+ 组件) 的映射关系：
 - [x] 安装依赖 (Chevrotain, Zod, PurgeCSS)
 - [x] 逻辑引擎 (logic/): Chevrotain 词法/语法 + Zod 语义收敛 → AST
 - [x] 视觉引擎 (visual/): Design Tokens 生成 + Session State
-- [ ] 组件工厂 (factory/): IR 生成 + 优化器 + Props归一化/插槽分发/事件桩函数/Context注入
+- [x] 组件工厂 (factory/): IR 生成 + Props归一化/插槽分发/事件桩函数/Context注入
 - [ ] SSR 引擎 (ssr/): 代码生成器 + 打包器 + 脱水渲染/样式萃取/资源固化
 - [ ] 集成测试
 
