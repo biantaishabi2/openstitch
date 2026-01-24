@@ -187,21 +187,21 @@ src/lib/compiler/
   {
     "type": "Root",
     "children": [{
-      "id": "node_section_1",
+      "id": "Execution_Flow",
       "type": "Section",
       "props": { "gutter": "32px", "align": "center" },
       "children": [{
         "id": "node_opencode",
         "type": "Card",
-        "props": { "title": "OpenCode 接口调用", "icon": "Terminal" },
+        "props": { "title": "OpenCode 接口调用", "icon": "Terminal", "content": "执行层通过 handle_opencode_call/7 订阅 SSE 事件" },
         "children": [
-          { "type": "Text", "props": { "content": "执行层通过 handle_opencode_call/7 订阅 SSE 事件" } },
-          { "id": "node_btn_1", "type": "Button", "props": { "text": "运行调试", "variant": "outline", "size": "small" } }
+          { "id": "button_1", "type": "Button", "props": { "text": "运行调试", "variant": "outline", "size": "sm" } }
         ]
       }]
     }]
   }
   ```
+- **说明**：CONTENT 作为 props.content，插槽分发由组件工厂 (TC-FACTORY-02) 负责
 
 ### 视觉引擎测试
 
