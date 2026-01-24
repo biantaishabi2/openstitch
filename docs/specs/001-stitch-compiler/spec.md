@@ -347,13 +347,8 @@ src/lib/compiler/
 
 ## Progress
 
-- [x] 安装依赖 (Chevrotain, Zod, PurgeCSS) ✅ 2024-01
-- [x] 逻辑综合层 (Chevrotain 词法/语法 + Zod 语义收敛) ✅ 2024-01
-  - [x] 词法分析器 (Lexer)
-  - [x] 语法分析器 (Parser)
-  - [x] 语义收敛器 (Zod Transform)
-  - [x] 确定性 ID 生成
-  - [x] Props 归一化
+- [ ] 安装依赖 (Chevrotain, Zod, PurgeCSS)
+- [ ] 逻辑综合层 (Chevrotain 词法/语法 + Zod 语义收敛)
 - [ ] 视觉引擎层 (Design Tokens 生成)
 - [ ] 组件工厂层 (Props归一化/插槽分发/事件桩函数/Context注入)
 - [ ] SSR 引擎层 (脱水渲染/样式萃取/资源固化)
@@ -362,21 +357,5 @@ src/lib/compiler/
 
 ## Next
 
-### 2. 视觉引擎层
-- 实现 `src/lib/compiler/middle/synthesizer.ts`
-- 5 维度 Design Tokens 生成（空间/字体/形状/装饰/语义映射）
-- Hash 种子确定性算法
-- Session State 管理
-
-### 3. 组件工厂层
-- 实现 `src/lib/compiler/factory/component-factory.tsx`
-- AST + Tokens → React 组件树
-- 插槽分发逻辑
-- 事件桩函数注入
-- ThemeProvider Context 注入
-
-### 4. SSR 引擎层
-- 实现 `src/lib/compiler/backend/ssr.ts`
-- renderToString 脱水渲染
-- PurgeCSS 样式萃取
-- 单文件 HTML 资源固化
+- 安装 Chevrotain 依赖
+- 实现词法分析器
