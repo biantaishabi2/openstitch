@@ -600,94 +600,131 @@ await compiler.export(result, { format: "png", scale: 2 });
 └───────────────────────────┬─────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────────┐
-│  description 字段里的 DSL（标签化格式）                          │
+│  description 字段里的 DSL（结构化标签格式）                       │
 │                                                                  │
-│  [Layout] Dashboard 布局，顶部统计卡片，下方数据表格              │
-│  [Theme] 企业风格，主色调蓝色                                    │
-│  [Content - Header] 标题"用户管理"，右侧"新增用户"按钮           │
-│  [Content - Stats] 三个统计卡片：用户总数、活跃用户、新增用户     │
-│  [Content - Table] 用户列表，列：用户名、邮箱、状态、操作         │
+│  [SECTION: Execution_Flow]                                       │
+│    { Gutter: "32px", Align: "Center" }                          │
+│    [CARD: node_opencode]                                         │
+│      ATTR: Title("OpenCode 接口调用"), Icon("Terminal")          │
+│      CONTENT: "执行层通过 handle_opencode_call/7 订阅 SSE 事件"  │
+│      [BUTTON: "运行调试"]                                        │
+│        ATTR: Variant("Outline"), Size("Small")                   │
 │                                                                  │
-│  这是规划层 AI 输出的格式                                        │
-│  标签是结构化的，内容是半自然语言                                │
+│  DSL 语法特点：                                                  │
+│  - [TAG: id_or_text] 定义节点，冒号后是 ID 或显示文本            │
+│  - { key: "value" } 定义布局属性                                │
+│  - ATTR: Key("value") 定义组件属性                              │
+│  - CONTENT: "..." 定义文本内容                                  │
+│  - 缩进表示父子关系                                             │
 │                                                                  │
 └───────────────────────────┬─────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────────┐
-│  编译器内部：Zod 转换为 INTENT/ENTITY/ATTR 结构                  │
-│                                                                  │
-│  编译器用 Zod 把标签化 DSL 转成结构化的中间表示：                 │
+│  编译器输出：标准化 AST（直接喂给组件工厂）                       │
 │                                                                  │
 │  {                                                               │
-│    intent: "CREATE",                                             │
-│    root: {                                                       │
-│      type: "PAGE",                                               │
-│      attrs: { layout: "DASHBOARD", theme: "ENTERPRISE_BLUE" },  │
-│      children: [                                                 │
-│        {                                                         │
-│          type: "HEADER",                                         │
-│          children: [                                             │
-│            { type: "TITLE", attrs: { text: "用户管理" } },       │
-│            { type: "BUTTON", attrs: { text: "新增用户" } }       │
-│          ]                                                       │
-│        },                                                        │
-│        { type: "STATS", attrs: { items: [...] } },              │
-│        { type: "TABLE", attrs: { columns: [...] } }             │
-│      ]                                                           │
-│    }                                                             │
+│    "type": "Root",                                               │
+│    "children": [                                                 │
+│      {                                                           │
+│        "id": "node_section_1",                                   │
+│        "type": "Section",                                        │
+│        "props": { "gutter": "32px", "align": "center" },        │
+│        "children": [                                             │
+│          {                                                       │
+│            "id": "node_opencode",                                │
+│            "type": "Card",                                       │
+│            "props": { "title": "OpenCode 接口调用",             │
+│                       "icon": "Terminal" },                      │
+│            "children": [                                         │
+│              { "type": "Text",                                   │
+│                "props": { "content": "执行层通过..." } },       │
+│              { "id": "node_btn_1",                               │
+│                "type": "Button",                                 │
+│                "props": { "text": "运行调试",                   │
+│                           "variant": "outline",                  │
+│                           "size": "small" } }                    │
+│            ]                                                     │
+│          }                                                       │
+│        ]                                                         │
+│      }                                                           │
+│    ]                                                             │
 │  }                                                               │
 │                                                                  │
-│  INTENT/ENTITY/ATTR 是编译器内部的中间表示                       │
-│  不是 AI 输出的，是 Zod 转换出来的                               │
+│  核心设计：                                                      │
+│  - type: 直接对应 Registry["Section"] 查找组件                  │
+│  - props: 直接透传给 React 组件                                 │
+│  - id: 从 [CARD: node_opencode] 提取，用于锚点/调试             │
+│  - 内容无损：精准文本原封不动进入 props.content                  │
+│  - 布局与样式解耦：AST 只定义结构，像素值由工厂层动态注入        │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### DSL 的两层结构
+### DSL 与 AST 的关系
 
 | 层级 | 格式 | 谁生成 | 用途 |
 |------|------|--------|------|
-| **外层** | `[Layout] xxx\n[Content - Header] xxx` | 规划层 AI | 给编译器的输入 |
-| **内层** | `INTENT/ENTITY/ATTR` 结构 | 编译器（Zod） | 编译器内部的 AST |
+| **DSL** | `[TAG: id] { props } ATTR: ... CONTENT: ...` | 规划层 AI | 给编译器的输入 |
+| **AST** | `{ type, id, props, children }` 结构 | 编译器（Chevrotain + Zod） | 给组件工厂的输入 |
 
-AI 输出标签化 DSL（容错性高），编译器转成结构化 AST（确定性高）。
+AI 输出结构化 DSL，编译器转成标准化 AST（直接喂给 React）。
 
-### 逻辑综合层的"语义收敛"
+### 逻辑综合层的处理流程
 
-编译器用 Zod 处理三种语义收敛：
+编译器分三步处理 DSL：
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    语义收敛 (Semantic Convergence)               │
+│                    逻辑综合层处理流程                            │
 │                                                                  │
-│  输入：[Content - Header] 标题"用户管理"，右侧"新增用户"按钮     │
+│  输入 DSL：                                                      │
+│  [CARD: node_opencode]                                          │
+│    ATTR: Title("OpenCode 接口调用"), Icon("Terminal")           │
+│    CONTENT: "执行层通过 handle_opencode_call/7 订阅 SSE 事件"   │
+│    [BUTTON: "运行调试"]                                         │
+│      ATTR: Variant("Outline"), Size("Small")                    │
 │                                                                  │
-│  1. 解析标签 (Chevrotain)                                        │
+│  Step 1: 标记化 (Chevrotain Lexer)                              │
 │     ┌─────────────────────────────────────────────────────┐     │
-│     │ { type: "content", param: "Header",                 │     │
-│     │   content: "标题'用户管理'，右侧'新增用户'按钮" }    │     │
+│     │ 识别 TOKEN 流：                                      │     │
+│     │ [CARD_TAG, COLON, ID("node_opencode"), NEWLINE,     │     │
+│     │  ATTR, COLON, FUNC("Title"), LPAREN, STRING, ...]   │     │
 │     └─────────────────────────────────────────────────────┘     │
 │                                                                  │
-│  2. 内容解析 + 结构化 (Zod)                                      │
+│  Step 2: 语法分析 (Chevrotain Parser)                           │
 │     ┌─────────────────────────────────────────────────────┐     │
-│     │ {                                                   │     │
-│     │   type: "HEADER",                                   │     │
-│     │   children: [                                       │     │
-│     │     { type: "TITLE", attrs: { text: "用户管理" } }, │     │
-│     │     { type: "BUTTON", attrs: {                      │     │
-│     │       text: "新增用户",                             │     │
-│     │       position: "RIGHT"    ← 从"右侧"推断          │     │
-│     │     }}                                              │     │
-│     │   ]                                                 │     │
-│     │ }                                                   │     │
+│     │ 构建 CST (Concrete Syntax Tree)：                   │     │
+│     │ { tag: "CARD", id: "node_opencode",                 │     │
+│     │   attrs: [{ key: "Title", value: "OpenCode..." }],  │     │
+│     │   content: "执行层通过...",                         │     │
+│     │   children: [{ tag: "BUTTON", ... }] }              │     │
 │     └─────────────────────────────────────────────────────┘     │
 │                                                                  │
-│  3. 别名映射 + 默认值补全 (Zod transform)                        │
+│  Step 3: 语义收敛 (Zod Transform)                               │
 │     ┌─────────────────────────────────────────────────────┐     │
-│     │ BUTTON 没指定 color → 默认 "primary"               │     │
-│     │ BUTTON 没指定 size  → 默认 "md"                    │     │
-│     │ position: "RIGHT"   → className: "ml-auto"         │     │
+│     │ a. 属性收敛：                                       │     │
+│     │    Variant("Outline") → variant: "outline"         │     │
+│     │    Size("Small")      → size: "small"              │     │
+│     │                                                     │     │
+│     │ b. 默认值补全：                                     │     │
+│     │    Button 没指定 variant → 默认 "primary"          │     │
+│     │                                                     │     │
+│     │ c. 别名映射：                                       │     │
+│     │    Align("Center") → align: "center"               │     │
 │     └─────────────────────────────────────────────────────┘     │
+│                                                                  │
+│  输出 AST：                                                      │
+│  {                                                               │
+│    "id": "node_opencode",                                       │
+│    "type": "Card",                                              │
+│    "props": { "title": "OpenCode 接口调用", "icon": "Terminal" },│
+│    "children": [                                                 │
+│      { "type": "Text", "props": { "content": "执行层通过..." } },│
+│      { "id": "node_btn_1", "type": "Button",                    │
+│        "props": { "text": "运行调试", "variant": "outline",     │
+│                   "size": "small" } }                           │
+│    ]                                                             │
+│  }                                                               │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -1016,10 +1053,11 @@ AI 输出标签化 DSL（容错性高），编译器转成结构化 AST（确定
 │  ────                                                            │
 │  1. AST (来自逻辑综合层)                                         │
 │     {                                                            │
-│       type: "PAGE",                                              │
+│       type: "Section",                                           │
+│       props: { gutter: "32px", align: "center" },               │
 │       children: [                                                │
-│         { type: "HEADER", children: [...] },                    │
-│         { type: "TABLE", attrs: { columns: [...] } }            │
+│         { type: "Card", props: { title: "...", icon: "..." } }, │
+│         { type: "Table", props: { columns: [...] } }            │
 │       ]                                                          │
 │     }                                                            │
 │                                                                  │
@@ -1342,8 +1380,8 @@ function ComponentFactory(
     return null;
   }
 
-  // 2. 属性转换（DSL Props → React Props）
-  const normalizedProps = transformProps(astNode.attrs, tokens);
+  // 2. 属性转换（AST Props → React Props）
+  const normalizedProps = transformProps(astNode.props, tokens);
 
   // 3. 注入事件桩函数
   const propsWithEvents = injectEventStubs(
@@ -2374,82 +2412,102 @@ Stitch 是云端版本，但 DSL 存在服务器文件系统，不用数据库�
 ┌─────────────────────────────────────────────────────────────────┐
 │  规划层 AI 输出的 JSON                                           │
 │  {                                                               │
-│    "title": "用户管理",                                          │
-│    "context": "企业后台",                                         │
-│    "description": "[Layout] Dashboard...\n[Content - Header]..." │
+│    "title": "OpenCode 流程图",                                   │
+│    "context": "技术架构",                                        │
+│    "description": "[SECTION: Execution_Flow]\n  { Gutter:..."   │
 │  }                                                               │
 └───────────────────────────┬─────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────────┐
-│  Step 1: Chevrotain 解析标签                                     │
+│  Step 1: Chevrotain 词法分析 (Lexer)                             │
 │                                                                  │
-│  输入："[Layout] Dashboard 布局\n[Content - Header] 标题..."    │
-│  输出：                                                          │
-│  [                                                               │
-│    { type: "layout", content: "Dashboard 布局..." },            │
-│    { type: "content", param: "Header", content: "标题..." },    │
-│    { type: "content", param: "Stats", content: "..." },         │
-│  ]                                                               │
+│  输入 DSL：                                                      │
+│  [SECTION: Execution_Flow]                                       │
+│    { Gutter: "32px", Align: "Center" }                          │
+│    [CARD: node_opencode]                                         │
+│      ATTR: Title("OpenCode 接口调用"), Icon("Terminal")          │
+│                                                                  │
+│  输出 Token 流：                                                 │
+│  [SECTION_TAG, COLON, ID("Execution_Flow"), NEWLINE,            │
+│   LBRACE, KEY("Gutter"), COLON, STRING("32px"), ...,            │
+│   CARD_TAG, COLON, ID("node_opencode"), NEWLINE,                │
+│   ATTR, COLON, FUNC("Title"), LPAREN, STRING("..."), ...]       │
 └───────────────────────────┬─────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────────┐
-│  Step 2: Zod 内容解析 + 结构化                                   │
+│  Step 2: Chevrotain 语法分析 (Parser)                            │
 │                                                                  │
-│  把每个标签的 content 转成 ENTITY/ATTR 结构：                    │
-│                                                                  │
-│  "标题'用户管理'，右侧'新增用户'按钮"                            │
-│       ↓ Zod 解析                                                 │
+│  根据缩进和嵌套规则构建 CST：                                    │
 │  {                                                               │
-│    type: "HEADER",                                               │
-│    children: [                                                   │
-│      { type: "TITLE", attrs: { text: "用户管理" } },            │
-│      { type: "BUTTON", attrs: { text: "新增用户", pos: "RIGHT" }}│
-│    ]                                                             │
+│    tag: "SECTION", id: "Execution_Flow",                        │
+│    layoutProps: { Gutter: "32px", Align: "Center" },           │
+│    children: [{                                                  │
+│      tag: "CARD", id: "node_opencode",                          │
+│      attrs: [                                                    │
+│        { key: "Title", value: "OpenCode 接口调用" },            │
+│        { key: "Icon", value: "Terminal" }                       │
+│      ],                                                          │
+│      children: [...]                                             │
+│    }]                                                            │
 │  }                                                               │
+│                                                                  │
+│  💡 ID 自动生成：                                                │
+│  如果 DSL 没写 ID，Parser 自动生成 card_1, btn_2 等             │
+│  方便后续 edit_design 的 Diff 算法定位节点                       │
 └───────────────────────────┬─────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────────┐
-│  Step 3: 组装完整 AST                                            │
+│  Step 3: Zod 语义收敛 (Transform)                                │
 │                                                                  │
+│  CST → 标准化 AST：                                              │
+│  - 属性收敛：Title("xxx") → title: "xxx"                        │
+│  - 别名映射：Align("Center") → align: "center"                  │
+│  - 默认值补全：Button 无 variant → variant: "primary"           │
+│  - 视觉 Token 预注入：根据 context 注入 defaultPrimaryColor 等  │
+│                                                                  │
+│  输出 AST：                                                      │
 │  {                                                               │
-│    intent: "CREATE",                                             │
-│    root: {                                                       │
-│      type: "PAGE",                                               │
-│      attrs: { layout: "DASHBOARD" },                            │
-│      children: [                                                 │
-│        { type: "HEADER", children: [...] },                     │
-│        { type: "STATS", children: [...] },                      │
-│        { type: "TABLE", children: [...] }                       │
-│      ]                                                           │
-│    }                                                             │
+│    type: "Root",                                                 │
+│    children: [{                                                  │
+│      id: "node_section_1",                                      │
+│      type: "Section",                                            │
+│      props: { gutter: "32px", align: "center" },                │
+│      children: [{                                                │
+│        id: "node_opencode",                                     │
+│        type: "Card",                                             │
+│        props: { title: "OpenCode 接口调用", icon: "Terminal" }, │
+│        children: [...]                                           │
+│      }]                                                          │
+│    }]                                                            │
 │  }                                                               │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### Step 1: Chevrotain 解析标签
+### Step 1: Chevrotain 词法分析器
 
-解析 AI 输出的标签化 DSL：
+解析 AI 输出的结构化 DSL：
 
 ```typescript
 // ============================================
-// lexer.ts - 解析 [Layout] [Content - xxx] 等标签
+// lexer.ts - 解析 [TAG: id], ATTR:, CONTENT: 等标签
 // ============================================
 
 import { createToken, Lexer } from "chevrotain";
 
-export const LayoutTag = createToken({
-  name: "LayoutTag",
-  pattern: /\[Layout\]/
+// 标签类型
+export const SectionTag = createToken({
+  name: "SectionTag",
+  pattern: /\[SECTION/
 });
 
-export const ThemeTag = createToken({
-  name: "ThemeTag",
-  pattern: /\[Theme\]/
+export const CardTag = createToken({
+  name: "CardTag",
+  pattern: /\[CARD/
 });
 
-export const ContentTag = createToken({
-  name: "ContentTag",
-  pattern: /\[Content\s*-\s*([^\]]+)\]/
+export const ButtonTag = createToken({
+  name: "ButtonTag",
+  pattern: /\[BUTTON/
 });
 
 export const EditTag = createToken({
@@ -2476,123 +2534,175 @@ export const StitchLexer = new Lexer(allTokens);
 
 ### Step 2: Zod 内容解析
 
-把标签内容（半自然语言）转成结构化的 ENTITY/ATTR：
+把 CST 中的 ATTR/CONTENT 转成标准化的 AST 节点：
 
 ```typescript
 // ============================================
-// content-parser.ts - Zod 解析标签内容
+// semantic.ts - Zod 语义收敛
 // ============================================
 
 import { z } from "zod";
 
-// 内容解析规则
-const contentPatterns = {
-  // 标题模式：标题"xxx" 或 标题'xxx'
-  title: /标题[\"']([^\"']+)[\"']/,
+// CST 中的属性节点
+interface CSTAttr {
+  key: string;   // 如 "Title", "Icon", "Variant"
+  value: string; // 如 "OpenCode 接口调用", "Terminal"
+}
 
-  // 按钮模式：xxx按钮 或 "xxx"按钮
-  button: /[\"']([^\"']+)[\"']按钮|(\S+)按钮/,
+// CST 节点
+interface CSTNode {
+  tag: string;
+  id?: string;
+  layoutProps?: Record<string, string>;
+  attrs?: CSTAttr[];
+  content?: string;
+  children?: CSTNode[];
+}
 
-  // 位置模式：右侧、左侧、顶部、底部
-  position: /(右侧|左侧|顶部|底部)/,
-
-  // 图标模式：图标xxx 或 icon:xxx
-  icon: /图标[:\s]*(\S+)|icon[:\s]*(\S+)/i,
+// 属性键名映射（大写 → 小写）
+const propKeyMap: Record<string, string> = {
+  "Title": "title",
+  "Icon": "icon",
+  "Variant": "variant",
+  "Size": "size",
+  "Gutter": "gutter",
+  "Align": "align",
 };
 
-// Header 内容解析器
-const HeaderContentSchema = z.string().transform((content) => {
-  const result: any = { type: "HEADER", children: [] };
+// 属性值映射（别名 → 标准值）
+const propValueMap: Record<string, Record<string, string>> = {
+  variant: { "Outline": "outline", "Primary": "primary", "Ghost": "ghost" },
+  size: { "Small": "small", "Medium": "md", "Large": "lg" },
+  align: { "Center": "center", "Left": "left", "Right": "right" },
+};
 
-  // 提取标题
-  const titleMatch = content.match(contentPatterns.title);
-  if (titleMatch) {
-    result.children.push({
-      type: "TITLE",
-      attrs: { text: titleMatch[1] }
-    });
+// 默认值配置
+const defaultProps: Record<string, Record<string, string>> = {
+  Button: { variant: "primary", size: "md" },
+  Card: { variant: "default" },
+};
+
+// ID 自动生成计数器（用于 edit_design Diff）
+const idCounters: Record<string, number> = {};
+function generateId(type: string): string {
+  const key = type.toLowerCase();
+  idCounters[key] = (idCounters[key] || 0) + 1;
+  return `${key}_${idCounters[key]}`;
+}
+
+// 视觉 Token 预注入（根据 context 注入默认颜色）
+function injectVisualTokenDefaults(
+  props: Record<string, any>,
+  type: string,
+  context?: string
+): void {
+  // 如果没有指定颜色，根据 context 注入默认主色
+  if (!props.color && !props.variant) {
+    if (context?.includes("技术") || context?.includes("架构")) {
+      props.defaultPrimaryColor = "blue-600";
+    } else if (context?.includes("儿童") || context?.includes("教育")) {
+      props.defaultPrimaryColor = "orange-400";
+    }
   }
+}
 
-  // 提取按钮
-  const buttonMatch = content.match(contentPatterns.button);
-  if (buttonMatch) {
-    const buttonText = buttonMatch[1] || buttonMatch[2];
-    const posMatch = content.match(contentPatterns.position);
+// CST → AST 转换 Schema
+const CSTNodeSchema: z.ZodType<any> = z.lazy(() =>
+  z.object({
+    tag: z.string(),
+    id: z.string().optional(),
+    layoutProps: z.record(z.string()).optional(),
+    attrs: z.array(z.object({ key: z.string(), value: z.string() })).optional(),
+    content: z.string().optional(),
+    children: z.array(CSTNodeSchema).optional(),
+  }).transform((cst) => {
+    // 1. 标签名映射
+    const type = cst.tag.charAt(0) + cst.tag.slice(1).toLowerCase(); // CARD → Card
 
-    result.children.push({
-      type: "BUTTON",
-      attrs: {
-        text: buttonText,
-        position: posMatch ? posMatch[1] : "RIGHT"
+    // 2. 属性收敛
+    const props: Record<string, any> = {};
+
+    // 处理 layoutProps
+    if (cst.layoutProps) {
+      for (const [key, value] of Object.entries(cst.layoutProps)) {
+        const normalizedKey = propKeyMap[key] || key.toLowerCase();
+        const normalizedValue = propValueMap[normalizedKey]?.[value] || value.toLowerCase();
+        props[normalizedKey] = normalizedValue;
       }
-    });
-  }
+    }
 
-  return result;
-});
+    // 处理 ATTR
+    if (cst.attrs) {
+      for (const { key, value } of cst.attrs) {
+        const normalizedKey = propKeyMap[key] || key.toLowerCase();
+        const normalizedValue = propValueMap[normalizedKey]?.[value] || value;
+        props[normalizedKey] = normalizedValue;
+      }
+    }
 
-// Stats 内容解析器
-const StatsContentSchema = z.string().transform((content) => {
-  // 提取统计项：三个统计卡片：用户总数、活跃用户、新增用户
-  const itemsMatch = content.match(/[:：](.+)/);
-  if (itemsMatch) {
-    const items = itemsMatch[1].split(/[,，、]/).map(s => s.trim());
+    // 处理 CONTENT
+    if (cst.content) {
+      props.content = cst.content; // 内容无损保留
+    }
+
+    // 3. 默认值补全
+    const defaults = defaultProps[type] || {};
+    for (const [key, value] of Object.entries(defaults)) {
+      if (!(key in props)) {
+        props[key] = value;
+      }
+    }
+
+    // 4. 视觉 Token 预注入（根据 context 注入默认颜色）
+    // 注意：context 需要从外部传入，这里简化示例
+    injectVisualTokenDefaults(props, type);
+
+    // 5. 递归处理 children
+    const children = cst.children?.map(child => CSTNodeSchema.parse(child));
+
+    // 6. 组装 AST 节点
+    // 💡 如果 DSL 没写 ID，自动生成（方便 edit_design Diff）
+    const nodeId = cst.id || generateId(type);
+
     return {
-      type: "STATS",
-      attrs: { items }
+      id: nodeId,
+      type,
+      props,
+      ...(children?.length && { children }),
     };
-  }
-  return { type: "STATS", attrs: { items: [] } };
-});
+  })
+);
 
-// Table 内容解析器
-const TableContentSchema = z.string().transform((content) => {
-  // 提取列：列：用户名、邮箱、状态
-  const columnsMatch = content.match(/列[:：](.+)/);
-  if (columnsMatch) {
-    const columns = columnsMatch[1].split(/[,，、]/).map(s => s.trim());
-    return {
-      type: "TABLE",
-      attrs: { columns }
-    };
-  }
-  return { type: "TABLE", attrs: { columns: [] } };
-});
-
-// 根据标签类型选择解析器
-export function parseContent(tagType: string, param: string | null, content: string) {
-  switch (param?.toUpperCase()) {
-    case "HEADER":
-      return HeaderContentSchema.parse(content);
-    case "STATS":
-      return StatsContentSchema.parse(content);
-    case "TABLE":
-      return TableContentSchema.parse(content);
-    default:
-      return { type: param || "UNKNOWN", attrs: { raw: content } };
-  }
+// 导出转换函数
+export function transformToAST(cst: CSTNode) {
+  return {
+    type: "Root",
+    children: [CSTNodeSchema.parse(cst)],
+  };
 }
 ```
 
-### Step 3: 组装 AST
+### 完整编译流程示例
 
 ```typescript
 // ============================================
-// ast-builder.ts - 组装完整 AST
+// compiler.ts - 完整编译入口
 // ============================================
 
 import { StitchLexer } from "./lexer";
-import { parseContent } from "./content-parser";
+import { StitchParser } from "./parser";
+import { transformToAST } from "./semantic";
 
 export interface ASTNode {
+  id?: string;
   type: string;
-  attrs: Record<string, any>;
-  children: ASTNode[];
+  props: Record<string, any>;
+  children?: ASTNode[];
 }
 
 export interface StitchAST {
-  intent: "CREATE" | "EDIT";
-  root: ASTNode;
+  type: "Root";
+  children: ASTNode[];
 }
 
 export function compile(input: {
@@ -2600,61 +2710,30 @@ export function compile(input: {
   context: string;
   description: string;
 }): StitchAST {
-  // 1. 解析标签
+  // 1. 词法分析
   const lexResult = StitchLexer.tokenize(input.description);
 
-  // 2. 提取指令列表
-  const instructions = extractInstructions(lexResult.tokens);
+  // 2. 语法分析 → CST
+  const parser = new StitchParser();
+  parser.input = lexResult.tokens;
+  const cst = parser.dsl();
 
-  // 3. 构建 AST
-  const root: ASTNode = {
-    type: "PAGE",
-    attrs: {
-      title: input.title,
-      context: input.context,
-      layout: "DEFAULT"
-    },
-    children: []
-  };
-
-  for (const inst of instructions) {
-    if (inst.type === "layout") {
-      // 解析布局
-      root.attrs.layout = parseLayout(inst.content);
-    } else if (inst.type === "content") {
-      // 解析内容块
-      const node = parseContent(inst.type, inst.param, inst.content);
-      root.children.push(node);
-    }
-  }
-
-  return {
-    intent: "CREATE",
-    root
-  };
+  // 3. 语义收敛 → AST
+  return transformToAST(cst);
 }
 
-function parseLayout(content: string): string {
-  if (content.includes("Dashboard")) return "DASHBOARD";
-  if (content.includes("三栏") || content.includes("三列")) return "THREE_COLUMN";
-  if (content.includes("两栏") || content.includes("分栏")) return "TWO_COLUMN";
-  return "DEFAULT";
-}
-```
-
-### 完整编译流程示例
-
-```typescript
 // 输入：规划层 AI 的 JSON
 const input = {
-  title: "用户管理",
-  context: "企业后台，专业风格",
+  title: "OpenCode 流程图",
+  context: "技术架构",
   description: `
-[Layout] Dashboard 布局，顶部统计卡片，下方数据表格
-[Theme] 企业风格，主色调蓝色
-[Content - Header] 标题"用户管理"，右侧"新增用户"按钮
-[Content - Stats] 三个统计卡片：用户总数、活跃用户、新增用户
-[Content - Table] 用户列表，列：用户名、邮箱、状态、操作
+[SECTION: Execution_Flow]
+  { Gutter: "32px", Align: "Center" }
+  [CARD: node_opencode]
+    ATTR: Title("OpenCode 接口调用"), Icon("Terminal")
+    CONTENT: "执行层通过 handle_opencode_call/7 订阅 SSE 事件"
+    [BUTTON: "运行调试"]
+      ATTR: Variant("Outline"), Size("Small")
 `
 };
 
@@ -2664,34 +2743,32 @@ const ast = compile(input);
 // 输出：结构化 AST
 console.log(JSON.stringify(ast, null, 2));
 // {
-//   "intent": "CREATE",
-//   "root": {
-//     "type": "PAGE",
-//     "attrs": {
-//       "title": "用户管理",
-//       "context": "企业后台，专业风格",
-//       "layout": "DASHBOARD"
-//     },
-//     "children": [
-//       {
-//         "type": "HEADER",
-//         "children": [
-//           { "type": "TITLE", "attrs": { "text": "用户管理" } },
-//           { "type": "BUTTON", "attrs": { "text": "新增用户", "position": "RIGHT" } }
-//         ]
-//       },
-//       {
-//         "type": "STATS",
-//         "attrs": { "items": ["用户总数", "活跃用户", "新增用户"] }
-//       },
-//       {
-//         "type": "TABLE",
-//         "attrs": { "columns": ["用户名", "邮箱", "状态", "操作"] }
-//       }
-//     ]
-//   }
+//   "type": "Root",
+//   "children": [{
+//     "id": "node_section_1",
+//     "type": "Section",
+//     "props": { "gutter": "32px", "align": "center" },
+//     "children": [{
+//       "id": "node_opencode",
+//       "type": "Card",
+//       "props": { "title": "OpenCode 接口调用", "icon": "Terminal" },
+//       "children": [
+//         { "type": "Text", "props": { "content": "执行层通过 handle_opencode_call/7 订阅 SSE 事件" } },
+//         { "id": "node_btn_1", "type": "Button", "props": { "text": "运行调试", "variant": "outline", "size": "small" } }
+//       ]
+//     }]
+//   }]
 // }
 ```
+
+### AST 设计亮点
+
+| 特性 | 说明 |
+|------|------|
+| **确定性映射** | `type: "Section"` 直接对应 `Registry["Section"]` 查找组件 |
+| **内容无损** | 精准文本（如 `handle_opencode_call/7`）原封不动进入 `props.content` |
+| **布局与样式解耦** | AST 只定义"这里有一个 Section，它要居中"，不定义具体像素值 |
+| **React 友好** | `props` 字段可直接透传给 React 组件 |
 
 ---
 

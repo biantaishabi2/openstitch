@@ -114,48 +114,96 @@ src/lib/compiler/
 
 #### TC-LEXER-01: 词法分析 (Chevrotain)
 
-- **操作**：输入 `[Layout] Dashboard 布局\n[Content - Header] 标题"用户管理"`
+- **操作**：输入 DSL
+  ```
+  [SECTION: Execution_Flow]
+    { Gutter: "32px", Align: "Center" }
+    [CARD: node_opencode]
+      ATTR: Title("OpenCode 接口调用"), Icon("Terminal")
+  ```
 - **预期**：生成正确的 Token 流
-- **验证**：`[LAYOUT_TAG, TEXT, CONTENT_TAG("Header"), TEXT]`
+- **验证**：`[SECTION_TAG, COLON, ID, LBRACE, KEY, STRING, ..., CARD_TAG, COLON, ID, ATTR, ...]`
 
 #### TC-PARSER-01: 语法分析 (Chevrotain)
 
 - **操作**：Token 流输入 Parser
-- **预期**：生成 CST/指令列表
-- **验证**：`[{ type: "layout", content: "..." }, { type: "content", param: "Header", content: "..." }]`
-
-#### TC-ZOD-01: 内容解析 (Zod)
-
-- **操作**：输入 `标题"用户管理"，右侧"新增用户"按钮`
-- **预期**：解析出 TITLE 和 BUTTON 子节点
+- **预期**：生成 CST（具体语法树）
 - **验证**：
   ```json
   {
-    "type": "HEADER",
+    "tag": "SECTION", "id": "Execution_Flow",
+    "layoutProps": { "Gutter": "32px", "Align": "Center" },
     "children": [
-      { "type": "TITLE", "attrs": { "text": "用户管理" } },
-      { "type": "BUTTON", "attrs": { "text": "新增用户", "position": "RIGHT" } }
+      { "tag": "CARD", "id": "node_opencode",
+        "attrs": [{ "key": "Title", "value": "OpenCode 接口调用" }, ...] }
     ]
   }
   ```
 
-#### TC-ZOD-02: 别名映射 (Zod)
+#### TC-ZOD-01: 语义收敛 - 属性转换 (Zod)
 
-- **操作**：输入 `color: "ocean_blue"`
-- **预期**：映射为标准色值
-- **验证**：输出 `color: "blue-600"` 或对应 HSL 值
+- **操作**：输入 CST 中的 `ATTR: Title("OpenCode 接口调用"), Icon("Terminal")`
+- **预期**：转换为标准化 props
+- **验证**：
+  ```json
+  {
+    "type": "Card",
+    "id": "node_opencode",
+    "props": { "title": "OpenCode 接口调用", "icon": "Terminal" }
+  }
+  ```
 
-#### TC-ZOD-03: 默认值补全 (Zod)
+#### TC-ZOD-02: 语义收敛 - 别名映射 (Zod)
 
-- **操作**：输入 BUTTON 节点，未指定 size 和 variant
+- **操作**：输入 `Variant("Outline")` 和 `Align("Center")`
+- **预期**：映射为标准枚举值
+- **验证**：输出 `variant: "outline"`, `align: "center"`（全小写）
+
+#### TC-ZOD-03: 语义收敛 - 默认值补全 (Zod)
+
+- **操作**：输入 Button 节点，未指定 variant 和 size
 - **预期**：补全默认值
-- **验证**：输出包含 `size: "md"`, `variant: "primary"`
+- **验证**：输出 `props` 包含 `"variant": "primary"`, `"size": "md"`
 
-#### TC-ZOD-04: 嵌套校验 (Zod)
+#### TC-ZOD-04: 语义收敛 - 嵌套校验 (Zod)
 
 - **操作**：输入非法嵌套（Button 包含 Table）
 - **预期**：报错或自动修正（提升 Table）
 - **验证**：错误列表包含嵌套非法警告，或 Table 被提升到 Button 外部
+
+#### TC-ZOD-05: 完整 AST 输出 (Zod)
+
+- **操作**：输入完整 DSL
+  ```
+  [SECTION: Execution_Flow]
+    { Gutter: "32px", Align: "Center" }
+    [CARD: node_opencode]
+      ATTR: Title("OpenCode 接口调用"), Icon("Terminal")
+      CONTENT: "执行层通过 handle_opencode_call/7 订阅 SSE 事件"
+      [BUTTON: "运行调试"]
+        ATTR: Variant("Outline"), Size("Small")
+  ```
+- **预期**：输出标准化 AST
+- **验证**：
+  ```json
+  {
+    "type": "Root",
+    "children": [{
+      "id": "node_section_1",
+      "type": "Section",
+      "props": { "gutter": "32px", "align": "center" },
+      "children": [{
+        "id": "node_opencode",
+        "type": "Card",
+        "props": { "title": "OpenCode 接口调用", "icon": "Terminal" },
+        "children": [
+          { "type": "Text", "props": { "content": "执行层通过 handle_opencode_call/7 订阅 SSE 事件" } },
+          { "id": "node_btn_1", "type": "Button", "props": { "text": "运行调试", "variant": "outline", "size": "small" } }
+        ]
+      }]
+    }]
+  }
+  ```
 
 ### 视觉引擎测试
 
@@ -258,14 +306,19 @@ src/lib/compiler/
 - 验证：`npm ls chevrotain` 显示版本
 
 ### 1. 实现词法分析器（待做）
-- 做什么：解析 `[Layout]` `[Content - xxx]` 等标签
-- 验证：测试用例通过，Token 流正确
+- 做什么：解析 `[TAG: id]`、`{ key: "value" }`、`ATTR:`、`CONTENT:` 等标签
+- 验证：测试用例 TC-LEXER-01 通过，Token 流正确
 - 参考：`docs/compiler-architecture.md` L2323-L2400
 
 ### 2. 实现语法分析器（待做）
-- 做什么：将 Token 流构建为 CST/AST
-- 验证：测试用例通过，AST 结构正确
+- 做什么：将 Token 流构建为 CST（具体语法树）
+- 验证：测试用例 TC-PARSER-01 通过，CST 结构正确
 - 参考：`docs/compiler-architecture.md` L2400-L2500
+
+### 2.5 实现语义收敛器（待做）
+- 做什么：用 Zod 将 CST 转换为标准化 AST（`type`/`id`/`props`/`children`）
+- 验证：测试用例 TC-ZOD-01 ~ TC-ZOD-05 通过
+- 参考：`docs/compiler-architecture.md` L663-L710
 
 ### 3. 实现设计系统合成器（待做）
 - 做什么：Hash 种子 + Session State → Design Tokens
