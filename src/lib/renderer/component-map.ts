@@ -175,12 +175,12 @@ interface TextProps extends React.HTMLAttributes<HTMLParagraphElement> {
 }
 
 const variantStyles: Record<string, string> = {
-  default: 'text-base text-foreground',
-  title: 'text-2xl font-bold text-foreground',
-  subtitle: 'text-lg font-medium text-foreground',
-  muted: 'text-sm text-muted-foreground',
-  small: 'text-xs text-muted-foreground',
-  large: 'text-xl text-foreground',
+  default: 'text-base',  // 移除 text-foreground，让颜色继承父元素
+  title: 'text-2xl font-bold',
+  subtitle: 'text-lg font-medium',
+  muted: 'text-sm text-muted-foreground',  // muted 保留，因为需要特定的灰色
+  small: 'text-xs text-muted-foreground',  // small 保留
+  large: 'text-xl',
 };
 
 const Text: React.FC<TextProps> = ({
