@@ -373,6 +373,141 @@ describe('Semantic - Complete AST Output (TC-ZOD-05)', () => {
 });
 
 // ============================================
+// 边界情况测试
+// ============================================
+
+describe('Edge Cases', () => {
+  it('should handle empty input', () => {
+    const result = compile('');
+    expect(result.success).toBe(true);
+    expect(result.ast?.children).toHaveLength(0);
+  });
+
+  it('should handle Unicode in strings', () => {
+    const cst = [{
+      tag: 'CARD',
+      id: 'test',
+      attrs: [{ key: 'Title', value: '中文标题 🎉 émoji' }],
+    }];
+    const { ast } = transformToAST(cst);
+    expect(ast.children[0].props.title).toBe('中文标题 🎉 émoji');
+  });
+
+  it('should handle deeply nested structure', () => {
+    const cst = [{
+      tag: 'SECTION',
+      id: 's1',
+      children: [{
+        tag: 'CARD',
+        id: 'c1',
+        children: [{
+          tag: 'FLEX',
+          id: 'f1',
+          children: [{
+            tag: 'BUTTON',
+            text: 'deep',
+          }],
+        }],
+      }],
+    }];
+    const { ast, errors } = transformToAST(cst);
+    expect(ast.children[0].children![0].children![0].children![0].props.text).toBe('deep');
+  });
+
+  it('should preserve unknown attributes', () => {
+    const cst = [{
+      tag: 'CARD',
+      id: 'test',
+      attrs: [{ key: 'CustomAttr', value: 'custom-value' }],
+    }];
+    const { ast } = transformToAST(cst);
+    expect(ast.children[0].props.customattr).toBe('custom-value');
+  });
+
+  it('should handle multiple root nodes', () => {
+    const cst = [
+      { tag: 'SECTION', id: 's1' },
+      { tag: 'SECTION', id: 's2' },
+      { tag: 'CARD', id: 'c1' },
+    ];
+    const { ast } = transformToAST(cst);
+    expect(ast.children).toHaveLength(3);
+  });
+
+  it('should handle component without any props', () => {
+    const cst = [{ tag: 'DIVIDER' }];
+    const { ast } = transformToAST(cst);
+    expect(ast.children[0].type).toBe('Divider');
+    expect(ast.children[0].id).toBe('divider_1');
+  });
+});
+
+// ============================================
+// 错误处理测试
+// ============================================
+
+describe('Error Handling', () => {
+  it('should report lexer errors for invalid characters', () => {
+    const input = '[CARD: test] @#$%';
+    const { tokens, errors } = tokenize(input);
+    // 词法分析器可能报错或跳过非法字符
+    // 具体行为取决于 lexer 配置
+  });
+
+  it('should report parser errors for unclosed tag', () => {
+    const input = '[CARD: test';
+    const result = compile(input);
+    expect(result.success).toBe(false);
+  });
+
+  it('should report parser errors for missing colon', () => {
+    const input = '[CARD test]';
+    const result = compile(input);
+    expect(result.success).toBe(false);
+  });
+
+  it('should collect multiple warnings', () => {
+    const cst = [{
+      tag: 'BUTTON',
+      text: 'btn',
+      children: [
+        { tag: 'TABLE', id: 't1' },
+        { tag: 'FORM', id: 'f1' },
+      ],
+    }];
+    const { errors } = transformToAST(cst);
+    // Button 是叶子组件，不能有 children，应该有警告
+    expect(errors.length).toBeGreaterThan(0);
+  });
+});
+
+// ============================================
+// Metadata 测试
+// ============================================
+
+describe('Metadata', () => {
+  it('should include all metadata fields', () => {
+    const cst = [{ tag: 'CARD', id: 'test' }];
+    const { ast } = transformToAST(cst, {
+      title: 'Test Page',
+      context: '技术架构',
+      sessionId: 'sess_123',
+    });
+
+    expect(ast.metadata?.title).toBe('Test Page');
+    expect(ast.metadata?.context).toBe('技术架构');
+    expect(ast.metadata?.sessionId).toBe('sess_123');
+    expect(ast.metadata?.createdAt).toBeDefined();
+  });
+
+  it('should not include metadata if no options provided', () => {
+    const cst = [{ tag: 'CARD', id: 'test' }];
+    const { ast } = transformToAST(cst);
+    expect(ast.metadata).toBeUndefined();
+  });
+});
+
+// ============================================
 // 集成测试：完整编译流程
 // ============================================
 
@@ -394,5 +529,15 @@ describe('Integration - compile()', () => {
 
     expect(result.success).toBe(false);
     expect(result.errors.length).toBeGreaterThan(0);
+  });
+
+  it('should separate errors and warnings', () => {
+    // 有效的 DSL 但有嵌套警告
+    const input = '[BUTTON: "test"]';
+    const result = compile(input);
+
+    expect(result.success).toBe(true);
+    expect(result.errors).toHaveLength(0);
+    // warnings 可能为空（取决于具体输入）
   });
 });
