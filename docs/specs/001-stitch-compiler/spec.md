@@ -11,7 +11,7 @@ feature
 ## Task Scope
 
 **In scope**：
-- 前端层：词法分析、语法分析、语义分析
+- 逻辑综合层：词法分析(Chevrotain)、语法分析(Chevrotain)、语义收敛(Zod)
 - 中端层：设计系统合成器、IR 生成器、优化器
 - 后端层：代码生成器（React/HTML/HEEx）、资源打包器
 - 视觉引擎：5 维度 Design Tokens 生成
@@ -73,11 +73,11 @@ feature
 
 ```
 src/lib/compiler/
-├── frontend/
-│   ├── lexer.ts              # 词法分析器
-│   ├── parser.ts             # 语法分析器
-│   ├── semantic.ts           # 语义分析器
-│   └── ast.ts                # AST 类型定义
+├── frontend/                     # 逻辑综合层
+│   ├── lexer.ts                  # 词法分析器 (Chevrotain)
+│   ├── parser.ts                 # 语法分析器 (Chevrotain)
+│   ├── semantic.ts               # 语义收敛器 (Zod)
+│   └── ast.ts                    # AST 类型定义
 ├── middle/
 │   ├── synthesizer.ts        # 设计系统合成器
 │   ├── session.ts            # Session State 管理
@@ -110,25 +110,52 @@ src/lib/compiler/
 
 ## QA Acceptance Criteria
 
-### 前端层测试
+### 逻辑综合层测试 (Chevrotain + Zod)
 
-#### TC-LEXER-01: 词法分析
+#### TC-LEXER-01: 词法分析 (Chevrotain)
 
 - **操作**：输入 `[Layout] Dashboard 布局\n[Content - Header] 标题"用户管理"`
 - **预期**：生成正确的 Token 流
 - **验证**：`[LAYOUT_TAG, TEXT, CONTENT_TAG("Header"), TEXT]`
 
-#### TC-PARSER-01: 语法分析
+#### TC-PARSER-01: 语法分析 (Chevrotain)
 
 - **操作**：Token 流输入 Parser
-- **预期**：生成正确的 AST 结构
-- **验证**：AST 包含 PAGE → HEADER → TITLE 节点层级
+- **预期**：生成 CST/指令列表
+- **验证**：`[{ type: "layout", content: "..." }, { type: "content", param: "Header", content: "..." }]`
 
-#### TC-SEMANTIC-01: 语义校验
+#### TC-ZOD-01: 内容解析 (Zod)
+
+- **操作**：输入 `标题"用户管理"，右侧"新增用户"按钮`
+- **预期**：解析出 TITLE 和 BUTTON 子节点
+- **验证**：
+  ```json
+  {
+    "type": "HEADER",
+    "children": [
+      { "type": "TITLE", "attrs": { "text": "用户管理" } },
+      { "type": "BUTTON", "attrs": { "text": "新增用户", "position": "RIGHT" } }
+    ]
+  }
+  ```
+
+#### TC-ZOD-02: 别名映射 (Zod)
+
+- **操作**：输入 `color: "ocean_blue"`
+- **预期**：映射为标准色值
+- **验证**：输出 `color: "blue-600"` 或对应 HSL 值
+
+#### TC-ZOD-03: 默认值补全 (Zod)
+
+- **操作**：输入 BUTTON 节点，未指定 size 和 variant
+- **预期**：补全默认值
+- **验证**：输出包含 `size: "md"`, `variant: "primary"`
+
+#### TC-ZOD-04: 嵌套校验 (Zod)
 
 - **操作**：输入非法嵌套（Button 包含 Table）
-- **预期**：报错或自动修正
-- **验证**：错误列表包含嵌套非法警告
+- **预期**：报错或自动修正（提升 Table）
+- **验证**：错误列表包含嵌套非法警告，或 Table 被提升到 Button 外部
 
 ### 视觉引擎测试
 
@@ -267,11 +294,11 @@ src/lib/compiler/
 
 ## Progress
 
-- [ ] 安装依赖
-- [ ] 前端层（词法/语法/语义分析）
-- [ ] 中端层（设计合成器/IR生成器/优化器）
-- [ ] 组件工厂层
-- [ ] SSR 引擎层
+- [ ] 安装依赖 (Chevrotain, Zod, PurgeCSS)
+- [ ] 逻辑综合层 (Chevrotain 词法/语法 + Zod 语义收敛)
+- [ ] 视觉引擎层 (Design Tokens 生成)
+- [ ] 组件工厂层 (Props归一化/插槽分发/事件桩函数/Context注入)
+- [ ] SSR 引擎层 (脱水渲染/样式萃取/资源固化)
 - [ ] 后端层（代码生成器/打包器）
 - [ ] 集成测试
 
