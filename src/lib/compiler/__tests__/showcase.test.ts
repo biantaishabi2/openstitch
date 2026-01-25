@@ -96,6 +96,42 @@ describe('Component Showcase', () => {
       expect(result.ssr.html).toContain('链接');
       expect(result.ssr.html).toContain('href="https://example.com"');
     });
+
+    it('should render Image component', async () => {
+      const dsl = '[IMAGE: img1] ATTR: Src("https://example.com/image.png"), Alt("示例图片")';
+      const result = await compile(dsl);
+
+      expect(result.ast).toBeDefined();
+      expect(result.ssr.html).toContain('<img');
+      expect(result.ssr.html).toContain('src="https://example.com/image.png"');
+      expect(result.ssr.html).toContain('alt="示例图片"');
+    });
+
+    it('should render Divider component', async () => {
+      const dsl = '[DIVIDER: d1]';
+      const result = await compile(dsl);
+
+      expect(result.ast).toBeDefined();
+      // Divider 映射到 Separator
+      expect(result.ssr.html).toContain('data-slot="separator"');
+    });
+
+    it('should render Spacer component', async () => {
+      const dsl = '[SPACER: s1] ATTR: Size("lg")';
+      const result = await compile(dsl);
+
+      expect(result.ast).toBeDefined();
+      // Spacer 应该渲染为空白间隔元素
+      expect(result.ssr.html).toBeDefined();
+    });
+
+    it('should render Code component', async () => {
+      const dsl = '[CODE: c1] CONTENT: "const x = 1;"';
+      const result = await compile(dsl);
+
+      expect(result.ast).toBeDefined();
+      expect(result.ssr.html).toContain('const x = 1;');
+    });
   });
 
   describe('布局组件渲染', () => {
@@ -138,6 +174,19 @@ describe('Component Showcase', () => {
       expect(result.ast).toBeDefined();
       expect(result.ssr.html).toContain('<section');
       expect(result.ssr.html).toContain('Section 内容');
+    });
+
+    it('should render Container', async () => {
+      const dsl = `
+[CONTAINER: c1]
+  [TEXT: t1] CONTENT: "容器内容"
+`;
+      const result = await compile(dsl);
+
+      expect(result.ast).toBeDefined();
+      expect(result.ssr.html).toContain('容器内容');
+      // Container 应该有最大宽度限制
+      expect(result.ssr.html).toContain('max-w');
     });
   });
 
@@ -199,6 +248,30 @@ describe('Component Showcase', () => {
       expect(result.ast).toBeDefined();
       expect(result.ssr.html).toContain('项目1');
       expect(result.ssr.html).toContain('项目2');
+    });
+
+    it('should render Modal (Dialog)', async () => {
+      const dsl = `
+[MODAL: m1]
+  ATTR: Title("对话框标题")
+  [TEXT: t1] CONTENT: "对话框内容"
+  [BUTTON: b1] CONTENT: "确定"
+`;
+      const result = await compile(dsl);
+
+      expect(result.ast).toBeDefined();
+      // Modal 映射到 Dialog
+      expect(result.factory.ir.type).toBe('Dialog');
+    });
+
+    it('should render Tabs component', async () => {
+      const dsl = '[TABS: tabs1]';
+      const result = await compile(dsl);
+
+      expect(result.ast).toBeDefined();
+      // Tabs 应该渲染为带有 data-slot="tabs" 的元素
+      expect(result.ssr.html).toContain('data-slot="tabs"');
+      expect(result.ssr.html).toContain('data-orientation');
     });
   });
 

@@ -104,6 +104,39 @@
         ATTR: Title("Quote 引用"), Icon("Quote")
         [QUOTE: q1] CONTENT: "这是一段引用文本，通常用于展示名言或重要内容。"
 
+      [CARD: image_demo]
+        ATTR: Title("Image 图片"), Icon("Image")
+        [IMAGE: img1] ATTR: Src("https://via.placeholder.com/200"), Alt("示例图片")
+
+      [CARD: divider_demo]
+        ATTR: Title("Divider 分割线"), Icon("Minus")
+        [TEXT: div_t1] CONTENT: "上方内容"
+        [DIVIDER: div1]
+        [TEXT: div_t2] CONTENT: "下方内容"
+
+      [CARD: spacer_demo]
+        ATTR: Title("Spacer 间隔"), Icon("Space")
+        [TEXT: sp_t1] CONTENT: "上方"
+        [SPACER: sp1] ATTR: Size("lg")
+        [TEXT: sp_t2] CONTENT: "下方"
+
+      [CARD: code_demo]
+        ATTR: Title("Code 代码"), Icon("Code")
+        [CODE: code1] CONTENT: "const greeting = 'Hello World';"
+
+      [CARD: container_demo]
+        ATTR: Title("Container 容器"), Icon("Box")
+        [CONTAINER: cont1]
+          [TEXT: cont_t1] CONTENT: "容器内的内容会被限制最大宽度"
+
+      [CARD: tabs_demo]
+        ATTR: Title("Tabs 标签页"), Icon("Layers")
+        [TABS: tabs1]
+
+      [CARD: modal_demo]
+        ATTR: Title("Modal 对话框"), Icon("Square")
+        [TEXT: modal_t1] CONTENT: "Modal 组件映射为 Dialog"
+
     [FOOTER: footer]
       [TEXT: copyright] CONTENT: "© 2024 Stitch UI"
       [TEXT: version] CONTENT: "Compiler v1.0"
