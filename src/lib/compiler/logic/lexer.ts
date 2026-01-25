@@ -67,6 +67,12 @@ export const ContentKeyword = createToken({
   pattern: /CONTENT/,
 });
 
+// CSS 关键字（样式透传通道）
+export const CssKeyword = createToken({
+  name: 'CssKeyword',
+  pattern: /CSS/,
+});
+
 // ============================================
 // 符号 Token
 // ============================================
@@ -143,6 +149,7 @@ export const allTokens = [
   // 关键字（必须在 Identifier 之前）
   AttrKeyword,
   ContentKeyword,
+  CssKeyword,
 
   // 标签
   TagOpen,

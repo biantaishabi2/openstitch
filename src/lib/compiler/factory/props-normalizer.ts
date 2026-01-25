@@ -2,8 +2,10 @@
  * Props 归一化器
  *
  * 将 AST 的语义化 props 转换为 React 组件可用的格式
+ * 支持样式透传通道 (Style Passthrough Channel)
  */
 
+import { twMerge } from 'tailwind-merge';
 import type { BaseProps } from '../logic/ast';
 import type { DesignTokens } from '../visual/types';
 import type { NormalizedProps } from './types';
@@ -120,6 +122,12 @@ function mergeStyles(
  * 归一化 Props
  *
  * 将 AST 的语义化 props 转换为 React 组件可用的格式
+ * 支持样式透传通道 (Style Passthrough Channel)
+ *
+ * 样式优先级（从低到高）：
+ * 1. Visual Engine (design tokens)
+ * 2. Component Factory 默认映射
+ * 3. DSL CSS: 字段 (customClassName) - 最高优先级
  *
  * @param props AST props
  * @param tokens Design Tokens
@@ -132,6 +140,9 @@ export function normalizeProps(
   const result: NormalizedProps = {};
   const classNames: (string | undefined)[] = [];
   const styles: (Record<string, string> | undefined)[] = [];
+
+  // 提取 customClassName（用于最后合并）
+  let customClassName: string | undefined;
 
   // 遍历所有 props
   for (const [key, value] of Object.entries(props)) {
@@ -200,6 +211,12 @@ export function normalizeProps(
         break;
       }
 
+      // 样式透传通道：保存 customClassName，最后用 twMerge 合并
+      case 'customClassName': {
+        customClassName = value as string;
+        break;
+      }
+
       // 直接透传的 props
       case 'variant':
       case 'title':
@@ -230,8 +247,10 @@ export function normalizeProps(
   const mergedClassName = mergeClassNames(...classNames);
   const mergedStyle = mergeStyles(...styles);
 
-  if (mergedClassName) {
-    result.className = mergedClassName;
+  // 使用 twMerge 智能合并 className
+  // customClassName 优先级最高，会覆盖冲突的标准类
+  if (mergedClassName || customClassName) {
+    result.className = twMerge(mergedClassName, customClassName);
   }
 
   if (mergedStyle) {

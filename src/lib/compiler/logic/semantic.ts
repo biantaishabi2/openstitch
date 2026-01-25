@@ -235,7 +235,12 @@ function transformNode(
     props.text = cst.text;
   }
 
-  // 6. 补全默认值
+  // 6. 处理 CSS（样式透传通道）
+  if (cst.css) {
+    props.customClassName = cst.css;
+  }
+
+  // 7. 补全默认值
   applyDefaults(type, props);
 
   // 8. 生成 ID

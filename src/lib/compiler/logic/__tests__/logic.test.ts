@@ -76,6 +76,19 @@ describe('Lexer (TC-LEXER-01)', () => {
     expect(tokenNames).toContain('StringLiteral');
   });
 
+  // CSS 样式透传通道测试
+  it('should tokenize CSS: "tailwind classes"', () => {
+    const input = 'CSS: "bg-gradient-to-r from-blue-600 to-purple-600 text-white"';
+    const { tokens, errors } = tokenize(input);
+
+    expect(errors).toHaveLength(0);
+
+    const tokenNames = tokens.map(t => t.tokenType.name);
+    expect(tokenNames).toContain('CssKeyword');
+    expect(tokenNames).toContain('Colon');
+    expect(tokenNames).toContain('StringLiteral');
+  });
+
   it('should extract tag name from TagOpen token', () => {
     expect(extractTagName('[SECTION')).toBe('SECTION');
     expect(extractTagName('[CARD')).toBe('CARD');
@@ -132,6 +145,25 @@ describe('Parser (TC-PARSER-01)', () => {
 
     expect(errors).toHaveLength(0);
     expect(cst[0].content).toBe('执行层通过 handle_opencode_call/7 订阅 SSE 事件');
+  });
+
+  // CSS 样式透传通道测试
+  it('should parse tag with CSS passthrough', () => {
+    const input = '[CARD: gradient_card] CSS: "bg-gradient-to-r from-blue-600 to-purple-600"';
+    const { cst, errors } = parse(input);
+
+    expect(errors).toHaveLength(0);
+    expect(cst[0].css).toBe('bg-gradient-to-r from-blue-600 to-purple-600');
+  });
+
+  it('should parse tag with ATTR, CONTENT and CSS', () => {
+    const input = '[CARD: full_card] ATTR: Title("标题") CONTENT: "内容" CSS: "shadow-xl rounded-lg"';
+    const { cst, errors } = parse(input);
+
+    expect(errors).toHaveLength(0);
+    expect(cst[0].attrs).toEqual([{ key: 'Title', value: '标题' }]);
+    expect(cst[0].content).toBe('内容');
+    expect(cst[0].css).toBe('shadow-xl rounded-lg');
   });
 
   it('should parse tag with text content [BUTTON: "运行调试"]', () => {
@@ -219,6 +251,35 @@ describe('Semantic - Alias Mapping (TC-ZOD-02)', () => {
     const { ast } = transformToAST(cst);
 
     expect(ast.children[0].props.size).toBe('sm');
+  });
+
+  // CSS 样式透传通道测试
+  it('should transform CSS to customClassName', () => {
+    const cst = [{
+      tag: 'CARD',
+      id: 'gradient_card',
+      css: 'bg-gradient-to-r from-blue-600 to-purple-600 shadow-xl',
+    }];
+
+    const { ast } = transformToAST(cst);
+
+    expect(ast.children[0].props.customClassName).toBe('bg-gradient-to-r from-blue-600 to-purple-600 shadow-xl');
+  });
+
+  it('should preserve CSS along with other props', () => {
+    const cst = [{
+      tag: 'CARD',
+      id: 'styled_card',
+      attrs: [{ key: 'Title', value: '渐变卡片' }],
+      content: '卡片内容',
+      css: 'border-2 border-blue-500 rounded-lg',
+    }];
+
+    const { ast } = transformToAST(cst);
+
+    expect(ast.children[0].props.title).toBe('渐变卡片');
+    expect(ast.children[0].props.content).toBe('卡片内容');
+    expect(ast.children[0].props.customClassName).toBe('border-2 border-blue-500 rounded-lg');
   });
 });
 

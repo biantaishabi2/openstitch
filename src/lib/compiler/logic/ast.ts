@@ -26,6 +26,7 @@ export interface CSTNode {
   layoutProps?: Record<string, string>; // 布局属性: { Gutter: "32px", Align: "Center" }
   attrs?: CSTAttr[];                    // 组件属性: ATTR: Title("xxx"), Icon("yyy")
   content?: string;                     // 内容: CONTENT: "xxx"
+  css?: string;                         // 样式透传: CSS: "bg-gradient-to-r ..."
   children?: CSTNode[];                 // 子节点
 }
 
@@ -130,6 +131,9 @@ export interface BaseProps {
   disabled?: boolean;
   loading?: boolean;
   onClick?: string;  // 事件桩函数标识
+
+  // 样式透传通道 (Style Passthrough Channel)
+  customClassName?: string;  // CSS: "tailwind classes" → 最终与标准样式合并
 
   // 其他自定义属性
   [key: string]: unknown;

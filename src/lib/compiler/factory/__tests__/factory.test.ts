@@ -130,6 +130,56 @@ describe('Props Normalization (TC-FACTORY-01)', () => {
     expect(result.style?.width).toBe('100%');
     expect(result.style?.height).toBe('200px');
   });
+
+  // Style Passthrough Channel tests (CSS: 样式透传)
+  it('should apply customClassName to result', () => {
+    const props = { customClassName: 'bg-gradient-to-r from-blue-600 to-purple-600' };
+    const result = normalizeProps(props, tokens);
+
+    expect(result.className).toContain('bg-gradient-to-r');
+    expect(result.className).toContain('from-blue-600');
+    expect(result.className).toContain('to-purple-600');
+  });
+
+  it('should merge customClassName with standard className using twMerge', () => {
+    const props = {
+      size: 'lg' as const,
+      customClassName: 'text-blue-400', // 应该覆盖 size 生成的 text-lg
+    };
+    const result = normalizeProps(props, tokens);
+
+    // twMerge 会智能合并，customClassName 优先级更高
+    expect(result.className).toContain('text-blue-400');
+  });
+
+  it('should handle customClassName with multiple conflicting classes', () => {
+    const props = {
+      align: 'center' as const,  // 生成 text-center
+      justify: 'between' as const,  // 生成 justify-between
+      customClassName: 'text-left justify-end', // 覆盖 align 但保留 justify
+    };
+    const result = normalizeProps(props, tokens);
+
+    // twMerge 处理冲突：text-left 覆盖 text-center，justify-end 覆盖 justify-between
+    expect(result.className).toContain('text-left');
+    expect(result.className).toContain('justify-end');
+    expect(result.className).not.toContain('text-center');
+    expect(result.className).not.toContain('justify-between');
+  });
+
+  it('should handle customClassName with non-conflicting classes', () => {
+    const props = {
+      size: 'lg' as const,
+      customClassName: 'shadow-xl rounded-lg border-2',
+    };
+    const result = normalizeProps(props, tokens);
+
+    // 非冲突的类应该都保留
+    expect(result.className).toContain('text-lg');
+    expect(result.className).toContain('shadow-xl');
+    expect(result.className).toContain('rounded-lg');
+    expect(result.className).toContain('border-2');
+  });
 });
 
 // ============================================

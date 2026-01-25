@@ -26,6 +26,7 @@ import {
   RParen,
   AttrKeyword,
   ContentKeyword,
+  CssKeyword,
   StringLiteral,
   Identifier,
   NumberLiteral,
@@ -275,6 +276,11 @@ class SimpleParser {
       node.content = this.parseContentDecl();
     }
 
+    // 可选：CSS: "tailwind classes" (样式透传通道)
+    if (this.match('CssKeyword')) {
+      node.css = this.parseCssDecl();
+    }
+
     // 解析子元素：只有缩进更深的才是子元素
     const children: CSTNode[] = [];
 
@@ -368,6 +374,15 @@ class SimpleParser {
    */
   private parseContentDecl(): string {
     this.consume('ContentKeyword');
+    this.consume('Colon');
+    return extractStringValue(this.consume('StringLiteral').image);
+  }
+
+  /**
+   * 解析 CSS: "tailwind classes" (样式透传通道)
+   */
+  private parseCssDecl(): string {
+    this.consume('CssKeyword');
     this.consume('Colon');
     return extractStringValue(this.consume('StringLiteral').image);
   }
