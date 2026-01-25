@@ -8,16 +8,71 @@
 ┌─────────────────────────────────────────────────────────────┐
 │                      测试金字塔                              │
 ├─────────────────────────────────────────────────────────────┤
-│  E2E 测试      │  完整页面渲染（Dashboard Demo）            │
-│                │  验证真实场景下的组件协作                   │
+│  E2E 测试      │  完整页面渲染、并发压力测试                 │
+│                │  TC-E2E-01/02, TC-PARALLEL-01, TC-PURGE-01 │
 ├─────────────────────────────────────────────────────────────┤
 │  集成测试      │  组件组合测试（布局嵌套、插槽分发）         │
-│                │  验证多组件协作、布局系统                   │
+│                │  TC-FACTORY-01~05, TC-PROPS-01             │
 ├─────────────────────────────────────────────────────────────┤
-│  单元测试      │  单组件渲染测试（每个组件独立验证）         │
-│                │  验证每个组件的基础渲染能力                 │
+│  视觉引擎      │  Design Tokens 确定性、字阶边界、主题映射   │
+│                │  TC-TOKENS-01~03, TC-SCALE-01, TC-THEME-02 │
+├─────────────────────────────────────────────────────────────┤
+│  逻辑引擎      │  词法/语法解析、语义校验、ID 稳定性         │
+│                │  TC-LEXER-01, TC-PARSER-01, TC-ZOD-01~05   │
+│                │  TC-TRANSFORM-01, 深度嵌套、超长字符串      │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+## 测试用例清单
+
+### 第一层：逻辑综合层 (Frontend - Unit Tests)
+
+| 测试用例 | 描述 | 文件 |
+|---------|------|------|
+| TC-LEXER-01 | 词法分析：特殊字符、Token 流完整性 | logic.test.ts |
+| TC-PARSER-01 | 语法分析：嵌套结构、可选 ID | logic.test.ts |
+| TC-ZOD-01~05 | 语义收敛：属性转换、别名映射、默认值、嵌套校验 | logic.test.ts |
+| TC-TRANSFORM-01 | ID 稳定性：不同编译中自动 ID 一致 | logic.test.ts |
+| 深度嵌套 | 10 层嵌套解析正确性 | logic.test.ts |
+| 超长字符串 | 10000 字符内容处理 | logic.test.ts |
+
+### 第二层：视觉引擎 (Middle - Algorithm Tests)
+
+| 测试用例 | 描述 | 文件 |
+|---------|------|------|
+| TC-TOKENS-01 | 确定性：相同 context 产生相同 Tokens | visual.test.ts |
+| TC-TOKENS-02 | 差异性：不同 context 产生不同 Tokens | visual.test.ts |
+| TC-TOKENS-03 | 5 维度完整性：颜色、间距、字阶、圆角、装饰 | visual.test.ts |
+| TC-SCALE-01 | 字阶比率边界验证 (1.0~1.8) | visual.test.ts |
+| TC-THEME-02 | Dark 模式语义映射 | visual.test.ts |
+
+### 第三层：组件工厂 (Backend - Integration Tests)
+
+| 测试用例 | 描述 | 文件 |
+|---------|------|------|
+| TC-FACTORY-01 | Props 归一化：Size/Spacing → className/style | factory.test.ts |
+| TC-FACTORY-02 | 插槽分发：Card/Alert 子元素自动分配 | factory.test.ts |
+| TC-FACTORY-03 | 空插槽不渲染 | factory.test.ts |
+| TC-FACTORY-04 | 事件桩函数注入 | factory.test.ts |
+| TC-FACTORY-05 | 类型映射：Modal→Dialog, Sidebar→Stack | factory.test.ts |
+| TC-PROPS-01 | 样式优先级：显式属性优先于 Token | factory.test.ts |
+
+### 第四层：SSR 与输出 (Backend - Snapshot Tests)
+
+| 测试用例 | 描述 | 文件 |
+|---------|------|------|
+| TC-SSR-01 | 脱水渲染：完整 HTML 结构 | ssr.test.ts |
+| TC-SSR-02 | CSS 萃取：Tailwind 类名提取 | ssr.test.ts |
+| TC-SSR-03 | 资源固化：SVG 图标内联 | ssr.test.ts |
+
+### 第五层：端到端与并发压力测试 (E2E & Concurrency)
+
+| 测试用例 | 描述 | 文件 |
+|---------|------|------|
+| TC-E2E-01 | 完整编译流程 | e2e.test.ts |
+| TC-E2E-02 | 增量编译：AST Diff 检测 | e2e.test.ts |
+| TC-PARALLEL-01 | 并发安全性：10 请求压力测试 | e2e.test.ts |
+| TC-PURGE-01 | CSS 体积达标验证 (<15KB) | e2e.test.ts |
 
 ---
 
@@ -231,20 +286,18 @@ src/lib/compiler/__tests__/
 ## 运行测试
 
 ```bash
-# 运行所有编译器测试
+# 运行所有编译器测试 (272 个测试)
 npx vitest run src/lib/compiler
 
-# 运行单组件测试
-npx vitest run src/lib/compiler/__tests__/unit/components
+# 按层级运行
+npx vitest run src/lib/compiler/logic      # 逻辑引擎 (50+ tests)
+npx vitest run src/lib/compiler/visual     # 视觉引擎 (50+ tests)
+npx vitest run src/lib/compiler/factory    # 组件工厂 (59 tests)
+npx vitest run src/lib/compiler/ssr        # SSR 引擎 (57 tests)
 
-# 运行集成测试
-npx vitest run src/lib/compiler/__tests__/integration
-
-# 运行 E2E 测试
-npx vitest run src/lib/compiler/__tests__/e2e
-
-# 运行组件 Showcase 测试
-npx vitest run src/lib/compiler/__tests__/showcase.test.ts
+# 端到端测试
+npx vitest run src/lib/compiler/__tests__/e2e.test.ts      # E2E (37 tests)
+npx vitest run src/lib/compiler/__tests__/showcase.test.ts # Showcase (22 tests)
 ```
 
 ---
