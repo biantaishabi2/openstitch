@@ -5,12 +5,12 @@
  * 复用现有 renderer 的 UINode 类型
  */
 
-import type { UINode } from '@/lib/renderer/types';
+import type { UINode } from '../../../renderer/types';
 import type { ASTNode, StitchAST } from '../logic/ast';
 import type { DesignTokens } from '../visual/types';
 
 // 重新导出 UINode 作为 IR
-export type { UINode } from '@/lib/renderer/types';
+export type { UINode } from '../../../renderer/types';
 
 /**
  * 组件工厂输入

@@ -7,7 +7,7 @@
 'use client';
 
 import * as React from 'react';
-import { render as renderUINode } from '@/lib/renderer/renderer';
+import { render as renderUINode } from '../../renderer';
 import type { StitchAST } from '../logic/ast';
 import type { DesignTokens } from '../visual/types';
 import type { UINode, FactoryOptions, FactoryInput } from './types';
