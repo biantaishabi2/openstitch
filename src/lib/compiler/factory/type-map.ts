@@ -12,7 +12,7 @@ import type { ComponentType } from '../logic/ast';
  * 大多数类型直接映射，少数需要名称转换
  */
 export const TYPE_MAP: Record<ComponentType, string> = {
-  // 根节点 - 不渲染为组件
+  // 根节点
   Root: 'Page',
 
   // 布局组件 - 直接映射
@@ -20,47 +20,71 @@ export const TYPE_MAP: Record<ComponentType, string> = {
   Container: 'Container',
   Grid: 'Grid',
   Flex: 'Flex',
+  Stack: 'Stack',
+  Columns: 'Columns',
+  Split: 'Split',
+  Rows: 'Rows',
+  Center: 'Center',
+  Page: 'Page',
+  Hero: 'Hero',
   Spacer: 'Spacer',
 
-  // 内容组件 - 直接映射
+  // 导航组件
+  Header: 'Flex',     // Header → Flex (with special props)
+  Footer: 'Flex',     // Footer → Flex (with special props)
+  Sidebar: 'Stack',   // Sidebar → Stack (with special props)
+  Nav: 'Flex',        // Nav → Flex (with special props)
+  Tabs: 'Tabs',
+  Breadcrumb: 'Breadcrumb',
+  Stepper: 'Stepper',
+
+  // 数据展示 - 直接映射
   Card: 'Card',
+  Table: 'Table',
+  List: 'List',
+  Timeline: 'Timeline',
+  Accordion: 'Accordion',
+  Statistic: 'Statistic',
+  StatisticCard: 'StatisticCard',
+  Avatar: 'Avatar',
   Text: 'Text',
   Image: 'Image',
   Icon: 'Icon',
   Badge: 'Badge',
-  Link: 'Link',
+  Code: 'CodeBlock',  // 名称映射
+  Quote: 'Text',      // Quote → Text (with blockquote style)
+  Heading: 'Text',    // Heading → Text (with title variant)
 
-  // 交互组件 - 直接映射
+  // 表单组件
   Button: 'Button',
   Input: 'Input',
-
-  // 数据展示 - 直接映射
-  Table: 'Table',
-  List: 'List',
-  Tabs: 'Tabs',
-
-  // 反馈组件 - 直接映射
-  Alert: 'Alert',
-
-  // 名称映射（AST type 与 component-map key 不同）
-  Modal: 'Dialog',
-  Divider: 'Separator',
-  Code: 'CodeBlock',
-
-  // 缺失组件（用现有组件组合实现）
+  Label: 'Label',
+  Checkbox: 'Checkbox',
+  Switch: 'Switch',
+  Slider: 'Slider',
+  Radio: 'RadioGroup',  // 名称映射
+  Select: 'Select',
   Form: 'Stack',      // Form → Stack (direction="col")
-  Header: 'Flex',     // Header → Flex
-  Footer: 'Flex',     // Footer → Flex
-  Sidebar: 'Stack',   // Sidebar → Stack (direction="col")
-  Nav: 'Flex',        // Nav → Flex
-  Heading: 'Text',    // Heading → Text (variant="title")
-  Quote: 'Text',      // Quote → Text (as="blockquote")
+
+  // 反馈组件
+  Alert: 'Alert',
+  Modal: 'Dialog',    // 名称映射
+  Progress: 'Progress',
+  Tooltip: 'Tooltip',
+  Skeleton: 'Skeleton',
+  EmptyState: 'EmptyState',
+
+  // 其他
+  Link: 'Link',
+  Divider: 'Separator',  // 名称映射
 };
 
 /**
  * 需要特殊 props 处理的类型
  */
 export const SPECIAL_TYPE_PROPS: Record<string, Record<string, unknown>> = {
+  // ========== 映射组件的特殊 props ==========
+
   // Heading 使用 Text 的 title variant
   Heading: { variant: 'title', as: 'h2' },
 
@@ -88,8 +112,30 @@ export const SPECIAL_TYPE_PROPS: Record<string, Record<string, unknown>> = {
   Nav: { direction: 'col', gap: 1, className: 'w-full' },
 
   // Section 禁用自动 grid 布局，让内部组件控制布局
-  // 注意：需要覆盖 Section 组件的默认 padding
   Section: { layout: 'none', className: '!p-0 flex-1 flex flex-col' },
+
+  // ========== 布局组件默认 props ==========
+
+  // Stack 默认垂直方向
+  Stack: { direction: 'col' },
+
+  // Center 居中对齐
+  Center: {
+    className: 'flex items-center justify-center',
+  },
+
+  // Rows 垂直排列
+  Rows: { direction: 'col' },
+
+  // Hero 主视觉区域
+  Hero: {
+    className: 'min-h-[50vh] flex flex-col items-center justify-center text-center p-8',
+  },
+
+  // Page 页面容器
+  Page: {
+    className: 'min-h-screen bg-background',
+  },
 };
 
 /**
@@ -116,6 +162,10 @@ export const COMPOSITE_COMPONENTS = new Set([
   'Tabs',
   'Table',
   'Accordion',
+  'Timeline',
+  'Breadcrumb',
+  'Stepper',
+  'Tooltip',
 ]);
 
 /**

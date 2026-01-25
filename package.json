@@ -2,11 +2,15 @@
   "name": "stitch",
   "version": "0.1.0",
   "private": true,
+  "bin": {
+    "stitch": "./bin/stitch.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "stitch": "npx vitest run scripts/compile-runner.test.ts"
   },
   "dependencies": {
     "@catppuccin/tailwindcss": "^1.0.0",
@@ -80,6 +84,7 @@
     "eslint-config-next": "16.1.4",
     "playwright": "^1.57.0",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "tw-animate-css": "^1.4.0",
     "typescript": "^5",
     "vitest": "^4.0.18"

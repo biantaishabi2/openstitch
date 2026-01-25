@@ -1,0 +1,11 @@
+{
+  "context": "Test_Project_Blue",
+  "platform": "web",
+  "screens": [
+    {
+      "screen_id": "dashboard",
+      "title": "测试仪表盘",
+      "dsl": "[SECTION: main]\n  [CARD: stats]\n    ATTR: Title(\"统计数据\"), Icon(\"BarChart\")\n    CONTENT: \"12,345\"\n  [BUTTON: action] CONTENT: \"查看详情\""
+    }
+  ]
+}

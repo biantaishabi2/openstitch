@@ -78,6 +78,25 @@ export const EVENT_STUBS: Record<string, EventStubConfig> = {
       console.log(`[Stitch] Accordion changed: ${id}`, value);
     },
   },
+
+  // 新增组件事件桩
+  Stepper: {
+    onStepChange: (id: string) => (step: number) => {
+      console.log(`[Stitch] Stepper step changed: ${id}`, step);
+    },
+  },
+
+  Tooltip: {
+    onOpenChange: (id: string) => (open: boolean) => {
+      console.log(`[Stitch] Tooltip ${id}:`, open ? 'opened' : 'closed');
+    },
+  },
+
+  Progress: {
+    onValueChange: (id: string) => (value: number) => {
+      console.log(`[Stitch] Progress changed: ${id}`, value);
+    },
+  },
 };
 
 /**

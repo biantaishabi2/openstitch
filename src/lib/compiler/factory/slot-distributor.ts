@@ -104,6 +104,50 @@ export const SLOT_RULES: Record<string, SlotRule> = {
     },
     special: true,
   },
+
+  // Timeline 时间线
+  Timeline: {
+    slots: ['items'],
+    distribute: () => 'items',
+    render: {
+      items: 'TimelineItem',
+    },
+    special: true,
+  },
+
+  // Breadcrumb 面包屑
+  Breadcrumb: {
+    slots: ['items'],
+    distribute: () => 'items',
+    render: {
+      items: 'BreadcrumbItem',
+    },
+    special: true,
+  },
+
+  // Stepper 步骤条
+  Stepper: {
+    slots: ['steps'],
+    distribute: () => 'steps',
+    render: {
+      steps: 'Step',
+    },
+    special: true,
+  },
+
+  // Tooltip 提示
+  Tooltip: {
+    slots: ['trigger', 'content'],
+    distribute: (child: ASTNode) => {
+      // 第一个子节点作为触发器，其他作为内容
+      return 'trigger';
+    },
+    render: {
+      trigger: 'TooltipTrigger',
+      content: 'TooltipContent',
+    },
+    special: true,
+  },
 };
 
 /**

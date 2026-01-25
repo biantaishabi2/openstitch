@@ -34,36 +34,67 @@ export interface CSTNode {
 // Zod 语义收敛后的标准化输出
 // ============================================
 
-/** 组件类型枚举 */
+/** 组件类型枚举 (51 种) */
 export type ComponentType =
+  // 根节点
   | 'Root'
+  // 布局组件 (12 种)
   | 'Section'
-  | 'Card'
-  | 'Button'
-  | 'Text'
-  | 'Input'
-  | 'Table'
-  | 'List'
-  | 'Image'
-  | 'Icon'
-  | 'Badge'
-  | 'Alert'
-  | 'Modal'
-  | 'Tabs'
-  | 'Form'
+  | 'Container'
   | 'Grid'
   | 'Flex'
-  | 'Divider'
+  | 'Stack'
+  | 'Columns'
+  | 'Split'
+  | 'Rows'
+  | 'Center'
+  | 'Page'
+  | 'Hero'
   | 'Spacer'
-  | 'Container'
+  // 导航组件 (6 种)
   | 'Header'
   | 'Footer'
   | 'Sidebar'
   | 'Nav'
-  | 'Link'
+  | 'Tabs'
+  | 'Breadcrumb'
+  | 'Stepper'
+  // 数据展示 (12 种)
+  | 'Card'
+  | 'Table'
+  | 'List'
+  | 'Timeline'
+  | 'Accordion'
+  | 'Statistic'
+  | 'StatisticCard'
+  | 'Avatar'
+  | 'Text'
+  | 'Image'
+  | 'Icon'
+  | 'Badge'
   | 'Code'
   | 'Quote'
-  | 'Heading';
+  | 'Heading'
+  // 表单组件 (9 种)
+  | 'Button'
+  | 'Input'
+  | 'Label'
+  | 'Checkbox'
+  | 'Switch'
+  | 'Slider'
+  | 'Radio'
+  | 'Select'
+  | 'Form'
+  // 反馈组件 (6 种)
+  | 'Alert'
+  | 'Modal'
+  | 'Progress'
+  | 'Tooltip'
+  | 'Skeleton'
+  | 'EmptyState'
+  // 其他
+  | 'Link'
+  | 'Divider';
 
 /** 通用 Props 类型 */
 export interface BaseProps {
@@ -213,40 +244,89 @@ export const PROP_VALUE_MAP: Record<string, Record<string, string>> = {
 
 /** 默认属性值 */
 export const DEFAULT_PROPS: Record<string, Record<string, string>> = {
+  // 表单组件
   Button: { variant: 'primary', size: 'md' },
-  Card: { variant: 'default' },
   Input: { size: 'md' },
+  Checkbox: { size: 'md' },
+  Switch: { size: 'md' },
+  Slider: { size: 'md' },
+  Radio: { size: 'md' },
+  Select: { size: 'md' },
+  // 数据展示
+  Card: { variant: 'default' },
   Badge: { variant: 'default', size: 'sm' },
+  Avatar: { size: 'md' },
+  Statistic: { size: 'md' },
+  StatisticCard: { size: 'md' },
+  // 反馈组件
   Alert: { variant: 'default' },
+  Progress: { value: '0', max: '100' },
+  // 导航组件
+  Stepper: { current: '0' },
+  // 布局组件
+  Stack: { direction: 'column' },
+  Flex: { direction: 'row' },
+  Grid: { columns: '1' },
 };
 
-/** 标签名到组件类型的映射 */
+/** 标签名到组件类型的映射 (51 种) */
 export const TAG_TO_TYPE: Record<string, ComponentType> = {
+  // 布局组件
   'SECTION': 'Section',
-  'CARD': 'Card',
-  'BUTTON': 'Button',
-  'TEXT': 'Text',
-  'INPUT': 'Input',
-  'TABLE': 'Table',
-  'LIST': 'List',
-  'IMAGE': 'Image',
-  'ICON': 'Icon',
-  'BADGE': 'Badge',
-  'ALERT': 'Alert',
-  'MODAL': 'Modal',
-  'TABS': 'Tabs',
-  'FORM': 'Form',
+  'CONTAINER': 'Container',
   'GRID': 'Grid',
   'FLEX': 'Flex',
-  'DIVIDER': 'Divider',
+  'STACK': 'Stack',
+  'COLUMNS': 'Columns',
+  'SPLIT': 'Split',
+  'ROWS': 'Rows',
+  'CENTER': 'Center',
+  'PAGE': 'Page',
+  'HERO': 'Hero',
   'SPACER': 'Spacer',
-  'CONTAINER': 'Container',
+  // 导航组件
   'HEADER': 'Header',
   'FOOTER': 'Footer',
   'SIDEBAR': 'Sidebar',
   'NAV': 'Nav',
-  'LINK': 'Link',
+  'TABS': 'Tabs',
+  'BREADCRUMB': 'Breadcrumb',
+  'STEPPER': 'Stepper',
+  // 数据展示
+  'CARD': 'Card',
+  'TABLE': 'Table',
+  'LIST': 'List',
+  'TIMELINE': 'Timeline',
+  'ACCORDION': 'Accordion',
+  'STATISTIC': 'Statistic',
+  'STATISTIC_CARD': 'StatisticCard',
+  'AVATAR': 'Avatar',
+  'TEXT': 'Text',
+  'IMAGE': 'Image',
+  'ICON': 'Icon',
+  'BADGE': 'Badge',
   'CODE': 'Code',
   'QUOTE': 'Quote',
   'HEADING': 'Heading',
+  // 表单组件
+  'BUTTON': 'Button',
+  'INPUT': 'Input',
+  'LABEL': 'Label',
+  'CHECKBOX': 'Checkbox',
+  'SWITCH': 'Switch',
+  'SLIDER': 'Slider',
+  'RADIO': 'Radio',
+  'SELECT': 'Select',
+  'FORM': 'Form',
+  // 反馈组件
+  'ALERT': 'Alert',
+  'MODAL': 'Modal',
+  'PROGRESS': 'Progress',
+  'TOOLTIP': 'Tooltip',
+  'SKELETON': 'Skeleton',
+  'EMPTY': 'EmptyState',
+  'EMPTY_STATE': 'EmptyState',
+  // 其他
+  'LINK': 'Link',
+  'DIVIDER': 'Divider',
 };
