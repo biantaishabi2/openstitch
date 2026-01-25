@@ -6,6 +6,7 @@
 import * as React from 'react';
 import { componentMap, getComponent, hasComponent } from './component-map';
 import type { UINode, RendererConfig, RenderContext } from './types';
+import * as LucideIcons from 'lucide-react';
 
 // 默认配置
 const defaultConfig: RendererConfig = {
@@ -13,6 +14,43 @@ const defaultConfig: RendererConfig = {
   debug: false,
   customComponents: {},
 };
+
+// 图标尺寸映射
+const iconSizeMap: Record<string, string> = {
+  xs: 'h-3 w-3',
+  sm: 'h-4 w-4',
+  md: 'h-5 w-5',
+  lg: 'h-6 w-6',
+  xl: 'h-8 w-8',
+};
+
+/**
+ * 需要将 icon 字符串转换为 React 元素的组件列表
+ * 这些组件的 icon prop 期望接收 React.ReactNode
+ */
+const COMPONENTS_WITH_ICON_ELEMENT = new Set([
+  'TimelineItem',
+  'Alert',
+  'SlottedAlert',
+  'StatisticCard',
+]);
+
+/**
+ * 将图标名称字符串转换为 Lucide 图标组件
+ * @param iconName 图标名称（如 "Box", "Zap", "Users"）
+ * @param size 图标尺寸
+ * @returns React 元素或 null
+ */
+function createIconElement(iconName: string, size: string = 'md'): React.ReactNode {
+  const IconComponent = (LucideIcons as Record<string, React.ComponentType<any>>)[iconName];
+  if (!IconComponent) {
+    console.warn(`[Stitch] Icon "${iconName}" not found in lucide-react`);
+    return null;
+  }
+  return React.createElement(IconComponent, {
+    className: iconSizeMap[size] || iconSizeMap.md,
+  });
+}
 
 // 自闭合组件列表 - 这些组件不能有 children
 const SELF_CLOSING_TYPES = new Set([
@@ -131,6 +169,23 @@ function renderNode(
   const finalProps: Record<string, any> = {
     ...props,
   };
+
+  // 处理 icon prop
+  // - 对于 Icon 组件：删除 icon prop（只需要 name prop）
+  // - 对于需要 icon 元素的组件（如 TimelineItem）：将 icon 字符串转换为实际的 Icon 组件
+  // - 对于其他组件：删除 icon prop 避免被传递给 DOM
+  if (typeof finalProps.icon === 'string' && finalProps.icon) {
+    if (type === 'Icon') {
+      // Icon 组件使用 name prop，删除多余的 icon prop 避免被传递给 SVG
+      delete finalProps.icon;
+    } else if (COMPONENTS_WITH_ICON_ELEMENT.has(type)) {
+      // 特定组件：将图标名称转换为实际的 Icon 元素
+      finalProps.icon = createIconElement(finalProps.icon);
+    } else {
+      // 其他组件：删除 icon prop，避免被传递给 DOM 导致 [object Object]
+      delete finalProps.icon;
+    }
+  }
 
   // 支持 id 属性用于锚点链接
   if (id) {

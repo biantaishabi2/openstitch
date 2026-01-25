@@ -9,7 +9,26 @@ import type { DesignTokens } from '../visual/types';
 import type { UINode, FactoryOptions } from './types';
 import { getMappedType, getSpecialProps, isCompositeComponent } from './type-map';
 import { normalizeProps } from './props-normalizer';
-import { distributeToSlots, getSlotWrapper, isSlotEmpty, getSlotRule } from './slot-distributor';
+import { distributeToSlots, getSlotWrapper, isSlotEmpty, getSlotRule, SLOT_RULES } from './slot-distributor';
+
+/**
+ * 检查组件是否为特殊复合组件（需要直接传递 children 而非 slots）
+ * 如 Timeline、Accordion 等需要将子节点直接作为 children
+ *
+ * 判断条件：
+ * - special: true
+ * - 且有非 null 的包装组件（如 TimelineItem）
+ *
+ * Table 虽然 special: true，但 render 都是 null，仍使用 slots 分发
+ */
+function isSpecialCompositeComponent(type: string): boolean {
+  const rule = SLOT_RULES[type];
+  if (!rule?.special) return false;
+
+  // 检查是否有非 null 的包装组件
+  const hasWrapper = Object.values(rule.render).some((v) => v !== null);
+  return hasWrapper;
+}
 import { injectEventStubs } from './event-stubs';
 
 /**
@@ -45,8 +64,29 @@ function astNodeToUINode(
   let slots: Record<string, UINode> | undefined;
 
   if (node.children && node.children.length > 0) {
-    // 检查是否为复合组件需要插槽分发
-    if (isCompositeComponent(mappedType)) {
+    // 特殊复合组件（Timeline、Accordion 等）：直接将子节点作为 children 传递
+    // 这些组件期望从 children 中读取内容，而不是从 slots
+    if (isSpecialCompositeComponent(mappedType)) {
+      const rule = getSlotRule(mappedType);
+      const wrapperType = rule?.render[rule.slots[0]]; // 获取包装组件类型
+
+      // 递归转换每个子节点，并用对应的包装组件包裹
+      children = node.children.map((child) => {
+        const childNode = astNodeToUINode(child, tokens, options);
+
+        // 如果有包装类型（如 TimelineItem），将子节点包装
+        if (wrapperType) {
+          return {
+            type: wrapperType,
+            props: childNode.props,
+            children: childNode.children,
+          };
+        }
+        return childNode;
+      });
+    }
+    // 普通复合组件需要插槽分发（Card、Alert 等）
+    else if (isCompositeComponent(mappedType)) {
       const slotResult = distributeToSlots(mappedType, node.children);
 
       if (slotResult) {
@@ -87,11 +127,20 @@ function astNodeToUINode(
   // 7. 处理 content prop（转换为 Text 子节点或直接作为 children）
   if (mergedProps.content && typeof mergedProps.content === 'string') {
     const contentText = mergedProps.content as string;
-    delete mergedProps.content;
 
-    // 对于某些组件，content 直接作为文本子节点
-    if (!children && !slots) {
-      children = [{ type: 'Text', children: contentText }];
+    // 特殊组件：content → value（Statistic、StatisticCard）
+    if (mappedType === 'Statistic' || mappedType === 'StatisticCard') {
+      mergedProps.value = contentText;
+      delete mergedProps.content;
+    }
+    // 其他组件：content 作为文本子节点
+    else {
+      delete mergedProps.content;
+
+      // 对于某些组件，content 直接作为文本子节点
+      if (!children && !slots) {
+        children = [{ type: 'Text', children: contentText }];
+      }
     }
   }
 
