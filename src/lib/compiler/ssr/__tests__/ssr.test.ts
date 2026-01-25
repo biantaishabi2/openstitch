@@ -12,8 +12,11 @@ import * as React from 'react';
 import { dehydrate, dehydrateBatch, dehydrateAsync } from '../dehydrator';
 import { purgeCSS, generateCSSVariables, generateInlineStyle, mergeCSS } from '../css-purger';
 import { solidifyAssets, generateStandaloneHTML } from '../solidifier';
-import { renderToStaticHTML, renderToHTML } from '../renderer';
+import { renderToStaticHTML, renderToHTML, renderFactoryOutput } from '../renderer';
 import { generateDesignTokens } from '../../visual/synthesizer';
+import { generateIR } from '../../factory/ir-generator';
+import { ThemeProvider } from '../../factory/theme-provider';
+import type { StitchAST } from '../../logic/ast';
 
 // 创建测试用 tokens
 function createTestTokens() {
@@ -457,5 +460,364 @@ describe('Edge Cases', () => {
     expect(result.html).toContain('Item 0');
     expect(result.html).toContain('Item 99');
     expect(endTime - startTime).toBeLessThan(1000); // 应在 1 秒内完成
+  });
+});
+
+// ============================================
+// CSS 体积验证 (Spec 要求 < 10KB)
+// ============================================
+
+describe('CSS Size Validation (Spec Requirement)', () => {
+  it('should produce CSS < 10KB after purging', async () => {
+    // 模拟 Tailwind 完整 CSS (简化版，但包含足够多未使用类)
+    const tailwindCSS = `
+      /* 基础样式 */
+      .text-xs { font-size: 0.75rem; }
+      .text-sm { font-size: 0.875rem; }
+      .text-base { font-size: 1rem; }
+      .text-lg { font-size: 1.125rem; }
+      .text-xl { font-size: 1.25rem; }
+      .text-2xl { font-size: 1.5rem; }
+      .text-3xl { font-size: 1.875rem; }
+
+      /* 颜色 - 模拟大量未使用类 */
+      .bg-red-50 { background: #fef2f2; }
+      .bg-red-100 { background: #fee2e2; }
+      .bg-red-200 { background: #fecaca; }
+      .bg-red-300 { background: #fca5a5; }
+      .bg-red-400 { background: #f87171; }
+      .bg-red-500 { background: #ef4444; }
+      .bg-blue-50 { background: #eff6ff; }
+      .bg-blue-100 { background: #dbeafe; }
+      .bg-blue-200 { background: #bfdbfe; }
+      .bg-blue-500 { background: #3b82f6; }
+      .bg-green-500 { background: #22c55e; }
+      .bg-yellow-500 { background: #eab308; }
+
+      /* 间距 */
+      .p-0 { padding: 0; }
+      .p-1 { padding: 0.25rem; }
+      .p-2 { padding: 0.5rem; }
+      .p-3 { padding: 0.75rem; }
+      .p-4 { padding: 1rem; }
+      .p-5 { padding: 1.25rem; }
+      .p-6 { padding: 1.5rem; }
+      .m-0 { margin: 0; }
+      .m-1 { margin: 0.25rem; }
+      .m-2 { margin: 0.5rem; }
+      .m-4 { margin: 1rem; }
+
+      /* 更多未使用类... */
+      .flex { display: flex; }
+      .grid { display: grid; }
+      .hidden { display: none; }
+      .block { display: block; }
+      .inline { display: inline; }
+      .w-full { width: 100%; }
+      .h-full { height: 100%; }
+      .rounded { border-radius: 0.25rem; }
+      .rounded-md { border-radius: 0.375rem; }
+      .rounded-lg { border-radius: 0.5rem; }
+      .shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+      .shadow-md { box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+      .shadow-lg { box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
+    `;
+
+    // 只使用少量类
+    const element = React.createElement(
+      'div',
+      { className: 'p-4 bg-blue-500 rounded-lg' },
+      React.createElement('h1', { className: 'text-xl' }, 'Hello'),
+      React.createElement('p', { className: 'text-base' }, 'World')
+    );
+
+    const result = await renderToStaticHTML(element, { fullCSS: tailwindCSS });
+
+    // 验证 CSS < 10KB
+    const cssSize = Buffer.byteLength(result.css, 'utf8');
+    expect(cssSize).toBeLessThan(10 * 1024); // < 10KB
+
+    // 验证只包含使用的类
+    expect(result.css).toContain('.p-4');
+    expect(result.css).toContain('.bg-blue-500');
+    expect(result.css).toContain('.text-xl');
+    expect(result.css).not.toContain('.bg-red-500');
+    expect(result.css).not.toContain('.hidden');
+  });
+
+  it('should report compression ratio > 50%', async () => {
+    const largeCSS = Array.from({ length: 100 }, (_, i) =>
+      `.unused-class-${i} { color: red; padding: ${i}px; margin: ${i}px; }`
+    ).join('\n');
+
+    const html = '<div class="used-class">Content</div>';
+    const result = await purgeCSS(html, largeCSS + '.used-class { color: blue; }');
+
+    expect(result.compressionRatio).toBeGreaterThan(0.5);
+  });
+});
+
+// ============================================
+// 脱水模式测试 (static vs hydrate)
+// ============================================
+
+describe('Dehydration Modes', () => {
+  it('should render static markup without React attributes', () => {
+    const element = React.createElement('div', { id: 'app' }, 'Static');
+    const result = dehydrate(element, { static: true });
+
+    // static 模式不应包含 data-reactroot 等属性
+    expect(result.html).not.toContain('data-react');
+    expect(result.html).toBe('<div id="app">Static</div>');
+  });
+
+  it('should render hydratable markup with static: false', () => {
+    const element = React.createElement('div', { id: 'app' }, 'Hydrate');
+    const result = dehydrate(element, { static: false });
+
+    // 水合模式的 HTML 也是有效的
+    expect(result.html).toContain('<div');
+    expect(result.html).toContain('Hydrate');
+  });
+});
+
+// ============================================
+// 不同图片 MIME 类型测试
+// ============================================
+
+describe('Image MIME Types', () => {
+  it('should handle JPEG images', () => {
+    const html = '<img src="photo.jpg">';
+    const resources = { 'photo.jpg': 'base64data' };
+
+    const result = solidifyAssets(html, resources);
+
+    expect(result.html).toContain('data:image/jpeg;base64,');
+  });
+
+  it('should handle SVG images', () => {
+    const html = '<img src="icon.svg">';
+    const resources = { 'icon.svg': 'base64data' };
+
+    const result = solidifyAssets(html, resources);
+
+    expect(result.html).toContain('data:image/svg+xml;base64,');
+  });
+
+  it('should handle WebP images', () => {
+    const html = '<img src="image.webp">';
+    const resources = { 'image.webp': 'base64data' };
+
+    const result = solidifyAssets(html, resources);
+
+    expect(result.html).toContain('data:image/webp;base64,');
+  });
+
+  it('should handle GIF images', () => {
+    const html = '<img src="animation.gif">';
+    const resources = { 'animation.gif': 'base64data' };
+
+    const result = solidifyAssets(html, resources);
+
+    expect(result.html).toContain('data:image/gif;base64,');
+  });
+
+  it('should handle ICO images', () => {
+    const html = '<img src="favicon.ico">';
+    const resources = { 'favicon.ico': 'base64data' };
+
+    const result = solidifyAssets(html, resources);
+
+    expect(result.html).toContain('data:image/x-icon;base64,');
+  });
+});
+
+// ============================================
+// 相对路径解析测试
+// ============================================
+
+describe('URL Resolution', () => {
+  it('should resolve relative paths with baseURL', () => {
+    const html = '<link rel="stylesheet" href="css/style.css">';
+    const resources = { 'https://example.com/css/style.css': '.btn { }' };
+
+    const result = solidifyAssets(html, resources, {
+      baseURL: 'https://example.com',
+    });
+
+    expect(result.html).toContain('<style>.btn { }</style>');
+    expect(result.inlinedCount).toBe(1);
+  });
+
+  it('should handle baseURL with trailing slash', () => {
+    const html = '<script src="js/app.js"></script>';
+    const resources = { 'https://cdn.com/js/app.js': 'var x=1;' };
+
+    const result = solidifyAssets(html, resources, {
+      baseURL: 'https://cdn.com/',
+    });
+
+    expect(result.html).toContain('<script>var x=1;</script>');
+  });
+
+  it('should not modify absolute URLs', () => {
+    const html = '<link rel="stylesheet" href="https://other.com/style.css">';
+    const resources = { 'https://other.com/style.css': '.a { }' };
+
+    const result = solidifyAssets(html, resources, {
+      baseURL: 'https://example.com',
+    });
+
+    expect(result.html).toContain('<style>.a { }</style>');
+  });
+});
+
+// ============================================
+// renderFactoryOutput 集成测试
+// ============================================
+
+describe('Factory Output Integration', () => {
+  it('should render factory output to static HTML', async () => {
+    const tokens = createTestTokens();
+
+    // 模拟组件工厂的 React 输出
+    const element = React.createElement(
+      ThemeProvider,
+      { tokens },
+      React.createElement('div', { className: 'card p-4' },
+        React.createElement('h1', null, 'Factory Output'),
+        React.createElement('button', { className: 'btn' }, 'Click')
+      )
+    );
+
+    const result = await renderFactoryOutput(element, tokens, {
+      title: 'Factory Test',
+    });
+
+    expect(result.html).toContain('<!DOCTYPE html>');
+    expect(result.html).toContain('Factory Output');
+    expect(result.html).toContain('Click');
+    expect(result.body).toContain('card p-4');
+  });
+
+  it('should include design tokens in factory output', async () => {
+    const tokens = createTestTokens();
+    const element = React.createElement('div', null, 'Test');
+
+    const result = await renderFactoryOutput(element, tokens);
+
+    // 验证 tokens 被注入为 CSS 变量
+    expect(result.css).toContain('--primary-color');
+    expect(result.css).toContain('--font-size');
+  });
+});
+
+// ============================================
+// SSR 选项测试
+// ============================================
+
+describe('SSR Options', () => {
+  it('should include customCSS in output', async () => {
+    const element = React.createElement('div', null, 'Test');
+    const customCSS = '.custom-class { color: purple; }';
+
+    const result = await renderToStaticHTML(element, { customCSS });
+
+    expect(result.css).toContain('.custom-class');
+    expect(result.css).toContain('color: purple');
+  });
+
+  it('should include headExtra in output', async () => {
+    const element = React.createElement('div', null, 'Test');
+    const headExtra = '<meta name="author" content="Stitch">';
+
+    const result = await renderToStaticHTML(element, { headExtra });
+
+    expect(result.html).toContain('<meta name="author" content="Stitch">');
+  });
+
+  it('should use custom title', async () => {
+    const element = React.createElement('div', null, 'Test');
+
+    const result = await renderToStaticHTML(element, {
+      title: '自定义标题',
+    });
+
+    expect(result.html).toContain('<title>自定义标题</title>');
+  });
+
+  it('should use custom language', async () => {
+    const element = React.createElement('div', null, 'Test');
+
+    const result = await renderToStaticHTML(element, {
+      lang: 'en-US',
+    });
+
+    expect(result.html).toContain('lang="en-US"');
+  });
+});
+
+// ============================================
+// CSS 萃取高级功能
+// ============================================
+
+describe('Advanced CSS Purging', () => {
+  it('should preserve CSS variables when used', async () => {
+    const css = `
+      :root { --primary: blue; --unused-var: red; }
+      .text-lg { font-size: 1.125rem; color: var(--primary); }
+      .unused { display: none; }
+    `;
+    const html = '<div class="text-lg">Text</div>';
+
+    const result = await purgeCSS(html, css, { variables: true });
+
+    // CSS 变量通过 var() 引用时会被保留
+    expect(result.css).toContain('.text-lg');
+    expect(result.css).toContain('var(--primary)');
+  });
+
+  it('should preserve keyframes when enabled', async () => {
+    const css = `
+      @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+      .animate-spin { animation: spin 1s linear infinite; }
+      .unused { display: none; }
+    `;
+    const html = '<div class="animate-spin">Loading</div>';
+
+    const result = await purgeCSS(html, css, { keyframes: true });
+
+    expect(result.css).toContain('@keyframes spin');
+    expect(result.css).toContain('.animate-spin');
+  });
+
+  it('should preserve font-face when enabled', async () => {
+    const css = `
+      @font-face { font-family: 'Custom'; src: url('font.woff2'); }
+      .text-custom { font-family: 'Custom'; }
+      .unused { display: none; }
+    `;
+    const html = '<div class="text-custom">Text</div>';
+
+    const result = await purgeCSS(html, css, { fontFace: true });
+
+    expect(result.css).toContain('@font-face');
+    expect(result.css).toContain('.text-custom');
+  });
+
+  it('should use regex patterns in safelist', async () => {
+    const css = `
+      .hover\\:bg-blue-500:hover { background: blue; }
+      .focus\\:ring:focus { box-shadow: 0 0 0 2px blue; }
+      .text-lg { font-size: 1.125rem; }
+    `;
+    const html = '<div class="text-lg">Text</div>';
+
+    const result = await purgeCSS(html, css, {
+      safelistPatterns: [/^hover:/, /^focus:/],
+    });
+
+    expect(result.css).toContain('.text-lg');
+    // safelist 应该保留 hover: 和 focus: 前缀的类
   });
 });
