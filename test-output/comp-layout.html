@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>布局组件</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'hsl(var(--background))',
+            foreground: 'hsl(var(--foreground))',
+            card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+            popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
+            primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+            secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+            muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+            accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+            destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+            border: 'hsl(var(--border))',
+            input: 'hsl(var(--input))',
+            ring: 'hsl(var(--ring))',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root {
+      --base-unit: 4px;--spacing-xs: 4px;--spacing-sm: 8px;--spacing-md: 16px;--spacing-lg: 32px;--spacing-xl: 64px;--gap-card: 16px;--padding-card: 16px;--padding-section: 32px;--line-height-body: 1.50;--font-scale: 1.067;--font-size-xs: 14.05px;--font-size-sm: 15.00px;--font-size-base: 16px;--font-size-lg: 17.07px;--font-size-xl: 18.22px;--font-size-2xl: 19.44px;--font-size-3xl: 20.74px;--font-weight-normal: 400;--font-weight-medium: 500;--font-weight-semibold: 600;--font-weight-bold: 700;--radius-sm: 3px;--radius-md: 6px;--radius-lg: 12px;--radius-full: 9999px;--shadow-sm: 0 1px 2px rgba(0,0,0,0.05);--shadow-md: 0 4px 6px rgba(0,0,0,0.10);--shadow-lg: 0 10px 15px rgba(0,0,0,0.12);--pattern-type: none;--pattern-dots: radial-gradient(circle, rgba(0,0,0,0.02) 1px, transparent 1px);--pattern-dots-size: 20px 20px;--pattern-grid: linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);--pattern-grid-size: 24px 24px;--gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity: 0.02;--primary-color: #18181b;--primary-50: #fdfbf1;--primary-100: #fbf7df;--primary-200: #f8eebf;--primary-300: #f3e291;--primary-400: #ebd251;--primary-500: #e5c31a;--primary-600: #c0a416;--primary-700: #9c8512;--primary-800: #77660d;--primary-900: #4e4209;--secondary-color: #b5d772;--accent-color: #415ad5;--positive-color: #22C55E;--negative-color: #EF4444;--background: 0 0% 100%;--foreground: 222 47% 11%;--card: 0 0% 100%;--card-foreground: 222 47% 11%;--popover: 0 0% 100%;--popover-foreground: 222 47% 11%;--primary: 240 5.9% 10%;--primary-foreground: 0 0% 98%;--secondary: 240 4.8% 95.9%;--secondary-foreground: 240 5.9% 10%;--muted: 210 40% 96%;--muted-foreground: 215 16% 47%;--accent: 240 4.8% 95.9%;--accent-foreground: 240 5.9% 10%;--destructive: 0 84% 60%;--destructive-foreground: 0 0% 100%;--border: 214 32% 91%;--input: 214 32% 91%;--ring: 240 5.9% 10%;
+    }
+    * { border-color: hsl(var(--border)); }
+    body { font-family: system-ui, -apple-system, sans-serif; }
+:root {
+  --base-unit: 4px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 32px;
+  --spacing-xl: 64px;
+  --gap-card: 16px;
+  --padding-card: 16px;
+  --padding-section: 32px;
+  --line-height-body: 1.50;
+  --font-scale: 1.067;
+  --font-size-xs: 14.05px;
+  --font-size-sm: 15.00px;
+  --font-size-base: 16px;
+  --font-size-lg: 17.07px;
+  --font-size-xl: 18.22px;
+  --font-size-2xl: 19.44px;
+  --font-size-3xl: 20.74px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.10);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.12);
+  --pattern-type: none;
+  --pattern-dots: radial-gradient(circle, rgba(0,0,0,0.02) 1px, transparent 1px);
+  --pattern-dots-size: 20px 20px;
+  --pattern-grid: linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+  --pattern-grid-size: 24px 24px;
+  --gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);
+  --noise-opacity: 0.02;
+  --primary-color: #18181b;
+  --primary-50: #fdfbf1;
+  --primary-100: #fbf7df;
+  --primary-200: #f8eebf;
+  --primary-300: #f3e291;
+  --primary-400: #ebd251;
+  --primary-500: #e5c31a;
+  --primary-600: #c0a416;
+  --primary-700: #9c8512;
+  --primary-800: #77660d;
+  --primary-900: #4e4209;
+  --secondary-color: #b5d772;
+  --accent-color: #415ad5;
+  --positive-color: #22C55E;
+  --negative-color: #EF4444;
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 240 5.9% 10%;
+}
+
+/* Tailwind 基础重置 */
+*, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; }
+h1, h2 { font-size: inherit; font-weight: inherit; }
+a { color: inherit; text-decoration: inherit; }
+ svg { display: block; max-width: 100%; height: auto; }
+
+/* 常用工具类 */
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.grid { display: grid; }
+
+.flex-col { flex-direction: column; }
+.flex-row { flex-direction: row; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-start { justify-content: flex-start; }
+
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+
+.p-0 { padding: 0; }
+.p-4 { padding: 1rem; }
+
+.px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.w-full { width: 100%; }
+.min-h-screen { min-height: 100vh; }
+.shrink-0 { flex-shrink: 0; }
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-base { font-size: 1rem; line-height: 1.5rem; }
+.text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+.text-center { text-align: center; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-full { border-radius: 9999px; }
+
+.border { border-width: 1px; }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+
+.overflow-hidden { overflow: hidden; }
+.transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+
+.whitespace-nowrap { white-space: nowrap; }
+.leading-none { line-height: 1; }
+
+/* HSL 颜色工具类 */
+.bg-card { background-color: hsl(var(--card)); }
+.bg-primary { background-color: hsl(var(--primary)); }
+.text-primary-foreground { color: hsl(var(--primary-foreground)); }
+.text-card-foreground { color: hsl(var(--card-foreground)); }
+
+/* 按钮变体样式 */
+
+  </style>
+
+</head>
+<body>
+<div style="--base-unit:4px;--spacing-xs:4px;--spacing-sm:8px;--spacing-md:16px;--spacing-lg:32px;--spacing-xl:64px;--gap-card:16px;--padding-card:16px;--padding-section:32px;--line-height-body:1.50;--font-scale:1.067;--font-size-xs:14.05px;--font-size-sm:15.00px;--font-size-base:16px;--font-size-lg:17.07px;--font-size-xl:18.22px;--font-size-2xl:19.44px;--font-size-3xl:20.74px;--font-weight-normal:400;--font-weight-medium:500;--font-weight-semibold:600;--font-weight-bold:700;--radius-sm:3px;--radius-md:6px;--radius-lg:12px;--radius-full:9999px;--shadow-sm:0 1px 2px rgba(0,0,0,0.05);--shadow-md:0 4px 6px rgba(0,0,0,0.10);--shadow-lg:0 10px 15px rgba(0,0,0,0.12);--pattern-type:none;--pattern-dots:radial-gradient(circle, rgba(0,0,0,0.02) 1px, transparent 1px);--pattern-dots-size:20px 20px;--pattern-grid:linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);--pattern-grid-size:24px 24px;--gradient-fade:linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity:0.02;--primary-color:#18181b;--primary-50:#fdfbf1;--primary-100:#fbf7df;--primary-200:#f8eebf;--primary-300:#f3e291;--primary-400:#ebd251;--primary-500:#e5c31a;--primary-600:#c0a416;--primary-700:#9c8512;--primary-800:#77660d;--primary-900:#4e4209;--secondary-color:#b5d772;--accent-color:#415ad5;--positive-color:#22C55E;--negative-color:#EF4444;--background:0 0% 100%;--foreground:222 47% 11%;--card:0 0% 100%;--card-foreground:222 47% 11%;--popover:0 0% 100%;--popover-foreground:222 47% 11%;--primary:240 5.9% 10%;--primary-foreground:0 0% 98%;--secondary:240 4.8% 95.9%;--secondary-foreground:240 5.9% 10%;--muted:210 40% 96%;--muted-foreground:215 16% 47%;--accent:240 4.8% 95.9%;--accent-foreground:240 5.9% 10%;--destructive:0 84% 60%;--destructive-foreground:0 0% 100%;--border:214 32% 91%;--input:214 32% 91%;--ring:240 5.9% 10%"><div class="flex flex-row justify-start items-stretch gap-0" style="gap:None" id="layout"><div class="flex flex-col gap-4 items-stretch bg-slate-900 text-white p-4 w-64 min-h-screen" direction="col" id="nav"><h2 class="text-2xl font-bold" id="logo"><p class="text-base">组件测试</p></h2><div class="flex flex-col gap-4 items-stretch space-y-2" direction="col" id="menu"><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:SM" id="n1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-grid h-5 w-5" aria-hidden="true" id="i1"><rect width="7" height="7" x="3" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="14" rx="1"></rect><rect width="7" height="7" x="3" y="14" rx="1"></rect></svg><p class="text-base" id="t1"><p class="text-base">布局组件</p></p></div><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:SM" id="n2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-navigation h-5 w-5" aria-hidden="true" id="i2"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg><p class="text-base" id="t2"><p class="text-base">导航组件</p></p></div><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:SM" id="n3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-table h-5 w-5" aria-hidden="true" id="i3"><path d="M12 3v18"></path><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M3 9h18"></path><path d="M3 15h18"></path></svg><p class="text-base" id="t3"><p class="text-base">数据展示</p></p></div><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:SM" id="n4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rectangle-ellipsis h-5 w-5" aria-hidden="true" id="i4"><rect width="20" height="12" x="2" y="6" rx="2"></rect><path d="M12 12h.01"></path><path d="M17 12h.01"></path><path d="M7 12h.01"></path></svg><p class="text-base" id="t4"><p class="text-base">表单组件</p></p></div><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:SM" id="n5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell h-5 w-5" aria-hidden="true" id="i5"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg><p class="text-base" id="t5"><p class="text-base">反馈组件</p></p></div><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:SM" id="n6"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-type h-5 w-5" aria-hidden="true" id="i6"><path d="M12 4v16"></path><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"></path><path d="M9 20h6"></path></svg><p class="text-base" id="t6"><p class="text-base">文本组件</p></p></div></div></div><section class="py-12 md:py-16 lg:py-20 px-4 md:px-6 !p-0 flex-1 flex flex-col" id="main"><h2 class="font-bold text-xl" style="font-size:18.22px" id="title"><p class="text-base">布局组件 Layout</p></h2><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="grid_demo"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2">Grid 网格布局</div></div><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><p class="text-base" id="desc"><p class="text-base">Columns: 2/3/4, Gap: SM/MD/LG</p></p><div class="grid grid-cols-3 gap-4" style="gap:MD" id="g1"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="c1"><div data-slot="card-content" class="px-6"><p class="text-base">Grid Item 1</p></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="c2"><div data-slot="card-content" class="px-6"><p class="text-base">Grid Item 2</p></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="c3"><div data-slot="card-content" class="px-6"><p class="text-base">Grid Item 3</p></div></div></div></div></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="flex_demo"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2">Flex 弹性布局</div></div><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><p class="text-base" id="desc"><p class="text-base">Direction: Row/Col, Justify: Start/Center/Between</p></p><div class="flex flex-row items-stretch gap-0 justify-between" style="gap:MD" id="f1"><span data-slot="badge" class="inline-flex items-center justify-center rounded-full border px-2 py-0.5 font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-primary text-primary-foreground [a&amp;]:hover:bg-primary/90 text-sm" style="font-size:15.00px" id="b1"><p class="text-base">Flex Item 1</p></span><span data-slot="badge" class="inline-flex items-center justify-center rounded-full border px-2 py-0.5 font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-primary text-primary-foreground [a&amp;]:hover:bg-primary/90 text-sm" style="font-size:15.00px" id="b2"><p class="text-base">Flex Item 2</p></span><span data-slot="badge" class="inline-flex items-center justify-center rounded-full border px-2 py-0.5 font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-primary text-primary-foreground [a&amp;]:hover:bg-primary/90 text-sm" style="font-size:15.00px" id="b3"><p class="text-base">Flex Item 3</p></span></div></div></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="stack_demo"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2">Stack 堆叠布局</div></div><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><div class="flex flex-col gap-4 items-stretch" direction="column" style="gap:SM" id="s1"><span data-slot="badge" class="inline-flex items-center justify-center rounded-full border px-2 py-0.5 font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-primary text-primary-foreground [a&amp;]:hover:bg-primary/90 text-sm" style="font-size:15.00px" id="b1"><p class="text-base">Stack Item 1</p></span><span data-slot="badge" class="inline-flex items-center justify-center rounded-full border px-2 py-0.5 font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-primary text-primary-foreground [a&amp;]:hover:bg-primary/90 text-sm" style="font-size:15.00px" id="b2"><p class="text-base">Stack Item 2</p></span><span data-slot="badge" class="inline-flex items-center justify-center rounded-full border px-2 py-0.5 font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-primary text-primary-foreground [a&amp;]:hover:bg-primary/90 text-sm" style="font-size:15.00px" id="b3"><p class="text-base">Stack Item 3</p></span></div></div></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="hero_demo"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2">Hero 主视觉区</div></div><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><div class="relative flex flex-col justify-center overflow-hidden min-h-[500px] py-20 bg-gradient-to-br from-slate-900 to-slate-800 text-center" id="h1"><div class="relative z-10 mx-auto flex w-full max-w-5xl flex-col gap-6 px-6 text-center items-center"><h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl"></h1><h2 class="text-2xl font-bold" id="ht"><p class="text-base">Hero 标题</p></h2><p class="text-base" id="hd"><p class="text-base">Hero 描述文字，用于页面主视觉区域</p></p></div></div></div></div></div></section></div></div>
+
+</body>
+</html>

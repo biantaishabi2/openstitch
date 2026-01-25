@@ -124,7 +124,20 @@ function astNodeToUINode(
     }
   }
 
-  // 7. 处理 content prop（转换为 Text 子节点或直接作为 children）
+  // 7. 处理 icon prop（为 Button 等组件创建 Icon 子元素）
+  // 这些组件期望 icon 作为子元素而不是 prop
+  const COMPONENTS_WITH_ICON_CHILDREN = ['Button'];
+  let iconChild: UINode | null = null;
+
+  if (mergedProps.icon && typeof mergedProps.icon === 'string' && COMPONENTS_WITH_ICON_CHILDREN.includes(mappedType)) {
+    iconChild = {
+      type: 'Icon',
+      props: { name: mergedProps.icon },
+    };
+    delete mergedProps.icon;
+  }
+
+  // 8. 处理 content prop（转换为 Text 子节点或直接作为 children）
   if (mergedProps.content && typeof mergedProps.content === 'string') {
     const contentText = mergedProps.content as string;
 
@@ -133,18 +146,31 @@ function astNodeToUINode(
       mergedProps.value = contentText;
       delete mergedProps.content;
     }
+    // CodeBlock：content → code
+    else if (mappedType === 'CodeBlock') {
+      mergedProps.code = contentText;
+      delete mergedProps.content;
+    }
     // 其他组件：content 作为文本子节点
     else {
       delete mergedProps.content;
 
       // 对于某些组件，content 直接作为文本子节点
       if (!children && !slots) {
-        children = [{ type: 'Text', children: contentText }];
+        // 如果有 icon 子元素，组合 icon + text
+        if (iconChild) {
+          children = [iconChild, contentText];
+        } else {
+          children = [{ type: 'Text', children: contentText }];
+        }
       }
     }
+  } else if (iconChild && !children && !slots) {
+    // 只有 icon 没有 content
+    children = [iconChild];
   }
 
-  // 8. 处理 text prop（用于 Button 等组件的文本）
+  // 9. 处理 text prop（用于 Button 等组件的文本）
   if (mergedProps.text && typeof mergedProps.text === 'string') {
     const textContent = mergedProps.text as string;
     delete mergedProps.text;
@@ -160,7 +186,7 @@ function astNodeToUINode(
     }
   }
 
-  // 9. 构建 UINode
+  // 10. 构建 UINode
   const uiNode: UINode = {
     type: mappedType,
     id: node.id,

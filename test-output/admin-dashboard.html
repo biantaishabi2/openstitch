@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>后台管理 - 仪表盘</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'hsl(var(--background))',
+            foreground: 'hsl(var(--foreground))',
+            card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+            popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
+            primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+            secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+            muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+            accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+            destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+            border: 'hsl(var(--border))',
+            input: 'hsl(var(--input))',
+            ring: 'hsl(var(--ring))',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root {
+      --base-unit: 4px;--spacing-xs: 4px;--spacing-sm: 8px;--spacing-md: 16px;--spacing-lg: 32px;--spacing-xl: 64px;--gap-card: 16px;--padding-card: 16px;--padding-section: 32px;--line-height-body: 1.50;--font-scale: 1.333;--font-size-xs: 9.00px;--font-size-sm: 12.00px;--font-size-base: 16px;--font-size-lg: 21.33px;--font-size-xl: 28.43px;--font-size-2xl: 37.90px;--font-size-3xl: 50.52px;--font-weight-normal: 400;--font-weight-medium: 500;--font-weight-semibold: 600;--font-weight-bold: 700;--radius-sm: 3px;--radius-md: 6px;--radius-lg: 12px;--radius-full: 9999px;--shadow-sm: 0 1px 2px rgba(0,0,0,0.05);--shadow-md: 0 4px 6px rgba(0,0,0,0.10);--shadow-lg: 0 10px 15px rgba(0,0,0,0.12);--pattern-type: wave;--pattern-dots: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);--pattern-dots-size: 20px 20px;--pattern-grid: linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);--pattern-grid-size: 24px 24px;--gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity: 0.02;--primary-color: #28b9e6;--primary-50: #f1fbfd;--primary-100: #dff5fb;--primary-200: #bfeaf7;--primary-300: #92dcf2;--primary-400: #52c7eb;--primary-500: #1bb5e4;--primary-600: #1798c0;--primary-700: #127b9b;--primary-800: #0e5e77;--primary-900: #093e4e;--secondary-color: #6c88d4;--accent-color: #d35e3b;--positive-color: #22C55E;--negative-color: #EF4444;--background: 0 0% 100%;--foreground: 222 47% 11%;--card: 0 0% 100%;--card-foreground: 222 47% 11%;--popover: 0 0% 100%;--popover-foreground: 222 47% 11%;--primary: 194 79% 53%;--primary-foreground: 0 0% 100%;--secondary: 224 55% 96%;--secondary-foreground: 224 55% 20%;--muted: 210 40% 96%;--muted-foreground: 215 16% 47%;--accent: 14 40% 96%;--accent-foreground: 14 63% 20%;--destructive: 0 84% 60%;--destructive-foreground: 0 0% 100%;--border: 214 32% 91%;--input: 214 32% 91%;--ring: 194 79% 53%;
+    }
+    * { border-color: hsl(var(--border)); }
+    body { font-family: system-ui, -apple-system, sans-serif; }
+:root {
+  --base-unit: 4px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 32px;
+  --spacing-xl: 64px;
+  --gap-card: 16px;
+  --padding-card: 16px;
+  --padding-section: 32px;
+  --line-height-body: 1.50;
+  --font-scale: 1.333;
+  --font-size-xs: 9.00px;
+  --font-size-sm: 12.00px;
+  --font-size-base: 16px;
+  --font-size-lg: 21.33px;
+  --font-size-xl: 28.43px;
+  --font-size-2xl: 37.90px;
+  --font-size-3xl: 50.52px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.10);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.12);
+  --pattern-type: wave;
+  --pattern-dots: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);
+  --pattern-dots-size: 20px 20px;
+  --pattern-grid: linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+  --pattern-grid-size: 24px 24px;
+  --gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);
+  --noise-opacity: 0.02;
+  --primary-color: #28b9e6;
+  --primary-50: #f1fbfd;
+  --primary-100: #dff5fb;
+  --primary-200: #bfeaf7;
+  --primary-300: #92dcf2;
+  --primary-400: #52c7eb;
+  --primary-500: #1bb5e4;
+  --primary-600: #1798c0;
+  --primary-700: #127b9b;
+  --primary-800: #0e5e77;
+  --primary-900: #093e4e;
+  --secondary-color: #6c88d4;
+  --accent-color: #d35e3b;
+  --positive-color: #22C55E;
+  --negative-color: #EF4444;
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 194 79% 53%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 224 55% 96%;
+  --secondary-foreground: 224 55% 20%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 14 40% 96%;
+  --accent-foreground: 14 63% 20%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 194 79% 53%;
+}
+
+/* Tailwind 基础重置 */
+*, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; }
+ h2 { font-size: inherit; font-weight: inherit; }
+button { font-family: inherit; font-size: 100%; margin: 0; padding: 0; }
+button { background-color: transparent; background-image: none; }
+ svg { display: block; max-width: 100%; height: auto; }
+
+/* 常用工具类 */
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.grid { display: grid; }
+
+.flex-col { flex-direction: column; }
+.flex-row { flex-direction: row; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-start { justify-content: flex-start; }
+
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+
+.p-0 { padding: 0; }
+.p-2 { padding: 0.5rem; }
+.p-4 { padding: 1rem; }
+.p-6 { padding: 1.5rem; }
+.px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+.w-full { width: 100%; }
+.h-9 { height: 2.25rem; }
+.min-h-screen { min-height: 100vh; }
+.shrink-0 { flex-shrink: 0; }
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-base { font-size: 1rem; line-height: 1.5rem; }
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+.text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+.text-center { text-align: center; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+.rounded-md { border-radius: 0.375rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-full { border-radius: 9999px; }
+
+.border { border-width: 1px; }
+
+.shadow-xs { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+
+.opacity-50 { opacity: 0.5; }
+.transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+
+.whitespace-nowrap { white-space: nowrap; }
+.leading-none { line-height: 1; }
+.outline-none { outline: 2px solid transparent; outline-offset: 2px; }
+
+/* HSL 颜色工具类 */
+.bg-background { background-color: hsl(var(--background)); }
+.bg-card { background-color: hsl(var(--card)); }
+.bg-muted { background-color: hsl(var(--muted)); }
+.bg-accent { background-color: hsl(var(--accent)); }
+.text-muted-foreground { color: hsl(var(--muted-foreground)); }
+.text-card-foreground { color: hsl(var(--card-foreground)); }
+.border-input { border-color: hsl(var(--input)); }
+
+/* 按钮变体样式 */
+[data-variant="primary"] {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+[data-variant="outline"] {
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--background));
+}
+
+  </style>
+
+</head>
+<body>
+<div style="--base-unit:4px;--spacing-xs:4px;--spacing-sm:8px;--spacing-md:16px;--spacing-lg:32px;--spacing-xl:64px;--gap-card:16px;--padding-card:16px;--padding-section:32px;--line-height-body:1.50;--font-scale:1.333;--font-size-xs:9.00px;--font-size-sm:12.00px;--font-size-base:16px;--font-size-lg:21.33px;--font-size-xl:28.43px;--font-size-2xl:37.90px;--font-size-3xl:50.52px;--font-weight-normal:400;--font-weight-medium:500;--font-weight-semibold:600;--font-weight-bold:700;--radius-sm:3px;--radius-md:6px;--radius-lg:12px;--radius-full:9999px;--shadow-sm:0 1px 2px rgba(0,0,0,0.05);--shadow-md:0 4px 6px rgba(0,0,0,0.10);--shadow-lg:0 10px 15px rgba(0,0,0,0.12);--pattern-type:wave;--pattern-dots:radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);--pattern-dots-size:20px 20px;--pattern-grid:linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);--pattern-grid-size:24px 24px;--gradient-fade:linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity:0.02;--primary-color:#28b9e6;--primary-50:#f1fbfd;--primary-100:#dff5fb;--primary-200:#bfeaf7;--primary-300:#92dcf2;--primary-400:#52c7eb;--primary-500:#1bb5e4;--primary-600:#1798c0;--primary-700:#127b9b;--primary-800:#0e5e77;--primary-900:#093e4e;--secondary-color:#6c88d4;--accent-color:#d35e3b;--positive-color:#22C55E;--negative-color:#EF4444;--background:0 0% 100%;--foreground:222 47% 11%;--card:0 0% 100%;--card-foreground:222 47% 11%;--popover:0 0% 100%;--popover-foreground:222 47% 11%;--primary:194 79% 53%;--primary-foreground:0 0% 100%;--secondary:224 55% 96%;--secondary-foreground:224 55% 20%;--muted:210 40% 96%;--muted-foreground:215 16% 47%;--accent:14 40% 96%;--accent-foreground:14 63% 20%;--destructive:0 84% 60%;--destructive-foreground:0 0% 100%;--border:214 32% 91%;--input:214 32% 91%;--ring:194 79% 53%"><div class="flex flex-row justify-start items-stretch gap-0" style="gap:None" id="layout"><div class="flex flex-col gap-4 items-stretch w-64 min-h-screen bg-slate-900 text-white p-4 shrink-0" direction="col" id="sidebar"><h2 class="text-2xl font-bold" name="Admin" id="logo"><p class="text-base">Admin</p></h2><div class="flex flex-col justify-start items-stretch gap-1 w-full" id="menu"><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:SM" id="nav1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard h-5 w-5" aria-hidden="true" id="i1"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg><p class="text-base" name="仪表盘" id="t1"><p class="text-base">仪表盘</p></p></div><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:SM" id="nav2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users h-5 w-5" aria-hidden="true" id="i2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg><p class="text-base" name="用户管理" id="t2"><p class="text-base">用户管理</p></p></div><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:SM" id="nav3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings h-5 w-5" aria-hidden="true" id="i3"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg><p class="text-base" name="系统设置" id="t3"><p class="text-base">系统设置</p></p></div></div></div><section class="py-12 md:py-16 lg:py-20 px-4 md:px-6 !p-0 flex-1 flex flex-col" id="main"><div class="flex flex-row items-center gap-0 justify-between text-center" id="topbar"><h2 class="text-2xl font-bold" name="仪表盘概览" id="title"><p class="text-base">仪表盘概览</p></h2><div class="flex flex-row justify-start items-stretch gap-0" style="gap:SM" id="actions"><button data-slot="button" data-variant="outline" data-size="default" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[&gt;svg]:px-3 text-base" id="refresh" name="刷新"><p class="text-base">刷新</p></button><button data-slot="button" data-variant="primary" data-size="default" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-9 px-4 py-2 has-[&gt;svg]:px-3 text-base" id="add" name="primary"><p class="text-base">新增</p></button></div></div><div class="grid grid-cols-4 gap-4" style="gap:LG" id="stats"><div class="rounded-lg border bg-card p-6 shadow-sm text-base"><div class="flex items-start justify-between"><div class="space-y-1" name="12,345" id="s1"><p class="text-sm font-medium text-muted-foreground">总用户</p><div class="flex items-baseline gap-2"><div class="flex items-baseline gap-1"><span class="text-3xl font-bold tracking-tight">12,345</span></div></div></div><div class="rounded-full bg-muted p-2.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users h-5 w-5" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg></div></div></div><div class="rounded-lg border bg-card p-6 shadow-sm text-base"><div class="flex items-start justify-between"><div class="space-y-1" name="8,901" id="s2"><p class="text-sm font-medium text-muted-foreground">活跃用户</p><div class="flex items-baseline gap-2"><div class="flex items-baseline gap-1"><span class="text-3xl font-bold tracking-tight">8,901</span></div></div></div><div class="rounded-full bg-muted p-2.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity h-5 w-5" aria-hidden="true"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg></div></div></div><div class="rounded-lg border bg-card p-6 shadow-sm text-base"><div class="flex items-start justify-between"><div class="space-y-1" name="+234" id="s3"><p class="text-sm font-medium text-muted-foreground">新增用户</p><div class="flex items-baseline gap-2"><div class="flex items-baseline gap-1"><span class="text-3xl font-bold tracking-tight">+234</span></div></div></div><div class="rounded-full bg-muted p-2.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-plus h-5 w-5" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" x2="19" y1="8" y2="14"></line><line x1="22" x2="16" y1="11" y2="11"></line></svg></div></div></div><div class="rounded-lg border bg-card p-6 shadow-sm text-base"><div class="flex items-start justify-between"><div class="space-y-1" name="12.5%" id="s4"><p class="text-sm font-medium text-muted-foreground">转化率</p><div class="flex items-baseline gap-2"><div class="flex items-baseline gap-1"><span class="text-3xl font-bold tracking-tight">12.5%</span></div></div></div><div class="rounded-full bg-muted p-2.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up h-5 w-5" aria-hidden="true"><path d="M16 7h6v6"></path><path d="m22 7-8.5 8.5-5-5L2 17"></path></svg></div></div></div></div><div class="grid grid-cols-2 gap-4" style="gap:LG" id="content"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" name="default" id="chart"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2">趋势图表</div></div><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><p class="text-base" name="图表区域" id="placeholder"><p class="text-base">图表区域</p></p></div></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" name="default" id="recent"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2">最近活动</div></div><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><ul class="w-full" id="activities"><p class="text-base" name="用户 A 完成注册" id="a1"><p class="text-base">用户 A 完成注册</p></p><p class="text-base" name="用户 B 更新资料" id="a2"><p class="text-base">用户 B 更新资料</p></p><p class="text-base" name="用户 C 提交订单" id="a3"><p class="text-base">用户 C 提交订单</p></p></ul></div></div></div></div></section></div></div>
+
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>技术路线图</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'hsl(var(--background))',
+            foreground: 'hsl(var(--foreground))',
+            card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+            popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
+            primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+            secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+            muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+            accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+            destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+            border: 'hsl(var(--border))',
+            input: 'hsl(var(--input))',
+            ring: 'hsl(var(--ring))',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root {
+      --base-unit: 8px;--spacing-xs: 8px;--spacing-sm: 16px;--spacing-md: 32px;--spacing-lg: 64px;--spacing-xl: 128px;--gap-card: 32px;--padding-card: 32px;--padding-section: 64px;--line-height-body: 1.50;--font-scale: 1.333;--font-size-xs: 9.00px;--font-size-sm: 12.00px;--font-size-base: 16px;--font-size-lg: 21.33px;--font-size-xl: 28.43px;--font-size-2xl: 37.90px;--font-size-3xl: 50.52px;--font-weight-normal: 400;--font-weight-medium: 500;--font-weight-semibold: 600;--font-weight-bold: 700;--radius-sm: 2px;--radius-md: 4px;--radius-lg: 8px;--radius-full: 9999px;--shadow-sm: 0 1px 2px rgba(0,0,0,0.05);--shadow-md: 0 4px 6px rgba(0,0,0,0.10);--shadow-lg: 0 10px 15px rgba(0,0,0,0.12);--pattern-type: wave;--pattern-dots: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);--pattern-dots-size: 20px 20px;--pattern-grid: linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);--pattern-grid-size: 24px 24px;--gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity: 0.02;--primary-color: #e32f8c;--primary-50: #fdf1f8;--primary-100: #fbdfee;--primary-200: #f7c0dc;--primary-300: #f193c3;--primary-400: #e854a1;--primary-500: #e11e83;--primary-600: #bd196e;--primary-700: #991459;--primary-800: #751044;--primary-900: #4d0a2c;--secondary-color: #d47173;--accent-color: #41d187;--positive-color: #22C55E;--negative-color: #EF4444;--background: 0 0% 100%;--foreground: 222 47% 11%;--card: 0 0% 100%;--card-foreground: 222 47% 11%;--popover: 0 0% 100%;--popover-foreground: 222 47% 11%;--primary: 329 77% 54%;--primary-foreground: 0 0% 100%;--secondary: 359 54% 96%;--secondary-foreground: 359 54% 20%;--muted: 210 40% 96%;--muted-foreground: 215 16% 47%;--accent: 149 40% 96%;--accent-foreground: 149 61% 20%;--destructive: 0 84% 60%;--destructive-foreground: 0 0% 100%;--border: 214 32% 91%;--input: 214 32% 91%;--ring: 329 77% 54%;
+    }
+    * { border-color: hsl(var(--border)); }
+    body { font-family: system-ui, -apple-system, sans-serif; }
+:root {
+  --base-unit: 8px;
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 32px;
+  --spacing-lg: 64px;
+  --spacing-xl: 128px;
+  --gap-card: 32px;
+  --padding-card: 32px;
+  --padding-section: 64px;
+  --line-height-body: 1.50;
+  --font-scale: 1.333;
+  --font-size-xs: 9.00px;
+  --font-size-sm: 12.00px;
+  --font-size-base: 16px;
+  --font-size-lg: 21.33px;
+  --font-size-xl: 28.43px;
+  --font-size-2xl: 37.90px;
+  --font-size-3xl: 50.52px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.10);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.12);
+  --pattern-type: wave;
+  --pattern-dots: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);
+  --pattern-dots-size: 20px 20px;
+  --pattern-grid: linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+  --pattern-grid-size: 24px 24px;
+  --gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);
+  --noise-opacity: 0.02;
+  --primary-color: #e32f8c;
+  --primary-50: #fdf1f8;
+  --primary-100: #fbdfee;
+  --primary-200: #f7c0dc;
+  --primary-300: #f193c3;
+  --primary-400: #e854a1;
+  --primary-500: #e11e83;
+  --primary-600: #bd196e;
+  --primary-700: #991459;
+  --primary-800: #751044;
+  --primary-900: #4d0a2c;
+  --secondary-color: #d47173;
+  --accent-color: #41d187;
+  --positive-color: #22C55E;
+  --negative-color: #EF4444;
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 329 77% 54%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 359 54% 96%;
+  --secondary-foreground: 359 54% 20%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 149 40% 96%;
+  --accent-foreground: 149 61% 20%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 329 77% 54%;
+}
+
+/* Tailwind 基础重置 */
+*, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; }
+ h2, h3 { font-size: inherit; font-weight: inherit; }
+a { color: inherit; text-decoration: inherit; }
+ svg { display: block; max-width: 100%; height: auto; }
+
+/* 常用工具类 */
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.grid { display: grid; }
+
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-center { justify-content: center; }
+.justify-start { justify-content: flex-start; }
+
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+
+.p-0 { padding: 0; }
+
+.px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.w-full { width: 100%; }
+.min-h-screen { min-height: 100vh; }
+.max-w-sm { max-width: 24rem; }
+.max-w-2xl { max-width: 42rem; }
+.shrink-0 { flex-shrink: 0; }
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-base { font-size: 1rem; line-height: 1.5rem; }
+.text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+.rounded-full { border-radius: 9999px; }
+
+.border { border-width: 1px; }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+
+.overflow-hidden { overflow: hidden; }
+.transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+
+.whitespace-nowrap { white-space: nowrap; }
+.leading-none { line-height: 1; }
+
+/* HSL 颜色工具类 */
+.bg-background { background-color: hsl(var(--background)); }
+.bg-primary { background-color: hsl(var(--primary)); }
+.text-muted-foreground { color: hsl(var(--muted-foreground)); }
+.text-primary-foreground { color: hsl(var(--primary-foreground)); }
+.text-secondary-foreground { color: hsl(var(--secondary-foreground)); }
+
+/* 按钮变体样式 */
+
+  </style>
+
+</head>
+<body>
+<div style="--base-unit:8px;--spacing-xs:8px;--spacing-sm:16px;--spacing-md:32px;--spacing-lg:64px;--spacing-xl:128px;--gap-card:32px;--padding-card:32px;--padding-section:64px;--line-height-body:1.50;--font-scale:1.333;--font-size-xs:9.00px;--font-size-sm:12.00px;--font-size-base:16px;--font-size-lg:21.33px;--font-size-xl:28.43px;--font-size-2xl:37.90px;--font-size-3xl:50.52px;--font-weight-normal:400;--font-weight-medium:500;--font-weight-semibold:600;--font-weight-bold:700;--radius-sm:2px;--radius-md:4px;--radius-lg:8px;--radius-full:9999px;--shadow-sm:0 1px 2px rgba(0,0,0,0.05);--shadow-md:0 4px 6px rgba(0,0,0,0.10);--shadow-lg:0 10px 15px rgba(0,0,0,0.12);--pattern-type:wave;--pattern-dots:radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);--pattern-dots-size:20px 20px;--pattern-grid:linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);--pattern-grid-size:24px 24px;--gradient-fade:linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity:0.02;--primary-color:#e32f8c;--primary-50:#fdf1f8;--primary-100:#fbdfee;--primary-200:#f7c0dc;--primary-300:#f193c3;--primary-400:#e854a1;--primary-500:#e11e83;--primary-600:#bd196e;--primary-700:#991459;--primary-800:#751044;--primary-900:#4d0a2c;--secondary-color:#d47173;--accent-color:#41d187;--positive-color:#22C55E;--negative-color:#EF4444;--background:0 0% 100%;--foreground:222 47% 11%;--card:0 0% 100%;--card-foreground:222 47% 11%;--popover:0 0% 100%;--popover-foreground:222 47% 11%;--primary:329 77% 54%;--primary-foreground:0 0% 100%;--secondary:359 54% 96%;--secondary-foreground:359 54% 20%;--muted:210 40% 96%;--muted-foreground:215 16% 47%;--accent:149 40% 96%;--accent-foreground:149 61% 20%;--destructive:0 84% 60%;--destructive-foreground:0 0% 100%;--border:214 32% 91%;--input:214 32% 91%;--ring:329 77% 54%"><div class="w-full p-0 min-h-screen bg-background" id="main"><section class="py-12 md:py-16 lg:py-20 px-4 md:px-6 text-center" id="header"><span data-slot="badge" class="inline-flex items-center justify-center rounded-full border px-2 py-0.5 font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-primary text-primary-foreground [a&amp;]:hover:bg-primary/90 text-sm" name="default" style="font-size:12.00px" id="phase"><p class="text-base">2024 Roadmap</p></span><h2 class="font-bold text-xl" name="技术演进路线图" style="font-size:28.43px" id="title"><p class="text-base">技术演进路线图</p></h2><p class="text-base" name="从 MVP 到生产级产品的完整规划" id="subtitle"><p class="text-base">从 MVP 到生产级产品的完整规划</p></p></section><section class="py-12 md:py-16 lg:py-20 px-4 md:px-6 !p-0 flex-1 flex flex-col" id="timeline"><ol aria-label="Timeline" class="flex flex-col gap-6 relative w-full max-w-2xl mx-auto py-8" id="phases"><li class="relative w-full mb-8 last:mb-0" name="default" variant="default"><div class="grid grid-cols-[1fr_auto_1fr] gap-4 items-start"><div class="flex flex-col justify-start pt-1"><time class="text-sm font-medium tracking-tight text-muted-foreground text-right pr-4"></time></div><div class="flex flex-col items-center"><div class="relative z-10"><div class="relative flex items-center justify-center rounded-full ring-8 ring-background shadow-sm h-10 w-10 bg-primary text-primary-foreground"><div class="flex items-center justify-center h-5 w-5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-box h-5 w-5" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg></div></div></div><div class="h-16 w-0.5 bg-border mt-2"></div></div><div class="flex flex-col gap-2 pl-2"><div class="flex items-center gap-4"><h3 class="font-semibold leading-none tracking-tight text-secondary-foreground">Q1 - 基础架构</h3></div><p class="max-w-sm text-sm text-muted-foreground"></p></div></div></li><li class="relative w-full mb-8 last:mb-0" name="default" variant="default"><div class="grid grid-cols-[1fr_auto_1fr] gap-4 items-start"><div class="flex flex-col justify-start pt-1"><time class="text-sm font-medium tracking-tight text-muted-foreground text-right pr-4"></time></div><div class="flex flex-col items-center"><div class="relative z-10"><div class="relative flex items-center justify-center rounded-full ring-8 ring-background shadow-sm h-10 w-10 bg-primary text-primary-foreground"><div class="flex items-center justify-center h-5 w-5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-smartphone h-5 w-5" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect><path d="M12 18h.01"></path></svg></div></div></div><div class="h-16 w-0.5 bg-border mt-2"></div></div><div class="flex flex-col gap-2 pl-2"><div class="flex items-center gap-4"><h3 class="font-semibold leading-none tracking-tight text-secondary-foreground">Q2 - 多端支持</h3></div><p class="max-w-sm text-sm text-muted-foreground"></p></div></div></li><li class="relative w-full mb-8 last:mb-0" name="default" variant="default"><div class="grid grid-cols-[1fr_auto_1fr] gap-4 items-start"><div class="flex flex-col justify-start pt-1"><time class="text-sm font-medium tracking-tight text-muted-foreground text-right pr-4"></time></div><div class="flex flex-col items-center"><div class="relative z-10"><div class="relative flex items-center justify-center rounded-full ring-8 ring-background shadow-sm h-10 w-10 bg-primary text-primary-foreground"><div class="flex items-center justify-center h-5 w-5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap h-5 w-5" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg></div></div></div><div class="h-16 w-0.5 bg-border mt-2"></div></div><div class="flex flex-col gap-2 pl-2"><div class="flex items-center gap-4"><h3 class="font-semibold leading-none tracking-tight text-secondary-foreground">Q3 - AI 集成</h3></div><p class="max-w-sm text-sm text-muted-foreground"></p></div></div></li><li class="relative w-full mb-8 last:mb-0" name="default" variant="default"><div class="grid grid-cols-[1fr_auto_1fr] gap-4 items-start"><div class="flex flex-col justify-start pt-1"><time class="text-sm font-medium tracking-tight text-muted-foreground text-right pr-4"></time></div><div class="flex flex-col items-center"><div class="relative z-10"><div class="relative flex items-center justify-center rounded-full ring-8 ring-background shadow-sm h-10 w-10 bg-primary text-primary-foreground"><div class="flex items-center justify-center h-5 w-5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe h-5 w-5" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg></div></div></div></div><div class="flex flex-col gap-2 pl-2"><div class="flex items-center gap-4"><h3 class="font-semibold leading-none tracking-tight text-secondary-foreground">Q4 - 生态完善</h3></div><p class="max-w-sm text-sm text-muted-foreground"></p></div></div></li></ol></section></div></div>
+
+</body>
+</html>

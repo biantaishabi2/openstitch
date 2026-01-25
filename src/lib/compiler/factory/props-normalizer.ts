@@ -224,6 +224,9 @@ export function normalizeProps(
       case 'text':
       case 'label':
       case 'placeholder':
+        result[key] = value;
+        break;
+
       case 'icon':
         // Icon 组件需要 name prop，其他组件需要 icon prop
         // 同时设置两者，让组件自己选择使用
