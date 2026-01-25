@@ -326,7 +326,7 @@ describe('Type Mapping and Context (TC-FACTORY-05)', () => {
     expect(headingProps.as).toBe('h2');
 
     const formProps = getSpecialProps('Form');
-    expect(formProps.direction).toBe('column');
+    expect(formProps.direction).toBe('col');
   });
 
   it('should identify composite components', () => {

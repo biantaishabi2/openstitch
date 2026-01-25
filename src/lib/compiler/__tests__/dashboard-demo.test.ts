@@ -46,12 +46,12 @@ describe('Dashboard Demo', () => {
     // 验证
     expect(result.ast.children.length).toBeGreaterThan(0);
     expect(result.ssr.html).toContain('<!DOCTYPE html>');
-    expect(result.ssr.html).toContain('用户管理仪表盘');
-    expect(result.ssr.html).toContain('用户总数');
-    expect(result.ssr.html).toContain('活跃用户');
-    expect(result.ssr.html).toContain('新增用户');
-    expect(result.ssr.html).toContain('新增用户');
-    expect(result.ssr.html).toContain('DSL 编译');
+    expect(result.ssr.html).toContain('仪表盘');
+    expect(result.ssr.html).toContain('总用户');
+    expect(result.ssr.html).toContain('总收入');
+    expect(result.ssr.html).toContain('订单数');
+    expect(result.ssr.html).toContain('转化率');
+    expect(result.ssr.html).toContain('Stitch Admin');
     expect(result.ssr.html).not.toContain('[object Object]');
   });
 });

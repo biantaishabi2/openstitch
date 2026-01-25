@@ -4,18 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stitch Dashboard Demo</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'hsl(var(--background))',
+            foreground: 'hsl(var(--foreground))',
+            card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+            popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
+            primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+            secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+            muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+            accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+            destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+            border: 'hsl(var(--border))',
+            input: 'hsl(var(--input))',
+            ring: 'hsl(var(--ring))',
+          },
+        },
+      },
+    }
+  </script>
   <style>
-:root { --base-unit: 8px;--spacing-xs: 4px;--spacing-sm: 8px;--spacing-md: 16px;--spacing-lg: 24px;--spacing-xl: 32px;--gap-card: 16px;--padding-card: 16px;--padding-section: 24px;--line-height-body: 1.50;--font-scale: 1.125;--font-size-xs: 12.64px;--font-size-sm: 14.22px;--font-size-base: 16px;--font-size-lg: 18.00px;--font-size-xl: 20.25px;--font-size-2xl: 22.78px;--font-size-3xl: 25.63px;--font-weight-normal: 400;--font-weight-medium: 500;--font-weight-semibold: 600;--font-weight-bold: 700;--radius-sm: 4px;--radius-md: 6px;--radius-lg: 8px;--radius-full: 9999px;--shadow-sm: 0 1px 2px rgba(0,0,0,0.05);--shadow-md: 0 4px 6px rgba(0,0,0,0.10);--shadow-lg: 0 10px 15px rgba(0,0,0,0.12);--pattern-dots: radial-gradient(circle, rgba(0,0,0,0) 1px, transparent 1px);--pattern-dots-size: 20px 20px;--pattern-grid: linear-gradient(rgba(0,0,0,0) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0) 1px, transparent 1px);--pattern-grid-size: 24px 24px;--gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity: 0.00;--primary-color: #3c7af6;--primary-50: #f0f5fe;--primary-100: #dde8fd;--primary-200: #bbd0fc;--primary-300: #8aaff9;--primary-400: #4681f6;--primary-500: #0b59f4;--primary-600: #0a4bcd;--primary-700: #083ca6;--primary-800: #062e7f;--primary-900: #041e53;--secondary-color: #9282e3;--accent-color: #e3b24f;--background: #ffffff;--foreground: #0f172a;--muted: #f1f5f9;--muted-foreground: #64748b;--border: #e2e8f0; }
+    :root {
+      --base-unit: 8px;--spacing-xs: 4px;--spacing-sm: 9px;--spacing-md: 17px;--spacing-lg: 26px;--spacing-xl: 35px;--gap-card: 17px;--padding-card: 17px;--padding-section: 26px;--line-height-body: 1.50;--font-scale: 1.125;--font-size-xs: 12.64px;--font-size-sm: 14.22px;--font-size-base: 16px;--font-size-lg: 18.00px;--font-size-xl: 20.25px;--font-size-2xl: 22.78px;--font-size-3xl: 25.63px;--font-weight-normal: 400;--font-weight-medium: 500;--font-weight-semibold: 600;--font-weight-bold: 700;--radius-sm: 4px;--radius-md: 6px;--radius-lg: 8px;--radius-full: 9999px;--shadow-sm: 0 1px 2px rgba(0,0,0,0.05);--shadow-md: 0 4px 6px rgba(0,0,0,0.10);--shadow-lg: 0 10px 15px rgba(0,0,0,0.12);--pattern-dots: radial-gradient(circle, rgba(0,0,0,0) 1px, transparent 1px);--pattern-dots-size: 20px 20px;--pattern-grid: linear-gradient(rgba(0,0,0,0) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0) 1px, transparent 1px);--pattern-grid-size: 24px 24px;--gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity: 0.00;--primary-color: #3c77f6;--primary-50: #f0f5fe;--primary-100: #dde7fd;--primary-200: #bbcffc;--primary-300: #8aadf9;--primary-400: #467ef6;--primary-500: #0b55f4;--primary-600: #0a47cd;--primary-700: #083aa6;--primary-800: #062c7f;--primary-900: #041d53;--secondary-color: #9482e3;--accent-color: #e3b44f;--background: 0 0% 100%;--foreground: 222 47% 11%;--card: 0 0% 100%;--card-foreground: 222 47% 11%;--popover: 0 0% 100%;--popover-foreground: 222 47% 11%;--primary: 221 91% 60%;--primary-foreground: 0 0% 100%;--secondary: 251 64% 96%;--secondary-foreground: 251 64% 20%;--muted: 210 40% 96%;--muted-foreground: 215 16% 47%;--accent: 41 40% 96%;--accent-foreground: 41 73% 20%;--destructive: 0 84% 60%;--destructive-foreground: 0 0% 100%;--border: 214 32% 91%;--input: 214 32% 91%;--ring: 221 91% 60%;
+    }
+    * { border-color: hsl(var(--border)); }
+    body { font-family: system-ui, -apple-system, sans-serif; }
 :root {
   --base-unit: 8px;
   --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  --gap-card: 16px;
-  --padding-card: 16px;
-  --padding-section: 24px;
+  --spacing-sm: 9px;
+  --spacing-md: 17px;
+  --spacing-lg: 26px;
+  --spacing-xl: 35px;
+  --gap-card: 17px;
+  --padding-card: 17px;
+  --padding-section: 26px;
   --line-height-body: 1.50;
   --font-scale: 1.125;
   --font-size-xs: 12.64px;
@@ -42,68 +70,136 @@
   --pattern-grid-size: 24px 24px;
   --gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);
   --noise-opacity: 0.00;
-  --primary-color: #3c7af6;
+  --primary-color: #3c77f6;
   --primary-50: #f0f5fe;
-  --primary-100: #dde8fd;
-  --primary-200: #bbd0fc;
-  --primary-300: #8aaff9;
-  --primary-400: #4681f6;
-  --primary-500: #0b59f4;
-  --primary-600: #0a4bcd;
-  --primary-700: #083ca6;
-  --primary-800: #062e7f;
-  --primary-900: #041e53;
-  --secondary-color: #9282e3;
-  --accent-color: #e3b24f;
-  --background: #ffffff;
-  --foreground: #0f172a;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --border: #e2e8f0;
+  --primary-100: #dde7fd;
+  --primary-200: #bbcffc;
+  --primary-300: #8aadf9;
+  --primary-400: #467ef6;
+  --primary-500: #0b55f4;
+  --primary-600: #0a47cd;
+  --primary-700: #083aa6;
+  --primary-800: #062c7f;
+  --primary-900: #041d53;
+  --secondary-color: #9482e3;
+  --accent-color: #e3b44f;
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 221 91% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 251 64% 96%;
+  --secondary-foreground: 251 64% 20%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 41 40% 96%;
+  --accent-foreground: 41 73% 20%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 221 91% 60%;
 }
 
 /* Tailwind 基础重置 */
 *, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; }
-button { font-family: inherit; font-size: 100%; margin: 0; padding: 0; }
+ h2 { font-size: inherit; font-weight: inherit; }
+a { color: inherit; text-decoration: inherit; }
+button, input { font-family: inherit; font-size: 100%; margin: 0; padding: 0; }
 button { background-color: transparent; background-image: none; }
  svg { display: block; max-width: 100%; height: auto; }
 
 /* 常用工具类 */
 .flex { display: flex; }
+.inline-flex { display: inline-flex; }
 .grid { display: grid; }
 
 .flex-col { flex-direction: column; }
+.flex-row { flex-direction: row; }
 .items-center { align-items: center; }
 .items-start { align-items: flex-start; }
 .justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-start { justify-content: flex-start; }
+
+.gap-1 { gap: 0.25rem; }
 .gap-2 { gap: 0.5rem; }
+.gap-4 { gap: 1rem; }
 .gap-6 { gap: 1.5rem; }
 
+.p-0 { padding: 0; }
+.p-4 { padding: 1rem; }
+
+.px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+.px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+
+.w-4 { width: 1rem; }
 .w-full { width: 100%; }
+.h-4 { height: 1rem; }
+.h-9 { height: 2.25rem; }
 .min-h-screen { min-height: 100vh; }
+.shrink-0 { flex-shrink: 0; }
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
 .text-base { font-size: 1rem; line-height: 1.5rem; }
-.text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+
+.text-left { text-align: left; }
+.text-center { text-align: center; }
 .font-medium { font-weight: 500; }
 .font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
 .rounded-md { border-radius: 0.375rem; }
 .rounded-xl { border-radius: 0.75rem; }
+.rounded-full { border-radius: 9999px; }
 
 .border { border-width: 1px; }
+.border-0 { border-width: 0; }
+
+.shadow-xs { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
 
 .opacity-50 { opacity: 0.5; }
+.cursor-not-allowed { cursor: not-allowed; }
+
+.overflow-hidden { overflow: hidden; }
+.transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+
+.whitespace-nowrap { white-space: nowrap; }
+.leading-none { line-height: 1; }
+.outline-none { outline: 2px solid transparent; outline-offset: 2px; }
 
 /* HSL 颜色工具类 */
-.bg-background { background-color: hsl(var(--background)); }
 .bg-card { background-color: hsl(var(--card)); }
+.bg-primary { background-color: hsl(var(--primary)); }
+.bg-secondary { background-color: hsl(var(--secondary)); }
+.bg-muted { background-color: hsl(var(--muted)); }
 .bg-accent { background-color: hsl(var(--accent)); }
+
+.text-foreground { color: hsl(var(--foreground)); }
+.text-muted-foreground { color: hsl(var(--muted-foreground)); }
+.text-primary-foreground { color: hsl(var(--primary-foreground)); }
+.text-secondary-foreground { color: hsl(var(--secondary-foreground)); }
 .text-card-foreground { color: hsl(var(--card-foreground)); }
 .border-input { border-color: hsl(var(--input)); }
+
+/* 按钮变体样式 */
+[data-variant="ghost"] {
+  background-color: transparent;
+}
 
   </style>
 
 </head>
 <body>
-<div style="--base-unit:8px;--spacing-xs:4px;--spacing-sm:8px;--spacing-md:16px;--spacing-lg:24px;--spacing-xl:32px;--gap-card:16px;--padding-card:16px;--padding-section:24px;--line-height-body:1.50;--font-scale:1.125;--font-size-xs:12.64px;--font-size-sm:14.22px;--font-size-base:16px;--font-size-lg:18.00px;--font-size-xl:20.25px;--font-size-2xl:22.78px;--font-size-3xl:25.63px;--font-weight-normal:400;--font-weight-medium:500;--font-weight-semibold:600;--font-weight-bold:700;--radius-sm:4px;--radius-md:6px;--radius-lg:8px;--radius-full:9999px;--shadow-sm:0 1px 2px rgba(0,0,0,0.05);--shadow-md:0 4px 6px rgba(0,0,0,0.10);--shadow-lg:0 10px 15px rgba(0,0,0,0.12);--pattern-dots:radial-gradient(circle, rgba(0,0,0,0) 1px, transparent 1px);--pattern-dots-size:20px 20px;--pattern-grid:linear-gradient(rgba(0,0,0,0) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0) 1px, transparent 1px);--pattern-grid-size:24px 24px;--gradient-fade:linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity:0.00;--primary-color:#3c7af6;--primary-50:#f0f5fe;--primary-100:#dde8fd;--primary-200:#bbd0fc;--primary-300:#8aaff9;--primary-400:#4681f6;--primary-500:#0b59f4;--primary-600:#0a4bcd;--primary-700:#083ca6;--primary-800:#062e7f;--primary-900:#041e53;--secondary-color:#9282e3;--accent-color:#e3b24f;--background:#ffffff;--foreground:#0f172a;--muted:#f1f5f9;--muted-foreground:#64748b;--border:#e2e8f0"><div class="w-full bg-background min-h-screen p-0"><section class="py-12 md:py-16 lg:py-20" id="dashboard"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="header"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-4 h-4" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>用户管理仪表盘</div></div><div data-slot="card-content" class="px-6"><p class="text-base">Stitch UI 编译器生成的示例页面</p></div></div></section><section class="py-12 md:py-16 lg:py-20" id="stats"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="total_users"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-4 h-4" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>用户总数</div></div><div data-slot="card-content" class="px-6"><p class="text-base">12,345 位用户</p></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="active_users"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity w-4 h-4" aria-hidden="true"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>活跃用户</div></div><div data-slot="card-content" class="px-6"><p class="text-base">8,901 位在线</p></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="new_users"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-plus w-4 h-4" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" x2="19" y1="8" y2="14"></line><line x1="22" x2="16" y1="11" y2="11"></line></svg>新增用户</div></div><div data-slot="card-content" class="px-6"><p class="text-base">+234 本周新增</p></div></div></section><section class="py-12 md:py-16 lg:py-20" id="actions"><button data-slot="button" data-variant="primary" data-size="default" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-9 px-4 py-2 has-[&gt;svg]:px-3 text-lg" style="font-size:18.00px" id="button_1">新增用户</button><button data-slot="button" data-variant="outline" data-size="default" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[&gt;svg]:px-3 text-base" id="button_2">导出数据</button><button data-slot="button" data-variant="ghost" data-size="default" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 h-9 px-4 py-2 has-[&gt;svg]:px-3 text-base" id="button_3">刷新</button></section><section class="py-12 md:py-16 lg:py-20" id="features"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="feature1"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code w-4 h-4" aria-hidden="true"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg>DSL 编译</div></div><div data-slot="card-content" class="px-6"><p class="text-base">将简洁的 DSL 语法编译为标准 HTML</p></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="feature2"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-palette w-4 h-4" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"></path><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>设计系统</div></div><div data-slot="card-content" class="px-6"><p class="text-base">自动生成一致的 Design Tokens</p></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="feature3"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layers w-4 h-4" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"></path><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"></path><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"></path></svg>组件工厂</div></div><div data-slot="card-content" class="px-6"><p class="text-base">70+ 预置组件，开箱即用</p></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="feature4"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-server w-4 h-4" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect><rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>SSR 渲染</div></div><div data-slot="card-content" class="px-6"><p class="text-base">服务端渲染，零 JavaScript 依赖</p></div></div></section></div></div>
+<div style="--base-unit:8px;--spacing-xs:4px;--spacing-sm:9px;--spacing-md:17px;--spacing-lg:26px;--spacing-xl:35px;--gap-card:17px;--padding-card:17px;--padding-section:26px;--line-height-body:1.50;--font-scale:1.125;--font-size-xs:12.64px;--font-size-sm:14.22px;--font-size-base:16px;--font-size-lg:18.00px;--font-size-xl:20.25px;--font-size-2xl:22.78px;--font-size-3xl:25.63px;--font-weight-normal:400;--font-weight-medium:500;--font-weight-semibold:600;--font-weight-bold:700;--radius-sm:4px;--radius-md:6px;--radius-lg:8px;--radius-full:9999px;--shadow-sm:0 1px 2px rgba(0,0,0,0.05);--shadow-md:0 4px 6px rgba(0,0,0,0.10);--shadow-lg:0 10px 15px rgba(0,0,0,0.12);--pattern-dots:radial-gradient(circle, rgba(0,0,0,0) 1px, transparent 1px);--pattern-dots-size:20px 20px;--pattern-grid:linear-gradient(rgba(0,0,0,0) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0) 1px, transparent 1px);--pattern-grid-size:24px 24px;--gradient-fade:linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity:0.00;--primary-color:#3c77f6;--primary-50:#f0f5fe;--primary-100:#dde7fd;--primary-200:#bbcffc;--primary-300:#8aadf9;--primary-400:#467ef6;--primary-500:#0b55f4;--primary-600:#0a47cd;--primary-700:#083aa6;--primary-800:#062c7f;--primary-900:#041d53;--secondary-color:#9482e3;--accent-color:#e3b44f;--background:0 0% 100%;--foreground:222 47% 11%;--card:0 0% 100%;--card-foreground:222 47% 11%;--popover:0 0% 100%;--popover-foreground:222 47% 11%;--primary:221 91% 60%;--primary-foreground:0 0% 100%;--secondary:251 64% 96%;--secondary-foreground:251 64% 20%;--muted:210 40% 96%;--muted-foreground:215 16% 47%;--accent:41 40% 96%;--accent-foreground:41 73% 20%;--destructive:0 84% 60%;--destructive-foreground:0 0% 100%;--border:214 32% 91%;--input:214 32% 91%;--ring:221 91% 60%"><div class="flex flex-row justify-start items-stretch gap-0" style="gap:0" id="layout"><div class="flex flex-col gap-4 items-stretch w-64 min-h-screen bg-slate-900 text-white p-4 shrink-0" direction="col" id="sidebar"><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:8px" id="logo"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard h-5 w-5" aria-hidden="true" icon="LayoutDashboard" id="logo_icon"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg><h2 class="text-2xl font-bold" name="Stitch Admin" id="brand"><p class="text-base">Stitch Admin</p></h2></div><p class="text-base" name="主菜单" id="menu_label"><p class="text-base">主菜单</p></p><div class="flex flex-col justify-start items-stretch gap-1 w-full" id="main_menu"><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:8px" id="nav_dashboard"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard h-5 w-5" aria-hidden="true" icon="LayoutDashboard" id="nav_icon_1"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg><p class="text-base" name="仪表盘" id="nav_text_1"><p class="text-base">仪表盘</p></p></div><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:8px" id="nav_users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users h-5 w-5" aria-hidden="true" icon="Users" id="nav_icon_2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg><p class="text-base" name="用户管理" id="nav_text_2"><p class="text-base">用户管理</p></p></div><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:8px" id="nav_products"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package h-5 w-5" aria-hidden="true" icon="Package" id="nav_icon_3"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg><p class="text-base" name="产品管理" id="nav_text_3"><p class="text-base">产品管理</p></p></div><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:8px" id="nav_orders"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart h-5 w-5" aria-hidden="true" icon="ShoppingCart" id="nav_icon_4"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg><p class="text-base" name="订单管理" id="nav_text_4"><p class="text-base">订单管理</p></p></div></div><p class="text-base" name="系统" id="system_label"><p class="text-base">系统</p></p><div class="flex flex-col justify-start items-stretch gap-1 w-full" id="system_menu"><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:8px" id="nav_settings"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings h-5 w-5" aria-hidden="true" icon="Settings" id="nav_icon_5"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg><p class="text-base" name="系统设置" id="nav_text_5"><p class="text-base">系统设置</p></p></div><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:8px" id="nav_help"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-question-mark h-5 w-5" aria-hidden="true" icon="HelpCircle" id="nav_icon_6"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><path d="M12 17h.01"></path></svg><p class="text-base" name="帮助中心" id="nav_text_6"><p class="text-base">帮助中心</p></p></div></div></div><section class="py-12 md:py-16 lg:py-20 px-4 md:px-6 !p-0 flex-1 flex flex-col" id="main_content"><div class="flex flex-row justify-between items-center gap-0 h-14 bg-white border-b border-gray-200 px-6 mb-6" id="topbar"><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:8px" id="header_left"><h2 class="text-2xl font-bold" name="仪表盘" id="page_title"><p class="text-base">仪表盘</p></h2><span data-slot="badge" class="inline-flex items-center justify-center rounded-full border px-2 py-0.5 font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-secondary text-secondary-foreground [a&amp;]:hover:bg-secondary/90 text-sm" name="实时" style="font-size:14.22px" id="realtime"><p class="text-base">实时</p></span></div><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:16px" id="header_right"><input data-slot="input" class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive text-base" placeholder="搜索..." id="search" name="搜索..."/><button data-slot="button" data-variant="ghost" data-size="default" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 h-9 px-4 py-2 has-[&gt;svg]:px-3 text-base" icon="Bell" id="notifications" name="Bell"></button></div></div><div class="grid grid-cols-4 gap-4" style="gap:24px" id="stats"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" name="default" id="stat_users"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-4 h-4" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>总用户</div></div><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:4px" id="trend_1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up h-5 w-5" aria-hidden="true" icon="TrendingUp" id="trend_icon_1"><path d="M16 7h6v6"></path><path d="m22 7-8.5 8.5-5-5L2 17"></path></svg><p class="text-base" name="+12.5%" id="trend_text_1"><p class="text-base">+12.5%</p></p></div></div></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" name="default" id="stat_revenue"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign w-4 h-4" aria-hidden="true"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>总收入</div></div><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:4px" id="trend_2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up h-5 w-5" aria-hidden="true" icon="TrendingUp" id="trend_icon_2"><path d="M16 7h6v6"></path><path d="m22 7-8.5 8.5-5-5L2 17"></path></svg><p class="text-base" name="+8.2%" id="trend_text_2"><p class="text-base">+8.2%</p></p></div></div></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" name="default" id="stat_orders"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart w-4 h-4" aria-hidden="true"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg>订单数</div></div><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:4px" id="trend_3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-down h-5 w-5" aria-hidden="true" icon="TrendingDown" id="trend_icon_3"><path d="M16 17h6v-6"></path><path d="m22 17-8.5-8.5-5 5L2 7"></path></svg><p class="text-base" name="-2.4%" id="trend_text_3"><p class="text-base">-2.4%</p></p></div></div></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" name="default" id="stat_conversion"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-target w-4 h-4" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>转化率</div></div><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><div class="flex flex-row justify-start items-stretch gap-0 text-center" style="gap:4px" id="trend_4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up h-5 w-5" aria-hidden="true" icon="TrendingUp" id="trend_icon_4"><path d="M16 7h6v6"></path><path d="m22 7-8.5 8.5-5-5L2 17"></path></svg><p class="text-base" name="+0.8%" id="trend_text_4"><p class="text-base">+0.8%</p></p></div></div></div></div></div><div class="grid grid-cols-2 gap-4" style="gap:24px" id="content_area"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" name="default" id="recent_orders"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2">最近订单</div></div><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><div data-slot="table-container" class="relative w-full overflow-x-auto"><div data-slot="table-container" class="relative w-full overflow-x-auto"><table data-slot="table" class="w-full caption-bottom text-sm" id="orders_table"><thead data-slot="table-header" class="[&amp;_tr]:border-b"><tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors"><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]"><p class="text-base" name="订单号" id="th1"><p class="text-base">订单号</p></p></th><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]"><p class="text-base" name="客户" id="th2"><p class="text-base">客户</p></p></th><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]"><p class="text-base" name="产品" id="th3"><p class="text-base">产品</p></p></th><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px]"><p class="text-base" name="状态" id="th4"><p class="text-base">状态</p></p></th></tr></thead><tbody data-slot="table-body" class="[&amp;_tr:last-child]:border-0"></tbody></table></div></div></div></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" name="default" id="hot_products"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2">热销产品</div></div><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><ul class="w-full" id="products_list"><div class="flex flex-row items-stretch gap-0 justify-between text-center" id="product_1"><p class="text-base" name="iPhone 15 Pro" id="p1_name"><p class="text-base">iPhone 15 Pro</p></p><p class="text-base" name="¥8,999" id="p1_price"><p class="text-base">¥8,999</p></p></div><div class="flex flex-row items-stretch gap-0 justify-between text-center" id="product_2"><p class="text-base" name="MacBook Pro" id="p2_name"><p class="text-base">MacBook Pro</p></p><p class="text-base" name="¥14,999" id="p2_price"><p class="text-base">¥14,999</p></p></div><div class="flex flex-row items-stretch gap-0 justify-between text-center" id="product_3"><p class="text-base" name="AirPods Pro" id="p3_name"><p class="text-base">AirPods Pro</p></p><p class="text-base" name="¥1,899" id="p3_price"><p class="text-base">¥1,899</p></p></div></ul></div></div></div></div></section></div></div>
 
 </body>
 </html>

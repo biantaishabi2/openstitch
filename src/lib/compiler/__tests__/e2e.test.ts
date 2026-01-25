@@ -317,8 +317,11 @@ describe('Complex Scenarios', () => {
 describe('Edge Cases', () => {
   it('should handle multiple sections as siblings', async () => {
     // 多个 SECTION 应该是兄弟节点，而非嵌套
-    // BUTTON 会成为最后一个 SECTION 的子节点（符合 SECTION 包含 BUTTON 的设计）
-    const dsl = '[SECTION: l1] [SECTION: l2] [SECTION: l3] [BUTTON: "Action"]';
+    // 使用多行格式，相同缩进级别的元素是兄弟关系
+    const dsl = `[SECTION: l1]
+[SECTION: l2]
+[SECTION: l3]
+  [BUTTON: "Action"]`;
 
     const result = await compile(dsl);
 
@@ -327,7 +330,7 @@ describe('Edge Cases', () => {
     expect(result.ast.children[0].type).toBe('Section');
     expect(result.ast.children[1].type).toBe('Section');
     expect(result.ast.children[2].type).toBe('Section');
-    // Button 是第三个 Section 的子节点
+    // Button 是第三个 Section 的子节点（因为它缩进了）
     expect(result.ast.children[2].children).toBeDefined();
     expect(result.ast.children[2].children![0].type).toBe('Button');
   });

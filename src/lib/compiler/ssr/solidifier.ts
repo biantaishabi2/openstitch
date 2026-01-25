@@ -232,14 +232,45 @@ export function generateStandaloneHTML(
 
   const rootStyles = cssVariables ? `:root { ${cssVariables} }` : '';
 
+  // Tailwind CDN 配置
+  const tailwindConfig = `
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'hsl(var(--background))',
+            foreground: 'hsl(var(--foreground))',
+            card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+            popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
+            primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+            secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+            muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+            accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+            destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+            border: 'hsl(var(--border))',
+            input: 'hsl(var(--input))',
+            ring: 'hsl(var(--ring))',
+          },
+        },
+      },
+    }
+  </script>`;
+
   return `<!DOCTYPE html>
 <html lang="${lang}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHTML(title)}</title>
+  ${tailwindConfig}
   <style>
-${rootStyles}
+    :root {
+      ${cssVariables}
+    }
+    * { border-color: hsl(var(--border)); }
+    body { font-family: system-ui, -apple-system, sans-serif; }
 ${css}
   </style>
 ${headExtra}

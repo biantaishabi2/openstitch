@@ -57,19 +57,23 @@ function astNodeToUINode(
           // 跳过空插槽
           if (isSlotEmpty(slotResult, slotName)) continue;
 
-          const wrapperType = getSlotWrapper(mappedType, slotName);
-          if (!wrapperType) continue;
-
           // 递归转换插槽内的子节点
           const slotChildNodes = slotChildren.map((child) =>
             astNodeToUINode(child, tokens, options)
           );
 
-          // 创建插槽包装节点
-          slots[slotName] = {
-            type: wrapperType,
-            children: slotChildNodes.length === 1 ? slotChildNodes[0] : slotChildNodes,
-          };
+          const wrapperType = getSlotWrapper(mappedType, slotName);
+
+          if (wrapperType) {
+            // 创建插槽包装节点
+            slots[slotName] = {
+              type: wrapperType,
+              children: slotChildNodes.length === 1 ? slotChildNodes[0] : slotChildNodes,
+            };
+          } else {
+            // 无包装类型时，直接传递子节点数组
+            slots[slotName] = slotChildNodes.length === 1 ? slotChildNodes[0] : slotChildNodes as unknown as UINode;
+          }
         }
       }
     } else {

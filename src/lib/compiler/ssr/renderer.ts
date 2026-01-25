@@ -47,6 +47,7 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
 
 /* 常用工具类 */
 .flex { display: flex; }
+.inline-flex { display: inline-flex; }
 .grid { display: grid; }
 .hidden { display: none; }
 .block { display: block; }
@@ -69,6 +70,7 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
 .gap-6 { gap: 1.5rem; }
 .gap-8 { gap: 2rem; }
 
+.p-0 { padding: 0; }
 .p-1 { padding: 0.25rem; }
 .p-2 { padding: 0.5rem; }
 .p-3 { padding: 0.75rem; }
@@ -76,13 +78,25 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
 .p-6 { padding: 1.5rem; }
 .p-8 { padding: 2rem; }
 
+.px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+.px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+
 .m-0 { margin: 0; }
 .m-1 { margin: 0.25rem; }
 .m-2 { margin: 0.5rem; }
 .m-4 { margin: 1rem; }
 .mx-auto { margin-left: auto; margin-right: auto; }
 
+.w-4 { width: 1rem; }
 .w-full { width: 100%; }
+.h-4 { height: 1rem; }
+.h-9 { height: 2.25rem; }
 .h-full { height: 100%; }
 .min-h-screen { min-height: 100vh; }
 .max-w-sm { max-width: 24rem; }
@@ -90,6 +104,7 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
 .max-w-lg { max-width: 32rem; }
 .max-w-xl { max-width: 36rem; }
 .max-w-2xl { max-width: 42rem; }
+.shrink-0 { flex-shrink: 0; }
 
 .text-xs { font-size: 0.75rem; line-height: 1rem; }
 .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
@@ -118,6 +133,8 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
 .border-0 { border-width: 0; }
 .border-2 { border-width: 2px; }
 
+.shadow-xs { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
 .shadow { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); }
 .shadow-md { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
 .shadow-lg { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
@@ -133,6 +150,11 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
 .overflow-auto { overflow: auto; }
 
 .transition { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+.transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+
+.whitespace-nowrap { white-space: nowrap; }
+.leading-none { line-height: 1; }
+.outline-none { outline: 2px solid transparent; outline-offset: 2px; }
 
 /* HSL 颜色工具类 */
 .bg-background { background-color: hsl(var(--background)); }
@@ -155,6 +177,27 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
 .border-border { border-color: hsl(var(--border)); }
 .border-input { border-color: hsl(var(--input)); }
 .border-primary { border-color: hsl(var(--primary)); }
+
+/* 按钮变体样式 */
+[data-variant="primary"] {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+[data-variant="secondary"] {
+  background-color: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+}
+[data-variant="outline"] {
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--background));
+}
+[data-variant="ghost"] {
+  background-color: transparent;
+}
+[data-variant="destructive"] {
+  background-color: hsl(var(--destructive));
+  color: hsl(var(--destructive-foreground));
+}
 `;
 
 /**

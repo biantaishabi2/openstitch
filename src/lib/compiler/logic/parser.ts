@@ -159,15 +159,20 @@ interface ParseContext {
 }
 
 /**
- * 简化的递归下降解析器
- * 直接从 Token 流构建 CSTNode
+ * 基于缩进的递归下降解析器
+ * 通过 Token 的 startColumn 判断层级关系
+ *
+ * 核心规则：
+ * - 缩进增加 → 子节点
+ * - 缩进相同 → 兄弟节点
+ * - 缩进减少 → 返回上层
  */
 class SimpleParser {
   private tokens: IToken[];
   private pos: number = 0;
 
   constructor(tokens: IToken[]) {
-    // 过滤掉换行符，简化解析
+    // 只保留有意义的 Token，过滤掉 NewLine（但保留位置信息）
     this.tokens = tokens.filter(t => t.tokenType.name !== 'NewLine');
   }
 
@@ -198,20 +203,40 @@ class SimpleParser {
   }
 
   /**
+   * 获取下一个 TagOpen 的缩进级别（列位置）
+   * 返回 -1 表示没有更多元素
+   */
+  private peekNextTagIndent(): number {
+    const token = this.current();
+    if (!token || token.tokenType.name !== 'TagOpen') {
+      return -1;
+    }
+    // startColumn 是 1-based，转为 0-based 作为缩进级别
+    return (token.startColumn || 1) - 1;
+  }
+
+  /**
    * 解析整个文档
+   * 顶层元素的缩进级别为 0
    */
   public parseDocument(): CSTNode[] {
     const nodes: CSTNode[] = [];
     while (this.current()) {
-      nodes.push(this.parseElement());
+      const indent = this.peekNextTagIndent();
+      if (indent < 0) break;
+      nodes.push(this.parseElement(0)); // 顶层缩进为 0
     }
     return nodes;
   }
 
   /**
-   * 解析单个元素
+   * 解析单个元素及其子元素
+   * @param parentIndent 父元素的缩进级别
    */
-  private parseElement(): CSTNode {
+  private parseElement(parentIndent: number): CSTNode {
+    // 记录当前元素的缩进级别
+    const myIndent = this.peekNextTagIndent();
+
     // [TAG
     const tagToken = this.consume('TagOpen');
     const tag = extractTagName(tagToken.image);
@@ -250,47 +275,21 @@ class SimpleParser {
       node.content = this.parseContentDecl();
     }
 
-    // 子元素处理：
-    // - SECTION 是顶层容器，遇到新的 SECTION 时停止
-    // - 同级元素（如 CARD 与 CARD、BUTTON 与 BUTTON）应该是兄弟而非嵌套
-    // - 只有明确的父子关系才嵌套（如 SECTION 包含 CARD）
+    // 解析子元素：只有缩进更深的才是子元素
     const children: CSTNode[] = [];
 
-    // 定义容器类型 - 这些可以包含其他元素
-    const containerTypes = ['SECTION', 'CARD', 'GRID', 'FLEX', 'STACK', 'PAGE'];
-    // 定义叶子类型 - 这些不应该包含同级元素
-    const leafTypes = ['BUTTON', 'TEXT', 'INPUT', 'BADGE', 'ICON'];
-
     while (this.match('TagOpen')) {
-      const nextTag = extractTagName(this.current()!.image);
+      const nextIndent = this.peekNextTagIndent();
 
-      // 遇到新的 SECTION，停止（它是顶层兄弟）
-      if (nextTag === 'SECTION') {
+      // 下一个元素的缩进 <= 当前元素的缩进，说明不是子元素
+      if (nextIndent <= myIndent) {
         break;
       }
 
-      // 如果当前是叶子类型，不应该有子元素
-      if (leafTypes.includes(tag)) {
-        break;
-      }
-
-      // 如果当前和下一个都是同类型，停止（它们是兄弟）
-      if (tag === nextTag) {
-        break;
-      }
-
-      // 如果当前是 CARD，下一个也是 CARD，停止（兄弟关系）
-      if (tag === 'CARD' && nextTag === 'CARD') {
-        break;
-      }
-
-      // 如果当前是 BUTTON，下一个也是 BUTTON，停止（兄弟关系）
-      if (tag === 'BUTTON' && nextTag === 'BUTTON') {
-        break;
-      }
-
-      children.push(this.parseElement());
+      // 缩进更深，是子元素
+      children.push(this.parseElement(myIndent));
     }
+
     if (children.length > 0) {
       node.children = children;
     }

@@ -76,10 +76,22 @@ function renderNode(
       const slotPath = context.path
         ? `${context.path}.slots.${slotName}`
         : `slots.${slotName}`;
-      renderedSlots[slotName] = renderNode(slotNode, {
-        ...childContextBase,
-        path: slotPath,
-      });
+
+      // 处理 slot 为数组的情况（无包装组件时）
+      if (Array.isArray(slotNode)) {
+        renderedSlots[slotName] = slotNode.map((child, index) => {
+          const childPath = `${slotPath}.${index}`;
+          return renderNode(child, {
+            ...childContextBase,
+            path: childPath,
+          });
+        });
+      } else {
+        renderedSlots[slotName] = renderNode(slotNode, {
+          ...childContextBase,
+          path: slotPath,
+        });
+      }
     }
   }
 

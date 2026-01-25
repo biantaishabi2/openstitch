@@ -48,10 +48,10 @@ export const TYPE_MAP: Record<ComponentType, string> = {
   Code: 'CodeBlock',
 
   // 缺失组件（用现有组件组合实现）
-  Form: 'Stack',      // Form → Stack (direction="column")
+  Form: 'Stack',      // Form → Stack (direction="col")
   Header: 'Flex',     // Header → Flex
   Footer: 'Flex',     // Footer → Flex
-  Sidebar: 'Stack',   // Sidebar → Stack (direction="column")
+  Sidebar: 'Stack',   // Sidebar → Stack (direction="col")
   Nav: 'Flex',        // Nav → Flex
   Heading: 'Text',    // Heading → Text (variant="title")
   Quote: 'Text',      // Quote → Text (as="blockquote")
@@ -68,17 +68,28 @@ export const SPECIAL_TYPE_PROPS: Record<string, Record<string, unknown>> = {
   Quote: { as: 'blockquote', className: 'border-l-4 border-muted pl-4 italic' },
 
   // Form 使用 Stack 的 column 方向
-  Form: { direction: 'column', gap: 4 },
+  Form: { direction: 'col', gap: 4 },
 
-  // Sidebar 使用 Stack 的 column 方向
-  Sidebar: { direction: 'column', className: 'w-64' },
+  // Sidebar 使用 Stack 的 column 方向，带深色背景
+  Sidebar: {
+    direction: 'col',
+    className: 'w-64 min-h-screen bg-slate-900 text-white p-4 shrink-0',
+  },
 
   // Header/Footer 使用 Flex 的特定样式
-  Header: { justify: 'between', align: 'center', className: 'py-4' },
+  Header: {
+    justify: 'between',
+    align: 'center',
+    className: 'h-14 bg-white border-b border-gray-200 px-6 mb-6',
+  },
   Footer: { justify: 'between', align: 'center', className: 'py-4 mt-auto' },
 
-  // Nav 使用 Flex 的特定样式
-  Nav: { gap: 2, align: 'center' },
+  // Nav 使用 Flex 的垂直布局
+  Nav: { direction: 'col', gap: 1, className: 'w-full' },
+
+  // Section 禁用自动 grid 布局，让内部组件控制布局
+  // 注意：需要覆盖 Section 组件的默认 padding
+  Section: { layout: 'none', className: '!p-0 flex-1 flex flex-col' },
 };
 
 /**

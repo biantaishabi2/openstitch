@@ -78,13 +78,19 @@ export const SLOT_RULES: Record<string, SlotRule> = {
     special: true,
   },
 
-  // Table 需要特殊处理
+  // Table 需要特殊处理 - 不自动包装，由 SlottedTable 处理结构
   Table: {
     slots: ['header', 'body'],
-    distribute: () => 'body',
+    distribute: (child: ASTNode) => {
+      // 表头行：包含 th 或者类型为 Text/Heading 的子元素作为表头
+      if (child.type === 'Text' || child.type === 'Heading') return 'header';
+      // 其他作为表格内容
+      return 'body';
+    },
     render: {
-      header: 'TableHeader',
-      body: 'TableBody',
+      // 不使用包装组件，直接传递子元素给 SlottedTable
+      header: null,
+      body: null,
     },
     special: true,
   },

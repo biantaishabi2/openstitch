@@ -18,6 +18,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 // 插槽包装组件
 import { SlottedCard } from './components/slotted-card';
 import { SlottedAlert } from './components/slotted-alert';
+import { SlottedTable } from './components/slotted-table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -315,7 +316,7 @@ export const componentMap: ComponentMap = {
   Step,
 
   // ========== 数据展示 ==========
-  Table,
+  Table: SlottedTable,  // 使用插槽包装器
   TableHeader,
   TableBody,
   TableRow,

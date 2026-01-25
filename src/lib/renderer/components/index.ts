@@ -6,3 +6,4 @@
 
 export { SlottedCard } from './slotted-card';
 export { SlottedAlert } from './slotted-alert';
+export { SlottedTable } from './slotted-table';

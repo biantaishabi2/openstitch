@@ -303,6 +303,14 @@ function hslToHex(h: number, s: number, l: number): string {
 }
 
 /**
+ * HSL 转 CSS HSL 值格式 (用于 CSS 变量)
+ * 例如: hslToCSSValue(217, 91, 60) => "217 91% 60%"
+ */
+function hslToCSSValue(h: number, s: number, l: number): string {
+  return `${Math.round(h)} ${Math.round(s)}% ${Math.round(l)}%`;
+}
+
+/**
  * 生成色阶 (50-900)
  */
 function generateColorScale(h: number, s: number): Record<string, string> {
@@ -328,16 +336,38 @@ function generateColorTokens(scene: SceneStyle, random: () => number): Partial<D
 
   const colorScale = generateColorScale(h, s);
 
+  // HSL CSS 值格式 (用于 Tailwind/shadcn)
+  const primaryHSL = hslToCSSValue(h, s, l);
+  const secondaryH = (h + 30) % 360;
+  const accentH = (h + 180) % 360;
+
   return {
+    // 保留 HEX 格式用于兼容
     '--primary-color': hslToHex(h, s, l),
     ...colorScale,
-    '--secondary-color': hslToHex((h + 30) % 360, s * 0.7, l + 10),
-    '--accent-color': hslToHex((h + 180) % 360, s * 0.8, l),
-    '--background': '#ffffff',
-    '--foreground': '#0f172a',
-    '--muted': '#f1f5f9',
-    '--muted-foreground': '#64748b',
-    '--border': '#e2e8f0',
+    '--secondary-color': hslToHex(secondaryH, s * 0.7, l + 10),
+    '--accent-color': hslToHex(accentH, s * 0.8, l),
+
+    // HSL CSS 值格式 (用于 Tailwind/shadcn 类名)
+    '--background': '0 0% 100%',
+    '--foreground': '222 47% 11%',
+    '--card': '0 0% 100%',
+    '--card-foreground': '222 47% 11%',
+    '--popover': '0 0% 100%',
+    '--popover-foreground': '222 47% 11%',
+    '--primary': primaryHSL,
+    '--primary-foreground': '0 0% 100%',
+    '--secondary': hslToCSSValue(secondaryH, s * 0.7, 96),
+    '--secondary-foreground': hslToCSSValue(secondaryH, s * 0.7, 20),
+    '--muted': '210 40% 96%',
+    '--muted-foreground': '215 16% 47%',
+    '--accent': hslToCSSValue(accentH, 40, 96),
+    '--accent-foreground': hslToCSSValue(accentH, s * 0.8, 20),
+    '--destructive': '0 84% 60%',
+    '--destructive-foreground': '0 0% 100%',
+    '--border': '214 32% 91%',
+    '--input': '214 32% 91%',
+    '--ring': primaryHSL,
   };
 }
 
