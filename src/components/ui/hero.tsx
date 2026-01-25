@@ -103,14 +103,67 @@ interface SectionProps extends React.HTMLAttributes<HTMLElement> {
   title?: string;
   subtitle?: string;
   description?: string;
+  /** 布局模式: auto(自动检测), grid(网格), flex(弹性), none(不包裹) */
+  layout?: 'auto' | 'grid' | 'flex' | 'none';
+  /** 网格列数 */
+  columns?: 1 | 2 | 3 | 4;
+  /** 子元素间距 */
+  gap?: 2 | 4 | 6 | 8;
 }
 
 const Section = React.forwardRef<HTMLElement, SectionProps>(
-  ({ className, title, subtitle, description, children, ...props }, ref) => {
+  ({ className, title, subtitle, description, layout = 'auto', columns, gap = 6, children, ...props }, ref) => {
+    // 计算子元素数量
+    const childCount = React.Children.count(children);
+
+    // 自动检测布局模式
+    const effectiveLayout = React.useMemo(() => {
+      if (layout !== 'auto') return layout;
+      // 多个子元素时自动使用 grid
+      if (childCount > 1) return 'grid';
+      return 'none';
+    }, [layout, childCount]);
+
+    // 自动计算列数
+    const effectiveColumns = React.useMemo(() => {
+      if (columns) return columns;
+      if (effectiveLayout !== 'grid') return 1;
+      // 根据子元素数量自动选择列数
+      if (childCount <= 2) return 2;
+      if (childCount === 3) return 3;
+      return 4; // 4个或更多用4列
+    }, [columns, effectiveLayout, childCount]);
+
+    // 容器样式
+    const containerClasses = React.useMemo(() => {
+      const gapClass = `gap-${gap}`;
+
+      if (effectiveLayout === 'grid') {
+        const colsClass = {
+          1: 'grid-cols-1',
+          2: 'grid-cols-1 md:grid-cols-2',
+          3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+          4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
+        }[effectiveColumns];
+        return cn('grid', colsClass, gapClass);
+      }
+
+      if (effectiveLayout === 'flex') {
+        return cn('flex flex-wrap', gapClass, 'justify-center');
+      }
+
+      return '';
+    }, [effectiveLayout, effectiveColumns, gap]);
+
+    // 渲染子元素
+    const renderedChildren = effectiveLayout === 'none'
+      ? children
+      : <div className={containerClasses}>{children}</div>;
+
     return (
       <section
         ref={ref}
-        className={cn('py-12 md:py-16 lg:py-20', className)}
+        className={cn('py-12 md:py-16 lg:py-20 px-4 md:px-6', className)}
         {...props}
       >
         {(title || subtitle || description) && (
@@ -132,7 +185,7 @@ const Section = React.forwardRef<HTMLElement, SectionProps>(
             )}
           </div>
         )}
-        {children}
+        {renderedChildren}
       </section>
     );
   }
