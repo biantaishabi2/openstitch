@@ -142,3 +142,11 @@ export interface SynthesizerOptions {
   seed?: number;
   overrides?: Partial<DesignTokens>;
 }
+
+/** 设计审查警告 */
+export interface AuditWarning {
+  type: 'contrast' | 'perceptual' | 'accessibility' | 'rhythm' | 'spacing';
+  message: string;
+  severity: 'info' | 'warning' | 'error';
+  suggestion?: string;
+}

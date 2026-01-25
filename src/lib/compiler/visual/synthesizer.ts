@@ -13,7 +13,7 @@
  * 配置外置：所有可调参数从 config/*.json 读取
  */
 
-import type { DesignTokens, SynthesizerOptions } from './types';
+import type { DesignTokens, SynthesizerOptions, AuditWarning } from './types';
 import {
   type SceneStyle,
   type ShapeStyle,
@@ -27,6 +27,16 @@ import {
   TYPOGRAPHY_CONFIG,
   ORNAMENT_CONFIG,
 } from '../config';
+import {
+  generatePerceptualColorScale,
+  applyPerceptualCorrection,
+  adjustForContrast,
+  validateContrast,
+  auditColorContrast,
+  hslToRgb,
+  rgbToHex,
+  type HSL,
+} from './color-space';
 
 // ============================================
 // Hash 函数 - 确定性种子生成
@@ -58,46 +68,103 @@ function createRandom(seed: number): () => number {
 }
 
 // ============================================
-// 维度 A: 空间尺度生成
+// 维度 A: 空间尺度生成 (含垂直节奏系统)
 // ============================================
 
+/** 垂直节奏基准 */
+const RHYTHM_BASE = 4;
+
 /**
- * 空间尺度生成
+ * 对齐到节奏基准 (4px 倍数)
+ */
+function alignToRhythm(value: number): number {
+  return Math.round(value / RHYTHM_BASE) * RHYTHM_BASE;
+}
+
+/**
+ * 计算节奏感知的行高
+ * 确保 fontSize * lineHeight 接近 4px 倍数
+ */
+function calculateRhythmicLineHeight(fontSize: number): number {
+  // 目标: 行高 = 字号 + 合适的行间距，且总高度接近 4px 倍数
+  const minLineHeight = 1.2;
+  const idealLineHeight = 1.5;
+
+  // 计算使 fontSize * lineHeight 为 4px 倍数的最接近 lineHeight
+  const targetHeight = Math.ceil((fontSize * idealLineHeight) / RHYTHM_BASE) * RHYTHM_BASE;
+  const rhythmicLineHeight = targetHeight / fontSize;
+
+  return Math.max(minLineHeight, Math.min(rhythmicLineHeight, 2.0));
+}
+
+/**
+ * 空间尺度生成 (含垂直节奏)
  *
  * 规则:
- *   baseUnit = (Hash % 2 == 0) ? 4px : 8px
- *   步进序列: 几何级数 (2^n)
+ *   baseUnit = 固定 4px (垂直节奏基准)
+ *   步进序列: 几何级数 (2^n)，对齐到 4px 倍数
  *   场景修正: multiplier = 场景系数 (compact: 0.8, spacious: 1.5)
+ *   垂直节奏: 所有垂直间距强制对齐到 4px 倍数
  */
 function generateSpacingTokens(seed: number, scene: SceneStyle): Partial<DesignTokens> {
-  // 基础单位由 Hash 决定
-  const baseUnit = (seed % 2 === 0) ? 4 : 8;
+  // 垂直节奏基准固定为 4px
+  const baseUnit = RHYTHM_BASE;
 
   // 场景修正系数（从配置读取）
   const constraints = getSceneConstraints(scene);
   const multiplier = constraints.spacingMultiplier;
 
-  // 行高根据场景调整
-  const lineHeight = multiplier >= 1.3 ? 1.75 : (multiplier <= 0.85 ? 1.4 : 1.5);
+  // 几何级数间距 (2^n)，对齐到 4px 倍数
+  const space1 = alignToRhythm(baseUnit * 1 * multiplier);   // XS: 4px
+  const space2 = alignToRhythm(baseUnit * 2 * multiplier);   // SM: 8px
+  const space3 = alignToRhythm(baseUnit * 4 * multiplier);   // MD: 16px
+  const space4 = alignToRhythm(baseUnit * 8 * multiplier);   // LG: 32px
+  const space5 = alignToRhythm(baseUnit * 16 * multiplier);  // XL: 64px
 
-  // 几何级数间距 (2^n)
-  const space1 = Math.round(baseUnit * 1 * multiplier);   // XS
-  const space2 = Math.round(baseUnit * 2 * multiplier);   // SM
-  const space3 = Math.round(baseUnit * 4 * multiplier);   // MD
-  const space4 = Math.round(baseUnit * 8 * multiplier);   // LG
-  const space5 = Math.round(baseUnit * 16 * multiplier);  // XL
+  // 确保最小间距不小于基准
+  const safeSpace1 = Math.max(space1, RHYTHM_BASE);
+  const safeSpace2 = Math.max(space2, RHYTHM_BASE * 2);
+
+  // 行高：基于 16px 基准字号计算节奏感知行高
+  const baseLineHeight = calculateRhythmicLineHeight(16);
+
+  // 不同字号的节奏感知行高
+  const lineHeightXs = calculateRhythmicLineHeight(12);
+  const lineHeightSm = calculateRhythmicLineHeight(14);
+  const lineHeightBase = calculateRhythmicLineHeight(16);
+  const lineHeightLg = calculateRhythmicLineHeight(20);
+  const lineHeightXl = calculateRhythmicLineHeight(24);
 
   return {
+    // 基础单位
     '--base-unit': `${baseUnit}px`,
-    '--spacing-xs': `${space1}px`,
-    '--spacing-sm': `${space2}px`,
+    '--rhythm-base': `${RHYTHM_BASE}px`,
+
+    // 间距序列 (对齐到 4px)
+    '--spacing-xs': `${safeSpace1}px`,
+    '--spacing-sm': `${safeSpace2}px`,
     '--spacing-md': `${space3}px`,
     '--spacing-lg': `${space4}px`,
     '--spacing-xl': `${space5}px`,
+
+    // 组件间距
     '--gap-card': `${space3}px`,
     '--padding-card': `${space3}px`,
     '--padding-section': `${space4}px`,
-    '--line-height-body': lineHeight.toFixed(2),
+
+    // 节奏感知行高
+    '--line-height-body': baseLineHeight.toFixed(2),
+    '--line-height-xs': lineHeightXs.toFixed(2),
+    '--line-height-sm': lineHeightSm.toFixed(2),
+    '--line-height-base': lineHeightBase.toFixed(2),
+    '--line-height-lg': lineHeightLg.toFixed(2),
+    '--line-height-xl': lineHeightXl.toFixed(2),
+
+    // 垂直边距 (对齐到节奏)
+    '--margin-block-xs': `${alignToRhythm(4)}px`,
+    '--margin-block-sm': `${alignToRhythm(8)}px`,
+    '--margin-block-md': `${alignToRhythm(16)}px`,
+    '--margin-block-lg': `${alignToRhythm(24)}px`,
   };
 }
 
@@ -149,15 +216,60 @@ function generateTypographyTokens(seed: number): Partial<DesignTokens> {
 }
 
 // ============================================
-// 维度 C: 形状边框生成
+// 维度 C: 形状边框生成 (含 Padding Squeezing 和分层阴影)
 // ============================================
 
 /**
- * 形状边框生成
+ * 计算 Padding Squeezing 因子
+ * 圆角越大，需要的额外内边距越多
+ * 公式: squeezingPadding = baseRadius * 0.2
+ */
+function calculateSqueezingFactor(radiusMd: number): number {
+  // 圆角对内边距的影响系数 (0.2 = 每 1px 圆角增加 0.2px padding)
+  const SQUEEZING_COEFFICIENT = 0.2;
+  return radiusMd * SQUEEZING_COEFFICIENT;
+}
+
+/**
+ * 生成分层阴影
+ * 真实的阴影由多层组成：
+ * - 环境光掩蔽层 (Ambient Occlusion): 深色、范围小、模糊小
+ * - 漫反射层 (Diffuse): 浅色、范围大、模糊大
+ */
+function generateLayeredShadow(
+  elevation: number,
+  baseOpacity: number
+): string {
+  // 高度层级配置 (0-4)
+  const elevationConfig = [
+    { y: 1, blur: 2, spread: 0, ambientBlur: 1, ambientY: 0 },      // 0: 贴近
+    { y: 2, blur: 4, spread: 0, ambientBlur: 2, ambientY: 1 },      // 1: 轻微抬起
+    { y: 4, blur: 8, spread: -1, ambientBlur: 3, ambientY: 2 },     // 2: 标准卡片
+    { y: 8, blur: 16, spread: -2, ambientBlur: 4, ambientY: 3 },    // 3: 浮动
+    { y: 16, blur: 32, spread: -4, ambientBlur: 6, ambientY: 4 },   // 4: 悬浮
+  ];
+
+  const config = elevationConfig[Math.min(elevation, 4)];
+
+  // 环境光掩蔽层 (更深、更集中)
+  const ambientOpacity = (baseOpacity * 0.8).toFixed(2);
+  const ambient = `0 ${config.ambientY}px ${config.ambientBlur}px rgba(0,0,0,${ambientOpacity})`;
+
+  // 漫反射层 (更浅、更扩散)
+  const diffuseOpacity = (baseOpacity * 0.5).toFixed(2);
+  const diffuse = `0 ${config.y}px ${config.blur}px ${config.spread}px rgba(0,0,0,${diffuseOpacity})`;
+
+  // 组合两层阴影
+  return `${ambient}, ${diffuse}`;
+}
+
+/**
+ * 形状边框生成 (含 Padding Squeezing 和分层阴影)
  *
- * 规则:
- *   baseRadius = (Hash % 4) * 2 + 2  // 结果: 2, 4, 6, 8
- *   场景修正: 从配置读取
+ * 新增功能:
+ * 1. Padding Squeezing: 圆角越大，内边距需要相应增加
+ * 2. 分层阴影: 多层阴影实现真实 3D 效果
+ * 3. 5 级高度表现: elevation-0 到 elevation-4
  */
 function generateShapeTokens(seed: number, scene: SceneStyle): Partial<DesignTokens> {
   // 基础圆角由 Hash 决定
@@ -177,30 +289,80 @@ function generateShapeTokens(seed: number, scene: SceneStyle): Partial<DesignTok
   const radiusMd = Math.max(Math.round(baseRadius * 1 * config.multiplier), effectiveMinRadius);
   const radiusLg = Math.max(Math.round(baseRadius * 2 * config.multiplier), Math.round(effectiveMinRadius * 2));
 
+  // Padding Squeezing: 计算圆角导致的额外内边距
+  const squeezingFactor = calculateSqueezingFactor(radiusMd);
+  const squeezingFactorLg = calculateSqueezingFactor(radiusLg);
+
   // 阴影强度（从配置读取）
   const shadowBase = getShadowIntensity(shapeStyle);
 
   return {
+    // 圆角
     '--radius-sm': `${radiusSm}px`,
     '--radius-md': `${radiusMd}px`,
     '--radius-lg': `${radiusLg}px`,
     '--radius-full': '9999px',
+
+    // Padding Squeezing 因子 (供组件使用)
+    '--squeezing-factor': squeezingFactor.toFixed(2),
+    '--squeezing-factor-lg': squeezingFactorLg.toFixed(2),
+    '--padding-squeezing': `${alignToRhythm(squeezingFactor)}px`,
+    '--padding-squeezing-lg': `${alignToRhythm(squeezingFactorLg)}px`,
+
+    // 传统阴影 (向后兼容)
     '--shadow-sm': `0 1px 2px rgba(0,0,0,${(shadowBase * 0.5).toFixed(2)})`,
     '--shadow-md': `0 4px 6px rgba(0,0,0,${shadowBase.toFixed(2)})`,
     '--shadow-lg': `0 10px 15px rgba(0,0,0,${(shadowBase * 1.2).toFixed(2)})`,
+
+    // 分层阴影 (5 级高度表现)
+    '--shadow-elevation-0': generateLayeredShadow(0, shadowBase),
+    '--shadow-elevation-1': generateLayeredShadow(1, shadowBase),
+    '--shadow-elevation-2': generateLayeredShadow(2, shadowBase),
+    '--shadow-elevation-3': generateLayeredShadow(3, shadowBase),
+    '--shadow-elevation-4': generateLayeredShadow(4, shadowBase),
+
+    // 特殊阴影
+    '--shadow-overlay': `0 0 0 1px rgba(0,0,0,0.05), ${generateLayeredShadow(3, shadowBase)}`,
+    '--shadow-inset': `inset 0 2px 4px rgba(0,0,0,${(shadowBase * 0.3).toFixed(2)})`,
   };
 }
 
 // ============================================
-// 维度 D: 装饰纹理生成
+// 维度 D: 装饰纹理生成 (含视觉降噪)
 // ============================================
 
 /**
- * 装饰纹理生成
+ * 视觉降噪配置
+ * 不同场景的噪声容忍度不同
+ */
+const NOISE_REDUCTION_CONFIG: Record<SceneStyle, { factor: number; simplify: boolean }> = {
+  medical: { factor: 0, simplify: true },       // 医疗: 完全禁用噪声
+  finance: { factor: 0.3, simplify: false },    // 金融: 低噪声
+  technical: { factor: 0.5, simplify: false },  // 技术: 中等噪声
+  enterprise: { factor: 0.4, simplify: false }, // 企业: 中低噪声
+  education: { factor: 0.6, simplify: false },  // 教育: 中等噪声
+  creative: { factor: 0.8, simplify: false },   // 创意: 高噪声
+  default: { factor: 0.5, simplify: false },    // 默认: 中等噪声
+};
+
+/**
+ * 计算视觉降噪因子
+ * 对比度越高，允许的噪声越少
+ */
+function calculateNoiseFactor(scene: SceneStyle, contrastLevel: number = 1): number {
+  const config = NOISE_REDUCTION_CONFIG[scene];
+  // 高对比度时降低噪声
+  const contrastAdjustment = contrastLevel > 1.2 ? 0.8 : 1.0;
+  return config.factor * contrastAdjustment;
+}
+
+/**
+ * 装饰纹理生成 (含视觉降噪)
  *
- * 规则:
- *   pattern = PATTERNS[Hash % n]（从配置读取）
- *   opacity = 场景约束
+ * 新增功能:
+ * 1. 智能降噪: 根据场景自动调整噪声级别
+ * 2. 多层纹理: 分层图案实现细腻质感
+ * 3. 同级元素消隐: 提供悬停时显示边框的 CSS 变量
  */
 function generateOrnamentTokens(seed: number, scene: SceneStyle): Partial<DesignTokens> {
   // 图案类型由 Hash 决定（从配置读取）
@@ -216,18 +378,57 @@ function generateOrnamentTokens(seed: number, scene: SceneStyle): Partial<Design
   const ornamentLevel = constraints.ornamentLevel as OrnamentLevel;
   const preset = getOrnamentLevel(ornamentLevel);
 
-  // 最终透明度 = 场景约束
-  const patternOpacity = ornamentLevel === 'none' ? 0 : Math.max(baseOpacity, preset.patternOpacity);
-  const noiseOpacity = ornamentLevel === 'none' ? 0 : preset.noiseOpacity;
+  // 视觉降噪
+  const noiseConfig = NOISE_REDUCTION_CONFIG[scene];
+  const noiseFactor = calculateNoiseFactor(scene);
+
+  // 应用降噪因子
+  const adjustedPatternOpacity = ornamentLevel === 'none' || noiseConfig.simplify
+    ? 0
+    : Math.max(baseOpacity, preset.patternOpacity) * noiseFactor;
+  const adjustedNoiseOpacity = ornamentLevel === 'none' || noiseConfig.simplify
+    ? 0
+    : preset.noiseOpacity * noiseFactor;
+
+  // 多层纹理 (从底层到顶层，透明度递减)
+  const layer1Opacity = (adjustedPatternOpacity * 0.6).toFixed(3);  // 底层: 纹理感
+  const layer2Opacity = (adjustedPatternOpacity * 0.8).toFixed(3);  // 中层: 细节
+  const layer3Opacity = (adjustedPatternOpacity * 1.0).toFixed(3);  // 顶层: 易见
+
+  // 同级元素消隐: 相邻卡片边框处理
+  // 默认边框透明度降低，悬停时恢复
+  const siblingBorderOpacity = noiseConfig.simplify ? '0' : '0.08';
+  const siblingBorderHoverOpacity = '0.15';
+  const siblingBgOffset = noiseConfig.simplify ? '0%' : '2%'; // 微弱灰色偏移
 
   return {
+    // 图案类型
     '--pattern-type': patternType,
-    '--pattern-dots': `radial-gradient(circle, rgba(0,0,0,${patternOpacity.toFixed(2)}) 1px, transparent 1px)`,
+
+    // 传统图案 (向后兼容)
+    '--pattern-dots': `radial-gradient(circle, rgba(0,0,0,${adjustedPatternOpacity.toFixed(2)}) 1px, transparent 1px)`,
     '--pattern-dots-size': '20px 20px',
-    '--pattern-grid': `linear-gradient(rgba(0,0,0,${patternOpacity.toFixed(2)}) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,${patternOpacity.toFixed(2)}) 1px, transparent 1px)`,
+    '--pattern-grid': `linear-gradient(rgba(0,0,0,${adjustedPatternOpacity.toFixed(2)}) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,${adjustedPatternOpacity.toFixed(2)}) 1px, transparent 1px)`,
     '--pattern-grid-size': '24px 24px',
     '--gradient-fade': 'linear-gradient(180deg, transparent 0%, var(--background) 100%)',
-    '--noise-opacity': noiseOpacity.toFixed(2),
+    '--noise-opacity': adjustedNoiseOpacity.toFixed(2),
+
+    // 多层纹理
+    '--pattern-layer-1': `rgba(0,0,0,${layer1Opacity})`,
+    '--pattern-layer-2': `rgba(0,0,0,${layer2Opacity})`,
+    '--pattern-layer-3': `rgba(0,0,0,${layer3Opacity})`,
+
+    // 视觉降噪因子
+    '--noise-factor': noiseFactor.toFixed(2),
+    '--noise-simplify': noiseConfig.simplify ? '1' : '0',
+
+    // 同级元素消隐
+    '--sibling-border-opacity': siblingBorderOpacity,
+    '--sibling-border-hover-opacity': siblingBorderHoverOpacity,
+    '--sibling-bg-offset': siblingBgOffset,
+
+    // 色差修正 (减少颜色过渡时的视觉噪声)
+    '--chromatic-aberration': '0.3%',
   };
 }
 
@@ -258,15 +459,16 @@ function hslToCSSValue(h: number, s: number, l: number): string {
 }
 
 /**
- * 生成色阶 (50-900)
+ * 生成色阶 (50-900) - 使用 OKLCH 感知均匀色彩空间
  */
 function generateColorScale(h: number, s: number): Record<string, string> {
-  const lightnesses = [97, 93, 86, 76, 62, 50, 42, 34, 26, 17];
+  // 使用 OKLCH 生成感知均匀的色阶
+  const perceptualScale = generatePerceptualColorScale(h, s);
   const scale: Record<string, string> = {};
-  const steps = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900'];
 
-  steps.forEach((step, i) => {
-    scale[`--primary-${step}`] = hslToHex(h, s, lightnesses[i]);
+  // 转换为 CSS 变量格式
+  Object.entries(perceptualScale).forEach(([step, hex]) => {
+    scale[`--primary-${step}`] = hex;
   });
 
   return scale;
@@ -278,8 +480,15 @@ function generateColorScale(h: number, s: number): Record<string, string> {
  * 规则:
  *   主色相: Hue = Hash % 360
  *   饱和度/亮度: 场景约束范围（从配置读取）
+ *   感知校正: 使用 OKLCH 确保视觉一致性
+ *   对比度: 自动调整以符合 WCAG AA 标准
  */
-function generateColorTokens(seed: number, scene: SceneStyle, random: () => number): Partial<DesignTokens> {
+function generateColorTokens(
+  seed: number,
+  scene: SceneStyle,
+  random: () => number,
+  warnings: AuditWarning[] = []
+): Partial<DesignTokens> {
   const constraints = getSceneConstraints(scene);
 
   // 主色相由 Hash 决定
@@ -289,12 +498,39 @@ function generateColorTokens(seed: number, scene: SceneStyle, random: () => numb
   const [sMin, sMax] = constraints.saturationRange;
   const [lMin, lMax] = constraints.lightnessRange;
   const s = sMin + random() * (sMax - sMin);
-  const l = lMin + random() * (lMax - lMin);
+  let l = lMin + random() * (lMax - lMin);
 
+  // 应用感知校正 - 确保不同色相视觉亮度一致
+  const correctedHsl = applyPerceptualCorrection({ h, s, l });
+  l = correctedHsl.l;
+
+  // 生成感知均匀的色阶
   const colorScale = generateColorScale(h, s);
 
+  // 背景和前景色
+  const backgroundHex = '#ffffff';
+  const foregroundHex = '#1e293b'; // slate-800
+
+  // 计算主色并验证对比度
+  let primaryHsl: HSL = { h, s, l };
+  const primaryHex = rgbToHex(hslToRgb(primaryHsl));
+  const contrastResult = validateContrast(primaryHex, backgroundHex);
+
+  // 如果对比度不足，自动调整
+  if (!contrastResult.wcagAALarge) {
+    warnings.push({
+      type: 'contrast',
+      message: `Primary on Background contrast is ${contrastResult.ratio}:1 (Required: 3:1)`,
+      severity: 'warning',
+      suggestion: 'Adjusting Primary lightness for WCAG compliance',
+    });
+    // 调整主色以达到目标对比度
+    primaryHsl = adjustForContrast(primaryHsl, backgroundHex, 3.0, 'darken');
+  }
+
   // HSL CSS 值格式 (用于 Tailwind/shadcn)
-  const primaryHSL = hslToCSSValue(h, s, l);
+  const primaryHSL = hslToCSSValue(primaryHsl.h, primaryHsl.s, primaryHsl.l);
+  const adjustedPrimaryHex = rgbToHex(hslToRgb(primaryHsl));
 
   // 互补色
   const secondaryH = (h + 30) % 360;   // 邻近色
@@ -307,7 +543,7 @@ function generateColorTokens(seed: number, scene: SceneStyle, random: () => numb
 
   return {
     // 保留 HEX 格式用于兼容
-    '--primary-color': hslToHex(h, s, l),
+    '--primary-color': adjustedPrimaryHex,
     ...colorScale,
     '--secondary-color': hslToHex(secondaryH, s * 0.7, Math.min(l + 10, 90)),
     '--accent-color': hslToHex(accentH, s * 0.8, l),
@@ -354,8 +590,28 @@ function generateColorTokens(seed: number, scene: SceneStyle, random: () => numb
  * @param options 合成器选项
  * @returns 完整的 Design Tokens
  */
+/** 设计审查结果 */
+export interface DesignAuditResult {
+  tokens: DesignTokens;
+  warnings: AuditWarning[];
+}
+
+/**
+ * 生成 Design Tokens (带设计审查)
+ */
 export function generateDesignTokens(options: SynthesizerOptions): DesignTokens {
+  const result = generateDesignTokensWithAudit(options);
+  return result.tokens;
+}
+
+/**
+ * 生成 Design Tokens 并返回设计审查警告
+ */
+export function generateDesignTokensWithAudit(options: SynthesizerOptions): DesignAuditResult {
   const { context, sessionId = 'default', seed: customSeed, overrides } = options;
+
+  // 设计审查警告收集
+  const warnings: AuditWarning[] = [];
 
   // 1. 计算确定性种子 (djb2 算法)
   const seed = customSeed ?? hashString(`${context}:${sessionId}`);
@@ -369,7 +625,7 @@ export function generateDesignTokens(options: SynthesizerOptions): DesignTokens 
   const typography = generateTypographyTokens(seed);
   const shape = generateShapeTokens(seed, scene);
   const ornament = generateOrnamentTokens(seed, scene);
-  const colors = generateColorTokens(seed, scene, random);
+  const colors = generateColorTokens(seed, scene, random, warnings);
 
   // 4. 合并所有 Tokens
   const tokens: DesignTokens = {
@@ -391,7 +647,7 @@ export function generateDesignTokens(options: SynthesizerOptions): DesignTokens 
     Object.assign(tokens, overrides);
   }
 
-  return tokens;
+  return { tokens, warnings };
 }
 
 /**

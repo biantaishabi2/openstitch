@@ -19,14 +19,25 @@ export type {
   OrnamentLevel,
   SessionState,
   SynthesizerOptions,
+  AuditWarning,
 } from './types';
 
 // 导出合成器
 export {
   generateDesignTokens,
+  generateDesignTokensWithAudit,
   tokensToCss,
   tokensToStyle,
+  type DesignAuditResult,
 } from './synthesizer';
+
+// 导出色彩空间工具
+export {
+  validateContrast,
+  auditColorContrast,
+  generatePerceptualColorScale,
+  type ContrastResult,
+} from './color-space';
 
 // 导出 Session 管理
 export {
