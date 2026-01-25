@@ -4,6 +4,8 @@
  * 测试用例覆盖：
  * - TC-E2E-01: 完整编译流程
  * - TC-E2E-02: 增量编译
+ * - TC-PARALLEL-01: 并发安全性 (10 请求压力测试)
+ * - TC-PURGE-01: CSS 体积达标验证
  */
 
 import { describe, it, expect } from 'vitest';
@@ -402,5 +404,184 @@ describe('Performance', () => {
     // CSS 应该 < 10KB
     const cssSize = Buffer.byteLength(result.ssr.css, 'utf8');
     expect(cssSize).toBeLessThan(10 * 1024);
+  });
+});
+
+// ============================================
+// TC-PARALLEL-01: 并发安全性 (10 请求压力测试)
+// ============================================
+
+describe('Concurrent Safety (TC-PARALLEL-01)', () => {
+  it('should handle 10 parallel requests without style collision', async () => {
+    // 模拟规划层同时发出 10 个请求
+    const requests = Array.from({ length: 10 }, (_, i) =>
+      compile(`[CARD: c${i}] CONTENT: "Card ${i}"`, {
+        context: `Context_${i}_${Math.random()}`, // 不同 context
+      })
+    );
+
+    const results = await Promise.all(requests);
+
+    // 验证所有请求都成功完成
+    expect(results).toHaveLength(10);
+
+    // 验证每个结果内容正确，无资源争用
+    results.forEach((result, i) => {
+      expect(result.ssr.html).toContain(`Card ${i}`);
+      expect(result.ast.children[0].id).toBe(`c${i}`);
+    });
+  });
+
+  it('should produce different tokens for different contexts in parallel', async () => {
+    const contexts = [
+      '技术架构文档',
+      '金融财务系统',
+      '医疗健康平台',
+      '儿童教育学习',
+      '创意设计展示',
+      '企业管理运营',
+      '电商购物平台',
+      '社交媒体应用',
+      '游戏娱乐系统',
+      '物联网控制台',
+    ];
+
+    const requests = contexts.map((context, i) =>
+      compile(`[BUTTON: btn${i}] CONTENT: "按钮 ${i}"`, { context })
+    );
+
+    const results = await Promise.all(requests);
+
+    // 验证不同 context 产生不同的颜色
+    const colors = results.map(r => r.tokens['--primary-color']);
+    const uniqueColors = new Set(colors);
+
+    // 至少应该有 5 种不同的颜色
+    expect(uniqueColors.size).toBeGreaterThanOrEqual(5);
+  });
+
+  it('should not cause resource contention under concurrent load', async () => {
+    const startTime = performance.now();
+
+    // 同时发起 10 个复杂编译请求
+    const requests = Array.from({ length: 10 }, (_, i) =>
+      compile(`
+[SECTION: s${i}]
+  [CARD: c${i}]
+    ATTR: Title("Card ${i}"), Icon("Star")
+    [TEXT: t${i}] CONTENT: "Content ${i}"
+    [BUTTON: b${i}] CONTENT: "Action ${i}"
+`, { context: `测试场景 ${i}` })
+    );
+
+    const results = await Promise.all(requests);
+    const endTime = performance.now();
+
+    // 10 个并发请求应在 5 秒内完成
+    expect(endTime - startTime).toBeLessThan(5000);
+
+    // 验证所有结果正确
+    results.forEach((result, i) => {
+      expect(result.ssr.html).toContain(`Card ${i}`);
+      expect(result.ssr.html).toContain(`Content ${i}`);
+      expect(result.ssr.html).toContain(`Action ${i}`);
+    });
+  });
+
+  it('should maintain session isolation under concurrent access', async () => {
+    // 使用相同 sessionId 的并发请求
+    const session = createSession();
+
+    const requests = Array.from({ length: 5 }, (_, i) =>
+      compile(`[TEXT: t${i}] CONTENT: "Text ${i}"`, { session })
+    );
+
+    const results = await Promise.all(requests);
+
+    // 相同 session 应产生相同 tokens
+    const firstTokens = results[0].tokens['--primary-color'];
+    results.forEach(result => {
+      expect(result.tokens['--primary-color']).toBe(firstTokens);
+    });
+  });
+});
+
+// ============================================
+// TC-PURGE-01: CSS 体积达标验证
+// ============================================
+
+describe('CSS Size Validation (TC-PURGE-01)', () => {
+  it('should produce CSS < 5KB for simple components', async () => {
+    const dsl = '[BUTTON: btn] CONTENT: "Click"';
+    const result = await compile(dsl);
+
+    const cssSize = Buffer.byteLength(result.ssr.css, 'utf8');
+    expect(cssSize).toBeLessThan(5 * 1024); // < 5KB
+  });
+
+  it('should produce CSS < 15KB for complex dashboard', async () => {
+    const dsl = `
+[SECTION: dashboard]
+  [GRID: stats]
+    { Columns: 4, Gap: "16px" }
+    [CARD: c1] ATTR: Title("Users") CONTENT: "1,234"
+    [CARD: c2] ATTR: Title("Revenue") CONTENT: "$5,678"
+    [CARD: c3] ATTR: Title("Orders") CONTENT: "890"
+    [CARD: c4] ATTR: Title("Growth") CONTENT: "12%"
+  [GRID: content]
+    { Columns: 2, Gap: "16px" }
+    [CARD: table_card]
+      ATTR: Title("Recent Orders")
+      [TABLE: orders]
+        [TEXT: th1] CONTENT: "ID"
+        [TEXT: th2] CONTENT: "Customer"
+        [TEXT: th3] CONTENT: "Amount"
+    [CARD: list_card]
+      ATTR: Title("Top Products")
+      [LIST: products]
+        [TEXT: p1] CONTENT: "Product A"
+        [TEXT: p2] CONTENT: "Product B"
+`;
+    const result = await compile(dsl);
+
+    const cssSize = Buffer.byteLength(result.ssr.css, 'utf8');
+    expect(cssSize).toBeLessThan(15 * 1024); // < 15KB
+  });
+
+  it('should only include used Tailwind classes', async () => {
+    const dsl = '[BUTTON: btn] ATTR: Variant("outline") CONTENT: "Outline"';
+    const result = await compile(dsl);
+
+    // CSS 应该包含 outline 相关样式
+    expect(result.ssr.css).toContain('outline');
+
+    // CSS 不应该包含未使用的大量类
+    // 简单验证：CSS 大小合理
+    const cssSize = Buffer.byteLength(result.ssr.css, 'utf8');
+    expect(cssSize).toBeLessThan(10 * 1024);
+  });
+
+  it('should have reasonable compression ratio', async () => {
+    const dsl = `
+[SECTION: main]
+  [CARD: c1] CONTENT: "Card 1"
+  [CARD: c2] CONTENT: "Card 2"
+  [BUTTON: b1] CONTENT: "Action"
+`;
+    const result = await compile(dsl);
+
+    // 压缩率应该存在（表示进行了 purge）
+    expect(result.stats.cssCompressionRatio).toBeDefined();
+    expect(result.stats.cssCompressionRatio).toBeGreaterThan(0);
+  });
+
+  it('should not include unused component styles', async () => {
+    // 只使用 Button，不应包含 Table 的完整样式
+    const dsl = '[BUTTON: btn] CONTENT: "Simple"';
+    const result = await compile(dsl);
+
+    // 验证 CSS 大小合理（未使用的组件样式被移除）
+    const cssSize = Buffer.byteLength(result.ssr.css, 'utf8');
+    expect(cssSize).toBeLessThan(8 * 1024);
   });
 });

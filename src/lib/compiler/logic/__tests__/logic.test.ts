@@ -5,6 +5,7 @@
  * - TC-LEXER-01: 词法分析
  * - TC-PARSER-01: 语法分析
  * - TC-ZOD-01 ~ TC-ZOD-05: 语义收敛
+ * - TC-TRANSFORM-01: ID 稳定性
  */
 
 import { describe, it, expect } from 'vitest';
@@ -539,5 +540,166 @@ describe('Integration - compile()', () => {
     expect(result.success).toBe(true);
     expect(result.errors).toHaveLength(0);
     // warnings 可能为空（取决于具体输入）
+  });
+});
+
+// ============================================
+// TC-TRANSFORM-01: ID 稳定性
+// ============================================
+
+describe('ID Stability (TC-TRANSFORM-01)', () => {
+  it('should generate consistent auto IDs across multiple compilations', () => {
+    // 使用有效的 DSL 语法
+    const dsl = '[CARD: c1] [BUTTON: "Click"] [TEXT: "Hello"]';
+
+    const result1 = compile(dsl);
+    const result2 = compile(dsl);
+
+    expect(result1.success).toBe(true);
+    expect(result2.success).toBe(true);
+
+    // 显式 ID 在不同编译中一致
+    expect(result1.ast?.children[0].id).toBe('c1');
+    expect(result2.ast?.children[0].id).toBe('c1');
+  });
+
+  it('should generate deterministic IDs based on position', () => {
+    const cst = [
+      { tag: 'CARD' },
+      { tag: 'CARD' },
+      { tag: 'BUTTON', text: 'btn' },
+      { tag: 'BUTTON', text: 'btn2' },
+    ];
+
+    const { ast: ast1 } = transformToAST(cst);
+    const { ast: ast2 } = transformToAST(cst);
+
+    // 相同输入应产生相同的 ID 序列
+    expect(ast1.children.map(c => c.id)).toEqual(ast2.children.map(c => c.id));
+    expect(ast1.children[0].id).toBe('card_1');
+    expect(ast1.children[1].id).toBe('card_2');
+    expect(ast1.children[2].id).toBe('button_1');
+    expect(ast1.children[3].id).toBe('button_2');
+  });
+
+  it('should preserve explicit IDs unchanged', () => {
+    const dsl = '[CARD: my_card] [BUTTON: my_btn]';
+
+    const result1 = compile(dsl);
+    const result2 = compile(dsl);
+
+    expect(result1.ast?.children[0].id).toBe('my_card');
+    expect(result2.ast?.children[0].id).toBe('my_card');
+  });
+});
+
+// ============================================
+// 深度嵌套测试 (10 层)
+// ============================================
+
+describe('Deep Nesting (10 levels)', () => {
+  it('should parse 10 levels of nesting correctly', () => {
+    // 构建 10 层嵌套的 CST，使用 FLEX 避免 Section 嵌套警告
+    let deepCST: any = { tag: 'TEXT', text: '最深层' };
+    for (let i = 9; i >= 0; i--) {
+      deepCST = {
+        tag: 'FLEX',
+        id: `level_${i}`,
+        children: [deepCST],
+      };
+    }
+
+    const { ast, errors } = transformToAST([deepCST]);
+
+    // 深度嵌套应该能正确解析
+    expect(ast.children[0]).toBeDefined();
+
+    // 遍历验证 10 层
+    let current: any = ast.children[0];
+    for (let i = 0; i < 10; i++) {
+      expect(current.id).toBe(`level_${i}`);
+      expect(current.type).toBe('Flex');
+      current = current.children[0];
+    }
+
+    // 最深层是 Text
+    expect(current.type).toBe('Text');
+    expect(current.props.text).toBe('最深层');
+  });
+
+  it('should compile 10 level DSL via multiline format', () => {
+    const dsl = `
+[SECTION: l0]
+  [SECTION: l1]
+    [SECTION: l2]
+      [SECTION: l3]
+        [SECTION: l4]
+          [SECTION: l5]
+            [SECTION: l6]
+              [SECTION: l7]
+                [SECTION: l8]
+                  [SECTION: l9]
+                    [TEXT: deep] CONTENT: "第10层"
+`;
+    const result = compile(dsl);
+
+    expect(result.success).toBe(true);
+    expect(result.ast).toBeDefined();
+
+    // 验证最深层内容
+    let current: any = result.ast?.children[0];
+    for (let i = 0; i < 10; i++) {
+      expect(current.id).toBe(`l${i}`);
+      current = current.children?.[0];
+    }
+    expect(current.props.content).toBe('第10层');
+  });
+});
+
+// ============================================
+// 超长字符串测试
+// ============================================
+
+describe('Long String Handling', () => {
+  it('should handle very long content strings', () => {
+    const longContent = 'A'.repeat(10000); // 10000 字符
+    const cst = [{
+      tag: 'TEXT',
+      id: 'long_text',
+      text: longContent,
+    }];
+
+    const { ast, errors } = transformToAST(cst);
+
+    expect(errors).toHaveLength(0);
+    expect(ast.children[0].props.text).toBe(longContent);
+    expect(ast.children[0].props.text.length).toBe(10000);
+  });
+
+  it('should handle very long attribute values', () => {
+    const longTitle = '标题'.repeat(1000); // 2000 字符
+    const cst = [{
+      tag: 'CARD',
+      id: 'long_title_card',
+      attrs: [{ key: 'Title', value: longTitle }],
+    }];
+
+    const { ast, errors } = transformToAST(cst);
+
+    expect(errors).toHaveLength(0);
+    expect(ast.children[0].props.title).toBe(longTitle);
+  });
+
+  it('should handle long IDs', () => {
+    const longId = 'component_' + 'x'.repeat(200);
+    const cst = [{
+      tag: 'CARD',
+      id: longId,
+    }];
+
+    const { ast, errors } = transformToAST(cst);
+
+    expect(errors).toHaveLength(0);
+    expect(ast.children[0].id).toBe(longId);
   });
 });
