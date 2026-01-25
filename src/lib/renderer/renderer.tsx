@@ -14,6 +14,21 @@ const defaultConfig: RendererConfig = {
   customComponents: {},
 };
 
+// 自闭合组件列表 - 这些组件不能有 children
+const SELF_CLOSING_TYPES = new Set([
+  'Input',
+  'Checkbox',
+  'Switch',
+  'Slider',
+  'Progress',
+  'Separator',
+  'Skeleton',
+  'Image',
+  'Avatar',
+  'AvatarImage',
+  'AvatarFallback',
+]);
+
 /**
  * 渲染单个节点
  */
@@ -135,6 +150,11 @@ function renderNode(
   }
 
   // 8. 返回渲染后的组件
+  // 自闭合组件不能有 children
+  if (SELF_CLOSING_TYPES.has(type)) {
+    return React.createElement(Component, finalProps);
+  }
+
   return React.createElement(Component, finalProps, renderedChildren);
 }
 

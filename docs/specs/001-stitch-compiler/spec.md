@@ -255,6 +255,80 @@ src/lib/compiler/
 - **预期**：顶层包裹 ThemeProvider，深层组件可获取 Tokens
 - **验证**：深层 Button 使用 `--primary-color` 渲染正确颜色
 
+### 渲染器测试
+
+渲染器负责将 IR (UINode) 转换为实际的 React 组件。测试确保所有组件类型正确渲染，props 正确传递，slots 正确分发。
+
+#### TC-RENDERER-01: 基础组件渲染
+
+- **操作**：渲染 Button、Text、Input 等基础组件
+- **预期**：组件正确渲染，props 正确传递
+- **验证**：
+  - Button 渲染 `<button>` 元素，文本可见
+  - Text 渲染文本内容
+  - Input 渲染 `<input>` 元素，placeholder 正确
+
+#### TC-RENDERER-02: Card 组件 Slots 渲染
+
+- **操作**：渲染带 title、content、footer 的 Card
+- **预期**：各 slot 内容正确分发到对应位置
+- **验证**：
+  - title 渲染在 CardHeader 内
+  - content 渲染在 CardContent 内
+  - Button 子节点渲染在 CardFooter 内
+  - **不能出现** `slots="[object Object]"` 属性
+
+#### TC-RENDERER-03: Alert 组件 Slots 渲染
+
+- **操作**：渲染带 title、description 的 Alert
+- **预期**：title 渲染为 AlertTitle，description 渲染为 AlertDescription
+- **验证**：HTML 包含 AlertTitle 和 AlertDescription 结构
+
+#### TC-RENDERER-04: Dialog 组件 Slots 渲染
+
+- **操作**：渲染带 header、content、footer 的 Dialog
+- **预期**：各 slot 正确分发
+- **验证**：DialogHeader、DialogContent、DialogFooter 结构正确
+
+#### TC-RENDERER-05: Tabs 组件渲染
+
+- **操作**：渲染带 items 的 Tabs 组件
+- **预期**：TabsList + TabsTrigger + TabsContent 正确渲染
+- **验证**：每个 tab item 生成对应的 trigger 和 content
+
+#### TC-RENDERER-06: Table 组件渲染
+
+- **操作**：渲染带 columns 和 data 的 Table
+- **预期**：TableHeader + TableBody + TableRow + TableCell 正确渲染
+- **验证**：列头和数据行正确显示
+
+#### TC-RENDERER-07: 嵌套组件渲染
+
+- **操作**：渲染 Section 包含多个 Card，Card 包含 Button
+- **预期**：嵌套结构正确渲染
+- **验证**：HTML 结构反映正确的嵌套关系
+
+#### TC-RENDERER-08: Props 类型正确性
+
+- **操作**：渲染组件并传递各类型 props (string, boolean, object)
+- **预期**：props 正确传递，不出现 `[object Object]` 字符串
+- **验证**：
+  - 字符串 props 正确显示
+  - 布尔 props 正确影响渲染
+  - 对象 props（如 slots）正确处理而非序列化
+
+#### TC-RENDERER-09: 事件桩函数渲染
+
+- **操作**：渲染带事件桩的 Button
+- **预期**：onClick 事件正确绑定
+- **验证**：渲染的元素包含事件处理器
+
+#### TC-RENDERER-10: 未知组件类型降级
+
+- **操作**：渲染未知类型的 IR 节点
+- **预期**：降级为 div 或报错提示
+- **验证**：不崩溃，给出合理的降级渲染
+
 ### SSR 引擎测试
 
 #### TC-SSR-01: 脱水渲染
@@ -406,9 +480,16 @@ ssr/
 └── index.ts          # 导出
 ```
 
-### 7. 集成测试（待做）
+### 7. 渲染器测试 ✅
+- 文件：`src/lib/renderer/__tests__/renderer.test.tsx`
+- 做什么：验证所有组件类型正确渲染，slots 正确分发
+- 验证：测试用例 TC-RENDERER-01 ~ TC-RENDERER-10 通过 (41 个测试)
+- 重点：复合组件（Card、Alert、Dialog）的 slots 渲染
+- 修复：创建 SlottedCard、SlottedAlert 包装组件处理 slots prop
+
+### 8. 集成测试 ✅
 - 做什么：端到端测试完整编译流程
-- 验证：DSL → AST → Tokens → React → HTML 全链路通过，测试用例 TC-E2E-01 ~ TC-E2E-02 通过
+- 验证：DSL → AST → Tokens → React → HTML 全链路通过，测试用例 TC-E2E-01 ~ TC-E2E-02 通过 (28 个测试)
 
 ## Notes
 
@@ -419,12 +500,26 @@ ssr/
 ## Progress
 
 - [x] 安装依赖 (Chevrotain, Zod, PurgeCSS)
-- [x] 逻辑引擎 (logic/): Chevrotain 词法/语法 + Zod 语义收敛 → AST
-- [x] 视觉引擎 (visual/): Design Tokens 生成 + Session State
-- [x] 组件工厂 (factory/): IR 生成 + Props归一化/插槽分发/事件桩函数/Context注入
-- [x] SSR 引擎 (ssr/): 脱水渲染/样式萃取/资源固化 (35 个测试)
-- [ ] 集成测试
+- [x] 逻辑引擎 (logic/): Chevrotain 词法/语法 + Zod 语义收敛 → AST (38 个测试)
+- [x] 视觉引擎 (visual/): Design Tokens 生成 + Session State (42 个测试)
+- [x] 组件工厂 (factory/): IR 生成 + Props归一化/插槽分发/事件桩函数/Context注入 (51 个测试)
+- [x] SSR 引擎 (ssr/): 脱水渲染/样式萃取/资源固化 (57 个测试)
+- [x] 集成测试 (e2e.test.ts): 端到端编译流程 (29 个测试)
+- [x] 渲染器测试 (renderer/): 组件渲染验证 + slots 分发 (41 个测试)
+
+## 测试统计
+
+| 模块 | 测试数 | 状态 |
+|------|--------|------|
+| 逻辑引擎 (logic/) | 38 | ✅ |
+| 视觉引擎 (visual/) | 42 | ✅ |
+| 组件工厂 (factory/) | 51 | ✅ |
+| SSR 引擎 (ssr/) | 57 | ✅ |
+| 集成测试 (e2e) | 29 | ✅ |
+| 渲染器 (renderer/) | 41 | ✅ |
+| **总计** | **258** | ✅ |
 
 ## Next
 
-- 实现集成测试 (端到端测试完整编译流程)
+- 所有测试通过
+- 可以开始使用编译器生成页面

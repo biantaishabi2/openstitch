@@ -14,6 +14,10 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+
+// 插槽包装组件
+import { SlottedCard } from './components/slotted-card';
+import { SlottedAlert } from './components/slotted-alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -289,7 +293,7 @@ export const componentMap: ComponentMap = {
   Container,
 
   // ========== 卡片组件 ==========
-  Card,
+  Card: SlottedCard, // 使用插槽包装器支持 slots prop
   CardHeader,
   CardTitle,
   CardDescription,
@@ -348,7 +352,7 @@ export const componentMap: ComponentMap = {
   Slider,
 
   // ========== 反馈组件 ==========
-  Alert,
+  Alert: SlottedAlert, // 使用插槽包装器支持 slots prop
   AlertTitle,
   AlertDescription,
   Badge,
