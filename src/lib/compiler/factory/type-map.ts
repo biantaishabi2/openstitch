@@ -29,11 +29,11 @@ export const TYPE_MAP: Record<ComponentType, string> = {
   Hero: 'Hero',
   Spacer: 'Spacer',
 
-  // 导航组件
-  Header: 'Flex',     // Header → Flex (with special props)
-  Footer: 'Flex',     // Footer → Flex (with special props)
-  Sidebar: 'Stack',   // Sidebar → Stack (with special props)
-  Nav: 'Flex',        // Nav → Flex (with special props)
+  // 导航组件 - 映射到布局基础组件
+  Header: 'Header',   // 语义化页头组件
+  Footer: 'Footer',   // 语义化页脚组件
+  Sidebar: 'Stack',   // 降级为 Stack (带暗色背景样式)
+  Nav: 'Stack',       // 降级为 Stack (垂直导航)
   Tabs: 'Tabs',
   Breadcrumb: 'Breadcrumb',
   Stepper: 'Stepper',
@@ -64,7 +64,7 @@ export const TYPE_MAP: Record<ComponentType, string> = {
   Slider: 'Slider',
   Radio: 'RadioGroup',  // 名称映射
   Select: 'Select',
-  Form: 'Stack',      // Form → Stack (direction="col")
+  Form: 'Stack',      // 降级为 Stack (表单布局)
 
   // 反馈组件
   Alert: 'Alert',

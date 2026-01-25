@@ -119,6 +119,8 @@ export interface CompileOptions {
   injectEvents?: boolean;
   /** 调试模式 */
   debug?: boolean;
+  /** Token 覆盖 (用于自定义颜色等) */
+  tokenOverrides?: Partial<DesignTokens>;
 }
 
 /**
@@ -198,6 +200,7 @@ export async function compile(
     ssr: ssrOptions = {},
     injectEvents = true,
     debug = false,
+    tokenOverrides,
   } = options;
 
   // 1. 解析 DSL → AST
@@ -213,10 +216,15 @@ export async function compile(
 
   // 2. 生成 Design Tokens
   const tokenStartTime = performance.now();
-  const tokens = generateDesignTokens({
+  let tokens = generateDesignTokens({
     context,
     sessionId: session.sessionId,
   });
+
+  // 应用 Token 覆盖
+  if (tokenOverrides) {
+    tokens = { ...tokens, ...tokenOverrides };
+  }
   const tokenGenTime = performance.now() - tokenStartTime;
 
   // 3. 组件工厂：AST + Tokens → React 组件树
