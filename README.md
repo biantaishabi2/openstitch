@@ -27,30 +27,116 @@ JSON Schema 驱动的 UI 渲染引擎。一套 Schema，多端渲染。
 
 ## 特性
 
-- **一套 JSON Schema，两种渲染方式**
-  - React 渲染器 → 导出静态 HTML
-  - LiveView 渲染器 → 导出 HEEx 模板 + Phoenix 组件库
+- **两种模式**
+  - 渲染器：JSON Schema → React/LiveView 组件
+  - 编译器：DSL 文本 → 静态 HTML + CSS（自动生成视觉样式）
 - **50+ 预置组件**：布局、表单、数据展示、反馈等
-- **AI 友好**：结构化的 JSON 格式，便于 AI 生成和理解
+- **AI 友好**：DSL 格式简洁，便于 AI 生成；视觉引擎自动处理样式
+- **确定性输出**：相同 context + seed = 相同视觉风格
+
+## 两种模式
+
+| 模式 | 输入 | 输出 | 适用场景 |
+|------|------|------|----------|
+| **渲染器 (Renderer)** | JSON Schema | React/LiveView 组件 | 精确控制每个组件属性 |
+| **编译器 (Compiler)** | DSL 文本 | 静态 HTML + CSS | AI 生成、快速原型 |
 
 ## 项目结构
 
 ```
 stitch/
 ├── src/
-│   ├── components/ui/     # React 组件 (shadcn/ui)
-│   ├── data/schemas/      # JSON Schema 示例
-│   └── lib/renderer/      # React 渲染器
+│   ├── components/ui/        # React 组件 (shadcn/ui)
+│   ├── data/schemas/         # JSON Schema 示例
+│   ├── lib/renderer/         # React 渲染器
+│   └── lib/compiler/         # DSL 编译器 (新)
+│       ├── logic/            #   DSL 解析器
+│       ├── visual/           #   视觉引擎 (Token 生成)
+│       ├── factory/          #   组件工厂
+│       ├── ssr/              #   SSR 渲染器
+│       └── config/           #   外部化配置
 ├── packages/
-│   └── liveview/          # Elixir/LiveView 组件包
+│   └── liveview/             # Elixir/LiveView 组件包
 ├── scripts/
-│   └── export-static.tsx  # 静态 HTML 导出工具
-└── docs/                  # 文档
+│   └── export-static.tsx     # 静态 HTML 导出工具
+└── docs/                     # 文档
 ```
 
 ---
 
-## 方式一：React 渲染器（导出静态 HTML）
+## 编译器模式 (Compiler)
+
+编译器将 DSL 文本编译为完整的静态 HTML，自动生成视觉样式。
+
+### 编译流程
+
+```
+DSL 文本 → 解析器 → AST → 视觉引擎 → Design Tokens → 组件工厂 → IR → SSR → HTML
+```
+
+### CLI 使用
+
+```bash
+# 编译 DSL 文件
+npx stitch compile input.dsl -o output.html
+
+# 指定上下文（影响视觉风格）
+npx stitch compile input.dsl --context "金融交易系统"
+
+# 指定 seed（确保样式可复现）
+npx stitch compile input.dsl --seed 12345
+```
+
+### DSL 语法示例
+
+```
+Page {
+  Header { justify="between" align="center"
+    Text { "Logo" variant="title" }
+    Nav {
+      Link { "首页" href="/" }
+      Link { "关于" href="/about" }
+    }
+  }
+  Section {
+    Card {
+      Text { "标题" variant="title" }
+      Text { "这是卡片内容" }
+      Button { "点击" variant="primary" }
+    }
+  }
+}
+```
+
+### 视觉引擎
+
+编译器根据 context 自动生成 Design Tokens：
+
+| 场景 | 关键词 | 视觉特征 |
+|------|--------|----------|
+| 技术 | 系统、架构、API | 锐利圆角、无装饰 |
+| 金融 | 银行、交易、财务 | 极小圆角、涨跌色 |
+| 医疗 | 医院、健康、诊断 | 大圆角(8px+)、柔和 |
+| 教育 | 学习、儿童、课程 | 胶囊圆角、活泼色彩 |
+| 创意 | 设计、营销、品牌 | 丰富装饰、高饱和 |
+
+### 配置文件
+
+视觉参数可在 `src/lib/compiler/config/` 中调整：
+
+| 文件 | 内容 |
+|------|------|
+| `scene.json` | 场景关键词、约束（饱和度、明度、语义色） |
+| `typography.json` | 字阶比率、字号范围、字重 |
+| `shape.json` | 圆角风格、阴影强度 |
+| `ornament.json` | 装饰模式、透明度级别 |
+| `component-props.json` | 组件默认 Props |
+
+---
+
+## 渲染器模式 (Renderer)
+
+### 方式一：React 渲染器（导出静态 HTML）
 
 ### 快速开始
 
@@ -91,9 +177,7 @@ npx tsx scripts/export-static.tsx admin-*
 
 导出的文件位于 `./output/` 目录。
 
----
-
-## 方式二：LiveView 渲染器（Phoenix 项目）
+### 方式二：LiveView 渲染器（Phoenix 项目）
 
 ### 安装组件包
 
