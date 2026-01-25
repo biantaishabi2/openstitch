@@ -365,8 +365,8 @@ describe('Type Mapping and Context (TC-FACTORY-05)', () => {
 
   it('should map missing types to equivalent components', () => {
     expect(getMappedType('Form')).toBe('Stack');
-    expect(getMappedType('Header')).toBe('Flex');
-    expect(getMappedType('Footer')).toBe('Flex');
+    expect(getMappedType('Header')).toBe('Header');   // 语义化页头组件
+    expect(getMappedType('Footer')).toBe('Footer');   // 语义化页脚组件
     expect(getMappedType('Sidebar')).toBe('Stack');
     expect(getMappedType('Heading')).toBe('Text');
   });
