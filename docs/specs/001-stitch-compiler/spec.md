@@ -388,11 +388,23 @@ AST ComponentType (26 种) → component-map (70+ 组件) 的映射关系：
 | Tabs | onValueChange | `(v) => console.log('Tab changed', v)` |
 | Dialog | onOpenChange | `(v) => console.log('Dialog', v ? 'opened' : 'closed')` |
 
-### 6. SSR 引擎（待做）
-- 文件：`ssr/renderer.ts`、`ssr/bundler.ts`、`ssr/codegen/`
+### 6. SSR 引擎（已完成）
+- 文件：`ssr/dehydrator.ts`、`ssr/css-purger.ts`、`ssr/solidifier.ts`、`ssr/renderer.ts`
 - 做什么：React 树 → 单文件 HTML
-- 验证：HTML 可离线运行，CSS < 10KB，测试用例 TC-SSR-01 ~ TC-SSR-03 通过
+- 验证：HTML 可离线运行，CSS < 10KB，测试用例 TC-SSR-01 ~ TC-SSR-03 通过 (35 个测试)
 - 参考：`docs/compiler-architecture.md` L1394-L1688
+
+#### SSR 文件结构
+
+```
+ssr/
+├── types.ts          # SSR 类型定义
+├── dehydrator.ts     # 脱水渲染 (React → HTML 字符串)
+├── css-purger.ts     # 样式萃取 (PurgeCSS)
+├── solidifier.ts     # 资源固化 (内联 CSS/JS/图片)
+├── renderer.ts       # SSR 主入口
+└── index.ts          # 导出
+```
 
 ### 7. 集成测试（待做）
 - 做什么：端到端测试完整编译流程
@@ -410,9 +422,9 @@ AST ComponentType (26 种) → component-map (70+ 组件) 的映射关系：
 - [x] 逻辑引擎 (logic/): Chevrotain 词法/语法 + Zod 语义收敛 → AST
 - [x] 视觉引擎 (visual/): Design Tokens 生成 + Session State
 - [x] 组件工厂 (factory/): IR 生成 + Props归一化/插槽分发/事件桩函数/Context注入
-- [ ] SSR 引擎 (ssr/): 代码生成器 + 打包器 + 脱水渲染/样式萃取/资源固化
+- [x] SSR 引擎 (ssr/): 脱水渲染/样式萃取/资源固化 (35 个测试)
 - [ ] 集成测试
 
 ## Next
 
-- 实现组件工厂 (factory/component-factory.tsx, factory/ir.ts)
+- 实现集成测试 (端到端测试完整编译流程)
