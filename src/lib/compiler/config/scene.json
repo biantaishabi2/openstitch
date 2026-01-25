@@ -1,0 +1,74 @@
+{
+  "keywords": {
+    "technical": ["技术", "架构", "开发", "代码", "系统", "API", "工程", "Technical", "System", "Code", "Developer"],
+    "finance": ["金融", "财务", "银行", "投资", "交易", "支付", "账户", "Finance", "Banking", "Trading", "Investment"],
+    "medical": ["医疗", "健康", "医院", "诊断", "患者", "药品", "护理", "Medical", "Health", "Hospital", "Healthcare"],
+    "education": ["教育", "儿童", "学习", "课程", "学生", "培训", "教学", "Education", "Learning", "Course", "Kids", "Children"],
+    "creative": ["创意", "营销", "设计", "品牌", "广告", "艺术", "展示", "Creative", "Marketing", "Design", "Brand"],
+    "enterprise": ["企业", "管理", "办公", "后台", "运营", "数据", "报表", "Enterprise", "Admin", "Dashboard", "Management"]
+  },
+  "constraints": {
+    "technical": {
+      "saturationRange": [60, 80],
+      "lightnessRange": [40, 60],
+      "spacingMultiplier": 1.0,
+      "shapeStyle": "rounded",
+      "ornamentLevel": "none"
+    },
+    "finance": {
+      "saturationRange": [60, 80],
+      "lightnessRange": [40, 55],
+      "spacingMultiplier": 0.8,
+      "shapeStyle": "sharp",
+      "ornamentLevel": "subtle",
+      "semanticColors": {
+        "positive": "#10B981",
+        "negative": "#EF4444"
+      }
+    },
+    "medical": {
+      "saturationRange": [65, 85],
+      "lightnessRange": [35, 55],
+      "spacingMultiplier": 1.0,
+      "shapeStyle": "soft",
+      "shapeMinRadius": 8,
+      "ornamentLevel": "none",
+      "semanticColors": {
+        "positive": "#059669",
+        "negative": "#F59E0B"
+      }
+    },
+    "education": {
+      "saturationRange": [80, 100],
+      "lightnessRange": [50, 70],
+      "spacingMultiplier": 1.5,
+      "shapeStyle": "pill",
+      "ornamentLevel": "moderate",
+      "semanticColors": {
+        "positive": "#22C55E",
+        "negative": "#F87171"
+      }
+    },
+    "creative": {
+      "saturationRange": [75, 95],
+      "lightnessRange": [45, 65],
+      "spacingMultiplier": 1.2,
+      "shapeStyle": "soft",
+      "ornamentLevel": "rich"
+    },
+    "enterprise": {
+      "saturationRange": [70, 90],
+      "lightnessRange": [45, 60],
+      "spacingMultiplier": 0.9,
+      "shapeStyle": "rounded",
+      "ornamentLevel": "subtle"
+    },
+    "default": {
+      "saturationRange": [70, 90],
+      "lightnessRange": [45, 60],
+      "spacingMultiplier": 1.0,
+      "shapeStyle": "rounded",
+      "ornamentLevel": "subtle"
+    }
+  }
+}

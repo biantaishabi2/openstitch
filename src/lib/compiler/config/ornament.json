@@ -1,0 +1,9 @@
+{
+  "patterns": ["none", "dots", "grid", "noise", "wave"],
+  "levels": {
+    "none": { "noiseOpacity": 0, "patternOpacity": 0 },
+    "subtle": { "noiseOpacity": 0.02, "patternOpacity": 0.02 },
+    "moderate": { "noiseOpacity": 0.03, "patternOpacity": 0.03 },
+    "rich": { "noiseOpacity": 0.05, "patternOpacity": 0.05 }
+  }
+}

@@ -80,63 +80,12 @@ export const TYPE_MAP: Record<ComponentType, string> = {
 };
 
 /**
- * 需要特殊 props 处理的类型
+ * 需要特殊 props 处理的类型（从配置读取）
  */
-export const SPECIAL_TYPE_PROPS: Record<string, Record<string, unknown>> = {
-  // ========== 映射组件的特殊 props ==========
-
-  // Heading 使用 Text 的 title variant
-  Heading: { variant: 'title', as: 'h2' },
-
-  // Quote 使用 Text 的 blockquote
-  Quote: { as: 'blockquote', className: 'border-l-4 border-muted pl-4 italic' },
-
-  // Form 使用 Stack 的 column 方向
-  Form: { direction: 'col', gap: 4 },
-
-  // Sidebar 使用 Stack 的 column 方向，带深色背景
-  Sidebar: {
-    direction: 'col',
-    className: 'w-64 min-h-screen bg-slate-900 text-white p-4 shrink-0',
-  },
-
-  // Header/Footer 使用 Flex 的特定样式
-  Header: {
-    justify: 'between',
-    align: 'center',
-    className: 'h-14 bg-white border-b border-gray-200 px-6 mb-6',
-  },
-  Footer: { justify: 'between', align: 'center', className: 'py-4 mt-auto' },
-
-  // Nav 使用 Flex 的垂直布局
-  Nav: { direction: 'col', gap: 1, className: 'w-full' },
-
-  // Section 禁用自动 grid 布局，让内部组件控制布局
-  Section: { layout: 'none', className: '!p-0 flex-1 flex flex-col' },
-
-  // ========== 布局组件默认 props ==========
-
-  // Stack 默认垂直方向
-  Stack: { direction: 'col' },
-
-  // Center 居中对齐
-  Center: {
-    className: 'flex items-center justify-center',
-  },
-
-  // Rows 垂直排列
-  Rows: { direction: 'col' },
-
-  // Hero 主视觉区域
-  Hero: {
-    className: 'min-h-[50vh] flex flex-col items-center justify-center text-center p-8',
-  },
-
-  // Page 页面容器
-  Page: {
-    className: 'min-h-screen bg-background',
-  },
-};
+import {
+  getSpecialProps as getSpecialPropsFromConfig,
+  isCompositeComponent as isCompositeFromConfig,
+} from '../config';
 
 /**
  * 获取映射后的组件类型
@@ -146,31 +95,15 @@ export function getMappedType(astType: ComponentType): string {
 }
 
 /**
- * 获取特殊类型的附加 props
+ * 获取特殊类型的附加 props（从配置读取）
  */
 export function getSpecialProps(astType: ComponentType): Record<string, unknown> {
-  return SPECIAL_TYPE_PROPS[astType] || {};
+  return getSpecialPropsFromConfig(astType);
 }
 
 /**
- * 复合组件列表（需要插槽分发）
- */
-export const COMPOSITE_COMPONENTS = new Set([
-  'Card',
-  'Alert',
-  'Dialog',
-  'Tabs',
-  'Table',
-  'Accordion',
-  'Timeline',
-  'Breadcrumb',
-  'Stepper',
-  'Tooltip',
-]);
-
-/**
- * 判断是否为复合组件
+ * 判断是否为复合组件（从配置读取）
  */
 export function isCompositeComponent(type: string): boolean {
-  return COMPOSITE_COMPONENTS.has(type);
+  return isCompositeFromConfig(type);
 }

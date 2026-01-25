@@ -1,0 +1,14 @@
+{
+  "styles": {
+    "sharp": { "minRadius": 2, "multiplier": 0.5 },
+    "rounded": { "minRadius": 4, "multiplier": 1.0 },
+    "soft": { "minRadius": 10, "multiplier": 1.5 },
+    "pill": { "minRadius": 16, "multiplier": 3.0 }
+  },
+  "shadows": {
+    "sharp": 0.12,
+    "rounded": 0.10,
+    "soft": 0.06,
+    "pill": 0.04
+  }
+}

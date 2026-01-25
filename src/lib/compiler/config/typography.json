@@ -1,0 +1,12 @@
+{
+  "scales": [1.067, 1.125, 1.2, 1.25, 1.333],
+  "scaleNames": ["minor-second", "major-second", "minor-third", "major-third", "perfect-fourth"],
+  "baseSize": 16,
+  "maxFontSize": 80,
+  "weights": {
+    "normal": 400,
+    "medium": 500,
+    "semibold": 600,
+    "bold": 700
+  }
+}

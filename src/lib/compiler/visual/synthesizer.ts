@@ -9,17 +9,24 @@
  * - C. 形状边框 (Shape) - 圆角、阴影
  * - D. 装饰纹理 (Ornamentation) - 背景纹理
  * - E. 语义颜色 (Semantic Mapping) - 颜色映射
+ *
+ * 配置外置：所有可调参数从 config/*.json 读取
  */
 
-import type {
-  DesignTokens,
-  SceneStyle,
-  SpacingDensity,
-  TypeScale,
-  ShapeStyle,
-  OrnamentLevel,
-  SynthesizerOptions,
-} from './types';
+import type { DesignTokens, SynthesizerOptions } from './types';
+import {
+  type SceneStyle,
+  type ShapeStyle,
+  type OrnamentLevel,
+  detectSceneStyle,
+  getSceneConstraints,
+  getTypeScale,
+  getShapeStyle,
+  getShadowIntensity,
+  getOrnamentLevel,
+  TYPOGRAPHY_CONFIG,
+  ORNAMENT_CONFIG,
+} from '../config';
 
 // ============================================
 // Hash 函数 - 确定性种子生成
@@ -50,86 +57,46 @@ function createRandom(seed: number): () => number {
   };
 }
 
-/**
- * 从数组中根据种子确定性选择
- */
-function pickFromSeed<T>(arr: T[], random: () => number): T {
-  const index = Math.floor(random() * arr.length);
-  return arr[index];
-}
-
-// ============================================
-// 场景识别
-// ============================================
-
-/** 场景关键词映射 */
-const SCENE_KEYWORDS: Record<SceneStyle, string[]> = {
-  technical: ['技术', '架构', '开发', '代码', '系统', 'API', '工程'],
-  finance: ['金融', '财务', '银行', '投资', '交易', '支付', '账户'],
-  medical: ['医疗', '健康', '医院', '诊断', '患者', '药品', '护理'],
-  education: ['教育', '儿童', '学习', '课程', '学生', '培训', '教学'],
-  creative: ['创意', '营销', '设计', '品牌', '广告', '艺术', '展示'],
-  enterprise: ['企业', '管理', '办公', '后台', '运营', '数据', '报表'],
-  default: [],
-};
-
-/**
- * 根据 context 识别场景风格
- */
-function detectSceneStyle(context: string): SceneStyle {
-  for (const [style, keywords] of Object.entries(SCENE_KEYWORDS)) {
-    if (keywords.some(kw => context.includes(kw))) {
-      return style as SceneStyle;
-    }
-  }
-  return 'default';
-}
-
 // ============================================
 // 维度 A: 空间尺度生成
 // ============================================
 
-/** 空间密度预设 */
-const SPACING_PRESETS: Record<SpacingDensity, {
-  baseUnit: number;
-  multiplier: number;
-  lineHeight: number;
-}> = {
-  compact: { baseUnit: 4, multiplier: 0.8, lineHeight: 1.4 },
-  normal: { baseUnit: 8, multiplier: 1.0, lineHeight: 1.5 },
-  spacious: { baseUnit: 8, multiplier: 1.5, lineHeight: 1.75 },
-};
+/**
+ * 空间尺度生成
+ *
+ * 规则:
+ *   baseUnit = (Hash % 2 == 0) ? 4px : 8px
+ *   步进序列: 几何级数 (2^n)
+ *   场景修正: multiplier = 场景系数 (compact: 0.8, spacious: 1.5)
+ */
+function generateSpacingTokens(seed: number, scene: SceneStyle): Partial<DesignTokens> {
+  // 基础单位由 Hash 决定
+  const baseUnit = (seed % 2 === 0) ? 4 : 8;
 
-/** 场景到空间密度的映射 */
-const SCENE_TO_SPACING: Record<SceneStyle, SpacingDensity> = {
-  technical: 'normal',
-  finance: 'compact',
-  medical: 'normal',
-  education: 'spacious',
-  creative: 'spacious',
-  enterprise: 'compact',
-  default: 'normal',
-};
+  // 场景修正系数（从配置读取）
+  const constraints = getSceneConstraints(scene);
+  const multiplier = constraints.spacingMultiplier;
 
-function generateSpacingTokens(scene: SceneStyle, random: () => number): Partial<DesignTokens> {
-  const density = SCENE_TO_SPACING[scene];
-  const preset = SPACING_PRESETS[density];
-  const { baseUnit, multiplier, lineHeight } = preset;
+  // 行高根据场景调整
+  const lineHeight = multiplier >= 1.3 ? 1.75 : (multiplier <= 0.85 ? 1.4 : 1.5);
 
-  // 添加少量随机变化 (±10%)
-  const variation = 0.9 + random() * 0.2;
-  const m = multiplier * variation;
+  // 几何级数间距 (2^n)
+  const space1 = Math.round(baseUnit * 1 * multiplier);   // XS
+  const space2 = Math.round(baseUnit * 2 * multiplier);   // SM
+  const space3 = Math.round(baseUnit * 4 * multiplier);   // MD
+  const space4 = Math.round(baseUnit * 8 * multiplier);   // LG
+  const space5 = Math.round(baseUnit * 16 * multiplier);  // XL
 
   return {
     '--base-unit': `${baseUnit}px`,
-    '--spacing-xs': `${Math.round(baseUnit * 0.5 * m)}px`,
-    '--spacing-sm': `${Math.round(baseUnit * 1 * m)}px`,
-    '--spacing-md': `${Math.round(baseUnit * 2 * m)}px`,
-    '--spacing-lg': `${Math.round(baseUnit * 3 * m)}px`,
-    '--spacing-xl': `${Math.round(baseUnit * 4 * m)}px`,
-    '--gap-card': `${Math.round(baseUnit * 2 * m)}px`,
-    '--padding-card': `${Math.round(baseUnit * 2 * m)}px`,
-    '--padding-section': `${Math.round(baseUnit * 3 * m)}px`,
+    '--spacing-xs': `${space1}px`,
+    '--spacing-sm': `${space2}px`,
+    '--spacing-md': `${space3}px`,
+    '--spacing-lg': `${space4}px`,
+    '--spacing-xl': `${space5}px`,
+    '--gap-card': `${space3}px`,
+    '--padding-card': `${space3}px`,
+    '--padding-section': `${space4}px`,
     '--line-height-body': lineHeight.toFixed(2),
   };
 }
@@ -138,42 +105,32 @@ function generateSpacingTokens(scene: SceneStyle, random: () => number): Partial
 // 维度 B: 字体排版生成
 // ============================================
 
-/** 字阶比率值 */
-const TYPE_SCALE_VALUES: Record<TypeScale, number> = {
-  'minor-second': 1.067,
-  'major-second': 1.125,
-  'minor-third': 1.2,
-  'major-third': 1.25,
-  'perfect-fourth': 1.333,
-  'golden-ratio': 1.618,
-};
+/**
+ * 字体排版生成
+ *
+ * 规则:
+ *   scale = SCALES[Hash % n]（从配置读取）
+ *   base = 16px
+ *   size(n) = base * scale^n
+ */
+function generateTypographyTokens(seed: number): Partial<DesignTokens> {
+  // 字阶比率由 Hash 决定（从配置读取）
+  const scale = getTypeScale(seed);
+  const baseSize = TYPOGRAPHY_CONFIG.baseSize;
+  const maxFontSize = TYPOGRAPHY_CONFIG.maxFontSize;
 
-/** 场景到字阶比率的映射 */
-const SCENE_TO_TYPE_SCALE: Record<SceneStyle, TypeScale> = {
-  technical: 'major-second',
-  finance: 'major-second',
-  medical: 'minor-third',
-  education: 'major-third',
-  creative: 'perfect-fourth',
-  enterprise: 'major-second',
-  default: 'major-third',
-};
-
-function generateTypographyTokens(scene: SceneStyle, random: () => number): Partial<DesignTokens> {
-  const typeScale = SCENE_TO_TYPE_SCALE[scene];
-  const scale = TYPE_SCALE_VALUES[typeScale];
-  const baseSize = 16;
-
-  // 计算各级字号
+  // 计算各级字号 (模块化比例)，限制最大值
   const sizes = {
-    xs: baseSize / scale / scale,
+    xs: baseSize / (scale * scale),
     sm: baseSize / scale,
     base: baseSize,
     lg: baseSize * scale,
     xl: baseSize * scale * scale,
-    '2xl': baseSize * scale * scale * scale,
-    '3xl': baseSize * scale * scale * scale * scale,
+    '2xl': Math.min(baseSize * scale * scale * scale, maxFontSize),
+    '3xl': Math.min(baseSize * scale * scale * scale * scale, maxFontSize),
   };
+
+  const weights = TYPOGRAPHY_CONFIG.weights;
 
   return {
     '--font-scale': scale.toFixed(3),
@@ -184,10 +141,10 @@ function generateTypographyTokens(scene: SceneStyle, random: () => number): Part
     '--font-size-xl': `${sizes.xl.toFixed(2)}px`,
     '--font-size-2xl': `${sizes['2xl'].toFixed(2)}px`,
     '--font-size-3xl': `${sizes['3xl'].toFixed(2)}px`,
-    '--font-weight-normal': '400',
-    '--font-weight-medium': '500',
-    '--font-weight-semibold': '600',
-    '--font-weight-bold': '700',
+    '--font-weight-normal': String(weights.normal),
+    '--font-weight-medium': String(weights.medium),
+    '--font-weight-semibold': String(weights.semibold),
+    '--font-weight-bold': String(weights.bold),
   };
 }
 
@@ -195,43 +152,42 @@ function generateTypographyTokens(scene: SceneStyle, random: () => number): Part
 // 维度 C: 形状边框生成
 // ============================================
 
-/** 形状风格预设 */
-const SHAPE_PRESETS: Record<ShapeStyle, {
-  radiusSm: number;
-  radiusMd: number;
-  radiusLg: number;
-  shadowIntensity: number;
-}> = {
-  sharp: { radiusSm: 2, radiusMd: 4, radiusLg: 6, shadowIntensity: 0.15 },
-  rounded: { radiusSm: 4, radiusMd: 6, radiusLg: 8, shadowIntensity: 0.1 },
-  soft: { radiusSm: 8, radiusMd: 12, radiusLg: 16, shadowIntensity: 0.06 },
-  pill: { radiusSm: 12, radiusMd: 16, radiusLg: 24, shadowIntensity: 0.04 },
-};
+/**
+ * 形状边框生成
+ *
+ * 规则:
+ *   baseRadius = (Hash % 4) * 2 + 2  // 结果: 2, 4, 6, 8
+ *   场景修正: 从配置读取
+ */
+function generateShapeTokens(seed: number, scene: SceneStyle): Partial<DesignTokens> {
+  // 基础圆角由 Hash 决定
+  const baseRadius = (seed % 4) * 2 + 2;  // 2, 4, 6, 8
 
-/** 场景到形状风格的映射 */
-const SCENE_TO_SHAPE: Record<SceneStyle, ShapeStyle> = {
-  technical: 'rounded',
-  finance: 'sharp',
-  medical: 'soft',
-  education: 'pill',
-  creative: 'soft',
-  enterprise: 'rounded',
-  default: 'rounded',
-};
+  // 场景修正（从配置读取）
+  const constraints = getSceneConstraints(scene);
+  const shapeStyle = constraints.shapeStyle as ShapeStyle;
+  const config = getShapeStyle(shapeStyle);
 
-function generateShapeTokens(scene: SceneStyle, random: () => number): Partial<DesignTokens> {
-  const shape = SCENE_TO_SHAPE[scene];
-  const preset = SHAPE_PRESETS[shape];
-  const { radiusSm, radiusMd, radiusLg, shadowIntensity } = preset;
+  // 场景情绪修正：某些场景需要更大的最小圆角（如医疗 = 安全亲和）
+  const sceneMinRadius = constraints.shapeMinRadius ?? config.minRadius;
+  const effectiveMinRadius = Math.max(config.minRadius, sceneMinRadius);
+
+  // 计算实际圆角，保证最小值
+  const radiusSm = Math.max(Math.round(baseRadius * 0.5 * config.multiplier), Math.round(effectiveMinRadius * 0.5));
+  const radiusMd = Math.max(Math.round(baseRadius * 1 * config.multiplier), effectiveMinRadius);
+  const radiusLg = Math.max(Math.round(baseRadius * 2 * config.multiplier), Math.round(effectiveMinRadius * 2));
+
+  // 阴影强度（从配置读取）
+  const shadowBase = getShadowIntensity(shapeStyle);
 
   return {
     '--radius-sm': `${radiusSm}px`,
     '--radius-md': `${radiusMd}px`,
     '--radius-lg': `${radiusLg}px`,
     '--radius-full': '9999px',
-    '--shadow-sm': `0 1px 2px rgba(0,0,0,${(shadowIntensity * 0.5).toFixed(2)})`,
-    '--shadow-md': `0 4px 6px rgba(0,0,0,${shadowIntensity.toFixed(2)})`,
-    '--shadow-lg': `0 10px 15px rgba(0,0,0,${(shadowIntensity * 1.2).toFixed(2)})`,
+    '--shadow-sm': `0 1px 2px rgba(0,0,0,${(shadowBase * 0.5).toFixed(2)})`,
+    '--shadow-md': `0 4px 6px rgba(0,0,0,${shadowBase.toFixed(2)})`,
+    '--shadow-lg': `0 10px 15px rgba(0,0,0,${(shadowBase * 1.2).toFixed(2)})`,
   };
 }
 
@@ -239,53 +195,45 @@ function generateShapeTokens(scene: SceneStyle, random: () => number): Partial<D
 // 维度 D: 装饰纹理生成
 // ============================================
 
-/** 场景到装饰强度的映射 */
-const SCENE_TO_ORNAMENT: Record<SceneStyle, OrnamentLevel> = {
-  technical: 'none',
-  finance: 'subtle',
-  medical: 'none',
-  education: 'moderate',
-  creative: 'rich',
-  enterprise: 'subtle',
-  default: 'subtle',
-};
+/**
+ * 装饰纹理生成
+ *
+ * 规则:
+ *   pattern = PATTERNS[Hash % n]（从配置读取）
+ *   opacity = 场景约束
+ */
+function generateOrnamentTokens(seed: number, scene: SceneStyle): Partial<DesignTokens> {
+  // 图案类型由 Hash 决定（从配置读取）
+  const patterns = ORNAMENT_CONFIG.patterns;
+  const patternIndex = seed % patterns.length;
+  const patternType = patterns[patternIndex];
 
-/** 装饰强度预设 */
-const ORNAMENT_PRESETS: Record<OrnamentLevel, { noiseOpacity: number; patternOpacity: number }> = {
-  none: { noiseOpacity: 0, patternOpacity: 0 },
-  subtle: { noiseOpacity: 0.02, patternOpacity: 0.02 },
-  moderate: { noiseOpacity: 0.03, patternOpacity: 0.03 },
-  rich: { noiseOpacity: 0.05, patternOpacity: 0.05 },
-};
+  // 基础透明度由 Hash 决定
+  const baseOpacity = (seed % 5) / 100;  // 0.00 - 0.04
 
-function generateOrnamentTokens(scene: SceneStyle, random: () => number): Partial<DesignTokens> {
-  const level = SCENE_TO_ORNAMENT[scene];
-  const preset = ORNAMENT_PRESETS[level];
+  // 场景修正（从配置读取）
+  const constraints = getSceneConstraints(scene);
+  const ornamentLevel = constraints.ornamentLevel as OrnamentLevel;
+  const preset = getOrnamentLevel(ornamentLevel);
+
+  // 最终透明度 = 场景约束
+  const patternOpacity = ornamentLevel === 'none' ? 0 : Math.max(baseOpacity, preset.patternOpacity);
+  const noiseOpacity = ornamentLevel === 'none' ? 0 : preset.noiseOpacity;
 
   return {
-    '--pattern-dots': `radial-gradient(circle, rgba(0,0,0,${preset.patternOpacity}) 1px, transparent 1px)`,
+    '--pattern-type': patternType,
+    '--pattern-dots': `radial-gradient(circle, rgba(0,0,0,${patternOpacity.toFixed(2)}) 1px, transparent 1px)`,
     '--pattern-dots-size': '20px 20px',
-    '--pattern-grid': `linear-gradient(rgba(0,0,0,${preset.patternOpacity}) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,${preset.patternOpacity}) 1px, transparent 1px)`,
+    '--pattern-grid': `linear-gradient(rgba(0,0,0,${patternOpacity.toFixed(2)}) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,${patternOpacity.toFixed(2)}) 1px, transparent 1px)`,
     '--pattern-grid-size': '24px 24px',
     '--gradient-fade': 'linear-gradient(180deg, transparent 0%, var(--background) 100%)',
-    '--noise-opacity': preset.noiseOpacity.toFixed(2),
+    '--noise-opacity': noiseOpacity.toFixed(2),
   };
 }
 
 // ============================================
 // 维度 E: 语义颜色生成
 // ============================================
-
-/** 场景主色预设 */
-const SCENE_PRIMARY_COLORS: Record<SceneStyle, { h: number; s: number; l: number }> = {
-  technical: { h: 217, s: 91, l: 60 },   // 蓝色 #3B82F6
-  finance: { h: 243, s: 75, l: 59 },     // 靛蓝 #6366F1
-  medical: { h: 188, s: 78, l: 41 },     // 青色 #0891B2
-  education: { h: 25, s: 95, l: 53 },    // 橙色 #F97316
-  creative: { h: 280, s: 87, l: 56 },    // 紫色 #A855F7
-  enterprise: { h: 221, s: 83, l: 53 },  // 蓝色 #2563EB
-  default: { h: 217, s: 91, l: 60 },     // 蓝色
-};
 
 /**
  * HSL 转 Hex
@@ -304,7 +252,6 @@ function hslToHex(h: number, s: number, l: number): string {
 
 /**
  * HSL 转 CSS HSL 值格式 (用于 CSS 变量)
- * 例如: hslToCSSValue(217, 91, 60) => "217 91% 60%"
  */
 function hslToCSSValue(h: number, s: number, l: number): string {
   return `${Math.round(h)} ${Math.round(s)}% ${Math.round(l)}%`;
@@ -325,28 +272,49 @@ function generateColorScale(h: number, s: number): Record<string, string> {
   return scale;
 }
 
-function generateColorTokens(scene: SceneStyle, random: () => number): Partial<DesignTokens> {
-  const primary = SCENE_PRIMARY_COLORS[scene];
+/**
+ * 颜色系统生成
+ *
+ * 规则:
+ *   主色相: Hue = Hash % 360
+ *   饱和度/亮度: 场景约束范围（从配置读取）
+ */
+function generateColorTokens(seed: number, scene: SceneStyle, random: () => number): Partial<DesignTokens> {
+  const constraints = getSceneConstraints(scene);
 
-  // 添加少量色相变化 (±5度)
-  const hVariation = (random() - 0.5) * 10;
-  const h = Math.round(primary.h + hVariation);
-  const s = primary.s;
-  const l = primary.l;
+  // 主色相由 Hash 决定
+  const h = seed % 360;
+
+  // 饱和度和亮度由场景约束决定（从配置读取），加入少量随机变化
+  const [sMin, sMax] = constraints.saturationRange;
+  const [lMin, lMax] = constraints.lightnessRange;
+  const s = sMin + random() * (sMax - sMin);
+  const l = lMin + random() * (lMax - lMin);
 
   const colorScale = generateColorScale(h, s);
 
   // HSL CSS 值格式 (用于 Tailwind/shadcn)
   const primaryHSL = hslToCSSValue(h, s, l);
-  const secondaryH = (h + 30) % 360;
-  const accentH = (h + 180) % 360;
+
+  // 互补色
+  const secondaryH = (h + 30) % 360;   // 邻近色
+  const accentH = (h + 180) % 360;     // 对比色
+
+  // 场景情绪辅助色（从配置读取）
+  const semanticColors = constraints.semanticColors;
+  const positiveColor = semanticColors?.positive ?? '#22C55E';  // 默认绿色
+  const negativeColor = semanticColors?.negative ?? '#EF4444';  // 默认红色
 
   return {
     // 保留 HEX 格式用于兼容
     '--primary-color': hslToHex(h, s, l),
     ...colorScale,
-    '--secondary-color': hslToHex(secondaryH, s * 0.7, l + 10),
+    '--secondary-color': hslToHex(secondaryH, s * 0.7, Math.min(l + 10, 90)),
     '--accent-color': hslToHex(accentH, s * 0.8, l),
+
+    // 场景情绪辅助色
+    '--positive-color': positiveColor,
+    '--negative-color': negativeColor,
 
     // HSL CSS 值格式 (用于 Tailwind/shadcn 类名)
     '--background': '0 0% 100%',
@@ -378,33 +346,30 @@ function generateColorTokens(scene: SceneStyle, random: () => number): Partial<D
 /**
  * 生成 Design Tokens
  *
+ * Token Generation Protocol:
+ * 1. 计算 Hash 种子: seed = djb2(`${context}:${sessionId}`)
+ * 2. 识别场景风格: scene = detectSceneStyle(context)（从配置读取关键词）
+ * 3. 生成各维度 Tokens（从配置读取参数）
+ *
  * @param options 合成器选项
  * @returns 完整的 Design Tokens
- *
- * @example
- * ```typescript
- * const tokens = generateDesignTokens({
- *   context: '技术架构文档',
- *   sessionId: 'sess_123',
- * });
- * ```
  */
 export function generateDesignTokens(options: SynthesizerOptions): DesignTokens {
   const { context, sessionId = 'default', seed: customSeed, overrides } = options;
 
-  // 1. 计算确定性种子
+  // 1. 计算确定性种子 (djb2 算法)
   const seed = customSeed ?? hashString(`${context}:${sessionId}`);
   const random = createRandom(seed);
 
-  // 2. 识别场景风格
+  // 2. 识别场景风格（从配置读取关键词）
   const scene = detectSceneStyle(context);
 
-  // 3. 生成各维度 Tokens
-  const spacing = generateSpacingTokens(scene, random);
-  const typography = generateTypographyTokens(scene, random);
-  const shape = generateShapeTokens(scene, random);
-  const ornament = generateOrnamentTokens(scene, random);
-  const colors = generateColorTokens(scene, random);
+  // 3. 生成各维度 Tokens (Hash + 场景约束，从配置读取)
+  const spacing = generateSpacingTokens(seed, scene);
+  const typography = generateTypographyTokens(seed);
+  const shape = generateShapeTokens(seed, scene);
+  const ornament = generateOrnamentTokens(seed, scene);
+  const colors = generateColorTokens(seed, scene, random);
 
   // 4. 合并所有 Tokens
   const tokens: DesignTokens = {
