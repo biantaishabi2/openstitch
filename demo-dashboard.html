@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stitch Dashboard Demo</title>
+  <style>
+:root { --base-unit: 8px;--spacing-xs: 4px;--spacing-sm: 8px;--spacing-md: 16px;--spacing-lg: 24px;--spacing-xl: 32px;--gap-card: 16px;--padding-card: 16px;--padding-section: 24px;--line-height-body: 1.50;--font-scale: 1.125;--font-size-xs: 12.64px;--font-size-sm: 14.22px;--font-size-base: 16px;--font-size-lg: 18.00px;--font-size-xl: 20.25px;--font-size-2xl: 22.78px;--font-size-3xl: 25.63px;--font-weight-normal: 400;--font-weight-medium: 500;--font-weight-semibold: 600;--font-weight-bold: 700;--radius-sm: 4px;--radius-md: 6px;--radius-lg: 8px;--radius-full: 9999px;--shadow-sm: 0 1px 2px rgba(0,0,0,0.05);--shadow-md: 0 4px 6px rgba(0,0,0,0.10);--shadow-lg: 0 10px 15px rgba(0,0,0,0.12);--pattern-dots: radial-gradient(circle, rgba(0,0,0,0) 1px, transparent 1px);--pattern-dots-size: 20px 20px;--pattern-grid: linear-gradient(rgba(0,0,0,0) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0) 1px, transparent 1px);--pattern-grid-size: 24px 24px;--gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity: 0.00;--primary-color: #3c7af6;--primary-50: #f0f5fe;--primary-100: #dde8fd;--primary-200: #bbd0fc;--primary-300: #8aaff9;--primary-400: #4681f6;--primary-500: #0b59f4;--primary-600: #0a4bcd;--primary-700: #083ca6;--primary-800: #062e7f;--primary-900: #041e53;--secondary-color: #9282e3;--accent-color: #e3b24f;--background: #ffffff;--foreground: #0f172a;--muted: #f1f5f9;--muted-foreground: #64748b;--border: #e2e8f0; }
+:root {
+  --base-unit: 8px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --gap-card: 16px;
+  --padding-card: 16px;
+  --padding-section: 24px;
+  --line-height-body: 1.50;
+  --font-scale: 1.125;
+  --font-size-xs: 12.64px;
+  --font-size-sm: 14.22px;
+  --font-size-base: 16px;
+  --font-size-lg: 18.00px;
+  --font-size-xl: 20.25px;
+  --font-size-2xl: 22.78px;
+  --font-size-3xl: 25.63px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.10);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.12);
+  --pattern-dots: radial-gradient(circle, rgba(0,0,0,0) 1px, transparent 1px);
+  --pattern-dots-size: 20px 20px;
+  --pattern-grid: linear-gradient(rgba(0,0,0,0) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0) 1px, transparent 1px);
+  --pattern-grid-size: 24px 24px;
+  --gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);
+  --noise-opacity: 0.00;
+  --primary-color: #3c7af6;
+  --primary-50: #f0f5fe;
+  --primary-100: #dde8fd;
+  --primary-200: #bbd0fc;
+  --primary-300: #8aaff9;
+  --primary-400: #4681f6;
+  --primary-500: #0b59f4;
+  --primary-600: #0a4bcd;
+  --primary-700: #083ca6;
+  --primary-800: #062e7f;
+  --primary-900: #041e53;
+  --secondary-color: #9282e3;
+  --accent-color: #e3b24f;
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --border: #e2e8f0;
+}
+
+/* Tailwind 基础重置 */
+*, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; }
+button { font-family: inherit; font-size: 100%; margin: 0; padding: 0; }
+button { background-color: transparent; background-image: none; }
+ svg { display: block; max-width: 100%; height: auto; }
+
+/* 常用工具类 */
+.flex { display: flex; }
+.grid { display: grid; }
+
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: 0.5rem; }
+.gap-6 { gap: 1.5rem; }
+
+.w-full { width: 100%; }
+.min-h-screen { min-height: 100vh; }
+.text-base { font-size: 1rem; line-height: 1.5rem; }
+.text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.rounded-md { border-radius: 0.375rem; }
+.rounded-xl { border-radius: 0.75rem; }
+
+.border { border-width: 1px; }
+
+.opacity-50 { opacity: 0.5; }
+
+/* HSL 颜色工具类 */
+.bg-background { background-color: hsl(var(--background)); }
+.bg-card { background-color: hsl(var(--card)); }
+.bg-accent { background-color: hsl(var(--accent)); }
+.text-card-foreground { color: hsl(var(--card-foreground)); }
+.border-input { border-color: hsl(var(--input)); }
+
+  </style>
+
+</head>
+<body>
+<div style="--base-unit:8px;--spacing-xs:4px;--spacing-sm:8px;--spacing-md:16px;--spacing-lg:24px;--spacing-xl:32px;--gap-card:16px;--padding-card:16px;--padding-section:24px;--line-height-body:1.50;--font-scale:1.125;--font-size-xs:12.64px;--font-size-sm:14.22px;--font-size-base:16px;--font-size-lg:18.00px;--font-size-xl:20.25px;--font-size-2xl:22.78px;--font-size-3xl:25.63px;--font-weight-normal:400;--font-weight-medium:500;--font-weight-semibold:600;--font-weight-bold:700;--radius-sm:4px;--radius-md:6px;--radius-lg:8px;--radius-full:9999px;--shadow-sm:0 1px 2px rgba(0,0,0,0.05);--shadow-md:0 4px 6px rgba(0,0,0,0.10);--shadow-lg:0 10px 15px rgba(0,0,0,0.12);--pattern-dots:radial-gradient(circle, rgba(0,0,0,0) 1px, transparent 1px);--pattern-dots-size:20px 20px;--pattern-grid:linear-gradient(rgba(0,0,0,0) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0) 1px, transparent 1px);--pattern-grid-size:24px 24px;--gradient-fade:linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity:0.00;--primary-color:#3c7af6;--primary-50:#f0f5fe;--primary-100:#dde8fd;--primary-200:#bbd0fc;--primary-300:#8aaff9;--primary-400:#4681f6;--primary-500:#0b59f4;--primary-600:#0a4bcd;--primary-700:#083ca6;--primary-800:#062e7f;--primary-900:#041e53;--secondary-color:#9282e3;--accent-color:#e3b24f;--background:#ffffff;--foreground:#0f172a;--muted:#f1f5f9;--muted-foreground:#64748b;--border:#e2e8f0"><div class="w-full bg-background min-h-screen p-0"><section class="py-12 md:py-16 lg:py-20" id="dashboard"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="header"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-4 h-4" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>用户管理仪表盘</div></div><div data-slot="card-content" class="px-6"><p class="text-base">Stitch UI 编译器生成的示例页面</p></div></div></section><section class="py-12 md:py-16 lg:py-20" id="stats"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="total_users"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-4 h-4" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>用户总数</div></div><div data-slot="card-content" class="px-6"><p class="text-base">12,345 位用户</p></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="active_users"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity w-4 h-4" aria-hidden="true"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>活跃用户</div></div><div data-slot="card-content" class="px-6"><p class="text-base">8,901 位在线</p></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="new_users"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-plus w-4 h-4" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" x2="19" y1="8" y2="14"></line><line x1="22" x2="16" y1="11" y2="11"></line></svg>新增用户</div></div><div data-slot="card-content" class="px-6"><p class="text-base">+234 本周新增</p></div></div></section><section class="py-12 md:py-16 lg:py-20" id="actions"><button data-slot="button" data-variant="primary" data-size="default" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-9 px-4 py-2 has-[&gt;svg]:px-3 text-lg" style="font-size:18.00px" id="button_1">新增用户</button><button data-slot="button" data-variant="outline" data-size="default" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[&gt;svg]:px-3 text-base" id="button_2">导出数据</button><button data-slot="button" data-variant="ghost" data-size="default" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 h-9 px-4 py-2 has-[&gt;svg]:px-3 text-base" id="button_3">刷新</button></section><section class="py-12 md:py-16 lg:py-20" id="features"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="feature1"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code w-4 h-4" aria-hidden="true"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg>DSL 编译</div></div><div data-slot="card-content" class="px-6"><p class="text-base">将简洁的 DSL 语法编译为标准 HTML</p></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="feature2"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-palette w-4 h-4" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"></path><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>设计系统</div></div><div data-slot="card-content" class="px-6"><p class="text-base">自动生成一致的 Design Tokens</p></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="feature3"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layers w-4 h-4" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"></path><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"></path><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"></path></svg>组件工厂</div></div><div data-slot="card-content" class="px-6"><p class="text-base">70+ 预置组件，开箱即用</p></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm" id="feature4"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-server w-4 h-4" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect><rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>SSR 渲染</div></div><div data-slot="card-content" class="px-6"><p class="text-base">服务端渲染，零 JavaScript 依赖</p></div></div></section></div></div>
+
+</body>
+</html>

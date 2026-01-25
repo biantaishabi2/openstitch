@@ -315,17 +315,21 @@ describe('Complex Scenarios', () => {
 // ============================================
 
 describe('Edge Cases', () => {
-  it('should handle deeply nested structure', async () => {
-    // 深度嵌套的 SECTION
-    const dsl = '[SECTION: l1] [SECTION: l2] [SECTION: l3] [BUTTON: "Deep"]';
+  it('should handle multiple sections as siblings', async () => {
+    // 多个 SECTION 应该是兄弟节点，而非嵌套
+    // BUTTON 会成为最后一个 SECTION 的子节点（符合 SECTION 包含 BUTTON 的设计）
+    const dsl = '[SECTION: l1] [SECTION: l2] [SECTION: l3] [BUTTON: "Action"]';
 
     const result = await compile(dsl);
 
-    // 验证深度嵌套的 AST 结构
-    const l1 = result.ast.children[0];
-    expect(l1.type).toBe('Section');
-    expect(l1.children).toBeDefined();
-    expect(l1.children![0].type).toBe('Section');
+    // 验证 SECTION 作为兄弟节点
+    expect(result.ast.children.length).toBe(3); // 3 个 Section
+    expect(result.ast.children[0].type).toBe('Section');
+    expect(result.ast.children[1].type).toBe('Section');
+    expect(result.ast.children[2].type).toBe('Section');
+    // Button 是第三个 Section 的子节点
+    expect(result.ast.children[2].children).toBeDefined();
+    expect(result.ast.children[2].children![0].type).toBe('Button');
   });
 
   it('should handle multiple root elements', async () => {

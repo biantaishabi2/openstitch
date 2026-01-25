@@ -250,10 +250,45 @@ class SimpleParser {
       node.content = this.parseContentDecl();
     }
 
-    // 子元素（简化处理：假设所有后续 TagOpen 都是子元素，直到遇到同级或更高级的标签）
-    // 注意：真实实现需要基于缩进判断层级
+    // 子元素处理：
+    // - SECTION 是顶层容器，遇到新的 SECTION 时停止
+    // - 同级元素（如 CARD 与 CARD、BUTTON 与 BUTTON）应该是兄弟而非嵌套
+    // - 只有明确的父子关系才嵌套（如 SECTION 包含 CARD）
     const children: CSTNode[] = [];
+
+    // 定义容器类型 - 这些可以包含其他元素
+    const containerTypes = ['SECTION', 'CARD', 'GRID', 'FLEX', 'STACK', 'PAGE'];
+    // 定义叶子类型 - 这些不应该包含同级元素
+    const leafTypes = ['BUTTON', 'TEXT', 'INPUT', 'BADGE', 'ICON'];
+
     while (this.match('TagOpen')) {
+      const nextTag = extractTagName(this.current()!.image);
+
+      // 遇到新的 SECTION，停止（它是顶层兄弟）
+      if (nextTag === 'SECTION') {
+        break;
+      }
+
+      // 如果当前是叶子类型，不应该有子元素
+      if (leafTypes.includes(tag)) {
+        break;
+      }
+
+      // 如果当前和下一个都是同类型，停止（它们是兄弟）
+      if (tag === nextTag) {
+        break;
+      }
+
+      // 如果当前是 CARD，下一个也是 CARD，停止（兄弟关系）
+      if (tag === 'CARD' && nextTag === 'CARD') {
+        break;
+      }
+
+      // 如果当前是 BUTTON，下一个也是 BUTTON，停止（兄弟关系）
+      if (tag === 'BUTTON' && nextTag === 'BUTTON') {
+        break;
+      }
+
       children.push(this.parseElement());
     }
     if (children.length > 0) {

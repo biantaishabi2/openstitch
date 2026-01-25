@@ -1,0 +1,47 @@
+{
+  "screen_id": "screen_001",
+  "title": "用户管理",
+  "type": "Layout",
+  "props": { "direction": "column", "className": "p-6" },
+  "children": [
+    {
+      "type": "Flex",
+      "props": { "justify": "between", "align": "center", "className": "mb-6" },
+      "children": [
+        { "type": "Text", "props": { "as": "h1", "className": "text-2xl font-bold" }, "children": "用户管理" },
+        { "type": "Button", "props": { "variant": "primary" }, "children": "新增用户" }
+      ]
+    },
+    {
+      "type": "Grid",
+      "props": { "columns": 3, "gap": 4, "className": "mb-6" },
+      "children": [
+        { "type": "StatisticCard", "props": { "label": "用户总数", "value": "12,345", "icon": "users", "trend": "up", "change": "+12%" } },
+        { "type": "StatisticCard", "props": { "label": "活跃用户", "value": "8,901", "icon": "activity", "trend": "up", "change": "+5%" } },
+        { "type": "StatisticCard", "props": { "label": "新增用户", "value": "234", "icon": "user-plus", "trend": "down", "change": "-3%" } }
+      ]
+    },
+    {
+      "type": "Card",
+      "children": [
+        { "type": "CardHeader", "children": [{ "type": "CardTitle", "children": "用户列表" }] },
+        {
+          "type": "CardContent",
+          "children": [
+            {
+              "type": "Table",
+              "props": {
+                "columns": [
+                  { "key": "name", "label": "用户名" },
+                  { "key": "email", "label": "邮箱" },
+                  { "key": "status", "label": "状态" },
+                  { "key": "actions", "label": "操作" }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
