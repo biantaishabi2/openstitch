@@ -96,6 +96,23 @@ describe('Full Compile Pipeline (TC-E2E-01)', () => {
     expect(result.ssr.css).toContain(':root');
   });
 
+  it('should allow DSL className/style to override token-derived styles', async () => {
+    const dsl = `
+[FLEX: row]
+  ATTR: Spacing("normal"), ClassName("custom-flex gap-0"), Style("gap: 64px; color: #ff0000")
+  [TEXT: label]
+    CONTENT: "Hello"
+`.trim();
+
+    const result = await compile(dsl);
+    const ir = result.factory.ir;
+
+    expect(ir.type).toBe('Flex');
+    expect(ir.props?.className).toContain('custom-flex');
+    expect(ir.props?.style?.gap).toBe('64px');
+    expect(ir.props?.style?.color).toBe('#ff0000');
+  });
+
   it('should track compile statistics', async () => {
     const dsl = '[SECTION: main] [CARD: card1] [TEXT: "Content"]';
 

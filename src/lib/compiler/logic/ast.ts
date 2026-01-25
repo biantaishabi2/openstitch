@@ -291,6 +291,11 @@ export const PROP_KEY_MAP: Record<string, string> = {
   'Text': 'text',
   'Label': 'label',
   'Placeholder': 'placeholder',
+  'ClassName': 'className',
+  'className': 'className',
+  'classname': 'className',
+  'Style': 'style',
+  'style': 'style',
   'Disabled': 'disabled',
   'Loading': 'loading',
   // 样式透传通道：ClassName → customClassName

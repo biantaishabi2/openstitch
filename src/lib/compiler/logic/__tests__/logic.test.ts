@@ -208,6 +208,23 @@ describe('Semantic - Property Transform (TC-ZOD-01)', () => {
     expect(ast.children[0].props.title).toBe('OpenCode 接口调用');
     expect(ast.children[0].props.icon).toBe('Terminal');
   });
+
+  it('should preserve className/style keys for downstream overrides', () => {
+    const cst = [{
+      tag: 'CARD',
+      id: 'card_override',
+      attrs: [
+        { key: 'ClassName', value: 'custom-card shadow-none' },
+        { key: 'Style', value: '{"gap":"120px","color":"#ff0000"}' },
+      ],
+    }];
+
+    const { ast, errors } = transformToAST(cst);
+
+    expect(errors.filter(e => e.level === 'error')).toHaveLength(0);
+    expect(ast.children[0].props.className).toBe('custom-card shadow-none');
+    expect(ast.children[0].props.style).toBe('{"gap":"120px","color":"#ff0000"}');
+  });
 });
 
 // ============================================

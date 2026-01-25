@@ -219,6 +219,59 @@ function mergeStyles(
   return hasStyles ? merged : undefined;
 }
 
+function coerceStyleObject(obj: Record<string, unknown>): Record<string, string> {
+  const style: Record<string, string> = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (value === undefined || value === null) continue;
+    style[key] = typeof value === 'string' ? value : String(value);
+  }
+  return style;
+}
+
+function parseCssDeclarations(input: string): Record<string, string> | undefined {
+  const declarations = input
+    .split(';')
+    .map((d) => d.trim())
+    .filter(Boolean);
+
+  if (declarations.length === 0) return undefined;
+
+  const style: Record<string, string> = {};
+  for (const decl of declarations) {
+    const idx = decl.indexOf(':');
+    if (idx <= 0) continue;
+    const key = decl.slice(0, idx).trim();
+    const value = decl.slice(idx + 1).trim();
+    if (key && value) {
+      style[key] = value;
+    }
+  }
+
+  return Object.keys(style).length > 0 ? style : undefined;
+}
+
+function parseStyleValue(value: unknown): Record<string, string> | undefined {
+  if (!value) return undefined;
+
+  if (typeof value === 'object' && !Array.isArray(value)) {
+    return coerceStyleObject(value as Record<string, unknown>);
+  }
+
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value) as unknown;
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        return coerceStyleObject(parsed as Record<string, unknown>);
+      }
+    } catch {
+      // Fall through to CSS declaration parsing.
+    }
+    return parseCssDeclarations(value);
+  }
+
+  return undefined;
+}
+
 /**
  * 归一化 Props
  *
@@ -241,6 +294,8 @@ export function normalizeProps(
   const result: NormalizedProps = {};
   const classNames: (string | undefined)[] = [];
   const styles: (Record<string, string> | undefined)[] = [];
+  let explicitClassName: string | undefined;
+  let explicitStyle: Record<string, string> | undefined;
 
   // 提取 customClassName（用于最后合并）
   let customClassName: string | undefined;
@@ -250,6 +305,16 @@ export function normalizeProps(
     if (value === undefined || value === null) continue;
 
     switch (key) {
+      case 'className': {
+        explicitClassName = String(value);
+        break;
+      }
+
+      case 'style': {
+        explicitStyle = parseStyleValue(value);
+        break;
+      }
+
       case 'size': {
         const normalized = normalizeSize(value as string, tokens);
         classNames.push(normalized.className);
@@ -424,6 +489,14 @@ export function normalizeProps(
         break;
       }
     }
+  }
+
+  // 显式样式最后合并，以覆盖 token 推导结果
+  if (explicitClassName) {
+    classNames.push(explicitClassName);
+  }
+  if (explicitStyle) {
+    styles.push(explicitStyle);
   }
 
   // 合并 className 和 style

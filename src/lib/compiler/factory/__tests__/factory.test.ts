@@ -795,11 +795,9 @@ describe('Style Priority (TC-PROPS-01)', () => {
     };
     const result = normalizeProps(props, tokens);
 
-    // normalizeProps 会合并 style，具体行为取决于实现
-    // 验证 style 对象存在
     expect(result.style).toBeDefined();
-    // 显式 style 属性应该被保留
-    expect(result.style?.gap).toBeDefined();
+    // 显式 style 应覆盖 token 推导的 gap
+    expect(result.style?.gap).toBe('100px');
   });
 
   it('should allow explicit className to augment generated className', () => {
@@ -811,8 +809,37 @@ describe('Style Priority (TC-PROPS-01)', () => {
 
     // 验证 size 归一化正确
     expect(result.className).toContain('text-lg');
-    // className 透传取决于实现，验证原始 className 被处理
-    expect(result.className).toBeDefined();
+    // 显式 className 应被保留
+    expect(result.className).toContain('custom-class');
+  });
+
+  it('should parse JSON style string from DSL attrs', () => {
+    const props = {
+      spacing: 'normal' as const,
+      style: '{"gap":"80px","color":"#ff0000"}',
+    };
+    const result = normalizeProps(props, tokens);
+
+    expect(result.style?.gap).toBe('80px');
+    expect(result.style?.color).toBe('#ff0000');
+  });
+
+  it('should carry explicit className/style through IR generation', () => {
+    const ast = createSimpleAST([
+      {
+        id: 'row',
+        type: 'Flex',
+        props: {
+          spacing: 'normal',
+          className: 'custom-flex gap-0',
+          style: '{"gap":"64px"}',
+        },
+      },
+    ]);
+
+    const ir = generateIR(ast, tokens);
+    expect(ir.props?.className).toContain('custom-flex');
+    expect(ir.props?.style?.gap).toBe('64px');
   });
 
   it('should preserve explicit variant when token provides similar default', () => {

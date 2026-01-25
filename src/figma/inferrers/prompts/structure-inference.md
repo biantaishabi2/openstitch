@@ -1,0 +1,178 @@
+# 结构推断提示词
+
+请识别这个 UI 元素是什么组件类型。
+
+## 节点信息
+
+- 名称：{{name}}
+- 类型：{{type}}
+- 尺寸：{{width}}x{{height}}px
+- 子节点数量：{{childCount}}
+- 子节点类型：{{childTypes}}
+- 布局模式：{{layoutMode}}
+
+## 派生结构特征（程序计算）
+
+- 名称提示：{{nameHint}}
+- 宽高比：{{aspectRatio}}
+- 尺寸等级：{{sizeBucket}}
+- 文本子节点数：{{textChildCount}}
+- 非文本子节点数：{{nonTextChildCount}}
+- 仅包含文本子节点：{{hasOnlyTextChild}}
+- 是否有描边：{{hasStroke}}
+- 描边宽度：{{strokeWeight}}
+- 是否有填充：{{hasFill}}
+- 填充类型：{{fillTypes}}
+- 圆角半径：{{cornerRadius}}
+- 是否有阴影：{{hasShadow}}
+- 是否有模糊：{{hasBlur}}
+- 文本预览：{{textPreview}}
+- 疑似占位符文本：{{placeholderHint}}
+
+## 位置推断布局线索（即使没有 auto layout）
+
+- 可见子节点数（排除背景层）：{{layoutChildCount}}
+- 背景装饰层数：{{backgroundChildCount}}
+- 位置推断布局：{{inferredLayout}}
+- 位置推断间距：{{inferredGap}}
+- 位置推断内边距（top/right/bottom/left）：{{inferredPadding}}
+- 位置推断对齐：{{inferredAlignment}}
+
+## 可选类型
+
+请从以下类型中选择最匹配的：
+
+- **Button** - 按钮，可点击的交互元素
+- **Card** - 卡片，包含相关信息的容器
+- **Input** - 输入框，用户文本输入区域
+- **Heading** - 标题，大号文字
+- **Text** - 文本，普通文字内容
+- **Image** - 图片，图像内容
+- **Icon** - 图标，小型矢量图形
+- **Section** - 区块，垂直布局的内容区域
+- **Row** - 行，水平布局的内容区域
+- **Container** - 容器，通用布局容器
+
+如果不确定，请返回 `Container`，不要返回其它未列出的类型。
+
+## 重要判别提示（尤其是 Input vs Button）
+
+- **Input 更可能**：
+  - 有描边（hasStroke = yes）且描边宽度 > 0
+  - 宽高比很大（aspectRatio >= 4）
+  - 高度常见区间 36-56
+  - 文本像占位符（placeholderHint = yes）
+- **Button 更可能**：
+  - 没有描边或描边不明显
+  - 只有一个短文本标签且更像动作词（如 Submit / 保存 / 确定）
+  - 宽高比中等（通常 1.5-4）
+
+## 负约束（避免误判为 Button）
+
+- 出现以下任一情况时，不要选择 `Button`：
+  - `textChildCount = 0`
+  - 没有任何文本预览（`textPreview = none` 或为空）
+  - 尺寸很大（例如 `width >= 240` 或 `height >= 80`）且没有文本
+  - 主要由多个非文本子节点组成（`nonTextChildCount >= 2`）且没有文本
+- 满足下列特征时，优先考虑 `Container / Section / Row`：
+  - 没有文本子节点（`textChildCount = 0`）
+  - 主要是布局壳（多个 `FRAME/GROUP/RECTANGLE` 子节点）
+  - 节点尺寸偏大（`sizeBucket = large` 或 `xlarge`）
+- 如果你选择 `Button`，请确保理由里明确提到“存在文本子节点且文本像动作词”。
+
+## 结构判别补充（Section vs Card，Row vs Button）
+
+- **Section 更可能**：
+  - `layoutMode = VERTICAL`
+  - 文本子节点较多（例如 `textChildCount >= 2`）
+  - 更像内容区块而非单个信息卡片
+- **Card 更可能**：
+  - 有明显“卡片装饰”：例如 `hasShadow = yes`、圆角更强、或像单个信息块
+  - 常见为一个主要容器承载少量关键内容（如标题 + 数值/描述）
+- 避免把 Section 误判成 Card：
+  - 如果是竖向布局（`layoutMode = VERTICAL`）且文本较多，
+    且没有明显卡片装饰（`hasShadow = no` 且没有强描边），优先 `Section`
+
+- **Section vs Container（非常重要，尤其是表单/页面区块）**：
+  - 如果 `layoutMode = VERTICAL`，且 `childCount >= 3`，
+    即使 `textChildCount` 不多（例如只有 1 个标题文本），也优先 `Section`
+  - 如果是“标题 + 多个子块/字段/面板”的结构（常见于表单、设置页、内容区块），优先 `Section`
+  - 如果 `layoutMode = none`，但“位置推断布局”显示为 `vertical-from-positions`，
+    且 `layoutChildCount >= 3`，仍然优先 `Section`
+  - 不要把“有明确布局模式（VERTICAL/HORIZONTAL）”的区块随意归为 `Container`
+    - `Container` 更像“没有明确布局模式（layoutMode = none）的通用壳”
+  - `Container` 更可能：
+    - `layoutMode = none`
+    - `textChildCount = 0`
+    - 大尺寸且主要由多个非文本子节点组成
+    - “位置推断布局”是 unknown/mixed，或更像纯壳
+  - 如果 `backgroundChildCount >= 1`，优先把这些背景层当作装饰，不要因为它们影响布局判断
+
+- **Row 更可能**：
+  - `layoutMode = HORIZONTAL`
+  - 子节点数量 >= 2（例如 图标 + 文本，或多个子块）
+  - 更像“排布容器/行”而非单个交互控件
+- 避免把 Row 误判成 Button：
+  - 如果 `layoutMode = HORIZONTAL` 且 `childCount >= 2`，
+    且文本不像动作词（更像名词/描述），优先 `Row`
+  - 如果 `layoutMode = none`，但“位置推断布局”为 `horizontal-from-positions`，
+    且 `layoutChildCount >= 2`，也优先 `Row`
+  - 如果是“图标 + 文本”的组合（`nonTextChildCount >= 1` 且 `textChildCount >= 1`），
+    且文本不是动作词（例如 "Profile settings"），优先 `Row`
+  - `Button` 通常是单一交互元素；若判为 Button，请在理由中说明其“动作词文本”
+
+## 返回格式（必须严格遵守）
+
+请严格按照以下 JSON 格式返回（注意字段名必须是 componentType）：
+
+```json
+{
+  "componentType": "Input",
+  "confidence": 0.92,
+  "reasoning": "有描边+大宽高比+占位符文本",
+  "dsl": "[INPUT: Frame_99]\\n  ATTR: Placeholder(\"Enter your email...\")"
+}
+```
+
+重要要求（非常关键）：
+- 只返回 JSON，不要额外解释，不要使用 Markdown 代码块
+- 字段名必须是 `componentType`（不是 `type`）
+- `componentType` 的值必须是上面列出的类型之一（不确定就用 `Container`）
+- `dsl` 是必须字段，且必须是"可编译的 DSL 字符串"
+
+## DSL 严格约束（否则会编译失败）
+
+你输出的 `dsl` 必须满足：
+
+1) 只允许单个节点（不要子节点、不要额外标签）
+
+2) 结构必须是以下模板之一：
+
+模板 A（只有标签）：
+
+`[TAG: id]`
+
+模板 B（标签 + ATTR）：
+
+`[TAG: id]\n  ATTR: Key("value"), Key2("value")`
+
+模板 C（标签 + CONTENT）：
+
+`[TAG: id]\n  CONTENT: "text"`
+
+模板 D（标签 + ATTR + CONTENT）：
+
+`[TAG: id]\n  ATTR: Key("value"), Key2("value")\n  CONTENT: "text"`
+
+3) `TAG` 必须全大写，且只能是下列之一：
+
+`BUTTON, CARD, INPUT, HEADING, TEXT, IMAGE, ICON, SECTION, ROW, CONTAINER`
+
+4) `id` 只能包含字母、数字、下划线（不要空格和其他符号）
+
+5) `ATTR:` 只能出现一次
+- 如果有多个属性，必须写在同一行，用逗号分隔
+
+6) 只使用以下安全属性（不要发明新属性）：
+
+`Text, Placeholder, Title, Variant, Size, ClassName, Style, Icon, Width, Height, Gap, Align, Justify, Direction, Padding, Margin`
