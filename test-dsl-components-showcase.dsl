@@ -739,3 +739,122 @@
         [CODE: code2]
           ATTR: Language("typescript")
           CONTENT: "interface User {\n  name: string;\n  age: number;\n}"
+
+    [CARD: grid_layout]
+      ATTR: Title("Grid 网格布局")
+      [GRID: grid_demo]
+        { Columns: "4", Gap: "SM" }
+        [CARD: grid1]
+          { ClassName: "bg-blue-50 p-4 text-center" }
+          [TEXT: g1]
+            CONTENT: "1"
+        [CARD: grid2]
+          { ClassName: "bg-green-50 p-4 text-center" }
+          [TEXT: g2]
+            CONTENT: "2"
+        [CARD: grid3]
+          { ClassName: "bg-yellow-50 p-4 text-center" }
+          [TEXT: g3]
+            CONTENT: "3"
+        [CARD: grid4]
+          { ClassName: "bg-red-50 p-4 text-center" }
+          [TEXT: g4]
+            CONTENT: "4"
+
+    [CARD: columns_layout]
+      ATTR: Title("Columns 多栏布局 (1:2:1 比例)")
+      [COLUMNS: columns_demo]
+        { Layout: "1:2:1", Gap: "MD" }
+        [CARD: col1]
+          { ClassName: "bg-blue-50 p-4" }
+          [TEXT: c1]
+            CONTENT: "左栏 (1份)"
+        [CARD: col2]
+          { ClassName: "bg-green-50 p-4" }
+          [TEXT: c2]
+            CONTENT: "中栏 (2份)"
+        [CARD: col3]
+          { ClassName: "bg-yellow-50 p-4" }
+          [TEXT: c3]
+            CONTENT: "右栏 (1份)"
+
+    [CARD: split_horizontal]
+      ATTR: Title("Split 分割布局（左右）")
+      [SPLIT: split_lr]
+        { Ratio: "1:2", Gap: "MD" }
+        [CARD: split_l]
+          { ClassName: "bg-purple-50 p-4 h-20" }
+          [TEXT: sl]
+            CONTENT: "左侧 (1份)"
+        [CARD: split_r]
+          { ClassName: "bg-pink-50 p-4 h-20" }
+          [TEXT: sr]
+            CONTENT: "右侧 (2份)"
+
+    [CARD: split_vertical]
+      ATTR: Title("Split 分割布局（上下）")
+      [SPLIT: split_tb]
+        { Vertical: "true", Ratio: "1:1", Gap: "MD" }
+        [CARD: split_t]
+          { ClassName: "bg-cyan-50 p-4" }
+          [TEXT: st]
+            CONTENT: "上方区域"
+        [CARD: split_b]
+          { ClassName: "bg-orange-50 p-4" }
+          [TEXT: sb]
+            CONTENT: "下方区域"
+
+    [CARD: rows_layout]
+      ATTR: Title("Rows 行布局")
+      [ROWS: rows_demo]
+        { Gap: "SM" }
+        [CARD: row1]
+          { ClassName: "bg-slate-100 p-3" }
+          [TEXT: r1]
+            CONTENT: "第一行"
+        [CARD: row2]
+          { ClassName: "bg-slate-200 p-3" }
+          [TEXT: r2]
+            CONTENT: "第二行"
+        [CARD: row3]
+          { ClassName: "bg-slate-300 p-3" }
+          [TEXT: r3]
+            CONTENT: "第三行"
+
+    [CARD: center_layout]
+      ATTR: Title("Center 居中布局")
+      [CENTER: center_demo]
+        { MaxWidth: "md", ClassName: "bg-muted py-8" }
+        [CARD: center_card]
+          { ClassName: "w-full p-4 text-center" }
+          [TEXT: center_text]
+            CONTENT: "内容居中，最大宽度 md"
+
+    [CARD: spacer_demo]
+      ATTR: Title("Spacer 间距组件")
+      [STACK: spacer_content]
+        { ClassName: "bg-muted p-4 rounded" }
+        [BADGE: sp1]
+          CONTENT: "上方内容"
+        [SPACER: spacer1]
+          ATTR: Size("4")
+        [BADGE: sp2]
+          CONTENT: "间隔4后"
+        [SPACER: spacer2]
+          ATTR: Size("8")
+        [BADGE: sp3]
+          CONTENT: "间隔8后"
+
+    [CARD: layout_divider_demo]
+      ATTR: Title("LayoutDivider 布局分割线")
+      [STACK: divider_content]
+        { Gap: "MD" }
+        [TEXT: ld1]
+          CONTENT: "段落一"
+        [DIVIDER: ld_div1]
+        [TEXT: ld2]
+          CONTENT: "段落二"
+        [DIVIDER: ld_div2]
+          ATTR: Label("分节标题")
+        [TEXT: ld3]
+          CONTENT: "段落三"
