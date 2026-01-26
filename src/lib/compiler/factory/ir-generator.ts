@@ -192,11 +192,16 @@ function astNodeToUINode(
 
       // 对于某些组件，content 直接作为文本子节点
       if (!children && !slots) {
+        // Heading/Paragraph/Text 等自带样式的组件直接用纯文本，不包装 Text
+        // 注意：需要检查原始 node.type，而不是 mappedType（因为 Heading 已经映射为 Text）
+        const PURE_TEXT_COMPONENTS = ['Heading', 'Paragraph', 'Text'];
+        const usePureText = PURE_TEXT_COMPONENTS.includes(node.type);
+
         // 如果有 icon 子元素，组合 icon + text
         if (iconChild) {
           children = [iconChild, contentText];
         } else {
-          children = [{ type: 'Text', children: contentText }];
+          children = usePureText ? contentText : [{ type: 'Text', children: contentText }];
         }
       }
     }

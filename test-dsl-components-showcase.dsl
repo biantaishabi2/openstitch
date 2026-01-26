@@ -250,10 +250,10 @@
       [HERO: demo_hero]
         { Align: "Center", ClassName: "bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg" }
         [HEADING: hero_title]
-          ATTR: Size("3XL")
+          { ClassName: "text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight" }
           CONTENT: "欢迎使用 Stitch"
         [TEXT: hero_desc]
-          { Size: "LG", ClassName: "text-muted-foreground mt-2" }
+          { ClassName: "text-lg sm:text-xl text-muted-foreground mt-4 max-w-2xl" }
           CONTENT: "JSON Schema 驱动的 UI 渲染引擎"
         [FLEX: hero_btns]
           { Gap: "SM", ClassName: "mt-4" }
