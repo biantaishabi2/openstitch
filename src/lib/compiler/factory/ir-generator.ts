@@ -25,6 +25,53 @@ const TOUCHABLE_COMPONENTS = new Set([
   'AccordionTrigger',
 ]);
 
+const TEXT_SIZE_CLASS_MAP: Record<string, string> = {
+  xs: 'text-xs',
+  sm: 'text-sm',
+  md: 'text-base',
+  lg: 'text-lg',
+  xl: 'text-xl',
+  '2xl': 'text-2xl',
+  '3xl': 'text-3xl',
+  '4xl': 'text-4xl',
+  '5xl': 'text-5xl',
+  '6xl': 'text-6xl',
+  '7xl': 'text-7xl',
+  '8xl': 'text-8xl',
+  '9xl': 'text-9xl',
+};
+
+const CONTENT_PURE_TEXT_TYPES = new Set([
+  'Link',
+  'Badge',
+  'Button',
+  'BreadcrumbLink',
+  'BreadcrumbPage',
+  'TableHead',
+  'TableCell',
+]);
+
+const EXPLICIT_CHILD_COMPONENTS: Record<string, Set<string>> = {
+  Breadcrumb: new Set([
+    'BreadcrumbList',
+    'BreadcrumbItem',
+    'BreadcrumbLink',
+    'BreadcrumbPage',
+    'BreadcrumbSeparator',
+    'BreadcrumbEllipsis',
+  ]),
+};
+
+function hasExplicitChildren(
+  mappedType: string,
+  children: ASTNode[] | undefined
+): boolean {
+  if (!children || children.length === 0) return false;
+  const explicitTypes = EXPLICIT_CHILD_COMPONENTS[mappedType];
+  if (!explicitTypes) return false;
+  return children.some((child) => explicitTypes.has(child.type));
+}
+
 /**
  * 检查组件是否为特殊复合组件（需要直接传递 children 而非 slots）
  * 如 Timeline、Accordion 等需要将子节点直接作为 children
@@ -68,6 +115,28 @@ function astNodeToUINode(
     ...normalizedProps,
   };
 
+  // Button 的 Size 应作为组件 size prop，避免当作字体大小处理
+  if (node.type === 'Button' && node.props.size) {
+    const sizeValue = String(node.props.size);
+    mergedProps.size = sizeValue;
+
+    const sizeClass = TEXT_SIZE_CLASS_MAP[sizeValue];
+    if (sizeClass && typeof mergedProps.className === 'string') {
+      const classes = mergedProps.className
+        .split(' ')
+        .filter((cls) => cls && cls !== sizeClass);
+      mergedProps.className = classes.length > 0 ? classes.join(' ') : undefined;
+    }
+
+    if (mergedProps.style && typeof mergedProps.style === 'object') {
+      const style = mergedProps.style as Record<string, string>;
+      if (style.fontSize) {
+        const { fontSize: _fontSize, ...rest } = style;
+        mergedProps.style = Object.keys(rest).length > 0 ? rest : undefined;
+      }
+    }
+  }
+
   // 5. 移动端触摸反馈（为可点击组件添加 active:scale-[0.97] 等类）
   const platform = options.platform || 'web';
   if (platform === 'mobile' && TOUCHABLE_COMPONENTS.has(mappedType)) {
@@ -88,9 +157,17 @@ function astNodeToUINode(
   let slots: Record<string, UINode> | undefined;
 
   if (node.children && node.children.length > 0) {
+    const explicitChildren = hasExplicitChildren(mappedType, node.children);
+
+    // 显式结构的子组件直接透传
+    if (explicitChildren) {
+      children = node.children.map((child) =>
+        astNodeToUINode(child, tokens, options)
+      );
+    }
     // 特殊复合组件（Timeline、Accordion 等）：直接将子节点作为 children 传递
     // 这些组件期望从 children 中读取内容，而不是从 slots
-    if (isSpecialCompositeComponent(mappedType)) {
+    else if (isSpecialCompositeComponent(mappedType)) {
       const rule = getSlotRule(mappedType);
       const wrapperType = rule?.render[rule.slots[0]]; // 获取包装组件类型
 
@@ -175,8 +252,8 @@ function astNodeToUINode(
       mergedProps.code = contentText;
       delete mergedProps.content;
     }
-    // Link/Badge/Button：content 直接作为纯文本，不包裹 Text 组件
-    else if (mappedType === 'Link' || mappedType === 'Badge' || mappedType === 'a') {
+    // Link/Badge/Button 等：content 直接作为纯文本，不包裹 Text 组件
+    else if (CONTENT_PURE_TEXT_TYPES.has(mappedType) || mappedType === 'a') {
       delete mergedProps.content;
       if (!children && !slots) {
         if (iconChild) {
@@ -208,6 +285,16 @@ function astNodeToUINode(
   } else if (iconChild && !children && !slots) {
     // 只有 icon 没有 content
     children = [iconChild];
+  }
+
+  // Avatar Fallback：将 fallback props 转为 AvatarFallback 子节点
+  if (mappedType === 'Avatar' && !children && !slots) {
+    const fallbackValue = mergedProps.fallback ?? node.props.fallback;
+    if (fallbackValue !== undefined && fallbackValue !== null) {
+      const fallbackText = String(fallbackValue);
+      delete mergedProps.fallback;
+      children = [{ type: 'AvatarFallback', children: fallbackText }];
+    }
   }
 
   // 9. 处理 text prop（用于 Button 等组件的文本）

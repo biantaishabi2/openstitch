@@ -274,12 +274,20 @@
     [CARD: breadcrumb]
       ATTR: Title("Breadcrumb 面包屑"), Description("页面层级导航")
       [BREADCRUMB: demo_bc]
-        [TEXT: bc1]
-          CONTENT: "首页"
-        [TEXT: bc2]
-          CONTENT: "组件"
-        [TEXT: bc3]
-          CONTENT: "面包屑"
+        [BREADCRUMB_LIST: bc_list]
+          [BREADCRUMB_ITEM: bc_item_1]
+            [BREADCRUMB_LINK: bc_link_1]
+              ATTR: Href("#")
+              CONTENT: "首页"
+          [BREADCRUMB_SEPARATOR: bc_sep_1]
+          [BREADCRUMB_ITEM: bc_item_2]
+            [BREADCRUMB_LINK: bc_link_2]
+              ATTR: Href("#")
+              CONTENT: "组件"
+          [BREADCRUMB_SEPARATOR: bc_sep_2]
+          [BREADCRUMB_ITEM: bc_item_3]
+            [BREADCRUMB_PAGE: bc_page]
+              CONTENT: "面包屑"
 
     [CARD: stepper]
       ATTR: Title("Stepper 步骤条"), Description("引导用户完成多步骤流程")
@@ -449,55 +457,102 @@
 
     [CARD: statistic]
       ATTR: Title("Statistic 统计卡片"), Description("展示关键数据指标")
-      [GRID: stat_demo]
-        { Columns: "4", Gap: "MD" }
-        [STATISTIC_CARD: s1]
-          ATTR: Title("总用户"), Icon("Users")
-          CONTENT: "12,345"
-        [STATISTIC_CARD: s2]
-          ATTR: Title("订单数"), Icon("ShoppingCart")
-          CONTENT: "8,901"
-        [STATISTIC_CARD: s3]
-          ATTR: Title("收入"), Icon("DollarSign")
-          CONTENT: "¥99,999"
-        [STATISTIC_CARD: s4]
-          ATTR: Title("增长率"), Icon("TrendingUp")
-          CONTENT: "+15.3%"
+      [STACK: stat_content]
+        { Gap: "LG" }
+        [GRID: stat_top]
+          { Columns: "4", Gap: "MD" }
+          [CARD: stat_c1]
+            { ClassName: "p-6" }
+            [STATISTIC: stat1]
+              ATTR: Title("总用户"), Value("12,345"), Trend("up"), TrendValue("+15%")
+          [CARD: stat_c2]
+            { ClassName: "p-6" }
+            [STATISTIC: stat2]
+              ATTR: Title("活跃率"), Value("89.5%"), Trend("up"), TrendValue("+3.2%")
+          [CARD: stat_c3]
+            { ClassName: "p-6" }
+            [STATISTIC: stat3]
+              ATTR: Title("转化率"), Value("23.8%"), Trend("down"), TrendValue("-1.5%")
+          [CARD: stat_c4]
+            { ClassName: "p-6" }
+            [STATISTIC: stat4]
+              ATTR: Title("收入"), Value("¥1.2M"), Trend("up"), TrendValue("+28%")
+        [GRID: stat_bottom]
+          { Columns: "2", Gap: "MD" }
+          [STATISTIC_CARD: stat_card_1]
+            ATTR: Title("新增用户"), Value("1,024"), Trend("up"), TrendValue("+8%")
+          [STATISTIC_CARD: stat_card_2]
+            ATTR: Title("流失率"), Value("2.1%"), Trend("down"), TrendValue("-0.4%")
 
     [CARD: table]
       ATTR: Title("Table 数据表格"), Description("展示结构化数据")
       [TABLE: table_demo]
-        [FLEX: th]
-          [TEXT: th1]
-            CONTENT: "姓名"
-          [TEXT: th2]
-            CONTENT: "年龄"
-          [TEXT: th3]
-            CONTENT: "城市"
-        [FLEX: tr1]
-          [TEXT: td1]
-            CONTENT: "张三"
-          [TEXT: td2]
-            CONTENT: "28"
-          [TEXT: td3]
-            CONTENT: "北京"
-        [FLEX: tr2]
-          [TEXT: td4]
-            CONTENT: "李四"
-          [TEXT: td5]
-            CONTENT: "32"
-          [TEXT: td6]
-            CONTENT: "上海"
+        [TEXT: th1]
+          CONTENT: "ID"
+        [TEXT: th2]
+          CONTENT: "名称"
+        [TEXT: th3]
+          CONTENT: "状态"
+        [TEXT: th4]
+          CONTENT: "金额"
+        [TEXT: th5]
+          CONTENT: "操作"
+        [TABLE_ROW: tr1]
+          [TABLE_CELL: td1]
+            CONTENT: "001"
+          [TABLE_CELL: td2]
+            CONTENT: "项目 Alpha"
+          [TABLE_CELL: td3]
+            [BADGE: t1b]
+              { ClassName: "bg-green-100 text-green-800" }
+              CONTENT: "进行中"
+          [TABLE_CELL: td4]
+            CONTENT: "¥12,000"
+          [TABLE_CELL: td5]
+            [BUTTON: t1btn]
+              ATTR: Variant("ghost"), Size("SM")
+              CONTENT: "查看"
+        [TABLE_ROW: tr2]
+          [TABLE_CELL: td6]
+            CONTENT: "002"
+          [TABLE_CELL: td7]
+            CONTENT: "项目 Beta"
+          [TABLE_CELL: td8]
+            [BADGE: t2b]
+              { ClassName: "bg-yellow-100 text-yellow-800" }
+              CONTENT: "待审核"
+          [TABLE_CELL: td9]
+            CONTENT: "¥8,500"
+          [TABLE_CELL: td10]
+            [BUTTON: t2btn]
+              ATTR: Variant("ghost"), Size("SM")
+              CONTENT: "查看"
+        [TABLE_ROW: tr3]
+          [TABLE_CELL: td11]
+            CONTENT: "003"
+          [TABLE_CELL: td12]
+            CONTENT: "项目 Gamma"
+          [TABLE_CELL: td13]
+            [BADGE: t3b]
+              { ClassName: "bg-blue-100 text-blue-800" }
+              CONTENT: "已完成"
+          [TABLE_CELL: td14]
+            CONTENT: "¥25,000"
+          [TABLE_CELL: td15]
+            [BUTTON: t3btn]
+              ATTR: Variant("ghost"), Size("SM")
+              CONTENT: "查看"
 
     [CARD: list]
       ATTR: Title("List 列表"), Description("简洁的列表展示")
       [LIST: list_demo]
-        [TEXT: li1]
-          CONTENT: "列表项 1 - 项目概述"
-        [TEXT: li2]
-          CONTENT: "列表项 2 - 功能说明"
-        [TEXT: li3]
-          CONTENT: "列表项 3 - 使用指南"
+        ATTR: Divided("true")
+        [LIST_ITEM: li1]
+          ATTR: Title("列表项一"), Description("这是第一个列表项的描述")
+        [LIST_ITEM: li2]
+          ATTR: Title("列表项二"), Description("这是第二个列表项的描述")
+        [LIST_ITEM: li3]
+          ATTR: Title("列表项三"), Description("这是第三个列表项的描述")
 
     [CARD: timeline]
       ATTR: Title("Timeline 时间线"), Description("展示时间顺序的事件")

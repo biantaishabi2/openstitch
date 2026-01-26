@@ -59,6 +59,11 @@ export type ComponentType =
   | 'Nav'
   | 'Tabs'
   | 'Breadcrumb'
+  | 'BreadcrumbList'
+  | 'BreadcrumbItem'
+  | 'BreadcrumbLink'
+  | 'BreadcrumbPage'
+  | 'BreadcrumbSeparator'
   | 'Stepper'
   // 移动端导航组件 (4 种)
   | 'MobileShell'   // 移动端外壳 (包含 safe-area)
@@ -68,7 +73,13 @@ export type ComponentType =
   // 数据展示 (12 种)
   | 'Card'
   | 'Table'
+  | 'TableHeader'
+  | 'TableBody'
+  | 'TableRow'
+  | 'TableHead'
+  | 'TableCell'
   | 'List'
+  | 'ListItem'
   | 'Timeline'
   | 'TimelineItem'
   | 'TimelineContent'
@@ -222,6 +233,7 @@ export const PROP_KEY_MAP: Record<string, string> = {
   'Icon': 'icon',
   'Variant': 'variant',
   'Size': 'size',
+  'TrendValue': 'trendValue',
   'Gutter': 'gutter',
   'Align': 'align',
   'Justify': 'justify',
@@ -325,6 +337,11 @@ export const TAG_TO_TYPE: Record<string, ComponentType> = {
   'NAV': 'Nav',
   'TABS': 'Tabs',
   'BREADCRUMB': 'Breadcrumb',
+  'BREADCRUMB_LIST': 'BreadcrumbList',
+  'BREADCRUMB_ITEM': 'BreadcrumbItem',
+  'BREADCRUMB_LINK': 'BreadcrumbLink',
+  'BREADCRUMB_PAGE': 'BreadcrumbPage',
+  'BREADCRUMB_SEPARATOR': 'BreadcrumbSeparator',
   'STEPPER': 'Stepper',
   // 导航组件 (Mobile)
   'MOBILE_SHELL': 'MobileShell',
@@ -334,7 +351,13 @@ export const TAG_TO_TYPE: Record<string, ComponentType> = {
   // 数据展示
   'CARD': 'Card',
   'TABLE': 'Table',
+  'TABLE_HEADER': 'TableHeader',
+  'TABLE_BODY': 'TableBody',
+  'TABLE_ROW': 'TableRow',
+  'TABLE_HEAD': 'TableHead',
+  'TABLE_CELL': 'TableCell',
   'LIST': 'List',
+  'LIST_ITEM': 'ListItem',
   'TIMELINE': 'Timeline',
   'TIMELINE_ITEM': 'TimelineItem',
   'TIMELINE_CONTENT': 'TimelineContent',

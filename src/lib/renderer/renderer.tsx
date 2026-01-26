@@ -65,9 +65,7 @@ const SELF_CLOSING_TYPES = new Set([
   'Separator',
   'Skeleton',
   'Image',
-  'Avatar',
   'AvatarImage',
-  'AvatarFallback',
 ]);
 
 /**

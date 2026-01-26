@@ -36,6 +36,11 @@ export const TYPE_MAP: Record<ComponentType, string> = {
   Nav: 'Stack',       // 降级为 Stack (垂直导航)
   Tabs: 'Tabs',
   Breadcrumb: 'Breadcrumb',
+  BreadcrumbList: 'BreadcrumbList',
+  BreadcrumbItem: 'BreadcrumbItem',
+  BreadcrumbLink: 'BreadcrumbLink',
+  BreadcrumbPage: 'BreadcrumbPage',
+  BreadcrumbSeparator: 'BreadcrumbSeparator',
   Stepper: 'Stepper',
 
   // 导航组件 (Mobile) - 移动端专用
@@ -47,7 +52,13 @@ export const TYPE_MAP: Record<ComponentType, string> = {
   // 数据展示 - 直接映射
   Card: 'Card',
   Table: 'Table',
+  TableHeader: 'TableHeader',
+  TableBody: 'TableBody',
+  TableRow: 'TableRow',
+  TableHead: 'TableHead',
+  TableCell: 'TableCell',
   List: 'List',
+  ListItem: 'ListItem',
   Timeline: 'Timeline',
   Accordion: 'Accordion',
   Statistic: 'Statistic',
