@@ -50,6 +50,24 @@ const GAP_TOKEN_MAP: Record<string, string> = {
 };
 
 /**
+ * Gap 语义化名称到数字的映射（用于 Grid/Columns 组件）
+ */
+const GAP_TO_NUMBER_MAP: Record<string, number> = {
+  NONE: 0,
+  XS: 1,
+  SM: 2,
+  MD: 4,
+  LG: 6,
+  XL: 8,
+  none: 0,
+  xs: 1,
+  sm: 2,
+  md: 4,
+  lg: 6,
+  xl: 8,
+};
+
+/**
  * 对齐映射表
  */
 const ALIGN_CLASS_MAP: Record<string, string> = {
@@ -270,14 +288,34 @@ export function normalizeProps(
       }
 
       case 'gap': {
-        // Gap 使用 token 名（如 SM、MD），需要转换为实际像素值
+        // Gap 处理优先级：
+        // 1. 语义化名称 (XS, SM, MD...) → 转为数字，供 Grid/Columns 等组件使用
+        // 2. 数字字符串 → 直接转为数字
+        // 3. CSS 值 (如 "16px") → 作为 style
         const gapValue = value as string;
-        const tokenKey = GAP_TOKEN_MAP[gapValue] as keyof DesignTokens;
-        if (tokenKey && tokens[tokenKey]) {
-          styles.push({ gap: tokens[tokenKey] as string });
+
+        // 优先检查是否是语义化名称
+        if (GAP_TO_NUMBER_MAP[gapValue] !== undefined) {
+          result.gap = GAP_TO_NUMBER_MAP[gapValue];
         } else {
-          // 如果不是 token 名，直接使用原值（可能是 CSS 值如 "16px"）
-          styles.push({ gap: gapValue });
+          // 尝试转换为数字
+          const numericGap = Number(gapValue);
+          if (!isNaN(numericGap)) {
+            result.gap = numericGap;
+          } else {
+            // 否则作为 CSS 值处理
+            styles.push({ gap: gapValue });
+          }
+        }
+        break;
+      }
+
+      case 'columns': {
+        // Grid 的 columns prop，需要转换为数字
+        const colValue = value as string;
+        const numericCols = Number(colValue);
+        if (!isNaN(numericCols)) {
+          result.columns = numericCols;
         }
         break;
       }

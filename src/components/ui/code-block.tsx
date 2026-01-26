@@ -97,7 +97,7 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
         {/* 代码内容 */}
         <div
           className={cn(
-            'overflow-x-auto p-4',
+            'overflow-x-auto p-4 text-zinc-100 [&_pre]:text-zinc-100 [&_code]:text-zinc-100',
             showLineNumbers && '[&_pre]:!pl-12 [&_code]:relative [&_.line]:before:absolute [&_.line]:before:left-0 [&_.line]:before:w-8 [&_.line]:before:text-right [&_.line]:before:text-zinc-600 [&_.line]:before:pr-4 [&_.line]:before:content-[counter(line)] [&_.line]:before:[counter-increment:line] [&_code]:[counter-reset:line]'
           )}
           dangerouslySetInnerHTML={{ __html: highlightedCode }}
