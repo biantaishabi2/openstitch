@@ -148,99 +148,99 @@
       CONTENT: "组件清单"
     [GRID: comp_list]
       { Columns: "2", Gap: "XS", ClassName: "text-[11px] text-muted-foreground" }
-      [BADGE: c1] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Div"
-      [BADGE: c2] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Span"
-      [BADGE: c3] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Text"
-      [BADGE: c4] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Link"
-      [LINK: c5] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#image") CONTENT: "Image"
-      [LINK: c6] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#layout") CONTENT: "Layout"
-      [LINK: c7] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#grid") CONTENT: "Grid"
-      [LINK: c8] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#columns") CONTENT: "Columns"
-      [BADGE: c9] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Split"
-      [BADGE: c10] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Stack"
-      [BADGE: c11] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Flex"
-      [LINK: c12] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#rows") CONTENT: "Rows"
-      [BADGE: c13] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Page"
-      [LINK: c14] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#center") CONTENT: "Center"
-      [LINK: c15] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#spacer") CONTENT: "Spacer"
-      [BADGE: c16] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "LayoutDivider"
-      [LINK: c17] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#hero") CONTENT: "Hero"
-      [LINK: c18] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#section") CONTENT: "Section"
-      [BADGE: c19] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Container"
-      [LINK: c20] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#card") CONTENT: "Card"
-      [BADGE: c21] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "CardHeader"
-      [BADGE: c22] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "CardTitle"
-      [BADGE: c23] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "CardDescription"
-      [BADGE: c24] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "CardContent"
-      [BADGE: c25] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "CardFooter"
-      [LINK: c26] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#tabs") CONTENT: "Tabs"
-      [BADGE: c27] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TabsList"
-      [BADGE: c28] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TabsTrigger"
-      [BADGE: c29] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TabsContent"
-      [LINK: c30] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#breadcrumb") CONTENT: "Breadcrumb"
-      [BADGE: c31] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "BreadcrumbList"
-      [BADGE: c32] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "BreadcrumbItem"
-      [BADGE: c33] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "BreadcrumbLink"
-      [BADGE: c34] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "BreadcrumbPage"
-      [BADGE: c35] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "BreadcrumbSeparator"
-      [LINK: c36] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#stepper") CONTENT: "Stepper"
-      [BADGE: c37] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Step"
-      [LINK: c38] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#table") CONTENT: "Table"
-      [BADGE: c39] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TableHeader"
-      [BADGE: c40] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TableBody"
-      [BADGE: c41] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TableRow"
-      [BADGE: c42] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TableHead"
-      [BADGE: c43] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TableCell"
-      [LINK: c44] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#timeline") CONTENT: "Timeline"
-      [BADGE: c45] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TimelineItem"
-      [BADGE: c46] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TimelineContent"
-      [BADGE: c47] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TimelineHeader"
-      [BADGE: c48] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TimelineTitle"
-      [BADGE: c49] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TimelineDescription"
-      [BADGE: c50] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TimelineTime"
-      [BADGE: c51] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TimelineConnector"
-      [BADGE: c52] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TimelineEmpty"
-      [LINK: c53] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#accordion") CONTENT: "Accordion"
-      [BADGE: c54] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "AccordionItem"
-      [BADGE: c55] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "AccordionTrigger"
-      [BADGE: c56] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "AccordionContent"
-      [LINK: c57] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#list") CONTENT: "List"
-      [BADGE: c58] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "ListItem"
-      [LINK: c59] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#statistic") CONTENT: "Statistic"
-      [BADGE: c60] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "StatisticCard"
-      [LINK: c61] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#codeblock") CONTENT: "CodeBlock"
-      [BADGE: c62] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "InlineCode"
-      [LINK: c63] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#button") CONTENT: "Button"
-      [BADGE: c64] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Input"
-      [BADGE: c65] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Label"
-      [BADGE: c66] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Checkbox"
-      [BADGE: c67] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "RadioGroup"
-      [BADGE: c68] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "RadioGroupItem"
-      [BADGE: c69] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Switch"
-      [BADGE: c70] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Slider"
-      [LINK: c71] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#alert") CONTENT: "Alert"
-      [BADGE: c72] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "AlertTitle"
-      [BADGE: c73] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "AlertDescription"
-      [LINK: c74] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#badge") CONTENT: "Badge"
-      [LINK: c75] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#progress") CONTENT: "Progress"
-      [LINK: c76] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#dialog") CONTENT: "Dialog"
-      [BADGE: c77] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "DialogTrigger"
-      [BADGE: c78] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "DialogContent"
-      [BADGE: c79] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "DialogHeader"
-      [BADGE: c80] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "DialogTitle"
-      [BADGE: c81] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "DialogDescription"
-      [BADGE: c82] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "DialogFooter"
-      [LINK: c83] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#tooltip") CONTENT: "Tooltip"
-      [BADGE: c84] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TooltipProvider"
-      [BADGE: c85] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TooltipTrigger"
-      [BADGE: c86] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "TooltipContent"
-      [LINK: c87] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#skeleton") CONTENT: "Skeleton"
-      [LINK: c88] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#empty") CONTENT: "EmptyState"
-      [LINK: c89] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#icon") CONTENT: "Icon"
-      [LINK: c90] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#avatar") CONTENT: "Avatar"
-      [BADGE: c91] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "AvatarImage"
-      [BADGE: c92] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "AvatarFallback"
-      [BADGE: c93] { ClassName: "rounded bg-muted px-1.5 py-0.5 text-muted-foreground cursor-not-allowed" } CONTENT: "Separator"
+      [LINK: c1] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Div") CONTENT: "Div"
+      [LINK: c2] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Span") CONTENT: "Span"
+      [LINK: c3] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Text") CONTENT: "Text"
+      [LINK: c4] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Link") CONTENT: "Link"
+      [LINK: c5] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Image") CONTENT: "Image"
+      [LINK: c6] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Layout") CONTENT: "Layout"
+      [LINK: c7] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Grid") CONTENT: "Grid"
+      [LINK: c8] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Columns") CONTENT: "Columns"
+      [LINK: c9] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Split") CONTENT: "Split"
+      [LINK: c10] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Stack") CONTENT: "Stack"
+      [LINK: c11] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Flex") CONTENT: "Flex"
+      [LINK: c12] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Rows") CONTENT: "Rows"
+      [LINK: c13] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Page") CONTENT: "Page"
+      [LINK: c14] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Center") CONTENT: "Center"
+      [LINK: c15] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Spacer") CONTENT: "Spacer"
+      [LINK: c16] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-LayoutDivider") CONTENT: "LayoutDivider"
+      [LINK: c17] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Hero") CONTENT: "Hero"
+      [LINK: c18] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Section") CONTENT: "Section"
+      [LINK: c19] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Container") CONTENT: "Container"
+      [LINK: c20] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Card") CONTENT: "Card"
+      [LINK: c21] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-CardHeader") CONTENT: "CardHeader"
+      [LINK: c22] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-CardTitle") CONTENT: "CardTitle"
+      [LINK: c23] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-CardDescription") CONTENT: "CardDescription"
+      [LINK: c24] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-CardContent") CONTENT: "CardContent"
+      [LINK: c25] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-CardFooter") CONTENT: "CardFooter"
+      [LINK: c26] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Tabs") CONTENT: "Tabs"
+      [LINK: c27] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TabsList") CONTENT: "TabsList"
+      [LINK: c28] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TabsTrigger") CONTENT: "TabsTrigger"
+      [LINK: c29] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TabsContent") CONTENT: "TabsContent"
+      [LINK: c30] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Breadcrumb") CONTENT: "Breadcrumb"
+      [LINK: c31] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-BreadcrumbList") CONTENT: "BreadcrumbList"
+      [LINK: c32] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-BreadcrumbItem") CONTENT: "BreadcrumbItem"
+      [LINK: c33] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-BreadcrumbLink") CONTENT: "BreadcrumbLink"
+      [LINK: c34] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-BreadcrumbPage") CONTENT: "BreadcrumbPage"
+      [LINK: c35] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-BreadcrumbSeparator") CONTENT: "BreadcrumbSeparator"
+      [LINK: c36] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Stepper") CONTENT: "Stepper"
+      [LINK: c37] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Step") CONTENT: "Step"
+      [LINK: c38] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Table") CONTENT: "Table"
+      [LINK: c39] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TableHeader") CONTENT: "TableHeader"
+      [LINK: c40] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TableBody") CONTENT: "TableBody"
+      [LINK: c41] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TableRow") CONTENT: "TableRow"
+      [LINK: c42] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TableHead") CONTENT: "TableHead"
+      [LINK: c43] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TableCell") CONTENT: "TableCell"
+      [LINK: c44] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Timeline") CONTENT: "Timeline"
+      [LINK: c45] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TimelineItem") CONTENT: "TimelineItem"
+      [LINK: c46] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TimelineContent") CONTENT: "TimelineContent"
+      [LINK: c47] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TimelineHeader") CONTENT: "TimelineHeader"
+      [LINK: c48] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TimelineTitle") CONTENT: "TimelineTitle"
+      [LINK: c49] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TimelineDescription") CONTENT: "TimelineDescription"
+      [LINK: c50] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TimelineTime") CONTENT: "TimelineTime"
+      [LINK: c51] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TimelineConnector") CONTENT: "TimelineConnector"
+      [LINK: c52] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TimelineEmpty") CONTENT: "TimelineEmpty"
+      [LINK: c53] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Accordion") CONTENT: "Accordion"
+      [LINK: c54] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-AccordionItem") CONTENT: "AccordionItem"
+      [LINK: c55] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-AccordionTrigger") CONTENT: "AccordionTrigger"
+      [LINK: c56] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-AccordionContent") CONTENT: "AccordionContent"
+      [LINK: c57] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-List") CONTENT: "List"
+      [LINK: c58] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-ListItem") CONTENT: "ListItem"
+      [LINK: c59] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Statistic") CONTENT: "Statistic"
+      [LINK: c60] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-StatisticCard") CONTENT: "StatisticCard"
+      [LINK: c61] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-CodeBlock") CONTENT: "CodeBlock"
+      [LINK: c62] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-InlineCode") CONTENT: "InlineCode"
+      [LINK: c63] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Button") CONTENT: "Button"
+      [LINK: c64] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Input") CONTENT: "Input"
+      [LINK: c65] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Label") CONTENT: "Label"
+      [LINK: c66] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Checkbox") CONTENT: "Checkbox"
+      [LINK: c67] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-RadioGroup") CONTENT: "RadioGroup"
+      [LINK: c68] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-RadioGroupItem") CONTENT: "RadioGroupItem"
+      [LINK: c69] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Switch") CONTENT: "Switch"
+      [LINK: c70] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Slider") CONTENT: "Slider"
+      [LINK: c71] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Alert") CONTENT: "Alert"
+      [LINK: c72] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-AlertTitle") CONTENT: "AlertTitle"
+      [LINK: c73] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-AlertDescription") CONTENT: "AlertDescription"
+      [LINK: c74] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Badge") CONTENT: "Badge"
+      [LINK: c75] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Progress") CONTENT: "Progress"
+      [LINK: c76] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Dialog") CONTENT: "Dialog"
+      [LINK: c77] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-DialogTrigger") CONTENT: "DialogTrigger"
+      [LINK: c78] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-DialogContent") CONTENT: "DialogContent"
+      [LINK: c79] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-DialogHeader") CONTENT: "DialogHeader"
+      [LINK: c80] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-DialogTitle") CONTENT: "DialogTitle"
+      [LINK: c81] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-DialogDescription") CONTENT: "DialogDescription"
+      [LINK: c82] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-DialogFooter") CONTENT: "DialogFooter"
+      [LINK: c83] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Tooltip") CONTENT: "Tooltip"
+      [LINK: c84] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TooltipProvider") CONTENT: "TooltipProvider"
+      [LINK: c85] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TooltipTrigger") CONTENT: "TooltipTrigger"
+      [LINK: c86] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-TooltipContent") CONTENT: "TooltipContent"
+      [LINK: c87] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Skeleton") CONTENT: "Skeleton"
+      [LINK: c88] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-EmptyState") CONTENT: "EmptyState"
+      [LINK: c89] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Icon") CONTENT: "Icon"
+      [LINK: c90] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Avatar") CONTENT: "Avatar"
+      [LINK: c91] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-AvatarImage") CONTENT: "AvatarImage"
+      [LINK: c92] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-AvatarFallback") CONTENT: "AvatarFallback"
+      [LINK: c93] { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" } ATTR: Href("#component-Separator") CONTENT: "Separator"
 
   [STACK: main]
     { Gap: "LG", ClassName: "flex-1 p-6 overflow-y-auto" }
@@ -740,7 +740,7 @@
           ATTR: Language("typescript")
           CONTENT: "interface User {\n  name: string;\n  age: number;\n}"
 
-    [CARD: grid]
+    [CARD: grid_layout]
       ATTR: Title("Grid 网格布局")
       [GRID: grid_demo]
         { Columns: "4", Gap: "SM" }
@@ -761,7 +761,7 @@
           [TEXT: g4]
             CONTENT: "4"
 
-    [CARD: columns]
+    [CARD: columns_layout]
       ATTR: Title("Columns 多栏布局 (1:2:1 比例)")
       [COLUMNS: columns_demo]
         { Layout: "1:2:1", Gap: "MD" }
@@ -778,7 +778,7 @@
           [TEXT: c3]
             CONTENT: "右栏 (1份)"
 
-    [CARD: split]
+    [CARD: split_horizontal]
       ATTR: Title("Split 分割布局（左右）")
       [SPLIT: split_lr]
         { Ratio: "1:2", Gap: "MD" }
@@ -804,7 +804,7 @@
           [TEXT: sb]
             CONTENT: "下方区域"
 
-    [CARD: rows]
+    [CARD: rows_layout]
       ATTR: Title("Rows 行布局")
       [ROWS: rows_demo]
         { Gap: "SM" }
@@ -821,7 +821,7 @@
           [TEXT: r3]
             CONTENT: "第三行"
 
-    [CARD: center]
+    [CARD: center_layout]
       ATTR: Title("Center 居中布局")
       [CENTER: center_demo]
         { MaxWidth: "md", ClassName: "bg-muted py-8" }
@@ -830,7 +830,7 @@
           [TEXT: center_text]
             CONTENT: "内容居中，最大宽度 md"
 
-    [CARD: spacer]
+    [CARD: spacer_demo]
       ATTR: Title("Spacer 间距组件")
       [STACK: spacer_content]
         { ClassName: "bg-muted p-4 rounded" }
