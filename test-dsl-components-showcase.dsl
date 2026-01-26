@@ -724,8 +724,8 @@
           [TEXT: sep_t3]
             CONTENT: "左侧"
           [SEPARATOR: sep2]
-            ATTR: Orientation("vertical")
             { ClassName: "h-4" }
+            ATTR: Orientation("vertical")
           [TEXT: sep_t4]
             CONTENT: "右侧"
 
