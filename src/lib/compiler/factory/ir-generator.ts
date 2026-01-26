@@ -111,7 +111,7 @@ function astNodeToUINode(
     }
     // 普通复合组件需要插槽分发（Card、Alert 等）
     else if (isCompositeComponent(mappedType)) {
-      const slotResult = distributeToSlots(mappedType, node.children);
+      const slotResult = distributeToSlots(mappedType, node.children, node.props);
 
       if (slotResult) {
         slots = {};

@@ -148,6 +148,47 @@ export const SLOT_RULES: Record<string, SlotRule> = {
     },
     special: true,
   },
+
+  // Grid 网格布局 - 数字插槽（自动编号）
+  Grid: {
+    slots: [], // 动态生成数字插槽
+    distribute: (child: ASTNode, index: number) => {
+      return String(index + 1); // "1", "2", "3", ...
+    },
+    render: {}, // 无包装组件
+  },
+
+  // Columns 多栏布局 - 数字插槽（自动编号）
+  Columns: {
+    slots: [], // 动态生成数字插槽
+    distribute: (child: ASTNode, index: number) => {
+      return String(index + 1); // "1", "2", "3", ...
+    },
+    render: {}, // 无包装组件
+  },
+
+  // Split 分割布局 - 命名插槽（left/right 或 top/bottom）
+  Split: {
+    slots: ['left', 'right', 'top', 'bottom'],
+    distribute: (child: ASTNode, index: number, allChildren: ASTNode[], parentProps?: Record<string, unknown>) => {
+      // 根据 vertical 属性决定使用哪组插槽
+      const isVertical = parentProps?.vertical === true || parentProps?.vertical === 'true';
+
+      if (isVertical) {
+        // 垂直分割：top, bottom
+        return index === 0 ? 'top' : 'bottom';
+      } else {
+        // 水平分割：left, right
+        return index === 0 ? 'left' : 'right';
+      }
+    },
+    render: {
+      left: null,
+      right: null,
+      top: null,
+      bottom: null,
+    },
+  },
 };
 
 /**
@@ -162,11 +203,13 @@ export function getSlotRule(componentType: string): SlotRule | undefined {
  *
  * @param componentType 组件类型
  * @param children 子节点列表
+ * @param parentProps 父组件的 props（用于某些分发逻辑）
  * @returns 插槽分发结果
  */
 export function distributeToSlots(
   componentType: string,
-  children: ASTNode[]
+  children: ASTNode[],
+  parentProps?: Record<string, unknown>
 ): SlotDistribution | null {
   const rule = SLOT_RULES[componentType];
 
@@ -181,11 +224,16 @@ export function distributeToSlots(
   }
 
   // 分发子节点
-  for (const child of children) {
-    const targetSlot = rule.distribute(child);
-    if (distribution[targetSlot]) {
-      distribution[targetSlot].push(child);
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+    const targetSlot = rule.distribute(child, i, children, parentProps);
+
+    // 如果插槽不存在（动态插槽），则创建
+    if (!distribution[targetSlot]) {
+      distribution[targetSlot] = [];
     }
+
+    distribution[targetSlot].push(child);
   }
 
   return distribution;

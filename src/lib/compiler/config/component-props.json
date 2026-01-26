@@ -12,5 +12,5 @@
     "Nav": { "direction": "col", "className": "space-y-2" },
     "Form": { "direction": "col", "className": "space-y-4" }
   },
-  "compositeComponents": ["Card", "Alert", "Dialog", "Tabs", "Table", "Accordion", "Timeline", "Breadcrumb", "Stepper", "Tooltip"]
+  "compositeComponents": ["Card", "Alert", "Dialog", "Tabs", "Table", "Accordion", "Timeline", "Breadcrumb", "Stepper", "Tooltip", "Grid", "Columns", "Split"]
 }

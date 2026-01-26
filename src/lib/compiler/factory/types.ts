@@ -57,9 +57,14 @@ export interface SlotRule {
   /** 插槽名称列表 */
   slots: string[];
   /** 分发函数：根据子节点决定放入哪个插槽 */
-  distribute: (child: ASTNode) => string;
+  distribute: (
+    child: ASTNode,
+    index?: number,
+    allChildren?: ASTNode[],
+    parentProps?: Record<string, unknown>
+  ) => string;
   /** 插槽对应的组件类型 */
-  render: Record<string, string>;
+  render: Record<string, string | null>;
   /** 是否需要特殊处理 */
   special?: boolean;
 }
