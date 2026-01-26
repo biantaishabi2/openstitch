@@ -300,6 +300,37 @@ class SimpleParser {
       node.children = children;
     }
 
+    // 错误检测：检查是否有意外的 token
+    // 如果当前 token 不是 TagOpen，且不是文件末尾，说明有无法解析的内容
+    const currentToken = this.current();
+    if (currentToken && !this.match('TagOpen')) {
+      const tokenName = currentToken.tokenType.name;
+      const tokenImage = currentToken.image;
+
+      // 检查是否是属性顺序错误导致的
+      if (tokenName === 'LBrace') {
+        throw new Error(
+          `解析错误 at L${currentToken.startLine}:${currentToken.startColumn}: ` +
+          `遇到意外的布局属性 '${tokenImage}'。\n` +
+          `提示：布局属性 { ... } 必须在 ATTR: 之前。正确顺序：\n` +
+          `  [TAG: id]\n` +
+          `    { layoutProps }  ← 先写这个\n` +
+          `    ATTR: ...        ← 后写这个`
+        );
+      } else if (tokenName === 'AttrKeyword' || tokenName === 'ContentKeyword' || tokenName === 'CssKeyword') {
+        throw new Error(
+          `解析错误 at L${currentToken.startLine}:${currentToken.startColumn}: ` +
+          `在元素 [${tag}${id ? ': ' + id : ''}] 中遇到重复的关键字 '${tokenImage}'`
+        );
+      } else {
+        throw new Error(
+          `解析错误 at L${currentToken.startLine}:${currentToken.startColumn}: ` +
+          `遇到意外的 token '${tokenImage}' (${tokenName})，无法继续解析。\n` +
+          `当前元素：[${tag}${id ? ': ' + id : ''}]`
+        );
+      }
+    }
+
     return node;
   }
 

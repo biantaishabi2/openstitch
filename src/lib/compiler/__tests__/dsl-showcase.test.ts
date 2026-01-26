@@ -155,6 +155,12 @@ describe('DSL Components Showcase', () => {
     console.log('\n  🔍 Parser 测试:');
     const { cst, errors: parseErrors } = parse(fullDsl);
     console.log(`    Parser 错误: ${parseErrors.length}`);
+    if (parseErrors.length > 0) {
+      console.log(`    错误信息:`);
+      parseErrors.forEach((err, i) => {
+        console.log(`      ${i + 1}. ${err.message}`);
+      });
+    }
     console.log(`    CST 存在: ${!!cst}`);
     console.log(`    CST 节点数: ${cst.length}`);
 
