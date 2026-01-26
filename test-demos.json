@@ -1,0 +1,21 @@
+{
+  "context": "Stitch UI 演示项目",
+  "platform": "web",
+  "screens": [
+    {
+      "screen_id": "ppt-cover",
+      "title": "Stitch UI - PPT封面",
+      "dsl": "[HERO: main]\n  { Align: \"Center\" }\n  [BADGE: tag]\n    CONTENT: \"Stitch UI Engine\"\n  [HEADING: title1]\n    ATTR: Size(\"XL\")\n    CONTENT: \"JSON Schema 驱动的\"\n  [HEADING: title2]\n    ATTR: Size(\"XL\")\n    CONTENT: \"下一代 UI 渲染引擎\"\n  [TEXT: desc]\n    CONTENT: \"一套 Schema，多端渲染。支持 React 实时预览、LiveView 服务端运行、静态 HTML 导出。\"\n  [GRID: features]\n    { Columns: \"3\", Gap: \"LG\" }\n    [CARD: f1]\n      ATTR: Title(\"组件化\"), Icon(\"Layers\")\n      CONTENT: \"50+ 预置组件\"\n    [CARD: f2]\n      ATTR: Title(\"响应式\"), Icon(\"Smartphone\")\n      CONTENT: \"多端自适应\"\n    [CARD: f3]\n      ATTR: Title(\"AI 友好\"), Icon(\"Zap\")\n      CONTENT: \"智能组装\"\n  [FLEX: buttons]\n    { Gap: \"MD\", Justify: \"Center\" }\n    [BUTTON: start]\n      ATTR: Variant(\"default\"), Size(\"LG\")\n      CONTENT: \"开始使用\"\n    [BUTTON: docs]\n      ATTR: Variant(\"outline\"), Size(\"LG\")\n      CONTENT: \"查看文档\""
+    },
+    {
+      "screen_id": "admin-dashboard",
+      "title": "后台管理 - 仪表盘",
+      "dsl": "[FLEX: layout]\n  { Direction: \"Row\", Gap: \"None\" }\n\n  [SIDEBAR: sidebar]\n    [HEADING: logo]\n      CONTENT: \"Admin\"\n    [NAV: menu]\n      [FLEX: nav1]\n        { Gap: \"SM\", Align: \"Center\" }\n        [ICON: i1] ATTR: Icon(\"LayoutDashboard\")\n        [TEXT: t1] CONTENT: \"仪表盘\"\n      [FLEX: nav2]\n        { Gap: \"SM\", Align: \"Center\" }\n        [ICON: i2] ATTR: Icon(\"Users\")\n        [TEXT: t2] CONTENT: \"用户管理\"\n      [FLEX: nav3]\n        { Gap: \"SM\", Align: \"Center\" }\n        [ICON: i3] ATTR: Icon(\"Settings\")\n        [TEXT: t3] CONTENT: \"系统设置\"\n\n  [SECTION: main]\n    [HEADER: topbar]\n      { Justify: \"Between\", Align: \"Center\" }\n      [HEADING: title] CONTENT: \"仪表盘概览\"\n      [FLEX: actions]\n        { Gap: \"SM\" }\n        [BUTTON: refresh] ATTR: Variant(\"outline\"), Icon(\"RefreshCw\") CONTENT: \"刷新\"\n        [BUTTON: add] ATTR: Icon(\"Plus\") CONTENT: \"新增\"\n\n    [GRID: stats]\n      { Columns: \"4\", Gap: \"LG\" }\n      [STATISTIC_CARD: s1]\n        ATTR: Title(\"总用户\"), Icon(\"Users\")\n        CONTENT: \"12,345\"\n      [STATISTIC_CARD: s2]\n        ATTR: Title(\"活跃用户\"), Icon(\"Activity\")\n        CONTENT: \"8,901\"\n      [STATISTIC_CARD: s3]\n        ATTR: Title(\"新增用户\"), Icon(\"UserPlus\")\n        CONTENT: \"+234\"\n      [STATISTIC_CARD: s4]\n        ATTR: Title(\"转化率\"), Icon(\"TrendingUp\")\n        CONTENT: \"12.5%\"\n\n    [GRID: content]\n      { Columns: \"2\", Gap: \"LG\" }\n      [CARD: chart]\n        ATTR: Title(\"趋势图表\")\n        [TEXT: placeholder]\n          CONTENT: \"图表区域\"\n      [CARD: recent]\n        ATTR: Title(\"最近活动\")\n        [LIST: activities]\n          [TEXT: a1] CONTENT: \"用户 A 完成注册\"\n          [TEXT: a2] CONTENT: \"用户 B 更新资料\"\n          [TEXT: a3] CONTENT: \"用户 C 提交订单\""
+    },
+    {
+      "screen_id": "tech-roadmap",
+      "title": "技术路线图",
+      "dsl": "[PAGE: main]\n  [SECTION: header]\n    { Align: \"Center\" }\n    [BADGE: phase] CONTENT: \"2024 Roadmap\"\n    [HEADING: title]\n      ATTR: Size(\"XL\")\n      CONTENT: \"技术演进路线图\"\n    [TEXT: subtitle]\n      CONTENT: \"从 MVP 到生产级产品的完整规划\"\n\n  [SECTION: timeline]\n    [TIMELINE: phases]\n      [CARD: q1]\n        ATTR: Title(\"Q1 - 基础架构\"), Icon(\"Box\")\n        [LIST: items]\n          [TEXT: i1] CONTENT: \"核心组件库开发\"\n          [TEXT: i2] CONTENT: \"JSON Schema 规范\"\n          [TEXT: i3] CONTENT: \"基础渲染引擎\"\n      [CARD: q2]\n        ATTR: Title(\"Q2 - 多端支持\"), Icon(\"Smartphone\")\n        [LIST: items]\n          [TEXT: i1] CONTENT: \"React 渲染器\"\n          [TEXT: i2] CONTENT: \"LiveView 适配\"\n          [TEXT: i3] CONTENT: \"静态导出工具\"\n      [CARD: q3]\n        ATTR: Title(\"Q3 - AI 集成\"), Icon(\"Zap\")\n        [LIST: items]\n          [TEXT: i1] CONTENT: \"DSL 编译器\"\n          [TEXT: i2] CONTENT: \"视觉 Token 引擎\"\n          [TEXT: i3] CONTENT: \"Claude 技能集成\"\n      [CARD: q4]\n        ATTR: Title(\"Q4 - 生态完善\"), Icon(\"Globe\")\n        [LIST: items]\n          [TEXT: i1] CONTENT: \"插件系统\"\n          [TEXT: i2] CONTENT: \"模板市场\"\n          [TEXT: i3] CONTENT: \"社区建设\""
+    }
+  ]
+}

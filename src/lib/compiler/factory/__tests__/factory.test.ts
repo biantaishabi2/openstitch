@@ -425,7 +425,8 @@ describe('IR Generation', () => {
 
     expect(ir.type).toBe('Button');
     expect(ir.id).toBe('btn1');
-    expect(ir.props?.variant).toBe('primary');
+    // DSL 'primary' variant 映射到 shadcn 的 'default' variant
+    expect(ir.props?.variant).toBe('default');
   });
 
   it('should generate UINode with nested children', () => {
@@ -599,7 +600,8 @@ describe('Component Factory Integration', () => {
 
     expect(ir.type).toBe('Button');
     expect(ir.id).toBe('btn1');
-    expect(ir.props?.variant).toBe('primary');
+    // DSL 'primary' variant 映射到 shadcn 的 'default' variant
+    expect(ir.props?.variant).toBe('default');
     expect(ir.children).toBe('Submit');
   });
 
@@ -861,5 +863,144 @@ describe('Style Priority (TC-PROPS-01)', () => {
     // 显式 direction 应优先于类型映射的默认值
     // 注意：这取决于具体实现，可能需要调整预期
     expect(ir.props?.direction).toBeDefined();
+  });
+});
+
+// ============================================
+// TC-FACTORY-06: 平台适配
+// ============================================
+
+describe('Platform Adaptation (TC-FACTORY-06)', () => {
+  const tokens = createTestTokens();
+
+  it('should add touch feedback classes for mobile Button', () => {
+    const ast: StitchAST = {
+      type: 'Root',
+      platform: 'mobile',
+      children: [
+        {
+          id: 'btn1',
+          type: 'Button',
+          props: { text: 'Click' },
+        },
+      ],
+    };
+
+    const ir = generateIR(ast, tokens);
+
+    // 移动端 Button 应该有触摸反馈类
+    expect(ir.props?.className).toContain('active:scale-[0.97]');
+    expect(ir.props?.className).toContain('transition-transform');
+  });
+
+  it('should NOT add touch feedback classes for web Button', () => {
+    const ast: StitchAST = {
+      type: 'Root',
+      platform: 'web',
+      children: [
+        {
+          id: 'btn1',
+          type: 'Button',
+          props: { text: 'Click' },
+        },
+      ],
+    };
+
+    const ir = generateIR(ast, tokens);
+
+    // Web 端不应该有触摸反馈类
+    const className = ir.props?.className as string || '';
+    expect(className).not.toContain('active:scale-[0.97]');
+  });
+
+  it('should add touch feedback classes for mobile Card', () => {
+    const ast: StitchAST = {
+      type: 'Root',
+      platform: 'mobile',
+      children: [
+        {
+          id: 'card1',
+          type: 'Card',
+          props: { title: 'Test' },
+        },
+      ],
+    };
+
+    const ir = generateIR(ast, tokens);
+
+    // 移动端 Card 应该有触摸反馈类
+    expect(ir.props?.className).toContain('active:scale-[0.97]');
+  });
+
+  it('should wrap content with MobileShell when platform is mobile', () => {
+    const ast: StitchAST = {
+      type: 'Root',
+      platform: 'mobile',
+      mobileNavigation: ['首页', '我的'],
+      children: [
+        {
+          id: 'section1',
+          type: 'Section',
+          props: {},
+        },
+      ],
+    };
+
+    const ir = generateIR(ast, tokens);
+
+    // 应该被 MobileShell 包裹
+    expect(ir.type).toBe('MobileShell');
+    expect(ir.props?.hasBottomNav).toBe(true);
+  });
+
+  it('should NOT wrap with MobileShell when platform is web', () => {
+    const ast: StitchAST = {
+      type: 'Root',
+      platform: 'web',
+      children: [
+        {
+          id: 'section1',
+          type: 'Section',
+          props: {},
+        },
+      ],
+    };
+
+    const ir = generateIR(ast, tokens);
+
+    // 不应该被 MobileShell 包裹
+    expect(ir.type).not.toBe('MobileShell');
+  });
+
+  it('should generate BottomTabs with correct navigation items', () => {
+    const ast: StitchAST = {
+      type: 'Root',
+      platform: 'mobile',
+      mobileNavigation: ['首页', '搜索', '我的'],
+      children: [
+        {
+          id: 'content',
+          type: 'Section',
+          props: {},
+        },
+      ],
+    };
+
+    const ir = generateIR(ast, tokens);
+
+    // 找到 BottomTabsList
+    const bottomTabs = ir.children as UINode;
+    expect(bottomTabs.type).toBe('BottomTabs');
+
+    const tabsChildren = bottomTabs.children as UINode[];
+    const tabsList = tabsChildren.find(c => c.type === 'BottomTabsList');
+    expect(tabsList).toBeDefined();
+
+    // 应该有 3 个触发器
+    const triggers = tabsList?.children as UINode[];
+    expect(triggers.length).toBe(3);
+    expect(triggers[0].props?.label).toBe('首页');
+    expect(triggers[1].props?.label).toBe('搜索');
+    expect(triggers[2].props?.label).toBe('我的');
   });
 });

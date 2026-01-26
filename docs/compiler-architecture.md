@@ -800,6 +800,196 @@ AI 输出结构化 DSL，编译器转成标准化 AST（直接喂给 React）。
 
 ---
 
+### Token 生成协议 (Token Generation Protocol)
+
+视觉引擎的核心是一套 **基于数学公式的映射函数**，将 Hash 种子转换为 UI 参数。
+
+#### 输入与种子计算
+
+```typescript
+// 输入
+const input = {
+  context: "企业管理系统",      // 语义上下文
+  sessionId: "sess_abc123"      // 会话标识
+};
+
+// Hash 种子计算 (djb2 算法)
+const seed = hash(`${context}:${sessionId}`);  // => 0x3A7F2B1C
+
+// 确定性随机数生成器 (Mulberry32)
+const random = createRandom(seed);  // 同样种子 → 同样序列
+```
+
+#### 五维度生成公式
+
+**1. 颜色系统 (Color System)**
+
+```
+输入: Hash 种子
+规则:
+  ├─ 主色相: Hue = Hash % 360
+  ├─ 饱和度: S = 场景约束范围 (技术: 60-80%, 儿童: 80-100%)
+  ├─ 亮度:   L = 场景约束范围 (技术: 40-60%, 儿童: 50-70%)
+  └─ 色阶:   通过调整 L 生成 50-900 十级色阶
+
+色阶算法 (OKLCH 或 HSL):
+  primary-50:  L = 97%
+  primary-100: L = 93%
+  primary-200: L = 86%
+  primary-300: L = 76%
+  primary-400: L = 62%
+  primary-500: L = 50%  ← 主色
+  primary-600: L = 42%
+  primary-700: L = 34%
+  primary-800: L = 26%
+  primary-900: L = 17%
+
+互补色:
+  accent = (Hue + 180) % 360  // 对比色
+  secondary = (Hue + 30) % 360  // 邻近色
+```
+
+**2. 空间尺度 (Spacing System)**
+
+```
+输入: Hash 种子 + 场景
+规则:
+  ├─ 基础单位: baseUnit = (Hash % 2 == 0) ? 4px : 8px
+  ├─ 步进序列: 几何级数 (2^n)
+  └─ 场景修正: multiplier = 场景系数 (compact: 0.8, spacious: 1.5)
+
+间距序列:
+  Space-0: 0
+  Space-1: baseUnit * 1 * multiplier     // 4px / 8px
+  Space-2: baseUnit * 2 * multiplier     // 8px / 16px
+  Space-3: baseUnit * 4 * multiplier     // 16px / 32px
+  Space-4: baseUnit * 8 * multiplier     // 32px / 64px
+  Space-5: baseUnit * 16 * multiplier    // 64px / 128px
+
+语义映射:
+  "None" → Space-0
+  "XS"   → Space-1
+  "SM"   → Space-2
+  "MD"   → Space-3
+  "LG"   → Space-4
+  "XL"   → Space-5
+```
+
+**3. 字体排版 (Typography System)**
+
+```
+输入: Hash 种子
+规则:
+  ├─ 字阶比率: scale = SCALES[Hash % 6]
+  │            SCALES = [1.067, 1.125, 1.2, 1.25, 1.333, 1.618]
+  ├─ 基准字号: base = 16px
+  └─ 阶梯生成: size(n) = base * scale^n
+
+字号阶梯:
+  xs:   base / scale²     ≈ 10px
+  sm:   base / scale      ≈ 13px
+  base: 16px              = 16px
+  lg:   base * scale      ≈ 20px
+  xl:   base * scale²     ≈ 25px
+  2xl:  base * scale³     ≈ 31px
+  3xl:  base * scale⁴     ≈ 39px
+
+字重分配:
+  normal:    400
+  medium:    500
+  semibold:  600
+  bold:      700
+```
+
+**4. 形状边框 (Shape System)**
+
+```
+输入: Hash 种子 + 场景
+规则:
+  ├─ 圆角基数: baseRadius = (Hash % 4) * 2 + 2  // 2, 4, 6, 8
+  ├─ 场景修正: 金融 sharp, 教育 pill
+  └─ 阴影阶梯: 5 级深度
+
+圆角序列:
+  radius-sm:   baseRadius * 0.5    // 1-4px
+  radius-md:   baseRadius * 1      // 2-8px
+  radius-lg:   baseRadius * 2      // 4-16px
+  radius-full: 9999px
+
+阴影阶梯 (Elevation):
+  shadow-1: 0 1px 2px rgba(0,0,0,0.05)
+  shadow-2: 0 2px 4px rgba(0,0,0,0.07)
+  shadow-3: 0 4px 8px rgba(0,0,0,0.10)
+  shadow-4: 0 8px 16px rgba(0,0,0,0.12)
+  shadow-5: 0 16px 32px rgba(0,0,0,0.15)
+```
+
+**5. 装饰纹理 (Decoration System)**
+
+```
+输入: Hash 种子
+规则:
+  ├─ 图案类型: pattern = PATTERNS[Hash % 5]
+  │            PATTERNS = ["none", "dots", "grid", "noise", "wave"]
+  └─ 强度控制: opacity = (Hash % 5) / 100  // 0.00 - 0.04
+
+输出:
+  pattern-type: "grid"
+  pattern-opacity: 0.02
+  noise-opacity: 0.03
+```
+
+#### 输出: ThemeContext
+
+```json
+{
+  "colors": {
+    "primary": "#3B82F6",
+    "primary-50": "#EFF6FF",
+    "primary-100": "#DBEAFE",
+    "primary-500": "#3B82F6",
+    "primary-900": "#1E3A8A",
+    "secondary": "#8B5CF6",
+    "accent": "#F97316"
+  },
+  "spacing": {
+    "xs": "4px",
+    "sm": "8px",
+    "md": "16px",
+    "lg": "32px",
+    "xl": "64px"
+  },
+  "typography": {
+    "scale": 1.25,
+    "base": "16px",
+    "lg": "20px",
+    "xl": "25px",
+    "2xl": "31px"
+  },
+  "shapes": {
+    "radius-sm": "4px",
+    "radius-md": "8px",
+    "radius-lg": "16px",
+    "shadow-md": "0 4px 8px rgba(0,0,0,0.10)"
+  },
+  "decoration": {
+    "pattern": "grid",
+    "opacity": 0.02
+  }
+}
+```
+
+#### 为什么这套公式很稳？
+
+| 特性 | 说明 |
+|------|------|
+| **确定性** | 同样的 `context + sessionId` → 同样的 Tokens |
+| **可计算** | 设计感觉变成数学参数，不再是主观判断 |
+| **无漂移** | AI 说 "H1"，编译器保证项目内所有 H1 都是 31px |
+| **可继承** | 换 context 关键词，整套 UI "性格"瞬间切换 |
+
+---
+
 ### 视觉引擎的 5 个控制维度
 
 除了颜色，视觉引擎基于 Hash 种子动态生成一整套 Design Tokens，控制以下 5 个关键维度：
@@ -1032,6 +1222,88 @@ AI 输出结构化 DSL，编译器转成标准化 AST（直接喂给 React）。
 3. **可复现**：`hash(context + session_id)` 保证同样输入 → 同样输出
 
 如果只是写死几个 Preset，那就不叫编译器。视觉引擎让设计从"选模板"变成"算出来"。
+
+---
+
+### DSL 语义值与视觉引擎映射
+
+#### 场景关键词 (Scene Keywords)
+
+视觉引擎通过扫描 `context` 中的关键词自动识别场景，支持中英文：
+
+| 场景 | 中文关键词 | 英文关键词 | 主色 | 间距 | 圆角 | 装饰 |
+|------|-----------|-----------|------|------|------|------|
+| 技术 | 技术、架构、开发、代码、系统 | Technical, API, System, Code | 蓝 #3B82F6 | normal | rounded | none |
+| 金融 | 金融、财务、银行、投资、交易 | Finance, Banking, Trading | 靛蓝 #6366F1 | compact | sharp | subtle |
+| 企业 | 企业、管理、办公、后台、报表 | Enterprise, Admin, Dashboard, Backend | 蓝 #2563EB | compact | rounded | subtle |
+| 医疗 | 医疗、健康、医院、诊断 | Medical, Health, Hospital | 青 #0891B2 | normal | soft | none |
+| 教育 | 教育、儿童、学习、课程 | Education, Learning, Course | 橙 #F97316 | spacious | pill | moderate |
+| 创意 | 创意、营销、设计、品牌 | Creative, Marketing, Design | 紫 #A855F7 | spacious | soft | rich |
+
+#### DSL 语义化间距
+
+DSL 中的 `Gap` 属性使用语义值，由视觉引擎根据场景转换为实际像素：
+
+| 语义值 | 含义 | compact 场景 | normal 场景 | spacious 场景 |
+|--------|------|-------------|-------------|---------------|
+| `None` | 无间距 | 0 | 0 | 0 |
+| `XS` | 极小 | 2px | 4px | 6px |
+| `SM` | 小 | 4px | 8px | 12px |
+| `MD` | 中等 | 8px | 16px | 24px |
+| `LG` | 大 | 12px | 24px | 36px |
+| `XL` | 极大 | 16px | 32px | 48px |
+
+**DSL 示例**：
+```
+[GRID: stats]
+  { Columns: "3", Gap: "LG" }    # ← 语义值，不写像素
+  [CARD: s1] ...
+  [CARD: s2] ...
+```
+
+#### DSL 语义化尺寸
+
+组件的 `Size` 属性使用语义值：
+
+| 语义值 | 含义 | 应用组件 |
+|--------|------|---------|
+| `XS` | 极小 | Button, Input, Avatar |
+| `SM` | 小 | Button, Input, Avatar, Badge |
+| `MD` | 中等（默认） | 所有组件 |
+| `LG` | 大 | Button, Input, Avatar, Card |
+| `XL` | 极大 | Hero, Section |
+
+#### 字体族选择
+
+视觉引擎根据场景自动选择字体族：
+
+| 场景 | 正文字体 | 代码字体 | 标题字体 |
+|------|---------|---------|---------|
+| 技术 | Inter, system-ui | JetBrains Mono | Inter |
+| 金融 | -apple-system, system-ui | SF Mono | Georgia |
+| 企业 | system-ui, sans-serif | Consolas | system-ui |
+| 教育 | Nunito, system-ui | Fira Code | Nunito |
+| 创意 | Poppins, sans-serif | Source Code Pro | Poppins |
+
+**在 DSL 中使用**：
+```
+[CODE: snippet]
+  CONTENT: "const x = 1;"    # ← 自动使用场景对应的代码字体
+```
+
+#### ATTR 覆盖机制
+
+DSL 中的 `ATTR` 可以覆盖视觉引擎的全局设定：
+
+```
+全局 Token: primary = #2563EB (蓝色)
+     ↓
+[BUTTON: save]                    # → 蓝色按钮（继承全局）
+[BUTTON: delete]
+  ATTR: Variant("destructive")    # → 红色按钮（覆盖全局）
+```
+
+**优先级**：`ATTR 显式指定 > 视觉引擎 Token > 组件默认值`
 
 ---
 

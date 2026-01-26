@@ -73,6 +73,24 @@ import { List, ListItem } from '@/components/ui/list';
 import { EmptyState } from '@/components/ui/empty-state';
 
 // ============================================
+// 移动端专用组件
+// ============================================
+import { MobileShell, MobileContent, MobileHeader } from '@/components/ui/mobile-shell';
+import { BottomTabs, BottomTabsList, BottomTabsTrigger, BottomTabsContent } from '@/components/ui/bottom-tabs';
+import {
+  ActionSheet,
+  ActionSheetTrigger,
+  ActionSheetClose,
+  ActionSheetContent,
+  ActionSheetHeader,
+  ActionSheetTitle,
+  ActionSheetDescription,
+  ActionSheetGroup,
+  ActionSheetItem,
+  ActionSheetCancel,
+} from '@/components/ui/action-sheet';
+
+// ============================================
 // 装饰/动画组件
 // ============================================
 import { AnimatedBeam } from '@/components/ui/animated-beam';
@@ -594,6 +612,28 @@ export const componentMap: ComponentMap = {
 
   // ========== 其他 ==========
   Separator,
+
+  // ========== 移动端组件 ==========
+  // MobileShell
+  MobileShell,
+  MobileContent,
+  MobileHeader,
+  // BottomTabs
+  BottomTabs,
+  BottomTabsList,
+  BottomTabsTrigger,
+  BottomTabsContent,
+  // ActionSheet
+  ActionSheet,
+  ActionSheetTrigger,
+  ActionSheetClose,
+  ActionSheetContent,
+  ActionSheetHeader,
+  ActionSheetTitle,
+  ActionSheetDescription,
+  ActionSheetGroup,
+  ActionSheetItem,
+  ActionSheetCancel,
 
   // ========== 装饰/动画组件 ==========
   AnimatedBeam,

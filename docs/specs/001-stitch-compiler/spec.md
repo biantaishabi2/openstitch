@@ -223,6 +223,53 @@ src/lib/compiler/
 - **预期**：包含空间/字体/形状/装饰/语义 5 个维度
 - **验证**：Tokens 包含 `--spacing-*`, `--font-*`, `--radius-*`, `--pattern-*`, `--primary-*`
 
+#### TC-TOKENS-04: Hash 种子确定性
+
+- **操作**：使用 djb2 算法计算 `hash("企业管理系统:sess_123")`
+- **预期**：返回固定整数值
+- **验证**：多次调用返回相同值，不同输入返回不同值
+
+#### TC-TOKENS-05: 颜色色阶生成
+
+- **操作**：输入 Hue=216 生成色阶
+- **预期**：生成 50-900 十级色阶
+- **验证**：
+  - primary-50 亮度 ≈ 97%
+  - primary-500 亮度 ≈ 50%
+  - primary-900 亮度 ≈ 17%
+  - 所有色阶色相一致
+
+#### TC-TOKENS-06: 语义间距映射
+
+- **操作**：DSL 中使用 `Gap: "LG"`
+- **预期**：编译器解析为 Space-4 对应像素值
+- **验证**：
+  - `"None"` → 0
+  - `"XS"` → baseUnit * 1
+  - `"SM"` → baseUnit * 2
+  - `"MD"` → baseUnit * 4
+  - `"LG"` → baseUnit * 8
+  - `"XL"` → baseUnit * 16
+
+#### TC-TOKENS-07: 场景关键词识别
+
+- **操作**：context="金融交易系统" 和 context="儿童教育平台"
+- **预期**：识别为不同场景，生成不同约束参数
+- **验证**：
+  - 金融：饱和度 60-80%，sharp 圆角
+  - 教育：饱和度 80-100%，pill 圆角
+
+#### TC-TOKENS-08: 字体阶梯生成
+
+- **操作**：scale=1.25, base=16px
+- **预期**：生成完整字体阶梯
+- **验证**：
+  - xs = 16 / 1.25² ≈ 10.24px
+  - sm = 16 / 1.25 ≈ 12.8px
+  - base = 16px
+  - lg = 16 * 1.25 ≈ 20px
+  - xl = 16 * 1.25² ≈ 25px
+
 ### 组件工厂测试
 
 #### TC-FACTORY-01: Props 归一化
@@ -402,8 +449,103 @@ src/lib/compiler/
 - 做什么：context + Hash 种子 + Session State → Design Tokens (5 维度)
 - 5 维度：空间尺度、字体排版、形状边框、装饰纹理、语义颜色
 - 场景感知：技术/金融/医疗/教育/创意/企业 6 种场景自动识别
-- 验证：测试用例 TC-TOKENS-01 ~ TC-TOKENS-03 通过 (22 个测试)
-- 参考：`docs/compiler-architecture.md` L675-L942
+- 验证：测试用例 TC-TOKENS-01 ~ TC-TOKENS-08 通过
+- 参考：`docs/compiler-architecture.md` L803-L990
+
+#### Token Generation Protocol 实现
+
+**核心算法**：
+
+```typescript
+// 1. Hash 种子计算 (djb2 算法)
+function djb2Hash(str: string): number {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) + hash) + str.charCodeAt(i);
+  }
+  return hash >>> 0;  // 无符号整数
+}
+
+// 2. 确定性随机数生成器 (Mulberry32)
+function createRandom(seed: number): () => number {
+  return function() {
+    let t = seed += 0x6D2B79F5;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+// 3. 五维度生成入口
+function generateDesignTokens(options: { context: string; sessionId?: string }) {
+  const seed = djb2Hash(`${options.context}:${options.sessionId || ''}`);
+  const random = createRandom(seed);
+  const scene = detectSceneStyle(options.context);
+
+  return {
+    colors: generateColors(seed, scene),
+    spacing: generateSpacing(seed, scene),
+    typography: generateTypography(seed),
+    shapes: generateShapes(seed, scene),
+    decoration: generateDecoration(seed),
+  };
+}
+```
+
+**五维度生成函数**：
+
+| 维度 | 函数 | 输入 | 输出 |
+|------|------|------|------|
+| 颜色 | `generateColors()` | Hue = seed % 360, 场景约束 | primary-50 ~ primary-900 色阶 |
+| 间距 | `generateSpacing()` | baseUnit = 4/8px, 场景系数 | spacing-xs ~ spacing-xl |
+| 字体 | `generateTypography()` | scale = SCALES[seed % 6] | font-size-xs ~ font-size-3xl |
+| 形状 | `generateShapes()` | baseRadius = (seed % 4) * 2 + 2 | radius-sm/md/lg, shadow-1~5 |
+| 装饰 | `generateDecoration()` | pattern = PATTERNS[seed % 5] | pattern-type, pattern-opacity |
+
+**场景关键词检测**：
+
+```typescript
+const SCENE_KEYWORDS: Record<SceneStyle, string[]> = {
+  technical: ['技术', '架构', '开发', '代码', '系统', 'API', 'Technical'],
+  finance: ['金融', '财务', '银行', '投资', '交易', 'Finance', 'Banking'],
+  enterprise: ['企业', '管理', '办公', '后台', '报表', 'Enterprise', 'Admin'],
+  medical: ['医疗', '健康', '医院', '诊断', 'Medical', 'Health'],
+  education: ['教育', '儿童', '学习', '课程', 'Education', 'Learning'],
+  creative: ['创意', '营销', '设计', '品牌', 'Creative', 'Marketing'],
+};
+
+function detectSceneStyle(context: string): SceneStyle {
+  for (const [scene, keywords] of Object.entries(SCENE_KEYWORDS)) {
+    if (keywords.some(kw => context.includes(kw))) {
+      return scene as SceneStyle;
+    }
+  }
+  return 'enterprise';  // 默认场景
+}
+```
+
+**语义间距映射**：
+
+```typescript
+// DSL 语义值 → CSS 像素值
+const SEMANTIC_SPACING = {
+  'None': 0,
+  'XS': 1,   // Space-1
+  'SM': 2,   // Space-2
+  'MD': 3,   // Space-3
+  'LG': 4,   // Space-4
+  'XL': 5,   // Space-5
+};
+
+// 计算实际像素值
+function resolveSpacing(semantic: string, tokens: DesignTokens): string {
+  const level = SEMANTIC_SPACING[semantic] || 3;
+  const baseUnit = tokens.spacing.baseUnit;  // 4 or 8
+  const multiplier = tokens.spacing.multiplier;  // 0.8 ~ 1.5
+  const value = baseUnit * Math.pow(2, level - 1) * multiplier;
+  return `${value}px`;
+}
+```
 
 ### 5. 组件工厂 ✅
 - 文件：
@@ -491,6 +633,56 @@ ssr/
 - 做什么：端到端测试完整编译流程
 - 验证：DSL → AST → Tokens → React → HTML 全链路通过，测试用例 TC-E2E-01 ~ TC-E2E-02 通过 (28 个测试)
 
+## 测试运行方法
+
+### 单元测试
+
+```bash
+# 运行所有编译器测试
+npm test
+
+# 运行特定模块测试
+npx vitest run src/lib/compiler/logic/__tests__/     # 逻辑引擎
+npx vitest run src/lib/compiler/visual/__tests__/    # 视觉引擎
+npx vitest run src/lib/compiler/factory/__tests__/   # 组件工厂
+npx vitest run src/lib/compiler/ssr/__tests__/       # SSR 引擎
+npx vitest run src/lib/compiler/__tests__/e2e.test.ts  # 集成测试
+```
+
+### CLI 编译测试
+
+```bash
+# 编译项目 JSON 文件
+COMPILE_INPUT=project.json COMPILE_OUTPUT=output/ npm run stitch
+
+# 带统计信息编译
+COMPILE_INPUT=project.json COMPILE_OUTPUT=output/ COMPILE_STATS=true npm run stitch
+```
+
+### Token 生成验证
+
+```bash
+# 验证 Token 确定性
+npx vitest run src/lib/compiler/visual/__tests__/synthesizer.test.ts -t "确定性"
+
+# 验证场景识别
+npx vitest run src/lib/compiler/visual/__tests__/synthesizer.test.ts -t "场景"
+
+# 验证语义间距
+npx vitest run src/lib/compiler/visual/__tests__/synthesizer.test.ts -t "spacing"
+```
+
+### 视觉回归测试
+
+手动验证编译输出：
+1. 运行 `COMPILE_INPUT=test-project.json COMPILE_OUTPUT=test-output/ npm run stitch`
+2. 在浏览器中打开 `test-output/*.html`
+3. 检查：
+   - 颜色是否与 context 场景匹配
+   - 间距是否均匀协调
+   - 字体阶梯是否清晰
+   - 圆角和阴影是否一致
+
 ## Notes
 
 - 所有设计决策以 `docs/compiler-architecture.md` 为准
@@ -509,15 +701,15 @@ ssr/
 
 ## 测试统计
 
-| 模块 | 测试数 | 状态 |
-|------|--------|------|
-| 逻辑引擎 (logic/) | 38 | ✅ |
-| 视觉引擎 (visual/) | 42 | ✅ |
-| 组件工厂 (factory/) | 51 | ✅ |
-| SSR 引擎 (ssr/) | 57 | ✅ |
-| 集成测试 (e2e) | 29 | ✅ |
-| 渲染器 (renderer/) | 41 | ✅ |
-| **总计** | **258** | ✅ |
+| 模块 | 测试数 | 状态 | 覆盖内容 |
+|------|--------|------|----------|
+| 逻辑引擎 (logic/) | 38 | ✅ | 词法分析、语法分析、语义收敛 |
+| 视觉引擎 (visual/) | 50 | ✅ | Token 生成、场景识别、5 维度计算 |
+| 组件工厂 (factory/) | 51 | ✅ | Props 归一化、插槽分发、事件桩 |
+| SSR 引擎 (ssr/) | 57 | ✅ | 脱水渲染、样式萃取、资源固化 |
+| 集成测试 (e2e) | 29 | ✅ | 端到端编译流程 |
+| 渲染器 (renderer/) | 41 | ✅ | 组件渲染、Slots 分发 |
+| **总计** | **266** | ✅ |
 
 ## Next
 

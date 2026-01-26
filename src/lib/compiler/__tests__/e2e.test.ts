@@ -372,7 +372,8 @@ describe('Edge Cases', () => {
 
     const result = await compile(dsl);
 
-    expect(result.factory.ir.props?.variant).toBe('primary');
+    // DSL 'primary' variant 映射到 shadcn 的 'default' variant
+    expect(result.factory.ir.props?.variant).toBe('default');
   });
 });
 

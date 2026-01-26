@@ -141,6 +141,8 @@ export interface SynthesizerOptions {
   sessionId?: string;
   seed?: number;
   overrides?: Partial<DesignTokens>;
+  /** 平台类型 - 影响间距、字阶、行高等参数 */
+  platform?: 'web' | 'mobile';
 }
 
 /** 设计审查警告 */

@@ -12,6 +12,7 @@ export type {
   ASTNode,
   StitchAST,
   ComponentType,
+  PlatformType,
   BaseProps,
   CompileError,
   CompileResult,

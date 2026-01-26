@@ -452,6 +452,47 @@ function hslToHex(h: number, s: number, l: number): string {
 }
 
 /**
+ * Hex 转 HSL
+ */
+function hexToHsl(hex: string): { h: number; s: number; l: number } {
+  // 移除 # 前缀
+  const cleanHex = hex.replace('#', '');
+  const r = parseInt(cleanHex.slice(0, 2), 16) / 255;
+  const g = parseInt(cleanHex.slice(2, 4), 16) / 255;
+  const b = parseInt(cleanHex.slice(4, 6), 16) / 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+
+  let h = 0;
+  let s = 0;
+
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+    switch (max) {
+      case r:
+        h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+        break;
+      case g:
+        h = ((b - r) / d + 2) / 6;
+        break;
+      case b:
+        h = ((r - g) / d + 4) / 6;
+        break;
+    }
+  }
+
+  return {
+    h: Math.round(h * 360),
+    s: Math.round(s * 100),
+    l: Math.round(l * 100),
+  };
+}
+
+/**
  * HSL 转 CSS HSL 值格式 (用于 CSS 变量)
  */
 function hslToCSSValue(h: number, s: number, l: number): string {
@@ -608,7 +649,7 @@ export function generateDesignTokens(options: SynthesizerOptions): DesignTokens 
  * 生成 Design Tokens 并返回设计审查警告
  */
 export function generateDesignTokensWithAudit(options: SynthesizerOptions): DesignAuditResult {
-  const { context, sessionId = 'default', seed: customSeed, overrides } = options;
+  const { context, sessionId = 'default', seed: customSeed, overrides, platform = 'web' } = options;
 
   // 设计审查警告收集
   const warnings: AuditWarning[] = [];
@@ -628,7 +669,7 @@ export function generateDesignTokensWithAudit(options: SynthesizerOptions): Desi
   const colors = generateColorTokens(seed, scene, random, warnings);
 
   // 4. 合并所有 Tokens
-  const tokens: DesignTokens = {
+  let tokens: DesignTokens = {
     ...spacing,
     ...typography,
     ...shape,
@@ -642,12 +683,57 @@ export function generateDesignTokensWithAudit(options: SynthesizerOptions): Desi
     },
   } as DesignTokens;
 
-  // 5. 应用覆盖
+  // 5. 平台适配：移动端参数调整
+  if (platform === 'mobile') {
+    tokens = applyMobilePlatformAdjustments(tokens);
+  }
+
+  // 6. 应用覆盖
   if (overrides) {
     Object.assign(tokens, overrides);
   }
 
   return { tokens, warnings };
+}
+
+/**
+ * 移动端平台参数调整
+ *
+ * - 间距收缩 0.75x（手机屏幕小，不需要太大留白）
+ * - 行高补偿（小字号时行高放大，提升可读性）
+ * - 字阶锁定（防止大标题撑爆布局）
+ */
+function applyMobilePlatformAdjustments(tokens: DesignTokens): DesignTokens {
+  const MOBILE_SPACING_FACTOR = 0.75;
+  const MOBILE_MAX_FONT_SCALE = 1.125;  // 移动端字阶上限
+
+  // 解析当前值
+  const currentSpacingXs = parseFloat(tokens['--spacing-xs'] as string) || 4;
+  const currentSpacingSm = parseFloat(tokens['--spacing-sm'] as string) || 8;
+  const currentSpacingMd = parseFloat(tokens['--spacing-md'] as string) || 16;
+  const currentSpacingLg = parseFloat(tokens['--spacing-lg'] as string) || 32;
+  const currentSpacingXl = parseFloat(tokens['--spacing-xl'] as string) || 64;
+  const currentFontScale = parseFloat(tokens['--font-scale'] as string) || 1.2;
+
+  // 间距收缩
+  const adjustedTokens = {
+    ...tokens,
+    '--spacing-xs': `${Math.round(currentSpacingXs * MOBILE_SPACING_FACTOR)}px`,
+    '--spacing-sm': `${Math.round(currentSpacingSm * MOBILE_SPACING_FACTOR)}px`,
+    '--spacing-md': `${Math.round(currentSpacingMd * MOBILE_SPACING_FACTOR)}px`,
+    '--spacing-lg': `${Math.round(currentSpacingLg * MOBILE_SPACING_FACTOR)}px`,
+    '--spacing-xl': `${Math.round(currentSpacingXl * MOBILE_SPACING_FACTOR)}px`,
+    // 字阶锁定
+    '--font-scale': Math.min(currentFontScale, MOBILE_MAX_FONT_SCALE).toFixed(3),
+    // 行高补偿（使用辅助函数）
+    '--line-height-xs': getCompensatedLineHeight('mobile', 12).toFixed(2),
+    '--line-height-sm': getCompensatedLineHeight('mobile', 14).toFixed(2),
+    '--line-height-base': getCompensatedLineHeight('mobile', 16).toFixed(2),
+    '--line-height-lg': getCompensatedLineHeight('mobile', 20).toFixed(2),
+    '--line-height-xl': getCompensatedLineHeight('mobile', 24).toFixed(2),
+  };
+
+  return adjustedTokens as DesignTokens;
 }
 
 /**
@@ -679,4 +765,159 @@ export function tokensToStyle(tokens: DesignTokens): Record<string, string> {
   }
 
   return style;
+}
+
+// ============================================
+// 质感补丁函数 (Design Polish Utilities)
+// ============================================
+
+/**
+ * 深色模式亮度补偿
+ *
+ * 暗色背景（L < 20%）时，自动提升颜色亮度 15%-20%，
+ * 同时降低饱和度，产生"发光感"。
+ *
+ * @param colorHex 原始颜色
+ * @param backgroundLightness 背景亮度 (0-100)
+ * @returns 补偿后的颜色
+ */
+export function compensateDarkMode(
+  colorHex: string,
+  backgroundLightness: number
+): string {
+  const hsl = hexToHsl(colorHex);
+
+  // 暗色背景判定（亮度 < 20%）
+  if (backgroundLightness < 20) {
+    return hslToHex(
+      hsl.h,
+      Math.max(hsl.s - 10, 40),      // 饱和度降 10%（防止刺眼）
+      Math.min(hsl.l + 18, 75)       // 亮度提升 18%（发光感）
+    );
+  }
+
+  // 中灰背景（亮度 20%-40%）
+  if (backgroundLightness < 40) {
+    return hslToHex(
+      hsl.h,
+      Math.max(hsl.s - 5, 50),
+      Math.min(hsl.l + 10, 70)
+    );
+  }
+
+  return colorHex;  // 浅色背景不调整
+}
+
+/**
+ * 获取亮度值 (用于测试)
+ */
+export function getLuminance(hex: string): number {
+  return hexToHsl(hex).l;
+}
+
+/**
+ * 字间距微调类名
+ *
+ * 大字要紧，小字要松：
+ * - ≥ 32px: tracking-tighter (-0.02em)
+ * - ≥ 24px: tracking-tight (-0.01em)
+ * - ≤ 14px: tracking-wide (+0.01em)
+ * - ≤ 12px: tracking-wider (+0.02em)
+ *
+ * @param fontSize 字号 (px)
+ * @returns Tailwind 字间距类名，或空字符串
+ */
+export function getLetterSpacingClass(fontSize: number): string {
+  if (fontSize >= 32) {
+    return 'tracking-tighter';  // -0.02em
+  } else if (fontSize >= 24) {
+    return 'tracking-tight';    // -0.01em
+  } else if (fontSize <= 12) {
+    return 'tracking-wider';    // +0.02em
+  } else if (fontSize <= 14) {
+    return 'tracking-wide';     // +0.01em
+  }
+  return '';
+}
+
+/**
+ * 圆角嵌套计算
+ *
+ * 内圆角 = 外圆角 - 间距，确保"同心圆"效果。
+ *
+ * @param outerRadius 外层圆角 (px)
+ * @param padding 内边距 (px)
+ * @returns 内层圆角 (px)，最小为 0
+ */
+export function calculateInnerRadius(
+  outerRadius: number,
+  padding: number
+): number {
+  return Math.max(outerRadius - padding, 0);
+}
+
+/**
+ * 触觉反馈类名
+ *
+ * 移动端交互组件点击时微缩 3%，模拟物理按压感。
+ *
+ * @param platform 平台
+ * @returns Tailwind 类名数组
+ */
+export function getTouchFeedbackClasses(platform: 'web' | 'mobile'): string[] {
+  if (platform !== 'mobile') return [];
+
+  return [
+    'active:scale-[0.97]',      // 点击缩放 3%
+    'transition-transform',     // 平滑过渡
+    'duration-100',             // 100ms
+  ];
+}
+
+/**
+ * 环境感知混色
+ *
+ * 将主色色相以极低饱和度（2%-5%）混入中性色，
+ * 产生"环境光映射"高级感。
+ *
+ * @param neutralHex 中性色 (灰色)
+ * @param primaryHue 主色色相 (0-360)
+ * @param tintAmount 混入量 (0-1，默认 0.03 即 3%)
+ * @returns 混色后的颜色
+ */
+export function tintNeutralColor(
+  neutralHex: string,
+  primaryHue: number,
+  tintAmount: number = 0.03
+): string {
+  const neutral = hexToHsl(neutralHex);
+
+  // 混入主色色相，极低饱和度
+  return hslToHex(
+    primaryHue,                           // 采用主色色相
+    neutral.s + tintAmount * 100,         // 微量饱和度
+    neutral.l                             // 保持原亮度
+  );
+}
+
+/**
+ * 行高补偿
+ *
+ * 移动端小字号时，行高从 1.5 补偿至 1.6-1.65，提升阅读体验。
+ *
+ * @param platform 平台
+ * @param fontSize 字号 (px)
+ * @returns 推荐行高
+ */
+export function getCompensatedLineHeight(
+  platform: 'web' | 'mobile',
+  fontSize: number
+): number {
+  if (platform === 'mobile') {
+    if (fontSize <= 14) {
+      return 1.65;  // 小字号补偿更多
+    }
+    return 1.6;     // Mobile 默认补偿
+  }
+  return 1.5;       // Web 标准
 }

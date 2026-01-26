@@ -2,7 +2,7 @@
   "specialProps": {
     "Heading": { "variant": "title", "as": "h2" },
     "Quote": { "as": "blockquote", "className": "border-l-4 border-muted pl-4 italic" },
-    "Section": { "layout": "none", "className": "!p-0 flex-1 flex flex-col" },
+    "Section": { "layout": "none", "className": "flex-1 flex flex-col" },
     "Stack": { "direction": "col" },
     "Center": { "className": "flex items-center justify-center" },
     "Rows": { "direction": "col" },

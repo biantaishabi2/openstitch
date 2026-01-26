@@ -1,6 +1,6 @@
 {
   "keywords": {
-    "technical": ["技术", "架构", "开发", "代码", "系统", "API", "工程", "Technical", "System", "Code", "Developer"],
+    "technical": ["技术", "架构", "开发", "代码", "API", "工程", "Technical", "Code", "Developer"],
     "finance": ["金融", "财务", "银行", "投资", "交易", "支付", "账户", "Finance", "Banking", "Trading", "Investment"],
     "medical": ["医疗", "健康", "医院", "诊断", "患者", "药品", "护理", "Medical", "Health", "Hospital", "Healthcare"],
     "education": ["教育", "儿童", "学习", "课程", "学生", "培训", "教学", "Education", "Learning", "Course", "Kids", "Children"],

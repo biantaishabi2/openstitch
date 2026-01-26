@@ -1,0 +1,11 @@
+{
+  "context": "样式透传通道测试",
+  "platform": "web",
+  "screens": [
+    {
+      "screen_id": "css-demo",
+      "title": "CSS 样式透传演示",
+      "dsl": "[HERO: main]\n  { Align: \"Center\" }\n  CSS: \"bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 min-h-screen\"\n  [BADGE: tag]\n    CONTENT: \"Stitch UI Engine\"\n    CSS: \"bg-blue-500/20 text-blue-300 border border-blue-400/30\"\n  [HEADING: title1]\n    ATTR: Size(\"XL\")\n    CONTENT: \"JSON Schema 驱动的\"\n    CSS: \"text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400\"\n  [HEADING: title2]\n    ATTR: Size(\"XL\")\n    CONTENT: \"下一代 UI 渲染引擎\"\n    CSS: \"text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400\"\n  [TEXT: desc]\n    CONTENT: \"一套 Schema，多端渲染。支持 React 实时预览、LiveView 服务端运行、静态 HTML 导出。\"\n    CSS: \"text-gray-300 max-w-2xl mx-auto\"\n  [GRID: features]\n    { Columns: \"3\", Gap: \"LG\" }\n    CSS: \"mt-12\"\n    [CARD: f1]\n      ATTR: Title(\"组件化\"), Icon(\"Layers\")\n      CONTENT: \"50+ 预置组件\"\n      CSS: \"bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 transition-all\"\n    [CARD: f2]\n      ATTR: Title(\"响应式\"), Icon(\"Smartphone\")\n      CONTENT: \"多端自适应\"\n      CSS: \"bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 transition-all\"\n    [CARD: f3]\n      ATTR: Title(\"AI 友好\"), Icon(\"Zap\")\n      CONTENT: \"智能组装\"\n      CSS: \"bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 transition-all\"\n  [FLEX: buttons]\n    { Gap: \"MD\", Justify: \"Center\" }\n    CSS: \"mt-8\"\n    [BUTTON: start]\n      ATTR: Variant(\"default\"), Size(\"LG\")\n      CONTENT: \"开始使用\"\n      CSS: \"bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 shadow-lg shadow-purple-500/25\"\n    [BUTTON: docs]\n      ATTR: Variant(\"outline\"), Size(\"LG\")\n      CONTENT: \"查看文档\"\n      CSS: \"border-white/30 text-white hover:bg-white/10\""
+    }
+  ]
+}

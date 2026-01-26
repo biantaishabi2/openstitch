@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>移动端 ActionSheet 演示</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'hsl(var(--background))',
+            foreground: 'hsl(var(--foreground))',
+            card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+            popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
+            primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+            secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+            muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+            accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+            destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+            border: 'hsl(var(--border))',
+            input: 'hsl(var(--input))',
+            ring: 'hsl(var(--ring))',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root {
+      --base-unit: 4px;--rhythm-base: 4px;--spacing-xs: 3px;--spacing-sm: 6px;--spacing-md: 12px;--spacing-lg: 24px;--spacing-xl: 48px;--gap-card: 16px;--padding-card: 16px;--padding-section: 32px;--line-height-body: 1.50;--line-height-xs: 1.65;--line-height-sm: 1.65;--line-height-base: 1.60;--line-height-lg: 1.60;--line-height-xl: 1.60;--margin-block-xs: 4px;--margin-block-sm: 8px;--margin-block-md: 16px;--margin-block-lg: 24px;--font-scale: 1.125;--font-size-xs: 10.24px;--font-size-sm: 12.80px;--font-size-base: 16px;--font-size-lg: 20.00px;--font-size-xl: 25.00px;--font-size-2xl: 31.25px;--font-size-3xl: 39.06px;--font-weight-normal: 400;--font-weight-medium: 500;--font-weight-semibold: 600;--font-weight-bold: 700;--radius-sm: 3px;--radius-md: 6px;--radius-lg: 12px;--radius-full: 9999px;--squeezing-factor: 1.20;--squeezing-factor-lg: 2.40;--padding-squeezing: 0px;--padding-squeezing-lg: 4px;--shadow-sm: 0 1px 2px rgba(0,0,0,0.05);--shadow-md: 0 4px 6px rgba(0,0,0,0.10);--shadow-lg: 0 10px 15px rgba(0,0,0,0.12);--shadow-elevation-0: 0 0px 1px rgba(0,0,0,0.08), 0 1px 2px 0px rgba(0,0,0,0.05);--shadow-elevation-1: 0 1px 2px rgba(0,0,0,0.08), 0 2px 4px 0px rgba(0,0,0,0.05);--shadow-elevation-2: 0 2px 3px rgba(0,0,0,0.08), 0 4px 8px -1px rgba(0,0,0,0.05);--shadow-elevation-3: 0 3px 4px rgba(0,0,0,0.08), 0 8px 16px -2px rgba(0,0,0,0.05);--shadow-elevation-4: 0 4px 6px rgba(0,0,0,0.08), 0 16px 32px -4px rgba(0,0,0,0.05);--shadow-overlay: 0 0 0 1px rgba(0,0,0,0.05), 0 3px 4px rgba(0,0,0,0.08), 0 8px 16px -2px rgba(0,0,0,0.05);--shadow-inset: inset 0 2px 4px rgba(0,0,0,0.03);--pattern-type: noise;--pattern-dots: radial-gradient(circle, rgba(0,0,0,0.01) 1px, transparent 1px);--pattern-dots-size: 20px 20px;--pattern-grid: linear-gradient(rgba(0,0,0,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.01) 1px, transparent 1px);--pattern-grid-size: 24px 24px;--gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity: 0.01;--pattern-layer-1: rgba(0,0,0,0.009);--pattern-layer-2: rgba(0,0,0,0.012);--pattern-layer-3: rgba(0,0,0,0.015);--noise-factor: 0.50;--noise-simplify: 0;--sibling-border-opacity: 0.08;--sibling-border-hover-opacity: 0.15;--sibling-bg-offset: 2%;--chromatic-aberration: 0.3%;--primary-color: #f16a31;--primary-50: #ffdcdd;--primary-100: #ffcecf;--primary-200: #ffb6b8;--primary-300: #ef9497;--primary-400: #ca6c70;--primary-500: #a6444c;--primary-600: #872b35;--primary-700: #6b1522;--primary-800: #500010;--primary-900: #330001;--secondary-color: #e2d087;--accent-color: #55b7e1;--positive-color: #22C55E;--negative-color: #EF4444;--background: 0 0% 100%;--foreground: 222 47% 11%;--card: 0 0% 100%;--card-foreground: 222 47% 11%;--popover: 0 0% 100%;--popover-foreground: 222 47% 11%;--primary: 18 87% 57%;--primary-foreground: 0 0% 100%;--secondary: 48 61% 96%;--secondary-foreground: 48 61% 20%;--muted: 210 40% 96%;--muted-foreground: 215 16% 47%;--accent: 198 40% 96%;--accent-foreground: 198 70% 20%;--destructive: 0 84% 60%;--destructive-foreground: 0 0% 100%;--border: 214 32% 91%;--input: 214 32% 91%;--ring: 18 87% 57%;
+    }
+    * { border-color: hsl(var(--border)); }
+    body { font-family: system-ui, -apple-system, sans-serif; }
+:root {
+  --base-unit: 4px;
+  --rhythm-base: 4px;
+  --spacing-xs: 3px;
+  --spacing-sm: 6px;
+  --spacing-md: 12px;
+  --spacing-lg: 24px;
+  --spacing-xl: 48px;
+  --gap-card: 16px;
+  --padding-card: 16px;
+  --padding-section: 32px;
+  --line-height-body: 1.50;
+  --line-height-xs: 1.65;
+  --line-height-sm: 1.65;
+  --line-height-base: 1.60;
+  --line-height-lg: 1.60;
+  --line-height-xl: 1.60;
+  --margin-block-xs: 4px;
+  --margin-block-sm: 8px;
+  --margin-block-md: 16px;
+  --margin-block-lg: 24px;
+  --font-scale: 1.125;
+  --font-size-xs: 10.24px;
+  --font-size-sm: 12.80px;
+  --font-size-base: 16px;
+  --font-size-lg: 20.00px;
+  --font-size-xl: 25.00px;
+  --font-size-2xl: 31.25px;
+  --font-size-3xl: 39.06px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+  --squeezing-factor: 1.20;
+  --squeezing-factor-lg: 2.40;
+  --padding-squeezing: 0px;
+  --padding-squeezing-lg: 4px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.10);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.12);
+  --shadow-elevation-0: 0 0px 1px rgba(0,0,0,0.08), 0 1px 2px 0px rgba(0,0,0,0.05);
+  --shadow-elevation-1: 0 1px 2px rgba(0,0,0,0.08), 0 2px 4px 0px rgba(0,0,0,0.05);
+  --shadow-elevation-2: 0 2px 3px rgba(0,0,0,0.08), 0 4px 8px -1px rgba(0,0,0,0.05);
+  --shadow-elevation-3: 0 3px 4px rgba(0,0,0,0.08), 0 8px 16px -2px rgba(0,0,0,0.05);
+  --shadow-elevation-4: 0 4px 6px rgba(0,0,0,0.08), 0 16px 32px -4px rgba(0,0,0,0.05);
+  --shadow-overlay: 0 0 0 1px rgba(0,0,0,0.05), 0 3px 4px rgba(0,0,0,0.08), 0 8px 16px -2px rgba(0,0,0,0.05);
+  --shadow-inset: inset 0 2px 4px rgba(0,0,0,0.03);
+  --pattern-type: noise;
+  --pattern-dots: radial-gradient(circle, rgba(0,0,0,0.01) 1px, transparent 1px);
+  --pattern-dots-size: 20px 20px;
+  --pattern-grid: linear-gradient(rgba(0,0,0,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.01) 1px, transparent 1px);
+  --pattern-grid-size: 24px 24px;
+  --gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);
+  --noise-opacity: 0.01;
+  --pattern-layer-1: rgba(0,0,0,0.009);
+  --pattern-layer-2: rgba(0,0,0,0.012);
+  --pattern-layer-3: rgba(0,0,0,0.015);
+  --noise-factor: 0.50;
+  --noise-simplify: 0;
+  --sibling-border-opacity: 0.08;
+  --sibling-border-hover-opacity: 0.15;
+  --sibling-bg-offset: 2%;
+  --chromatic-aberration: 0.3%;
+  --primary-color: #f16a31;
+  --primary-50: #ffdcdd;
+  --primary-100: #ffcecf;
+  --primary-200: #ffb6b8;
+  --primary-300: #ef9497;
+  --primary-400: #ca6c70;
+  --primary-500: #a6444c;
+  --primary-600: #872b35;
+  --primary-700: #6b1522;
+  --primary-800: #500010;
+  --primary-900: #330001;
+  --secondary-color: #e2d087;
+  --accent-color: #55b7e1;
+  --positive-color: #22C55E;
+  --negative-color: #EF4444;
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 18 87% 57%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 48 61% 96%;
+  --secondary-foreground: 48 61% 20%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 198 40% 96%;
+  --accent-foreground: 198 70% 20%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 18 87% 57%;
+}
+
+/* Tailwind 基础重置 */
+*, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; }
+button { font-family: inherit; font-size: 100%; margin: 0; padding: 0; }
+button { background-color: transparent; background-image: none; }
+ svg { display: block; max-width: 100%; height: auto; }
+
+/* 常用工具类 */
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.grid { display: grid; }
+
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: 0.5rem; }
+.gap-6 { gap: 1.5rem; }
+.px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+.h-9 { height: 2.25rem; }
+.shrink-0 { flex-shrink: 0; }
+.text-base { font-size: 1rem; line-height: 1.5rem; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.rounded-md { border-radius: 0.375rem; }
+.rounded-xl { border-radius: 0.75rem; }
+
+.border { border-width: 1px; }
+
+.shadow-xs { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+
+.opacity-50 { opacity: 0.5; }
+.transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+
+.whitespace-nowrap { white-space: nowrap; }
+.leading-none { line-height: 1; }
+.outline-none { outline: 2px solid transparent; outline-offset: 2px; }
+
+/* HSL 颜色工具类 */
+.bg-background { background-color: hsl(var(--background)); }
+.bg-card { background-color: hsl(var(--card)); }
+.bg-accent { background-color: hsl(var(--accent)); }
+.text-card-foreground { color: hsl(var(--card-foreground)); }
+.border-input { border-color: hsl(var(--input)); }
+
+/* 按钮变体样式 */
+[data-variant="outline"] {
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--background));
+}
+
+  </style>
+
+</head>
+<body>
+<div style="--base-unit:4px;--rhythm-base:4px;--spacing-xs:3px;--spacing-sm:6px;--spacing-md:12px;--spacing-lg:24px;--spacing-xl:48px;--gap-card:16px;--padding-card:16px;--padding-section:32px;--line-height-body:1.50;--line-height-xs:1.65;--line-height-sm:1.65;--line-height-base:1.60;--line-height-lg:1.60;--line-height-xl:1.60;--margin-block-xs:4px;--margin-block-sm:8px;--margin-block-md:16px;--margin-block-lg:24px;--font-scale:1.125;--font-size-xs:10.24px;--font-size-sm:12.80px;--font-size-base:16px;--font-size-lg:20.00px;--font-size-xl:25.00px;--font-size-2xl:31.25px;--font-size-3xl:39.06px;--font-weight-normal:400;--font-weight-medium:500;--font-weight-semibold:600;--font-weight-bold:700;--radius-sm:3px;--radius-md:6px;--radius-lg:12px;--radius-full:9999px;--squeezing-factor:1.20;--squeezing-factor-lg:2.40;--padding-squeezing:0px;--padding-squeezing-lg:4px;--shadow-sm:0 1px 2px rgba(0,0,0,0.05);--shadow-md:0 4px 6px rgba(0,0,0,0.10);--shadow-lg:0 10px 15px rgba(0,0,0,0.12);--shadow-elevation-0:0 0px 1px rgba(0,0,0,0.08), 0 1px 2px 0px rgba(0,0,0,0.05);--shadow-elevation-1:0 1px 2px rgba(0,0,0,0.08), 0 2px 4px 0px rgba(0,0,0,0.05);--shadow-elevation-2:0 2px 3px rgba(0,0,0,0.08), 0 4px 8px -1px rgba(0,0,0,0.05);--shadow-elevation-3:0 3px 4px rgba(0,0,0,0.08), 0 8px 16px -2px rgba(0,0,0,0.05);--shadow-elevation-4:0 4px 6px rgba(0,0,0,0.08), 0 16px 32px -4px rgba(0,0,0,0.05);--shadow-overlay:0 0 0 1px rgba(0,0,0,0.05), 0 3px 4px rgba(0,0,0,0.08), 0 8px 16px -2px rgba(0,0,0,0.05);--shadow-inset:inset 0 2px 4px rgba(0,0,0,0.03);--pattern-type:noise;--pattern-dots:radial-gradient(circle, rgba(0,0,0,0.01) 1px, transparent 1px);--pattern-dots-size:20px 20px;--pattern-grid:linear-gradient(rgba(0,0,0,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.01) 1px, transparent 1px);--pattern-grid-size:24px 24px;--gradient-fade:linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity:0.01;--pattern-layer-1:rgba(0,0,0,0.009);--pattern-layer-2:rgba(0,0,0,0.012);--pattern-layer-3:rgba(0,0,0,0.015);--noise-factor:0.50;--noise-simplify:0;--sibling-border-opacity:0.08;--sibling-border-hover-opacity:0.15;--sibling-bg-offset:2%;--chromatic-aberration:0.3%;--primary-color:#f16a31;--primary-50:#ffdcdd;--primary-100:#ffcecf;--primary-200:#ffb6b8;--primary-300:#ef9497;--primary-400:#ca6c70;--primary-500:#a6444c;--primary-600:#872b35;--primary-700:#6b1522;--primary-800:#500010;--primary-900:#330001;--secondary-color:#e2d087;--accent-color:#55b7e1;--positive-color:#22C55E;--negative-color:#EF4444;--background:0 0% 100%;--foreground:222 47% 11%;--card:0 0% 100%;--card-foreground:222 47% 11%;--popover:0 0% 100%;--popover-foreground:222 47% 11%;--primary:18 87% 57%;--primary-foreground:0 0% 100%;--secondary:48 61% 96%;--secondary-foreground:48 61% 20%;--muted:210 40% 96%;--muted-foreground:215 16% 47%;--accent:198 40% 96%;--accent-foreground:198 70% 20%;--destructive:0 84% 60%;--destructive-foreground:0 0% 100%;--border:214 32% 91%;--input:214 32% 91%;--ring:18 87% 57%"><section class="py-12 md:py-16 lg:py-20 px-4 md:px-6 flex-1 flex flex-col" style="gap:12px" id="action_demo"><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm active:scale-[0.97] transition-transform duration-100" id="intro"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"><div data-slot="card-title" class="leading-none font-semibold flex items-center gap-2">ActionSheet 演示</div></div><div data-slot="card-content" class="px-6"><p class="text-base">点击下方按钮打开操作菜单</p></div></div><button data-slot="button" data-variant="outline" data-size="default" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[&gt;svg]:px-3 text-base active:scale-[0.97] transition-transform duration-100" id="open_sheet"><p class="text-base">打开操作菜单</p></button></section></div>
+
+</body>
+</html>

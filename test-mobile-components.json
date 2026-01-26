@@ -1,0 +1,48 @@
+{
+  "context": "Stitch 移动端组件测试",
+  "platform": "mobile",
+  "screens": [
+    {
+      "screen_id": "comp-mobile",
+      "title": "移动端组件总览",
+      "mobile_navigation": ["组件", "对比", "设置", "我的"],
+      "dsl": "[SECTION: main]\n  { Gap: \"MD\" }\n\n  [HEADING: title]\n    ATTR: Size(\"LG\")\n    CONTENT: \"移动端组件 Mobile Components\"\n\n  [TEXT: intro]\n    CONTENT: \"Stitch 移动端专属组件，针对触摸交互优化\"\n\n  [CARD: bottomtabs_demo]\n    ATTR: Title(\"BottomTabs 底部导航\"), Icon(\"LayoutDashboard\")\n    [TEXT: desc] CONTENT: \"底部标签栏，支持 2-5 个标签项\"\n    [FLEX: tabs_preview]\n      { Gap: \"SM\", Justify: \"Center\" }\n      [BADGE: t1] CONTENT: \"首页\"\n      [BADGE: t2] ATTR: Variant(\"outline\") CONTENT: \"发现\"\n      [BADGE: t3] ATTR: Variant(\"outline\") CONTENT: \"消息\"\n      [BADGE: t4] ATTR: Variant(\"outline\") CONTENT: \"我的\"\n\n  [CARD: drawer_demo]\n    ATTR: Title(\"Drawer 侧滑抽屉\"), Icon(\"Menu\")\n    [TEXT: desc] CONTENT: \"当功能 > 5 个时，使用侧滑抽屉替代底部导航\"\n    [LIST: menu_preview]\n      [TEXT: m1] CONTENT: \"状态监控\"\n      [TEXT: m2] CONTENT: \"执行日志\"\n      [TEXT: m3] CONTENT: \"系统设置\"\n    [BUTTON: drawer_btn]\n      ATTR: Variant(\"outline\"), Size(\"SM\")\n      CONTENT: \"打开抽屉\"\n\n  [CARD: sheet_demo]\n    ATTR: Title(\"Sheet 底部弹层\"), Icon(\"ArrowUpFromLine\")\n    [TEXT: desc] CONTENT: \"Modal 替代方案，从底部滑出，支持拖拽关闭\"\n    [FLEX: sheet_actions]\n      { Gap: \"SM\" }\n      [BUTTON: sheet_btn]\n        ATTR: Size(\"SM\")\n        CONTENT: \"打开 Sheet\"\n\n  [CARD: actionsheet_demo]\n    ATTR: Title(\"ActionSheet 操作菜单\"), Icon(\"ListOrdered\")\n    [TEXT: desc] CONTENT: \"Select 替代方案，选项高度 ≥ 44px\"\n    [FLEX: action_preview]\n      { Gap: \"XS\" }\n      [BADGE: a1] ATTR: Variant(\"outline\") CONTENT: \"编辑\"\n      [BADGE: a2] ATTR: Variant(\"outline\") CONTENT: \"复制\"\n      [BADGE: a3] ATTR: Variant(\"outline\") CONTENT: \"分享\"\n      [BADGE: a4] ATTR: Variant(\"destructive\") CONTENT: \"删除\"\n\n  [CARD: segment_demo]\n    ATTR: Title(\"Segment 分段控制器\"), Icon(\"ToggleLeft\")\n    [TEXT: desc] CONTENT: \"Tabs 替代方案，更紧凑，适合 2-4 个选项\"\n    [FLEX: seg_preview]\n      { Gap: \"SM\" }\n      [BADGE: s1] CONTENT: \"全部\"\n      [BADGE: s2] ATTR: Variant(\"outline\") CONTENT: \"进行中\"\n      [BADGE: s3] ATTR: Variant(\"outline\") CONTENT: \"已完成\"\n\n  [CARD: touch_feedback]\n    ATTR: Title(\"触摸反馈\"), Icon(\"Fingerprint\")\n    [TEXT: desc] CONTENT: \"所有可点击元素自动注入 active:scale-[0.97]\"\n    [FLEX: btn_row]\n      { Gap: \"SM\" }\n      [BUTTON: fb1] CONTENT: \"点击测试\"\n      [BUTTON: fb2] ATTR: Variant(\"outline\") CONTENT: \"触摸反馈\"\n      [BUTTON: fb3] ATTR: Variant(\"secondary\") CONTENT: \"按压效果\"\n\n  [CARD: visual_adapt]\n    ATTR: Title(\"视觉适配\"), Icon(\"Ruler\")\n    [LIST: adapt_list]\n      [TEXT: v1] CONTENT: \"间距收缩: 0.75x (16px → 12px)\"\n      [TEXT: v2] CONTENT: \"行高补偿: 1.5 → 1.6\"\n      [TEXT: v3] CONTENT: \"字阶锁定: XL → LG\"\n      [TEXT: v4] CONTENT: \"安全区域: 自动处理 iPhone 底部横条\""
+    },
+    {
+      "screen_id": "mobile-bottomtabs",
+      "title": "BottomTabs 底部导航",
+      "mobile_navigation": ["首页", "发现", "消息", "我的"],
+      "dsl": "[SECTION: main]\n  { Gap: \"MD\" }\n\n  [HEADING: title]\n    ATTR: Size(\"LG\")\n    CONTENT: \"BottomTabs 底部导航\"\n\n  [TEXT: desc]\n    CONTENT: \"移动端底部标签栏导航，支持 2-5 个标签项\"\n\n  [CARD: welcome]\n    ATTR: Title(\"欢迎使用\"), Icon(\"Sparkles\")\n    CONTENT: \"这是一个移动端 BottomTabs 演示页面。点击底部标签切换页面。\"\n\n  [CARD: feature1]\n    ATTR: Title(\"触摸反馈\")\n    CONTENT: \"所有可点击元素都有 active:scale-[0.97] 触摸反馈效果\"\n\n  [CARD: feature2]\n    ATTR: Title(\"安全区域\")\n    CONTENT: \"自动处理 iPhone 底部横条的安全区域\"\n\n  [BUTTON: action]\n    CONTENT: \"点击测试触摸反馈\""
+    },
+    {
+      "screen_id": "mobile-drawer",
+      "title": "Drawer 侧滑抽屉",
+      "mobile_navigation": null,
+      "dsl": "[SECTION: main]\n  { Gap: \"MD\" }\n\n  [HEADING: title]\n    ATTR: Size(\"LG\")\n    CONTENT: \"Drawer 侧滑抽屉\"\n\n  [TEXT: desc]\n    CONTENT: \"当功能超过 5 个时，使用侧滑抽屉替代底部导航\"\n\n  [CARD: intro]\n    ATTR: Title(\"何时使用 Drawer?\"), Icon(\"Menu\")\n    CONTENT: \"功能模块 > 5 个时\\n需要深层级导航时\\n沉浸式阅读场景\"\n\n  [CARD: demo]\n    ATTR: Title(\"功能菜单示例\")\n    [LIST: menu]\n      [TEXT: m1] CONTENT: \"状态监控\"\n      [TEXT: m2] CONTENT: \"执行日志\"\n      [TEXT: m3] CONTENT: \"逻辑节点\"\n      [TEXT: m4] CONTENT: \"系统设置\"\n      [TEXT: m5] CONTENT: \"帮助中心\"\n      [TEXT: m6] CONTENT: \"退出登录\"\n\n  [BUTTON: open_drawer]\n    ATTR: Variant(\"outline\")\n    CONTENT: \"打开抽屉菜单\""
+    },
+    {
+      "screen_id": "mobile-sheet",
+      "title": "Sheet 底部弹层",
+      "mobile_navigation": ["首页", "我的"],
+      "dsl": "[SECTION: main]\n  { Gap: \"MD\" }\n\n  [HEADING: title]\n    ATTR: Size(\"LG\")\n    CONTENT: \"Sheet 底部弹层\"\n\n  [TEXT: desc]\n    CONTENT: \"移动端 Modal 的替代组件，从底部滑出\"\n\n  [CARD: intro]\n    ATTR: Title(\"Sheet vs Modal\"), Icon(\"ArrowUpFromLine\")\n    CONTENT: \"Sheet 从底部滑出，更符合移动端交互习惯。支持拖拽关闭。\"\n\n  [CARD: usage]\n    ATTR: Title(\"使用场景\")\n    [LIST: scenes]\n      [TEXT: s1] CONTENT: \"确认操作\"\n      [TEXT: s2] CONTENT: \"表单填写\"\n      [TEXT: s3] CONTENT: \"详情展示\"\n      [TEXT: s4] CONTENT: \"筛选面板\"\n\n  [BUTTON: open_sheet]\n    CONTENT: \"打开 Sheet\""
+    },
+    {
+      "screen_id": "mobile-actionsheet",
+      "title": "ActionSheet 操作菜单",
+      "mobile_navigation": ["首页", "我的"],
+      "dsl": "[SECTION: main]\n  { Gap: \"MD\" }\n\n  [HEADING: title]\n    ATTR: Size(\"LG\")\n    CONTENT: \"ActionSheet 操作菜单\"\n\n  [TEXT: desc]\n    CONTENT: \"移动端 Select 的替代组件，底部弹出选项列表\"\n\n  [CARD: intro]\n    ATTR: Title(\"ActionSheet vs Select\"), Icon(\"ListOrdered\")\n    CONTENT: \"ActionSheet 选项更大，适合手指点击。每个选项高度 ≥ 44px。\"\n\n  [CARD: demo]\n    ATTR: Title(\"操作示例\")\n    CONTENT: \"点击下方按钮查看操作菜单效果\"\n\n  [BUTTON: open_actionsheet]\n    ATTR: Variant(\"outline\")\n    CONTENT: \"选择操作\"\n\n  [CARD: options]\n    ATTR: Title(\"菜单选项预览\")\n    [LIST: opts]\n      [TEXT: o1] CONTENT: \"编辑\"\n      [TEXT: o2] CONTENT: \"复制\"\n      [TEXT: o3] CONTENT: \"分享\"\n      [TEXT: o4] CONTENT: \"删除\""
+    },
+    {
+      "screen_id": "mobile-segment",
+      "title": "Segment 分段控制器",
+      "mobile_navigation": ["首页", "我的"],
+      "dsl": "[SECTION: main]\n  { Gap: \"MD\" }\n\n  [HEADING: title]\n    ATTR: Size(\"LG\")\n    CONTENT: \"Segment 分段控制器\"\n\n  [TEXT: desc]\n    CONTENT: \"移动端 Tabs 的替代组件，更紧凑的切换控件\"\n\n  [CARD: intro]\n    ATTR: Title(\"Segment vs Tabs\"), Icon(\"ToggleLeft\")\n    CONTENT: \"Segment 占用空间更小，适合移动端顶部切换。通常放置 2-4 个选项。\"\n\n  [CARD: demo]\n    ATTR: Title(\"分段控制器示例\")\n    [FLEX: seg_preview]\n      { Gap: \"SM\" }\n      [BADGE: s1] CONTENT: \"全部\"\n      [BADGE: s2] ATTR: Variant(\"outline\") CONTENT: \"进行中\"\n      [BADGE: s3] ATTR: Variant(\"outline\") CONTENT: \"已完成\"\n\n  [CARD: content]\n    ATTR: Title(\"当前选中: 全部\")\n    CONTENT: \"这里显示对应分段的内容\""
+    },
+    {
+      "screen_id": "mobile-comparison",
+      "title": "Web vs Mobile 对比",
+      "mobile_navigation": ["首页", "对比", "我的"],
+      "dsl": "[SECTION: main]\n  { Gap: \"MD\" }\n\n  [HEADING: title]\n    ATTR: Size(\"LG\")\n    CONTENT: \"组件映射对比\"\n\n  [TEXT: desc]\n    CONTENT: \"同一功能在 Web 和 Mobile 的组件选择差异\"\n\n  [CARD: nav_compare]\n    ATTR: Title(\"导航组件\"), Icon(\"Navigation\")\n    [LIST: nav]\n      [TEXT: n1] CONTENT: \"Web: Sidebar 侧边栏\"\n      [TEXT: n2] CONTENT: \"Mobile: BottomTabs 或 Drawer\"\n\n  [CARD: data_compare]\n    ATTR: Title(\"数据展示\"), Icon(\"Table\")\n    [LIST: data]\n      [TEXT: d1] CONTENT: \"Web: Table 表格 (5+ 列)\"\n      [TEXT: d2] CONTENT: \"Mobile: List + Card (纵向)\"\n\n  [CARD: modal_compare]\n    ATTR: Title(\"弹窗组件\"), Icon(\"Square\")\n    [LIST: modal]\n      [TEXT: m1] CONTENT: \"Web: Modal 居中弹窗\"\n      [TEXT: m2] CONTENT: \"Mobile: Sheet 底部弹层\"\n\n  [CARD: select_compare]\n    ATTR: Title(\"选择组件\"), Icon(\"ChevronDown\")\n    [LIST: select]\n      [TEXT: s1] CONTENT: \"Web: Select 下拉选择\"\n      [TEXT: s2] CONTENT: \"Mobile: ActionSheet 操作菜单\"\n\n  [CARD: tabs_compare]\n    ATTR: Title(\"切换组件\"), Icon(\"Layers\")\n    [LIST: tabs]\n      [TEXT: t1] CONTENT: \"Web: Tabs 选项卡\"\n      [TEXT: t2] CONTENT: \"Mobile: Segment 分段器\""
+    }
+  ]
+}

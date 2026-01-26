@@ -29,7 +29,7 @@ export const TYPE_MAP: Record<ComponentType, string> = {
   Hero: 'Hero',
   Spacer: 'Spacer',
 
-  // 导航组件 - 映射到布局基础组件
+  // 导航组件 (Web) - 映射到布局基础组件
   Header: 'Header',   // 语义化页头组件
   Footer: 'Footer',   // 语义化页脚组件
   Sidebar: 'Stack',   // 降级为 Stack (带暗色背景样式)
@@ -37,6 +37,12 @@ export const TYPE_MAP: Record<ComponentType, string> = {
   Tabs: 'Tabs',
   Breadcrumb: 'Breadcrumb',
   Stepper: 'Stepper',
+
+  // 导航组件 (Mobile) - 移动端专用
+  MobileShell: 'MobileShell',   // 移动端外壳 (safe-area + 布局容器)
+  BottomTabs: 'BottomTabs',     // 底部标签栏 (固定定位)
+  Drawer: 'Drawer',             // 侧滑抽屉菜单 (shadcn 原生)
+  Segment: 'ToggleGroup',       // 分段控制器 → 映射到 ToggleGroup
 
   // 数据展示 - 直接映射
   Card: 'Card',
@@ -66,13 +72,20 @@ export const TYPE_MAP: Record<ComponentType, string> = {
   Select: 'Select',
   Form: 'Stack',      // 降级为 Stack (表单布局)
 
-  // 反馈组件
+  // 反馈组件 (Web)
   Alert: 'Alert',
   Modal: 'Dialog',    // 名称映射
   Progress: 'Progress',
   Tooltip: 'Tooltip',
   Skeleton: 'Skeleton',
   EmptyState: 'EmptyState',
+
+  // 反馈组件 (Mobile) - 移动端专用
+  Sheet: 'Sheet',               // 底部弹出层 (shadcn 原生)
+  ActionSheet: 'ActionSheet',   // 操作菜单 (基于 Sheet 扩展)
+
+  // 交互组件 (Mobile) - 移动端专用
+  SwipeAction: 'SwipeAction',   // 滑动操作
 
   // 其他
   Link: 'Link',

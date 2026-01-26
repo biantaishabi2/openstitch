@@ -31,6 +31,25 @@ const SPACING_MAP: Record<string, string> = {
 };
 
 /**
+ * Gap token 映射表
+ * DSL 中使用语义化名称，转换为 CSS 变量
+ */
+const GAP_TOKEN_MAP: Record<string, string> = {
+  NONE: '0',
+  XS: '--spacing-xs',
+  SM: '--spacing-sm',
+  MD: '--spacing-md',
+  LG: '--spacing-lg',
+  XL: '--spacing-xl',
+  none: '0',
+  xs: '--spacing-xs',
+  sm: '--spacing-sm',
+  md: '--spacing-md',
+  lg: '--spacing-lg',
+  xl: '--spacing-xl',
+};
+
+/**
  * 对齐映射表
  */
 const ALIGN_CLASS_MAP: Record<string, string> = {
@@ -48,6 +67,15 @@ const JUSTIFY_CLASS_MAP: Record<string, string> = {
   end: 'justify-end',
   between: 'justify-between',
   around: 'justify-around',
+};
+
+/**
+ * Variant 映射表
+ * DSL 使用语义化名称，映射到 shadcn 组件的实际 variant
+ */
+const VARIANT_MAP: Record<string, string> = {
+  primary: 'default',    // DSL "primary" → shadcn "default"（主要按钮样式）
+  // 其他 variant 保持原值
 };
 
 /**
@@ -175,8 +203,14 @@ export function normalizeProps(
       }
 
       case 'gutter': {
-        // gutter 直接作为 gap 样式
-        styles.push({ gap: value as string });
+        // gutter 和 gap 一样处理，使用 token 名转换
+        const gutterValue = value as string;
+        const tokenKey = GAP_TOKEN_MAP[gutterValue] as keyof DesignTokens;
+        if (tokenKey && tokens[tokenKey]) {
+          styles.push({ gap: tokens[tokenKey] as string });
+        } else {
+          styles.push({ gap: gutterValue });
+        }
         break;
       }
 
@@ -201,7 +235,15 @@ export function normalizeProps(
       }
 
       case 'gap': {
-        styles.push({ gap: value as string });
+        // Gap 使用 token 名（如 SM、MD），需要转换为实际像素值
+        const gapValue = value as string;
+        const tokenKey = GAP_TOKEN_MAP[gapValue] as keyof DesignTokens;
+        if (tokenKey && tokens[tokenKey]) {
+          styles.push({ gap: tokens[tokenKey] as string });
+        } else {
+          // 如果不是 token 名，直接使用原值（可能是 CSS 值如 "16px"）
+          styles.push({ gap: gapValue });
+        }
         break;
       }
 
@@ -217,8 +259,15 @@ export function normalizeProps(
         break;
       }
 
+      // variant 需要映射
+      case 'variant': {
+        const variantValue = value as string;
+        // 如果有映射则使用映射值，否则保持原值
+        result[key] = VARIANT_MAP[variantValue] || variantValue;
+        break;
+      }
+
       // 直接透传的 props
-      case 'variant':
       case 'title':
       case 'content':
       case 'text':

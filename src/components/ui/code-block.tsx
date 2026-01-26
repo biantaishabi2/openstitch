@@ -27,7 +27,10 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
     ref
   ) => {
     const [copied, setCopied] = React.useState(false);
-    const [highlightedCode, setHighlightedCode] = React.useState<string>('');
+    // 初始状态使用纯文本代码，用于 SSR
+    const [highlightedCode, setHighlightedCode] = React.useState<string>(
+      `<pre><code>${code?.replace(/</g, '&lt;').replace(/>/g, '&gt;') || ''}</code></pre>`
+    );
 
     React.useEffect(() => {
       const highlight = async () => {

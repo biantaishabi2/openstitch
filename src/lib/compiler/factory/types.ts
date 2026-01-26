@@ -34,6 +34,8 @@ export interface FactoryOptions {
   injectEvents?: boolean;
   /** 自定义事件处理器 */
   eventHandlers?: Record<string, EventHandler>;
+  /** 平台类型 - 影响组件渲染和交互样式 */
+  platform?: 'web' | 'mobile';
 }
 
 /**

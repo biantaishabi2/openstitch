@@ -17,6 +17,7 @@ import type {
   ASTNode,
   StitchAST,
   ComponentType,
+  PlatformType,
   BaseProps,
   CompileError,
 } from './ast';
@@ -274,6 +275,10 @@ export const CompileOptionsSchema = z.object({
   title: z.string().optional(),
   context: z.string().optional(),
   sessionId: z.string().optional(),
+  /** 平台类型 - 由规划层明确指定，独立于导航配置 */
+  platform: z.enum(['web', 'mobile']).optional(),
+  /** 移动端导航项 - 仅在 mobile 平台有效：有值时使用 BottomTabs，null 时使用 Drawer */
+  mobileNavigation: z.array(z.string()).nullable().optional(),
 });
 
 export type CompileOptions = z.infer<typeof CompileOptionsSchema>;
@@ -292,6 +297,88 @@ function validateCSTNode(node: unknown): node is CSTNode {
 function validateCSTNodes(nodes: unknown): nodes is CSTNode[] {
   if (!Array.isArray(nodes)) return false;
   return nodes.every(validateCSTNode);
+}
+
+// ============================================
+// 移动端平台适配
+// ============================================
+
+/**
+ * 移动端禁用组件列表
+ * 这些组件在移动端会产生警告
+ */
+const MOBILE_FORBIDDEN_COMPONENTS: Record<string, string> = {
+  'Sidebar': '移动端请使用 DRAWER 或 BOTTOM_TABS 替代 SIDEBAR',
+  'Tooltip': '移动端无 Hover 交互，请改用点击展开或 SHEET',
+};
+
+/**
+ * 移动端组件替换建议
+ */
+const MOBILE_COMPONENT_SUGGESTIONS: Record<string, string> = {
+  'Table': '移动端建议使用 LIST + CARD 替代 TABLE',
+  'Modal': '移动端建议使用 SHEET 替代 MODAL',
+  'Select': '移动端建议使用 ACTION_SHEET 替代 SELECT',
+  'Tabs': '移动端建议使用 SEGMENT 替代 TABS',
+};
+
+/**
+ * 应用移动端平台规则
+ *
+ * - 校验禁用组件（Sidebar、Tooltip）
+ * - 添加组件替换建议（Table → List）
+ * - 为布局组件注入移动端属性
+ */
+function applyMobilePlatformRules(nodes: ASTNode[], ctx: TransformContext): void {
+  for (const node of nodes) {
+    // 1. 检查禁用组件
+    const forbidden = MOBILE_FORBIDDEN_COMPONENTS[node.type];
+    if (forbidden) {
+      ctx.errors.push({
+        level: 'warning',
+        message: `[Mobile] ${forbidden}`,
+        nodeId: node.id,
+        suggestion: forbidden,
+      });
+    }
+
+    // 2. 添加替换建议
+    const suggestion = MOBILE_COMPONENT_SUGGESTIONS[node.type];
+    if (suggestion) {
+      ctx.errors.push({
+        level: 'info',
+        message: `[Mobile] ${suggestion}`,
+        nodeId: node.id,
+        suggestion,
+      });
+    }
+
+    // 3. 布局组件注入移动端属性
+    if (node.type === 'Section' || node.type === 'Container') {
+      // 移动端默认全宽，减少左右留白
+      if (!node.props.fullWidth) {
+        node.props.fullWidth = true;
+      }
+    }
+
+    // 4. Grid 列数限制（移动端最多 2 列）
+    if (node.type === 'Grid') {
+      const columns = parseInt(node.props.columns as string || '1', 10);
+      if (columns > 2) {
+        ctx.errors.push({
+          level: 'warning',
+          message: `[Mobile] Grid 列数 ${columns} 超过移动端推荐值 2，已自动降级`,
+          nodeId: node.id,
+        });
+        node.props.columns = '2';
+      }
+    }
+
+    // 5. 递归处理子节点
+    if (node.children && node.children.length > 0) {
+      applyMobilePlatformRules(node.children, ctx);
+    }
+  }
 }
 
 // ============================================
@@ -333,6 +420,20 @@ export function transformToAST(
     type: 'Root',
     children,
   };
+
+  // 设置平台（独立字段，由规划层明确指定）
+  const platform = options.platform || 'web';
+  ast.platform = platform;
+
+  // 设置移动端导航（仅在 mobile 平台有效）
+  if (options.mobileNavigation !== undefined) {
+    ast.mobileNavigation = options.mobileNavigation;
+  }
+
+  // 移动端平台适配：组件校验和属性注入
+  if (platform === 'mobile') {
+    applyMobilePlatformRules(ast.children, ctx);
+  }
 
   // 添加元数据
   if (options.title || options.context || options.sessionId) {

@@ -722,3 +722,232 @@ describe('Dark Theme Mapping (TC-THEME-02)', () => {
     expect(tokens['--destructive-foreground']).toBeDefined();
   });
 });
+
+// ============================================
+// 质感补丁测试 (Design Polish Tests)
+// ============================================
+
+import {
+  compensateDarkMode,
+  getLuminance,
+  getLetterSpacingClass,
+  calculateInnerRadius,
+  getTouchFeedbackClasses,
+  tintNeutralColor,
+  getCompensatedLineHeight,
+} from '../index';
+
+describe('Design Polish: Dark Mode Compensation', () => {
+  it('should boost luminance for dark backgrounds (L < 20)', () => {
+    const originalColor = '#3B82F6';  // 标准蓝色
+
+    const lightBgResult = compensateDarkMode(originalColor, 98);  // 浅色背景
+    const darkBgResult = compensateDarkMode(originalColor, 10);   // 深色背景
+
+    // 深色背景下亮度应该更高
+    expect(getLuminance(darkBgResult)).toBeGreaterThan(getLuminance(lightBgResult));
+  });
+
+  it('should not change color for light backgrounds (L > 40)', () => {
+    const originalColor = '#3B82F6';
+
+    const result = compensateDarkMode(originalColor, 98);
+
+    // 浅色背景不调整
+    expect(result).toBe(originalColor);
+  });
+
+  it('should moderately boost for mid-gray backgrounds (L 20-40)', () => {
+    const originalColor = '#3B82F6';
+
+    const lightResult = compensateDarkMode(originalColor, 98);
+    const midResult = compensateDarkMode(originalColor, 30);
+    const darkResult = compensateDarkMode(originalColor, 10);
+
+    // 中灰背景补偿应该介于两者之间
+    const lightL = getLuminance(lightResult);
+    const midL = getLuminance(midResult);
+    const darkL = getLuminance(darkResult);
+
+    expect(midL).toBeGreaterThan(lightL);
+    expect(darkL).toBeGreaterThan(midL);
+  });
+});
+
+describe('Design Polish: Letter Spacing', () => {
+  it('should return tracking-tighter for large text (≥ 32px)', () => {
+    expect(getLetterSpacingClass(48)).toBe('tracking-tighter');
+    expect(getLetterSpacingClass(32)).toBe('tracking-tighter');
+  });
+
+  it('should return tracking-tight for medium-large text (24-31px)', () => {
+    expect(getLetterSpacingClass(24)).toBe('tracking-tight');
+    expect(getLetterSpacingClass(28)).toBe('tracking-tight');
+  });
+
+  it('should return tracking-wide for small text (13-14px)', () => {
+    expect(getLetterSpacingClass(14)).toBe('tracking-wide');
+    expect(getLetterSpacingClass(13)).toBe('tracking-wide');
+  });
+
+  it('should return tracking-wider for very small text (≤ 12px)', () => {
+    expect(getLetterSpacingClass(12)).toBe('tracking-wider');
+    expect(getLetterSpacingClass(10)).toBe('tracking-wider');
+  });
+
+  it('should return empty string for normal text (15-23px)', () => {
+    expect(getLetterSpacingClass(16)).toBe('');
+    expect(getLetterSpacingClass(18)).toBe('');
+    expect(getLetterSpacingClass(20)).toBe('');
+  });
+});
+
+describe('Design Polish: Inner Radius Calculation', () => {
+  it('should calculate inner radius as outer minus padding', () => {
+    expect(calculateInnerRadius(16, 12)).toBe(4);
+    expect(calculateInnerRadius(24, 16)).toBe(8);
+    expect(calculateInnerRadius(12, 8)).toBe(4);
+  });
+
+  it('should return 0 when padding exceeds outer radius', () => {
+    expect(calculateInnerRadius(8, 12)).toBe(0);
+    expect(calculateInnerRadius(4, 16)).toBe(0);
+  });
+
+  it('should return 0 when outer radius equals padding', () => {
+    expect(calculateInnerRadius(16, 16)).toBe(0);
+  });
+
+  it('should handle edge case of zero values', () => {
+    expect(calculateInnerRadius(0, 0)).toBe(0);
+    expect(calculateInnerRadius(16, 0)).toBe(16);
+    expect(calculateInnerRadius(0, 16)).toBe(0);
+  });
+});
+
+describe('Design Polish: Touch Feedback Classes', () => {
+  it('should return feedback classes for mobile platform', () => {
+    const classes = getTouchFeedbackClasses('mobile');
+
+    expect(classes).toContain('active:scale-[0.97]');
+    expect(classes).toContain('transition-transform');
+    expect(classes).toContain('duration-100');
+  });
+
+  it('should return empty array for web platform', () => {
+    const classes = getTouchFeedbackClasses('web');
+
+    expect(classes).toEqual([]);
+  });
+});
+
+describe('Design Polish: Neutral Color Tinting', () => {
+  it('should tint neutral gray with primary hue', () => {
+    const neutralGray = '#71717a';  // 纯灰色
+    const primaryHue = 220;         // 蓝色色相
+
+    const tinted = tintNeutralColor(neutralGray, primaryHue, 0.03);
+
+    // 混色后应该不再是纯灰（饱和度 > 0）
+    expect(tinted).not.toBe(neutralGray);
+    // 应该是有效的 HEX 颜色
+    expect(tinted).toMatch(/^#[0-9a-f]{6}$/i);
+  });
+
+  it('should preserve luminance when tinting', () => {
+    const neutralGray = '#71717a';
+    const primaryHue = 220;
+
+    const tinted = tintNeutralColor(neutralGray, primaryHue, 0.03);
+
+    // 亮度应该基本保持不变（允许小误差）
+    const originalL = getLuminance(neutralGray);
+    const tintedL = getLuminance(tinted);
+
+    expect(Math.abs(originalL - tintedL)).toBeLessThan(5);
+  });
+
+  it('should apply stronger tint with higher tintAmount', () => {
+    const neutralGray = '#808080';
+    const primaryHue = 220;
+
+    const lightTint = tintNeutralColor(neutralGray, primaryHue, 0.02);
+    const strongTint = tintNeutralColor(neutralGray, primaryHue, 0.08);
+
+    // 两者应该不同
+    expect(lightTint).not.toBe(strongTint);
+  });
+});
+
+describe('Design Polish: Line Height Compensation', () => {
+  it('should return 1.5 for web platform', () => {
+    expect(getCompensatedLineHeight('web', 16)).toBe(1.5);
+    expect(getCompensatedLineHeight('web', 12)).toBe(1.5);
+    expect(getCompensatedLineHeight('web', 24)).toBe(1.5);
+  });
+
+  it('should return 1.6 for mobile normal text', () => {
+    expect(getCompensatedLineHeight('mobile', 16)).toBe(1.6);
+    expect(getCompensatedLineHeight('mobile', 18)).toBe(1.6);
+  });
+
+  it('should return 1.65 for mobile small text (≤ 14px)', () => {
+    expect(getCompensatedLineHeight('mobile', 14)).toBe(1.65);
+    expect(getCompensatedLineHeight('mobile', 12)).toBe(1.65);
+    expect(getCompensatedLineHeight('mobile', 10)).toBe(1.65);
+  });
+});
+
+// ============================================
+// 平台适配测试
+// ============================================
+
+describe('Platform Adaptation', () => {
+  it('should apply mobile spacing adjustment (0.75x)', () => {
+    const webTokens = generateDesignTokens({ context: '测试', platform: 'web' });
+    const mobileTokens = generateDesignTokens({ context: '测试', platform: 'mobile' });
+
+    const webSpacingMd = parseFloat(webTokens['--spacing-md'] as string);
+    const mobileSpacingMd = parseFloat(mobileTokens['--spacing-md'] as string);
+
+    // 移动端间距应该是 Web 的 0.75 倍
+    expect(mobileSpacingMd).toBe(Math.round(webSpacingMd * 0.75));
+  });
+
+  it('should apply mobile line-height compensation', () => {
+    const webTokens = generateDesignTokens({ context: '测试', platform: 'web' });
+    const mobileTokens = generateDesignTokens({ context: '测试', platform: 'mobile' });
+
+    const webLineHeight = parseFloat(webTokens['--line-height-base'] as string);
+    const mobileLineHeight = parseFloat(mobileTokens['--line-height-base'] as string);
+
+    // 移动端行高应该更大（1.5 → 1.6）
+    expect(mobileLineHeight).toBeGreaterThan(webLineHeight);
+    expect(mobileLineHeight).toBe(1.6);
+  });
+
+  it('should cap font-scale for mobile (max 1.125)', () => {
+    // 用一个会生成大字阶的 context
+    const webTokens = generateDesignTokens({ context: '创意设计', platform: 'web' });
+    const mobileTokens = generateDesignTokens({ context: '创意设计', platform: 'mobile' });
+
+    const webFontScale = parseFloat(webTokens['--font-scale'] as string);
+    const mobileFontScale = parseFloat(mobileTokens['--font-scale'] as string);
+
+    // 如果 Web 字阶超过 1.125，移动端应该被锁定
+    if (webFontScale > 1.125) {
+      expect(mobileFontScale).toBe(1.125);
+    } else {
+      expect(mobileFontScale).toBe(webFontScale);
+    }
+  });
+
+  it('should use web defaults when platform is not specified', () => {
+    const defaultTokens = generateDesignTokens({ context: '测试' });
+    const webTokens = generateDesignTokens({ context: '测试', platform: 'web' });
+
+    // 默认应该和 web 一样
+    expect(defaultTokens['--spacing-md']).toBe(webTokens['--spacing-md']);
+    expect(defaultTokens['--line-height-base']).toBe(webTokens['--line-height-base']);
+  });
+});

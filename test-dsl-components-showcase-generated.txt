@@ -1,0 +1,1246 @@
+[FLEX: flex_1]
+  CSS: "min-h-screen bg-background"
+  [STACK: stack_2]
+    { Gap: "1" }
+    CSS: "w-56 border-r bg-muted/30 p-4 sticky top-0 h-screen overflow-y-auto shrink-0"
+    [TEXT: text_3]
+      CONTENT: "Stitch 组件库"
+      CSS: "font-bold text-lg mb-4"
+    [TEXT: text_4]
+      CONTENT: "页面组件"
+      CSS: "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+    [LINK: link_5]
+      ATTR: Href("#hero")
+      CONTENT: "Hero 主视觉"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_6]
+      ATTR: Href("#section")
+      CONTENT: "Section 区块"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [TEXT: text_7]
+      CONTENT: "导航组件"
+      CSS: "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+    [LINK: link_8]
+      ATTR: Href("#breadcrumb")
+      CONTENT: "Breadcrumb 面包屑"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_9]
+      ATTR: Href("#stepper")
+      CONTENT: "Stepper 步骤条"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_10]
+      ATTR: Href("#tabs")
+      CONTENT: "Tabs 标签页"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [TEXT: text_11]
+      CONTENT: "基础组件"
+      CSS: "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+    [LINK: link_12]
+      ATTR: Href("#button")
+      CONTENT: "Button 按钮"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_13]
+      ATTR: Href("#badge")
+      CONTENT: "Badge 徽章"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_14]
+      ATTR: Href("#icon")
+      CONTENT: "Icon 图标"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_15]
+      ATTR: Href("#image")
+      CONTENT: "Image 图片"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_16]
+      ATTR: Href("#avatar")
+      CONTENT: "Avatar 头像"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [TEXT: text_17]
+      CONTENT: "数据展示"
+      CSS: "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+    [LINK: link_18]
+      ATTR: Href("#card")
+      CONTENT: "Card 卡片"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_19]
+      ATTR: Href("#statistic")
+      CONTENT: "Statistic 统计"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_20]
+      ATTR: Href("#table")
+      CONTENT: "Table 表格"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_21]
+      ATTR: Href("#list")
+      CONTENT: "List 列表"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_22]
+      ATTR: Href("#timeline")
+      CONTENT: "Timeline 时间线"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_23]
+      ATTR: Href("#accordion")
+      CONTENT: "Accordion 折叠"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [TEXT: text_24]
+      CONTENT: "表单组件"
+      CSS: "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+    [LINK: link_25]
+      ATTR: Href("#form")
+      CONTENT: "Form 表单"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [TEXT: text_26]
+      CONTENT: "反馈组件"
+      CSS: "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+    [LINK: link_27]
+      ATTR: Href("#alert")
+      CONTENT: "Alert 提示"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_28]
+      ATTR: Href("#progress")
+      CONTENT: "Progress 进度"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_29]
+      ATTR: Href("#skeleton")
+      CONTENT: "Skeleton 骨架屏"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_30]
+      ATTR: Href("#empty")
+      CONTENT: "EmptyState 空状态"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_31]
+      ATTR: Href("#dialog")
+      CONTENT: "Dialog 对话框"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_32]
+      ATTR: Href("#tooltip")
+      CONTENT: "Tooltip 提示"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [TEXT: text_33]
+      CONTENT: "布局组件"
+      CSS: "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+    [LINK: link_34]
+      ATTR: Href("#layout")
+      CONTENT: "Layout 布局"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [TEXT: text_35]
+      CONTENT: "其他"
+      CSS: "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+    [LINK: link_36]
+      ATTR: Href("#separator")
+      CONTENT: "Separator 分隔线"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [LINK: link_37]
+      ATTR: Href("#codeblock")
+      CONTENT: "CodeBlock 代码块"
+      CSS: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+    [TEXT: text_38]
+      CONTENT: "组件清单"
+      CSS: "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
+    [DIV: div_39]
+      CSS: "grid grid-cols-2 gap-1 text-[11px] text-muted-foreground"
+      [LINK: link_40]
+        ATTR: Href("#component-Div")
+        CONTENT: "Div"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_41]
+        ATTR: Href("#component-Span")
+        CONTENT: "Span"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_42]
+        ATTR: Href("#component-Text")
+        CONTENT: "Text"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_43]
+        ATTR: Href("#component-Link")
+        CONTENT: "Link"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_44]
+        ATTR: Href("#component-Image")
+        CONTENT: "Image"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_45]
+        ATTR: Href("#component-Layout")
+        CONTENT: "Layout"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_46]
+        ATTR: Href("#component-Grid")
+        CONTENT: "Grid"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_47]
+        ATTR: Href("#component-Columns")
+        CONTENT: "Columns"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_48]
+        ATTR: Href("#component-Split")
+        CONTENT: "Split"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_49]
+        ATTR: Href("#component-Stack")
+        CONTENT: "Stack"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_50]
+        ATTR: Href("#component-Flex")
+        CONTENT: "Flex"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_51]
+        ATTR: Href("#component-Rows")
+        CONTENT: "Rows"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_52]
+        ATTR: Href("#component-Page")
+        CONTENT: "Page"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_53]
+        ATTR: Href("#component-Center")
+        CONTENT: "Center"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_54]
+        ATTR: Href("#component-Spacer")
+        CONTENT: "Spacer"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_55]
+        ATTR: Href("#component-LayoutDivider")
+        CONTENT: "LayoutDivider"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_56]
+        ATTR: Href("#component-Hero")
+        CONTENT: "Hero"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_57]
+        ATTR: Href("#component-Section")
+        CONTENT: "Section"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_58]
+        ATTR: Href("#component-Container")
+        CONTENT: "Container"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_59]
+        ATTR: Href("#component-Card")
+        CONTENT: "Card"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_60]
+        ATTR: Href("#component-CardHeader")
+        CONTENT: "CardHeader"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_61]
+        ATTR: Href("#component-CardTitle")
+        CONTENT: "CardTitle"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_62]
+        ATTR: Href("#component-CardDescription")
+        CONTENT: "CardDescription"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_63]
+        ATTR: Href("#component-CardContent")
+        CONTENT: "CardContent"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_64]
+        ATTR: Href("#component-CardFooter")
+        CONTENT: "CardFooter"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_65]
+        ATTR: Href("#component-Tabs")
+        CONTENT: "Tabs"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_66]
+        ATTR: Href("#component-TabsList")
+        CONTENT: "TabsList"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_67]
+        ATTR: Href("#component-TabsTrigger")
+        CONTENT: "TabsTrigger"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_68]
+        ATTR: Href("#component-TabsContent")
+        CONTENT: "TabsContent"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_69]
+        ATTR: Href("#component-Breadcrumb")
+        CONTENT: "Breadcrumb"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_70]
+        ATTR: Href("#component-BreadcrumbList")
+        CONTENT: "BreadcrumbList"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_71]
+        ATTR: Href("#component-BreadcrumbItem")
+        CONTENT: "BreadcrumbItem"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_72]
+        ATTR: Href("#component-BreadcrumbLink")
+        CONTENT: "BreadcrumbLink"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_73]
+        ATTR: Href("#component-BreadcrumbPage")
+        CONTENT: "BreadcrumbPage"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_74]
+        ATTR: Href("#component-BreadcrumbSeparator")
+        CONTENT: "BreadcrumbSeparator"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_75]
+        ATTR: Href("#component-Stepper")
+        CONTENT: "Stepper"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_76]
+        ATTR: Href("#component-Step")
+        CONTENT: "Step"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_77]
+        ATTR: Href("#component-Table")
+        CONTENT: "Table"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_78]
+        ATTR: Href("#component-TableHeader")
+        CONTENT: "TableHeader"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_79]
+        ATTR: Href("#component-TableBody")
+        CONTENT: "TableBody"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_80]
+        ATTR: Href("#component-TableRow")
+        CONTENT: "TableRow"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_81]
+        ATTR: Href("#component-TableHead")
+        CONTENT: "TableHead"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_82]
+        ATTR: Href("#component-TableCell")
+        CONTENT: "TableCell"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_83]
+        ATTR: Href("#component-Timeline")
+        CONTENT: "Timeline"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_84]
+        ATTR: Href("#component-TimelineItem")
+        CONTENT: "TimelineItem"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_85]
+        ATTR: Href("#component-TimelineContent")
+        CONTENT: "TimelineContent"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_86]
+        ATTR: Href("#component-TimelineHeader")
+        CONTENT: "TimelineHeader"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_87]
+        ATTR: Href("#component-TimelineTitle")
+        CONTENT: "TimelineTitle"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_88]
+        ATTR: Href("#component-TimelineDescription")
+        CONTENT: "TimelineDescription"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_89]
+        ATTR: Href("#component-TimelineTime")
+        CONTENT: "TimelineTime"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_90]
+        ATTR: Href("#component-TimelineConnector")
+        CONTENT: "TimelineConnector"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_91]
+        ATTR: Href("#component-TimelineEmpty")
+        CONTENT: "TimelineEmpty"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_92]
+        ATTR: Href("#component-Accordion")
+        CONTENT: "Accordion"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_93]
+        ATTR: Href("#component-AccordionItem")
+        CONTENT: "AccordionItem"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_94]
+        ATTR: Href("#component-AccordionTrigger")
+        CONTENT: "AccordionTrigger"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_95]
+        ATTR: Href("#component-AccordionContent")
+        CONTENT: "AccordionContent"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_96]
+        ATTR: Href("#component-List")
+        CONTENT: "List"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_97]
+        ATTR: Href("#component-ListItem")
+        CONTENT: "ListItem"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_98]
+        ATTR: Href("#component-Statistic")
+        CONTENT: "Statistic"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_99]
+        ATTR: Href("#component-StatisticCard")
+        CONTENT: "StatisticCard"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_100]
+        ATTR: Href("#component-CodeBlock")
+        CONTENT: "CodeBlock"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_101]
+        ATTR: Href("#component-InlineCode")
+        CONTENT: "InlineCode"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_102]
+        ATTR: Href("#component-Button")
+        CONTENT: "Button"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_103]
+        ATTR: Href("#component-Input")
+        CONTENT: "Input"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_104]
+        ATTR: Href("#component-Label")
+        CONTENT: "Label"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_105]
+        ATTR: Href("#component-Checkbox")
+        CONTENT: "Checkbox"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_106]
+        ATTR: Href("#component-RadioGroup")
+        CONTENT: "RadioGroup"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_107]
+        ATTR: Href("#component-RadioGroupItem")
+        CONTENT: "RadioGroupItem"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_108]
+        ATTR: Href("#component-Switch")
+        CONTENT: "Switch"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_109]
+        ATTR: Href("#component-Slider")
+        CONTENT: "Slider"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_110]
+        ATTR: Href("#component-Alert")
+        CONTENT: "Alert"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_111]
+        ATTR: Href("#component-AlertTitle")
+        CONTENT: "AlertTitle"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_112]
+        ATTR: Href("#component-AlertDescription")
+        CONTENT: "AlertDescription"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_113]
+        ATTR: Href("#component-Badge")
+        CONTENT: "Badge"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_114]
+        ATTR: Href("#component-Progress")
+        CONTENT: "Progress"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_115]
+        ATTR: Href("#component-Dialog")
+        CONTENT: "Dialog"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_116]
+        ATTR: Href("#component-DialogTrigger")
+        CONTENT: "DialogTrigger"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_117]
+        ATTR: Href("#component-DialogContent")
+        CONTENT: "DialogContent"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_118]
+        ATTR: Href("#component-DialogHeader")
+        CONTENT: "DialogHeader"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_119]
+        ATTR: Href("#component-DialogTitle")
+        CONTENT: "DialogTitle"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_120]
+        ATTR: Href("#component-DialogDescription")
+        CONTENT: "DialogDescription"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_121]
+        ATTR: Href("#component-DialogFooter")
+        CONTENT: "DialogFooter"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_122]
+        ATTR: Href("#component-Tooltip")
+        CONTENT: "Tooltip"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_123]
+        ATTR: Href("#component-TooltipProvider")
+        CONTENT: "TooltipProvider"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_124]
+        ATTR: Href("#component-TooltipTrigger")
+        CONTENT: "TooltipTrigger"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_125]
+        ATTR: Href("#component-TooltipContent")
+        CONTENT: "TooltipContent"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_126]
+        ATTR: Href("#component-Skeleton")
+        CONTENT: "Skeleton"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_127]
+        ATTR: Href("#component-EmptyState")
+        CONTENT: "EmptyState"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_128]
+        ATTR: Href("#component-Icon")
+        CONTENT: "Icon"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_129]
+        ATTR: Href("#component-Avatar")
+        CONTENT: "Avatar"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_130]
+        ATTR: Href("#component-AvatarImage")
+        CONTENT: "AvatarImage"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_131]
+        ATTR: Href("#component-AvatarFallback")
+        CONTENT: "AvatarFallback"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+      [LINK: link_132]
+        ATTR: Href("#component-Separator")
+        CONTENT: "Separator"
+        CSS: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+  [STACK: stack_133]
+    { Gap: "8" }
+    CSS: "flex-1 p-8 overflow-y-auto"
+    [CARD: card_134]
+      [CARDHEADER: cardheader_135]
+        [CARDTITLE: cardtitle_136]
+          CONTENT: "Hero 主视觉"
+        [CARDDESCRIPTION: carddescription_137]
+          [SPAN: span_138]
+            CONTENT: "页面顶部的主视觉区域"
+      [CARDCONTENT: cardcontent_139]
+        [HERO: hero_140]
+          ATTR: Title("Stitch 组件库"), Description("完整展示所有可用组件，点击左侧导航快速跳转"), Size("sm")
+        [DIV: div_141]
+          CSS: "mt-4 flex items-center gap-2 text-sm text-muted-foreground"
+          [TEXT: text_142]
+            CONTENT: "了解更多："
+          [LINK: link_143]
+            ATTR: Href("#")
+            CONTENT: "组件文档"
+            CSS: "text-primary underline"
+    [CARD: card_144]
+      [CARDHEADER: cardheader_145]
+        [CARDTITLE: cardtitle_146]
+          CONTENT: "Section 区块"
+        [CARDDESCRIPTION: carddescription_147]
+          CONTENT: "页面内容分区组件"
+      [CARDCONTENT: cardcontent_148]
+        [SECTION: section_149]
+          ATTR: Title("功能特性")
+          [TEXT: text_150]
+            CONTENT: "Section 组件用于组织页面内容，支持标题和副标题。"
+            CSS: "text-muted-foreground"
+    [CARD: card_151]
+      [CARDHEADER: cardheader_152]
+        [CARDTITLE: cardtitle_153]
+          CONTENT: "Container 容器"
+        [CARDDESCRIPTION: carddescription_154]
+          CONTENT: "内容宽度限制与内边距"
+      [CARDCONTENT: cardcontent_155]
+        [CONTAINER: container_156]
+          ATTR: Size("sm")
+          CSS: "bg-muted/40 rounded p-4"
+          [TEXT: text_157]
+            CONTENT: "sm 容器宽度示例"
+    [CARD: card_158]
+      [CARDHEADER: cardheader_159]
+        [CARDTITLE: cardtitle_160]
+          CONTENT: "Breadcrumb 面包屑"
+        [CARDDESCRIPTION: carddescription_161]
+          CONTENT: "页面层级导航"
+      [CARDCONTENT: cardcontent_162]
+        [BREADCRUMB: breadcrumb_163]
+          [BREADCRUMBLIST: breadcrumblist_164]
+            [BREADCRUMBITEM: breadcrumbitem_165]
+              [BREADCRUMBLINK: breadcrumblink_166]
+                ATTR: Href("#")
+                CONTENT: "首页"
+            [BREADCRUMBSEPARATOR: breadcrumbseparator_167]
+            [BREADCRUMBITEM: breadcrumbitem_168]
+              [BREADCRUMBLINK: breadcrumblink_169]
+                ATTR: Href("#")
+                CONTENT: "组件"
+            [BREADCRUMBSEPARATOR: breadcrumbseparator_170]
+            [BREADCRUMBITEM: breadcrumbitem_171]
+              [BREADCRUMBPAGE: breadcrumbpage_172]
+                CONTENT: "面包屑"
+    [CARD: card_173]
+      [CARDHEADER: cardheader_174]
+        [CARDTITLE: cardtitle_175]
+          CONTENT: "Stepper 步骤条"
+        [CARDDESCRIPTION: carddescription_176]
+          CONTENT: "引导用户完成多步骤流程"
+      [CARDCONTENT: cardcontent_177]
+        [STEPPER: stepper_178]
+          [STEP: step_179]
+            ATTR: Title("基本信息"), Description("填写账号信息")
+          [STEP: step_180]
+            ATTR: Title("身份验证"), Description("验证手机号")
+          [STEP: step_181]
+            ATTR: Title("完成注册"), Description("设置密码")
+    [CARD: card_182]
+      [CARDHEADER: cardheader_183]
+        [CARDTITLE: cardtitle_184]
+          CONTENT: "Tabs 标签页"
+        [CARDDESCRIPTION: carddescription_185]
+          CONTENT: "切换不同内容面板的标签导航"
+      [CARDCONTENT: cardcontent_186]
+        [TABS: tabs_187]
+          [TABSLIST: tabslist_188]
+            [TABSTRIGGER: tabstrigger_189]
+              ATTR: Value("overview")
+              CONTENT: "概览"
+            [TABSTRIGGER: tabstrigger_190]
+              ATTR: Value("analytics")
+              CONTENT: "分析"
+            [TABSTRIGGER: tabstrigger_191]
+              ATTR: Value("reports")
+              CONTENT: "报告"
+            [TABSTRIGGER: tabstrigger_192]
+              ATTR: Value("settings")
+              CONTENT: "设置"
+          [TABSCONTENT: tabscontent_193]
+            ATTR: Value("overview")
+            CSS: "p-4 border rounded-lg mt-2"
+            [TEXT: text_194]
+              CONTENT: "概览面板"
+              CSS: "font-medium"
+            [TEXT: text_195]
+              CONTENT: "这里显示项目的总体概况和关键指标。"
+              CSS: "text-muted-foreground text-sm mt-1"
+          [TABSCONTENT: tabscontent_196]
+            ATTR: Value("analytics")
+            CSS: "p-4 border rounded-lg mt-2"
+            [TEXT: text_197]
+              CONTENT: "分析面板"
+              CSS: "font-medium"
+            [TEXT: text_198]
+              CONTENT: "这里显示详细的数据分析图表。"
+              CSS: "text-muted-foreground text-sm mt-1"
+          [TABSCONTENT: tabscontent_199]
+            ATTR: Value("reports")
+            CSS: "p-4 border rounded-lg mt-2"
+            [TEXT: text_200]
+              CONTENT: "报告面板"
+              CSS: "font-medium"
+            [TEXT: text_201]
+              CONTENT: "这里显示生成的各类报告。"
+              CSS: "text-muted-foreground text-sm mt-1"
+          [TABSCONTENT: tabscontent_202]
+            ATTR: Value("settings")
+            CSS: "p-4 border rounded-lg mt-2"
+            [TEXT: text_203]
+              CONTENT: "设置面板"
+              CSS: "font-medium"
+            [TEXT: text_204]
+              CONTENT: "这里可以调整项目的各项设置。"
+              CSS: "text-muted-foreground text-sm mt-1"
+    [CARD: card_205]
+      [CARDHEADER: cardheader_206]
+        [CARDTITLE: cardtitle_207]
+          CONTENT: "Button 按钮"
+        [CARDDESCRIPTION: carddescription_208]
+          CONTENT: "各种变体和尺寸的按钮组件"
+      [CARDCONTENT: cardcontent_209]
+        [STACK: stack_210]
+          { Gap: "4" }
+          [FLEX: flex_211]
+            { Gap: "2" }
+            [BUTTON: button_212]
+              ATTR: Variant("default")
+              CONTENT: "Default"
+            [BUTTON: button_213]
+              ATTR: Variant("secondary")
+              CONTENT: "Secondary"
+            [BUTTON: button_214]
+              ATTR: Variant("outline")
+              CONTENT: "Outline"
+            [BUTTON: button_215]
+              ATTR: Variant("ghost")
+              CONTENT: "Ghost"
+            [BUTTON: button_216]
+              ATTR: Variant("link")
+              CONTENT: "Link"
+            [BUTTON: button_217]
+              ATTR: Variant("destructive")
+              CONTENT: "Destructive"
+          [FLEX: flex_218]
+            { Gap: "2" }
+            [BUTTON: button_219]
+              ATTR: Size("sm")
+              CONTENT: "Small"
+            [BUTTON: button_220]
+              ATTR: Size("default")
+              CONTENT: "Default"
+            [BUTTON: button_221]
+              ATTR: Size("lg")
+              CONTENT: "Large"
+    [CARD: card_222]
+      [CARDHEADER: cardheader_223]
+        [CARDTITLE: cardtitle_224]
+          CONTENT: "Badge 徽章"
+        [CARDDESCRIPTION: carddescription_225]
+          CONTENT: "用于标记状态或分类的徽章"
+      [CARDCONTENT: cardcontent_226]
+        [FLEX: flex_227]
+          { Gap: "2" }
+          [BADGE: badge_228]
+            ATTR: Variant("default")
+            CONTENT: "Default"
+          [BADGE: badge_229]
+            ATTR: Variant("secondary")
+            CONTENT: "Secondary"
+          [BADGE: badge_230]
+            ATTR: Variant("outline")
+            CONTENT: "Outline"
+          [BADGE: badge_231]
+            ATTR: Variant("destructive")
+            CONTENT: "Destructive"
+          [BADGE: badge_232]
+            CONTENT: "成功"
+            CSS: "bg-green-100 text-green-800"
+          [BADGE: badge_233]
+            CONTENT: "警告"
+            CSS: "bg-yellow-100 text-yellow-800"
+          [BADGE: badge_234]
+            CONTENT: "信息"
+            CSS: "bg-blue-100 text-blue-800"
+    [CARD: card_235]
+      [CARDHEADER: cardheader_236]
+        [CARDTITLE: cardtitle_237]
+          CONTENT: "Icon 图标"
+        [CARDDESCRIPTION: carddescription_238]
+          CONTENT: "基于 Lucide 的图标组件"
+      [CARDCONTENT: cardcontent_239]
+        [FLEX: flex_240]
+          { Gap: "4", Align: "center" }
+          [ICON: icon_241]
+            ATTR: Size("md")
+          [ICON: icon_242]
+            ATTR: Size("md")
+          [ICON: icon_243]
+            ATTR: Size("md")
+          [ICON: icon_244]
+            ATTR: Size("md")
+          [ICON: icon_245]
+            ATTR: Size("md")
+          [ICON: icon_246]
+            ATTR: Size("md")
+          [ICON: icon_247]
+            ATTR: Size("md")
+          [ICON: icon_248]
+            ATTR: Size("md")
+          [ICON: icon_249]
+            ATTR: Size("lg")
+            CSS: "text-green-500"
+          [ICON: icon_250]
+            ATTR: Size("lg")
+            CSS: "text-red-500"
+          [ICON: icon_251]
+            ATTR: Size("lg")
+            CSS: "text-yellow-500"
+          [ICON: icon_252]
+            ATTR: Size("lg")
+            CSS: "text-blue-500"
+    [CARD: card_253]
+      [CARDHEADER: cardheader_254]
+        [CARDTITLE: cardtitle_255]
+          CONTENT: "Image 图片"
+        [CARDDESCRIPTION: carddescription_256]
+          CONTENT: "图片展示组件，支持圆角和宽高比"
+      [CARDCONTENT: cardcontent_257]
+        [FLEX: flex_258]
+          { Gap: "4" }
+          [IMAGE: image_259]
+            ATTR: Src("https://picsum.photos/200/200"), Alt("示例图片")
+            CSS: "w-32 h-32 object-cover"
+          [IMAGE: image_260]
+            ATTR: Src("https://picsum.photos/201/201"), Alt("圆角图片")
+            CSS: "w-32 h-32 object-cover"
+          [IMAGE: image_261]
+            ATTR: Src("https://picsum.photos/300/169"), Alt("16:9 图片")
+            CSS: "w-48"
+    [CARD: card_262]
+      [CARDHEADER: cardheader_263]
+        [CARDTITLE: cardtitle_264]
+          CONTENT: "Avatar 头像"
+        [CARDDESCRIPTION: carddescription_265]
+          CONTENT: "用户头像展示组件"
+      [CARDCONTENT: cardcontent_266]
+        [FLEX: flex_267]
+          { Gap: "4", Align: "center" }
+          [AVATAR: avatar_268]
+            [AVATARIMAGE: avatarimage_269]
+              ATTR: Src("https://github.com/shadcn.png")
+            [AVATARFALLBACK: avatarfallback_270]
+              CONTENT: "CN"
+          [AVATAR: avatar_271]
+            [AVATARFALLBACK: avatarfallback_272]
+              CONTENT: "AB"
+          [AVATAR: avatar_273]
+            [AVATARFALLBACK: avatarfallback_274]
+              CONTENT: "CD"
+          [AVATAR: avatar_275]
+            CSS: "h-16 w-16"
+            [AVATARFALLBACK: avatarfallback_276]
+              CONTENT: "大"
+    [CARD: card_277]
+      [CARDHEADER: cardheader_278]
+        [CARDTITLE: cardtitle_279]
+          CONTENT: "Card 卡片"
+        [CARDDESCRIPTION: carddescription_280]
+          CONTENT: "容器组件，用于展示相关内容"
+      [CARDCONTENT: cardcontent_281]
+        [GRID: grid_282]
+          { Columns: "3", Gap: "4" }
+    [CARD: card_283]
+      [CARDHEADER: cardheader_284]
+        [CARDTITLE: cardtitle_285]
+          CONTENT: "Statistic 统计卡片"
+        [CARDDESCRIPTION: carddescription_286]
+          CONTENT: "展示关键数据指标"
+      [CARDCONTENT: cardcontent_287]
+        [STACK: stack_288]
+          { Gap: "6" }
+          [GRID: grid_289]
+            { Columns: "4", Gap: "4" }
+          [GRID: grid_290]
+            { Columns: "2", Gap: "4" }
+    [CARD: card_291]
+      [CARDHEADER: cardheader_292]
+        [CARDTITLE: cardtitle_293]
+          CONTENT: "Table 数据表格"
+        [CARDDESCRIPTION: carddescription_294]
+          CONTENT: "展示结构化数据"
+      [CARDCONTENT: cardcontent_295]
+        [TABLE: table_296]
+          [TABLEHEADER: tableheader_297]
+            [TABLEROW: tablerow_298]
+              [TABLEHEAD: tablehead_299]
+                CONTENT: "ID"
+              [TABLEHEAD: tablehead_300]
+                CONTENT: "名称"
+              [TABLEHEAD: tablehead_301]
+                CONTENT: "状态"
+              [TABLEHEAD: tablehead_302]
+                CONTENT: "金额"
+              [TABLEHEAD: tablehead_303]
+                CONTENT: "操作"
+          [TABLEBODY: tablebody_304]
+            [TABLEROW: tablerow_305]
+              [TABLECELL: tablecell_306]
+                CONTENT: "001"
+              [TABLECELL: tablecell_307]
+                CONTENT: "项目 Alpha"
+              [TABLECELL: tablecell_308]
+                [BADGE: badge_309]
+                  CONTENT: "进行中"
+                  CSS: "bg-green-100 text-green-800"
+              [TABLECELL: tablecell_310]
+                CONTENT: "¥12,000"
+              [TABLECELL: tablecell_311]
+                [BUTTON: button_312]
+                  ATTR: Variant("ghost"), Size("sm")
+                  CONTENT: "查看"
+            [TABLEROW: tablerow_313]
+              [TABLECELL: tablecell_314]
+                CONTENT: "002"
+              [TABLECELL: tablecell_315]
+                CONTENT: "项目 Beta"
+              [TABLECELL: tablecell_316]
+                [BADGE: badge_317]
+                  CONTENT: "待审核"
+                  CSS: "bg-yellow-100 text-yellow-800"
+              [TABLECELL: tablecell_318]
+                CONTENT: "¥8,500"
+              [TABLECELL: tablecell_319]
+                [BUTTON: button_320]
+                  ATTR: Variant("ghost"), Size("sm")
+                  CONTENT: "查看"
+            [TABLEROW: tablerow_321]
+              [TABLECELL: tablecell_322]
+                CONTENT: "003"
+              [TABLECELL: tablecell_323]
+                CONTENT: "项目 Gamma"
+              [TABLECELL: tablecell_324]
+                [BADGE: badge_325]
+                  CONTENT: "已完成"
+                  CSS: "bg-blue-100 text-blue-800"
+              [TABLECELL: tablecell_326]
+                CONTENT: "¥25,000"
+              [TABLECELL: tablecell_327]
+                [BUTTON: button_328]
+                  ATTR: Variant("ghost"), Size("sm")
+                  CONTENT: "查看"
+    [CARD: card_329]
+      [CARDHEADER: cardheader_330]
+        [CARDTITLE: cardtitle_331]
+          CONTENT: "List 列表"
+        [CARDDESCRIPTION: carddescription_332]
+          CONTENT: "简洁的列表展示"
+      [CARDCONTENT: cardcontent_333]
+        [LIST: list_334]
+          [LISTITEM: listitem_335]
+            ATTR: Title("列表项一"), Description("这是第一个列表项的描述")
+          [LISTITEM: listitem_336]
+            ATTR: Title("列表项二"), Description("这是第二个列表项的描述")
+          [LISTITEM: listitem_337]
+            ATTR: Title("列表项三"), Description("这是第三个列表项的描述")
+    [CARD: card_338]
+      [CARDHEADER: cardheader_339]
+        [CARDTITLE: cardtitle_340]
+          CONTENT: "Timeline 时间线"
+        [CARDDESCRIPTION: carddescription_341]
+          CONTENT: "展示时间顺序的事件"
+      [CARDCONTENT: cardcontent_342]
+        [STACK: stack_343]
+          { Gap: "6" }
+          [TIMELINE: timeline_344]
+            [TIMELINEITEM: timelineitem_345]
+              ATTR: Title("项目启动"), Description("完成项目立项和团队组建")
+            [TIMELINEITEM: timelineitem_346]
+              ATTR: Title("需求分析"), Description("完成用户调研和需求文档")
+            [TIMELINEITEM: timelineitem_347]
+              ATTR: Title("开发阶段"), Description("正在进行核心功能开发")
+            [TIMELINEITEM: timelineitem_348]
+              ATTR: Title("测试上线"), Description("等待开发完成后进行测试")
+          [CARD: card_349]
+            CSS: "border-dashed"
+            [CARDCONTENT: cardcontent_350]
+              [STACK: stack_351]
+                { Gap: "3" }
+                [TIMELINECONTENT: timelinecontent_352]
+                  [TIMELINEHEADER: timelineheader_353]
+                    [TIMELINETITLE: timelinetitle_354]
+                      CONTENT: "里程碑说明"
+                    [TIMELINETIME: timelinetime_355]
+                  [TIMELINEDESCRIPTION: timelinedescription_356]
+                    CONTENT: "演示子组件结构化排版"
+                [FLEX: flex_357]
+                  { Gap: "2", Align: "center" }
+                  [TIMELINECONNECTOR: timelineconnector_358]
+                    CSS: "h-8"
+                  [TEXT: text_359]
+                    CONTENT: "连接线示例"
+                    CSS: "text-xs text-muted-foreground"
+                [TIMELINEEMPTY: timelineempty_360]
+                  CONTENT: "暂无事件"
+    [CARD: card_361]
+      [CARDHEADER: cardheader_362]
+        [CARDTITLE: cardtitle_363]
+          CONTENT: "Accordion 折叠面板"
+        [CARDDESCRIPTION: carddescription_364]
+          CONTENT: "可折叠的内容区域"
+      [CARDCONTENT: cardcontent_365]
+        [ACCORDION: accordion_366]
+          [ACCORDIONITEM: accordionitem_367]
+            ATTR: Value("item-1")
+            [ACCORDIONTRIGGER: accordiontrigger_368]
+              CONTENT: "什么是 Stitch？"
+            [ACCORDIONCONTENT: accordioncontent_369]
+              CONTENT: "Stitch 是一个 JSON Schema 驱动的 UI 渲染引擎，可以通过 JSON 配置快速构建用户界面。"
+          [ACCORDIONITEM: accordionitem_370]
+            ATTR: Value("item-2")
+            [ACCORDIONTRIGGER: accordiontrigger_371]
+              CONTENT: "支持哪些组件？"
+            [ACCORDIONCONTENT: accordioncontent_372]
+              CONTENT: "支持布局、表单、数据展示、反馈等多种类型的组件，基于 shadcn/ui 构建。"
+          [ACCORDIONITEM: accordionitem_373]
+            ATTR: Value("item-3")
+            [ACCORDIONTRIGGER: accordiontrigger_374]
+              CONTENT: "如何使用？"
+            [ACCORDIONCONTENT: accordioncontent_375]
+              CONTENT: "编写 JSON Schema 描述 UI 结构，然后使用渲染器将其转换为 React 组件。"
+    [CARD: card_376]
+      [CARDHEADER: cardheader_377]
+        [CARDTITLE: cardtitle_378]
+          CONTENT: "表单组件"
+        [CARDDESCRIPTION: carddescription_379]
+          CONTENT: "Input、Checkbox、Switch、Slider、RadioGroup"
+      [CARDCONTENT: cardcontent_380]
+        [GRID: grid_381]
+          { Columns: "2", Gap: "6" }
+    [CARD: card_382]
+      [CARDHEADER: cardheader_383]
+        [CARDTITLE: cardtitle_384]
+          CONTENT: "Alert 提示"
+        [CARDDESCRIPTION: carddescription_385]
+          CONTENT: "各种类型的提示信息"
+      [CARDCONTENT: cardcontent_386]
+        [STACK: stack_387]
+          { Gap: "4" }
+          [ALERT: alert_388]
+            [ALERTTITLE: alerttitle_389]
+              CONTENT: "提示"
+            [ALERTDESCRIPTION: alertdescription_390]
+              CONTENT: "这是一条默认提示信息"
+          [ALERT: alert_391]
+            CSS: "border-green-500 bg-green-50 text-green-900"
+            [ALERTTITLE: alerttitle_392]
+              CONTENT: "成功"
+            [ALERTDESCRIPTION: alertdescription_393]
+              CONTENT: "操作已成功完成"
+          [ALERT: alert_394]
+            CSS: "border-yellow-500 bg-yellow-50 text-yellow-900"
+            [ALERTTITLE: alerttitle_395]
+              CONTENT: "警告"
+            [ALERTDESCRIPTION: alertdescription_396]
+              CONTENT: "请注意检查您的输入"
+          [ALERT: alert_397]
+            CSS: "border-red-500 bg-red-50 text-red-900"
+            [ALERTTITLE: alerttitle_398]
+              CONTENT: "错误"
+            [ALERTDESCRIPTION: alertdescription_399]
+              CONTENT: "发生了一些错误，请稍后重试"
+    [CARD: card_400]
+      [CARDHEADER: cardheader_401]
+        [CARDTITLE: cardtitle_402]
+          CONTENT: "Progress 进度条"
+        [CARDDESCRIPTION: carddescription_403]
+          CONTENT: "展示操作进度"
+      [CARDCONTENT: cardcontent_404]
+        [STACK: stack_405]
+          { Gap: "4" }
+          [STACK: stack_406]
+            { Gap: "2" }
+            [TEXT: text_407]
+              CONTENT: "项目进度 75%"
+              CSS: "text-sm"
+            [PROGRESS: progress_408]
+              ATTR: Value("75")
+          [STACK: stack_409]
+            { Gap: "2" }
+            [TEXT: text_410]
+              CONTENT: "存储空间 45%"
+              CSS: "text-sm"
+            [PROGRESS: progress_411]
+              ATTR: Value("45")
+          [STACK: stack_412]
+            { Gap: "2" }
+            [TEXT: text_413]
+              CONTENT: "下载进度 90%"
+              CSS: "text-sm"
+            [PROGRESS: progress_414]
+              ATTR: Value("90")
+    [CARD: card_415]
+      [CARDHEADER: cardheader_416]
+        [CARDTITLE: cardtitle_417]
+          CONTENT: "Skeleton 骨架屏"
+        [CARDDESCRIPTION: carddescription_418]
+          CONTENT: "加载状态占位"
+      [CARDCONTENT: cardcontent_419]
+        [FLEX: flex_420]
+          { Gap: "4", Align: "center" }
+          [SKELETON: skeleton_421]
+            CSS: "h-12 w-12 rounded-full"
+          [STACK: stack_422]
+            { Gap: "2" }
+            CSS: "flex-1"
+            [SKELETON: skeleton_423]
+              CSS: "h-4 w-3/4"
+            [SKELETON: skeleton_424]
+              CSS: "h-4 w-1/2"
+    [CARD: card_425]
+      [CARDHEADER: cardheader_426]
+        [CARDTITLE: cardtitle_427]
+          CONTENT: "EmptyState 空状态"
+        [CARDDESCRIPTION: carddescription_428]
+          CONTENT: "无数据时的展示"
+      [CARDCONTENT: cardcontent_429]
+        [EMPTY_STATE: empty_state_430]
+          ATTR: Title("暂无数据"), Description("当前没有任何记录，请稍后再试")
+    [CARD: card_431]
+      [CARDHEADER: cardheader_432]
+        [CARDTITLE: cardtitle_433]
+          CONTENT: "Dialog 对话框"
+        [CARDDESCRIPTION: carddescription_434]
+          CONTENT: "模态对话框组件（静态预览）"
+      [CARDCONTENT: cardcontent_435]
+        [DIALOG: dialog_436]
+          [DIALOGTRIGGER: dialogtrigger_437]
+            CONTENT: "打开对话框 →"
+            CSS: "inline-flex items-center justify-center rounded-md border px-3 py-1.5 text-sm"
+          [DIALOGCONTENT: dialogcontent_438]
+            [DIALOGHEADER: dialogheader_439]
+              [DIALOGTITLE: dialogtitle_440]
+                CONTENT: "确认操作"
+              [DIALOGDESCRIPTION: dialogdescription_441]
+                CONTENT: "这是一个模态对话框示例，用于确认重要操作。"
+            [TEXT: text_442]
+              CONTENT: "对话框内容区域，可以放置表单或其他内容。"
+              CSS: "text-muted-foreground"
+            [DIALOGFOOTER: dialogfooter_443]
+              [BUTTON: button_444]
+                ATTR: Variant("outline")
+                CONTENT: "取消"
+              [BUTTON: button_445]
+                CONTENT: "确认"
+    [CARD: card_446]
+      [CARDHEADER: cardheader_447]
+        [CARDTITLE: cardtitle_448]
+          CONTENT: "Tooltip 工具提示"
+        [CARDDESCRIPTION: carddescription_449]
+          CONTENT: "鼠标悬停时显示提示信息（静态预览）"
+      [CARDCONTENT: cardcontent_450]
+        [TOOLTIPPROVIDER: tooltipprovider_451]
+          [TOOLTIP: tooltip_452]
+            [TOOLTIPTRIGGER: tooltiptrigger_453]
+              CONTENT: "悬停查看提示"
+              CSS: "inline-flex items-center justify-center rounded-md border px-3 py-1.5 text-sm"
+            [TOOLTIPCONTENT: tooltipcontent_454]
+              CONTENT: "这是一个工具提示"
+    [CARD: card_455]
+      [CARDHEADER: cardheader_456]
+        [CARDTITLE: cardtitle_457]
+          CONTENT: "CodeBlock 代码块"
+        [CARDDESCRIPTION: carddescription_458]
+          CONTENT: "代码展示组件"
+      [CARDCONTENT: cardcontent_459]
+        [STACK: stack_460]
+          { Gap: "3" }
+          [TEXT: text_461]
+            [INLINECODE: inlinecode_462]
+              CONTENT: "InlineCode"
+          [CODE_BLOCK: code_block_463]
+            ATTR: Language("typescript"), Code("const greeting = 'Hello, Stitch!';
+console.log(greeting);
+
+// JSON Schema 渲染引擎
+function render(schema: UINode) {
+  return createElement(schema);
+}")
+    [CARD: card_464]
+      [CARDHEADER: cardheader_465]
+        [CARDTITLE: cardtitle_466]
+          CONTENT: "Separator 分隔线"
+        [CARDDESCRIPTION: carddescription_467]
+          CONTENT: "内容分隔"
+      [CARDCONTENT: cardcontent_468]
+        [STACK: stack_469]
+          { Gap: "4" }
+          [TEXT: text_470]
+            CONTENT: "上方内容"
+          [SEPARATOR: separator_471]
+          [TEXT: text_472]
+            CONTENT: "下方内容"
+    [TEXT: text_473]
+      CONTENT: "布局组件"
+      CSS: "text-2xl font-bold mt-8 mb-4"
+    [GRID: grid_474]
+      { Columns: "2", Gap: "4" }
+    [CARD: card_475]
+      [CARDHEADER: cardheader_476]
+        [CARDTITLE: cardtitle_477]
+          CONTENT: "Layout 通用布局"
+      [CARDCONTENT: cardcontent_478]
+        [LAYOUT: layout_479]
+          { Direction: "column", Gap: "2" }
+          CSS: "bg-muted p-4 rounded"
+          [BADGE: badge_480]
+            CONTENT: "Row A"
+          [BADGE: badge_481]
+            CONTENT: "Row B"
+          [BADGE: badge_482]
+            CONTENT: "Row C"
+    [CARD: card_483]
+      [CARDHEADER: cardheader_484]
+        [CARDTITLE: cardtitle_485]
+          CONTENT: "Page 页面容器"
+      [CARDCONTENT: cardcontent_486]
+        [PAGE: page_487]
+          CSS: "border rounded bg-muted/20"
+          [TEXT: text_488]
+            CONTENT: "Page 容器示例"
+    [CARD: card_489]
+      [CARDHEADER: cardheader_490]
+        [CARDTITLE: cardtitle_491]
+          CONTENT: "Grid 网格布局"
+      [CARDCONTENT: cardcontent_492]
+        [GRID: grid_493]
+          { Columns: "4", Gap: "2" }
+    [CARD: card_494]
+      [CARDHEADER: cardheader_495]
+        [CARDTITLE: cardtitle_496]
+          CONTENT: "Columns 多栏布局 (1:2:1 比例)"
+      [CARDCONTENT: cardcontent_497]
+        [COLUMNS: columns_498]
+          { Gap: "4" }
+    [CARD: card_499]
+      [CARDHEADER: cardheader_500]
+        [CARDTITLE: cardtitle_501]
+          CONTENT: "Split 分割布局（左右）"
+      [CARDCONTENT: cardcontent_502]
+        [SPLIT: split_503]
+          { Gap: "4" }
+    [CARD: card_504]
+      [CARDHEADER: cardheader_505]
+        [CARDTITLE: cardtitle_506]
+          CONTENT: "Split 分割布局（上下）"
+      [CARDCONTENT: cardcontent_507]
+        [SPLIT: split_508]
+          { Gap: "4" }
+    [CARD: card_509]
+      [CARDHEADER: cardheader_510]
+        [CARDTITLE: cardtitle_511]
+          CONTENT: "Rows 行布局"
+      [CARDCONTENT: cardcontent_512]
+        [ROWS: rows_513]
+          { Gap: "2" }
+    [CARD: card_514]
+      [CARDHEADER: cardheader_515]
+        [CARDTITLE: cardtitle_516]
+          CONTENT: "Center 居中布局"
+      [CARDCONTENT: cardcontent_517]
+        [CENTER: center_518]
+          CSS: "bg-muted py-8"
+          [CARD: card_519]
+            CSS: "w-full p-4 text-center"
+            [TEXT: text_520]
+              CONTENT: "内容居中，最大宽度 md"
+    [CARD: card_521]
+      [CARDHEADER: cardheader_522]
+        [CARDTITLE: cardtitle_523]
+          CONTENT: "Spacer 间距组件"
+      [CARDCONTENT: cardcontent_524]
+        [STACK: stack_525]
+          CSS: "bg-muted p-4 rounded"
+          [BADGE: badge_526]
+            CONTENT: "上方内容"
+          [SPACER: spacer_527]
+            ATTR: Size("4")
+          [BADGE: badge_528]
+            CONTENT: "间隔4后"
+          [SPACER: spacer_529]
+            ATTR: Size("8")
+          [BADGE: badge_530]
+            CONTENT: "间隔8后"
+    [CARD: card_531]
+      [CARDHEADER: cardheader_532]
+        [CARDTITLE: cardtitle_533]
+          CONTENT: "LayoutDivider 布局分割线"
+      [CARDCONTENT: cardcontent_534]
+        [STACK: stack_535]
+          { Gap: "4" }
+          [TEXT: text_536]
+            CONTENT: "段落一"
+          [LAYOUTDIVIDER: layoutdivider_537]
+          [TEXT: text_538]
+            CONTENT: "段落二"
+          [LAYOUTDIVIDER: layoutdivider_539]
+            ATTR: Label("分节标题")
+          [TEXT: text_540]
+            CONTENT: "段落三"

@@ -51,6 +51,143 @@ executor:
 
 ---
 
+## Web 模式设计准则 (Web Persona)
+
+当判定为 **Web 桌面端**时，激活以下设计逻辑：
+
+### 空间利用：鼓励横向展开
+
+- 优先使用 `[SIDEBAR]` 侧边导航
+- 允许 `[GRID]` 多列布局（最高 12 列）
+- 使用 `[TABLE]` 展示数据（支持 5+ 列）
+- 内容区域可使用居中布局
+
+### 交互逻辑：允许精确操作
+
+- 支持右键菜单、Hover 提示
+- 允许多窗口悬浮 `[POPOVER]`
+- 可使用 `[TABS]` 多标签切换
+- 假设用户有鼠标精准操作能力
+
+### 内容密度：允许高密度排版
+
+- 假设用户在 13 英寸以上屏幕前
+- 文字可以密集排布
+- 表格可以多列展示
+
+### 导航定义
+
+- 默认使用 `[HEADER]` 顶部导航
+- 或使用 `[SIDEBAR]` 侧边栏导航
+- 支持 `[BREADCRUMBS]` 面包屑
+
+---
+
+## App 模式设计准则 (App Persona)
+
+一旦触发 **mobile_navigation** 模式，切换到以下设计逻辑：
+
+### 空间利用：强制垂直堆叠
+
+- **严禁使用 `[SIDEBAR]`**
+- `[GRID]` 最多 2 列，推荐 1 列
+- **强制降级 `[TABLE]` 为 `[LIST]` 或 `[CARD]`**
+- 内容全宽展示
+
+### 交互逻辑：手势优先
+
+- 优先使用滑动、长按
+- 使用底部弹出层 `[SHEET]`
+- **禁止依赖 Hover 的交互**
+- 所有点击区域 ≥ 44px
+
+### 内容密度：强制视觉降噪
+
+- 单行文字不宜过长
+- 按钮推荐全宽
+- 减少并列元素（横向最多 2-3 个）
+- 大量留白，提升呼吸感
+
+### 导航定义
+
+- 使用 `[BOTTOM_TABS]` 底部标签栏（功能 ≤ 5 个）
+- 或使用 `[DRAWER]` 侧滑抽屉（功能 > 5 个）
+
+---
+
+## 导航决策逻辑 (Navigation Strategy)
+
+### 规则 A：TabBar vs Drawer
+
+```
+IF 核心功能 ≤ 5 个:
+  → mobile_navigation: ["功能1", "功能2", ...]
+  → 编译器自动生成底部 TabBar
+
+IF 核心功能 > 5 个 或 需要深层级导航:
+  → mobile_navigation: null
+  → 在 DSL 中使用 [DRAWER] 侧滑菜单
+```
+
+### 规则 B：语义匹配
+
+`mobile_navigation` 中的项目必须映射到应用的核心逻辑支柱：
+
+```
+✅ 正确：["监控", "执行", "设置"]
+❌ 错误：["首页", "更多", "关于"]  // 太泛泛
+```
+
+### mobile_navigation 何时为 null？
+
+| 场景 | 原因 | 替代方案 |
+|------|------|----------|
+| 沉浸式页面 | 登录页、启动页不需要导航 | 无导航 |
+| 功能模块 > 5 | 底部放不下 | `[DRAWER]` 侧滑菜单 |
+| 单任务流 | 详情页不需要全局导航 | 返回按钮 |
+
+---
+
+## 组件映射表 (Web ↔ Mobile)
+
+| 场景 | Web DSL | Mobile DSL |
+|------|---------|------------|
+| 主导航 | `[SIDEBAR]` | `[BOTTOM_TABS]` 或 `[DRAWER]` |
+| 数据表格 | `[TABLE columns=5]` | `[LIST style=card]` |
+| 弹窗 | `[MODAL]` | `[SHEET from=bottom]` |
+| 提示 | `[TOOLTIP]` | `[POPOVER trigger=click]` |
+| 标签页 | `[TABS]` | `[SEGMENT]` |
+| 多列布局 | `[GRID cols=3]` | `[STACK]` 或 `[GRID cols=1]` |
+| 下拉选择 | `[SELECT]` | `[ACTION_SHEET]` |
+| 悬停操作 | Hover 显示按钮 | 滑动显示或常驻 |
+
+---
+
+## 内容策略 (Content Agent)
+
+当 `platform === 'mobile'` 时，调整内容生成策略：
+
+### 字数限制
+
+- 标题：最多 15 字
+- 描述：最多 50 字
+- 段落：拆分为多个短段（每段 ≤ 3 行）
+
+### 内容优先级
+
+- 优先提取核心金句
+- 避免长段落
+- 使用列表代替段落
+- 图标 + 短文本 代替纯文本
+
+### 并列内容限制
+
+- 横向并列最多 3 项
+- 超过 3 项强制换行或使用列表
+- 按钮组最多 2 个并排
+
+---
+
 ## 共享变量
 
 在 REPL 第一个代码块中设置，后续代码块通过 `locals_store` 访问：
@@ -73,14 +210,27 @@ executor:
   "arguments": {
     "title": "页面的功能性标题",
     "context": "项目/产品名称（保持风格一致的关键）",
-    "description": "给执行层的视觉剧本，使用自然语言指令集",
-    "mobile_navigation": null
+    "platform": "web",
+    "mobile_navigation": null,
+    "description": "给执行层的视觉剧本，使用自然语言指令集"
   }
 }
 ```
 
-- **Web 平台**：`mobile_navigation` 传 `null` 或不传
-- **Mobile 平台**：`mobile_navigation` 传导航数组，如 `["首页", "发现", "我的"]`
+### 字段说明
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `platform` | `"web"` \| `"mobile"` | ✅ | 平台类型，由规划层判定后锁定 |
+| `mobile_navigation` | `string[]` \| `null` | 仅 mobile | 移动端导航配置 |
+
+### 平台与导航组合
+
+| 场景 | platform | mobile_navigation | 效果 |
+|------|----------|-------------------|------|
+| Web 桌面端 | `"web"` | `null` 或不传 | 使用 Sidebar/Header 导航 |
+| Mobile + BottomTabs | `"mobile"` | `["首页", "发现", "我的"]` | 底部标签栏导航 |
+| Mobile + Drawer | `"mobile"` | `null` | 侧滑抽屉导航（功能 > 5 个时）|
 
 ---
 
@@ -614,7 +764,7 @@ else:
 
 ## 示例
 
-### 输入
+### 输入（Web 示例）
 > 做一个用户管理页面，顶部显示用户总数、活跃用户、新增用户三个统计，下面是用户列表表格
 
 ### 输出
@@ -624,12 +774,13 @@ else:
   "arguments": {
     "title": "用户管理",
     "context": "后台管理系统",
+    "platform": "web",
     "description": "[Layout] 使用 Dashboard 布局，顶部统计卡片行，下方数据表格区域。\n\n[Theme] 企业后台风格，主色调蓝色，背景浅灰。\n\n[Content - Header] 页面标题"用户管理"，右侧放置"新增用户"主按钮，图标 user-plus。\n\n[Content - Stats] 三个统计卡片水平排列：\n- 用户总数：显示数值，图标 users，趋势箭头向上为绿色\n- 活跃用户：显示数值，图标 activity，趋势箭头\n- 新增用户：显示数值，图标 user-plus，趋势箭头\n\n[Content - Table] 用户列表表格，列定义：\n- 用户名：文本\n- 邮箱：文本\n- 状态：Badge 组件，active 显示绿色，inactive 显示灰色\n- 注册时间：日期格式\n- 操作：编辑按钮、删除按钮\n\n[Details] 表格支持分页和搜索。状态列使用语义色。操作按钮使用图标形式（edit, trash）。"
   }
 }
 ```
 
-### 输入
+### 输入（Web 示例）
 > 做一个架构说明页，展示规划层、执行环境、执行工具三个部分的关系
 
 ### 输出
@@ -639,7 +790,42 @@ else:
   "arguments": {
     "title": "系统架构",
     "context": "技术文档站点",
+    "platform": "web",
     "description": "[Layout] 使用桌面端 Web 布局，采用三栏式水平网格（Three-column Grid）。\n\n[Theme] 主题设定为"企业技术感"，主色调使用深蓝色，背景使用浅灰。\n\n[Content - Column 1] 标题"规划层"，下方放置一个 Card。Card 内显示 Elixir Controller 的职责描述，图标选用 cpu。列出关键文件路径。\n\n[Content - Column 2] 标题"执行环境"，下方放置一个 Card。展示 Python REPL 的逻辑，使用终端图标 terminal。\n\n[Content - Column 3] 标题"执行工具"，下方放置一个 Card。列出可用的接口和工具。\n\n[Details] 在卡片之间通过箭头图标指示数据流向。所有代码路径（如 lib/zcpg/rlm/controller.ex）必须使用等宽字体并加深背景色。"
+  }
+}
+```
+
+### 输入（Mobile + BottomTabs 示例）
+> 做一个外卖 App 首页，显示搜索框、分类入口、推荐商家列表
+
+### 输出
+```json
+{
+  "function_call": "generate_design",
+  "arguments": {
+    "title": "首页",
+    "context": "外卖点餐 App",
+    "platform": "mobile",
+    "mobile_navigation": ["首页", "订单", "我的"],
+    "description": "[Layout] 移动端单列布局，顶部搜索区，中部分类入口，下方商家列表。底部固定 TabBar。\n\n[Theme] 清新活力风格，主色调橙色，背景白色。\n\n[Content - Search] 顶部搜索栏，placeholder"搜索商家或菜品"，左侧定位图标显示当前地址。\n\n[Content - Categories] 横向滚动的分类入口，图标+文字形式：美食、甜点、快餐、水果、超市。每行 5 个。\n\n[Content - Merchants] 商家推荐列表，每项包含：商家图片、名称、评分（星星）、配送时间、起送价。使用卡片样式，纵向堆叠。\n\n[Details] 列表项可点击进入商家详情。所有点击区域 ≥ 44px。列表支持下拉刷新和上拉加载更多。"
+  }
+}
+```
+
+### 输入（Mobile + Drawer 示例）
+> 做一个 RLM 系统的移动端管理工具，功能比较多
+
+### 输出
+```json
+{
+  "function_call": "generate_design",
+  "arguments": {
+    "title": "RLM 管理",
+    "context": "RLM 移动端管理工具",
+    "platform": "mobile",
+    "mobile_navigation": null,
+    "description": "[Layout] 移动端布局，顶部导航栏带菜单按钮，点击展开侧滑抽屉。主内容区显示状态概览。\n\n[Theme] 技术工具风格，主色调深蓝，背景浅灰。\n\n[Content - Header] 顶部导航栏，左侧菜单图标（点击展开 Drawer），中间标题"RLM 管理"，右侧通知图标。\n\n[Content - Drawer] 侧滑抽屉菜单，包含：状态监控、执行日志、逻辑节点、系统设置、帮助中心、退出登录。使用图标+文字列表。\n\n[Content - Main] 状态概览卡片：当前状态（运行中/已停止）、最近执行时间、活跃节点数。下方显示最近 5 条执行日志摘要。\n\n[Details] 功能多于 5 个，使用 Drawer 而非底部 TabBar。所有交互元素 ≥ 44px。"
   }
 }
 ```

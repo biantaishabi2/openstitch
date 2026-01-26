@@ -63,6 +63,7 @@ img, svg, video { display: block; max-width: 100%; height: auto; }
 .justify-start { justify-content: flex-start; }
 .justify-end { justify-content: flex-end; }
 
+.gap-0 { gap: 0; }
 .gap-1 { gap: 0.25rem; }
 .gap-2 { gap: 0.5rem; }
 .gap-3 { gap: 0.75rem; }

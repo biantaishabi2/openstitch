@@ -721,6 +721,151 @@ describe('Deep Nesting (10 levels)', () => {
 // 超长字符串测试
 // ============================================
 
+// ============================================
+// 平台检测测试 (Platform Detection)
+// ============================================
+
+describe('Platform Detection', () => {
+  it('should set mobile platform when platform is mobile', () => {
+    const cst = [{ tag: 'CARD', id: 'test' }];
+    const { ast } = transformToAST(cst, {
+      platform: 'mobile',
+      mobileNavigation: ['首页', '消息', '我的'],
+    });
+
+    expect(ast.platform).toBe('mobile');
+    expect(ast.mobileNavigation).toEqual(['首页', '消息', '我的']);
+  });
+
+  it('should set web platform when platform is web', () => {
+    const cst = [{ tag: 'CARD', id: 'test' }];
+    const { ast } = transformToAST(cst, {
+      platform: 'web',
+    });
+
+    expect(ast.platform).toBe('web');
+    expect(ast.mobileNavigation).toBeUndefined();
+  });
+
+  it('should support mobile platform without mobileNavigation (Drawer mode)', () => {
+    const cst = [{ tag: 'CARD', id: 'test' }];
+    const { ast } = transformToAST(cst, {
+      platform: 'mobile',
+      mobileNavigation: null,  // Drawer mode
+    });
+
+    expect(ast.platform).toBe('mobile');
+    expect(ast.mobileNavigation).toBeNull();
+  });
+
+  it('should default to web platform when platform is not specified', () => {
+    const cst = [{ tag: 'CARD', id: 'test' }];
+    const { ast } = transformToAST(cst, {});
+
+    expect(ast.platform).toBe('web');
+    expect(ast.mobileNavigation).toBeUndefined();
+  });
+
+  it('should support mobile-specific tags', () => {
+    const cst = [
+      { tag: 'MOBILE_SHELL', id: 'shell' },
+      { tag: 'BOTTOM_TABS', id: 'tabs' },
+      { tag: 'DRAWER', id: 'drawer' },
+      { tag: 'SHEET', id: 'sheet' },
+    ];
+    const { ast } = transformToAST(cst, {
+      platform: 'mobile',
+      mobileNavigation: ['首页', '我的'],
+    });
+
+    expect(ast.children[0].type).toBe('MobileShell');
+    expect(ast.children[1].type).toBe('BottomTabs');
+    expect(ast.children[2].type).toBe('Drawer');
+    expect(ast.children[3].type).toBe('Sheet');
+  });
+
+  it('should warn about forbidden mobile components (Sidebar)', () => {
+    const cst = [
+      { tag: 'SIDEBAR', id: 'sidebar' },
+    ];
+    const { errors } = transformToAST(cst, {
+      platform: 'mobile',
+    });
+
+    // 应该有警告
+    const sidebarWarning = errors.find(e =>
+      e.message.includes('DRAWER') && e.message.includes('SIDEBAR')
+    );
+    expect(sidebarWarning).toBeDefined();
+    expect(sidebarWarning?.level).toBe('warning');
+  });
+
+  it('should suggest replacement for Table on mobile', () => {
+    const cst = [
+      { tag: 'TABLE', id: 'table' },
+    ];
+    const { errors } = transformToAST(cst, {
+      platform: 'mobile',
+    });
+
+    // 应该有替换建议
+    const tableSuggestion = errors.find(e =>
+      e.message.includes('LIST') && e.message.includes('TABLE')
+    );
+    expect(tableSuggestion).toBeDefined();
+    expect(tableSuggestion?.level).toBe('info');
+  });
+
+  it('should inject fullWidth for Section on mobile', () => {
+    const cst = [
+      { tag: 'SECTION', id: 'section' },
+    ];
+    const { ast } = transformToAST(cst, {
+      platform: 'mobile',
+    });
+
+    // Section 应该有 fullWidth: true
+    expect(ast.children[0].props.fullWidth).toBe(true);
+  });
+
+  it('should cap Grid columns to 2 on mobile', () => {
+    const cst = [
+      { tag: 'GRID', id: 'grid', layoutProps: { Columns: '4' } },
+    ];
+    const { ast, errors } = transformToAST(cst, {
+      platform: 'mobile',
+    });
+
+    // Grid 列数应该被降级为 2
+    expect(ast.children[0].props.columns).toBe('2');
+    // 应该有警告
+    const gridWarning = errors.find(e => e.message.includes('Grid') && e.message.includes('2'));
+    expect(gridWarning).toBeDefined();
+  });
+
+  it('should NOT apply mobile rules when platform is web', () => {
+    const cst = [
+      { tag: 'SIDEBAR', id: 'sidebar' },
+      { tag: 'TABLE', id: 'table' },
+      { tag: 'GRID', id: 'grid', layoutProps: { Columns: '4' } },
+    ];
+    const { ast, errors } = transformToAST(cst, {
+      // 不传 mobileNavigation，默认 web
+    });
+
+    // 不应该有移动端警告
+    const mobileWarnings = errors.filter(e => e.message.includes('[Mobile]'));
+    expect(mobileWarnings.length).toBe(0);
+
+    // Grid 应该保持 4 列
+    expect(ast.children[2].props.columns).toBe('4');
+  });
+});
+
+// ============================================
+// 超长字符串测试
+// ============================================
+
 describe('Long String Handling', () => {
   it('should handle very long content strings', () => {
     const longContent = 'A'.repeat(10000); // 10000 字符

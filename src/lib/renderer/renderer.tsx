@@ -33,6 +33,9 @@ const COMPONENTS_WITH_ICON_ELEMENT = new Set([
   'Alert',
   'SlottedAlert',
   'StatisticCard',
+  'BottomTabsTrigger',  // 移动端底部导航项
+  'Card',               // Card 组件的 icon 在 CardTitle 中渲染
+  'SlottedCard',        // SlottedCard 也需要 icon
 ]);
 
 /**

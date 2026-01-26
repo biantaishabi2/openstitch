@@ -220,4 +220,49 @@ const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
 );
 Container.displayName = 'Container';
 
-export { Hero, Section, Container };
+// 页头组件
+interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
+  sticky?: boolean;
+}
+
+const Header = React.forwardRef<HTMLElement, HeaderProps>(
+  ({ className, sticky, children, ...props }, ref) => {
+    return (
+      <header
+        ref={ref}
+        className={cn(
+          'flex items-center justify-between px-4 py-3 border-b bg-background',
+          sticky && 'sticky top-0 z-50',
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </header>
+    );
+  }
+);
+Header.displayName = 'Header';
+
+// 页脚组件
+interface FooterProps extends React.HTMLAttributes<HTMLElement> {}
+
+const Footer = React.forwardRef<HTMLElement, FooterProps>(
+  ({ className, children, ...props }, ref) => {
+    return (
+      <footer
+        ref={ref}
+        className={cn(
+          'flex items-center justify-between px-4 py-6 border-t bg-muted/40',
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </footer>
+    );
+  }
+);
+Footer.displayName = 'Footer';
+
+export { Hero, Section, Container, Header, Footer };

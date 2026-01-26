@@ -10,6 +10,20 @@ import type { UINode, FactoryOptions } from './types';
 import { getMappedType, getSpecialProps, isCompositeComponent } from './type-map';
 import { normalizeProps } from './props-normalizer';
 import { distributeToSlots, getSlotWrapper, isSlotEmpty, getSlotRule, SLOT_RULES } from './slot-distributor';
+import { getTouchFeedbackClasses } from '../visual';
+
+/**
+ * 需要触摸反馈的组件类型
+ * 移动端点击时添加 active:scale-[0.97] 等效果
+ */
+const TOUCHABLE_COMPONENTS = new Set([
+  'Button',
+  'Card',
+  'Link',
+  'BottomTabsTrigger',
+  'ActionSheetItem',
+  'AccordionTrigger',
+]);
 
 /**
  * 检查组件是否为特殊复合组件（需要直接传递 children 而非 slots）
@@ -54,7 +68,17 @@ function astNodeToUINode(
     ...normalizedProps,
   };
 
-  // 5. 注入事件桩函数（如果启用）
+  // 5. 移动端触摸反馈（为可点击组件添加 active:scale-[0.97] 等类）
+  const platform = options.platform || 'web';
+  if (platform === 'mobile' && TOUCHABLE_COMPONENTS.has(mappedType)) {
+    const touchClasses = getTouchFeedbackClasses('mobile');
+    if (touchClasses.length > 0) {
+      const existingClass = (mergedProps.className as string) || '';
+      mergedProps.className = [existingClass, ...touchClasses].filter(Boolean).join(' ');
+    }
+  }
+
+  // 6. 注入事件桩函数（如果启用）
   if (options.injectEvents !== false) {
     mergedProps = injectEventStubs(mappedType, node.id, mergedProps);
   }
@@ -217,19 +241,114 @@ export function generateIR(
   tokens: DesignTokens,
   options: FactoryOptions = {}
 ): UINode {
-  // 如果 AST 只有一个顶层子节点，直接转换它
-  if (ast.children.length === 1) {
-    return astNodeToUINode(ast.children[0], tokens, options);
-  }
+  // 从 AST 获取 platform，合并到 options 中
+  const mergedOptions: FactoryOptions = {
+    ...options,
+    platform: options.platform || ast.platform || 'web',
+  };
 
-  // 多个顶层子节点，用 Page 包裹
-  const children = ast.children.map((child) =>
-    astNodeToUINode(child, tokens, options)
+  // 转换所有子节点
+  const contentNodes = ast.children.map((child) =>
+    astNodeToUINode(child, tokens, mergedOptions)
   );
 
+  // 获取内容节点（单个或多个用 Page 包裹）
+  const content: UINode = contentNodes.length === 1
+    ? contentNodes[0]
+    : { type: 'Page', children: contentNodes };
+
+  // 移动端平台：包裹 MobileShell + BottomTabs
+  if (ast.platform === 'mobile' && ast.mobileNavigation) {
+    return wrapWithMobileShell(content, ast.mobileNavigation);
+  }
+
+  return content;
+}
+
+/**
+ * 用 MobileShell + BottomTabs 包裹内容
+ *
+ * 生成结构:
+ * MobileShell (hasBottomNav=true)
+ *   └─ BottomTabs (defaultValue="tab_0")
+ *        ├─ BottomTabsContent (value="tab_0") ── 内容
+ *        ├─ BottomTabsContent (value="tab_1") ── 空白占位
+ *        ├─ ...
+ *        └─ BottomTabsList
+ *             ├─ BottomTabsTrigger (value="tab_0", label="首页", icon=Home)
+ *             ├─ BottomTabsTrigger (value="tab_1", label="搜索", icon=Search)
+ *             └─ ...
+ */
+function wrapWithMobileShell(content: UINode, navItems: string[]): UINode {
+  // 默认图标映射（按导航项名称）
+  const iconMap: Record<string, string> = {
+    '首页': 'Home',
+    '主页': 'Home',
+    'home': 'Home',
+    '搜索': 'Search',
+    '查找': 'Search',
+    'search': 'Search',
+    '发现': 'Compass',
+    'discover': 'Compass',
+    '消息': 'MessageCircle',
+    '通知': 'Bell',
+    'notification': 'Bell',
+    'message': 'MessageCircle',
+    '我的': 'User',
+    '个人': 'User',
+    '我': 'User',
+    'profile': 'User',
+    'me': 'User',
+    '设置': 'Settings',
+    'settings': 'Settings',
+    '收藏': 'Heart',
+    'favorite': 'Heart',
+    '购物车': 'ShoppingCart',
+    'cart': 'ShoppingCart',
+    '订单': 'FileText',
+    'order': 'FileText',
+  };
+
+  // 生成 BottomTabsTrigger 节点
+  const triggers: UINode[] = navItems.map((label, index) => ({
+    type: 'BottomTabsTrigger',
+    props: {
+      value: `tab_${index}`,
+      label,
+      icon: iconMap[label.toLowerCase()] || iconMap[label] || 'Circle',
+    },
+  }));
+
+  // 生成 BottomTabsContent 节点
+  // 第一个 tab 放实际内容，其他为空白占位
+  const contents: UINode[] = navItems.map((label, index) => ({
+    type: 'BottomTabsContent',
+    props: { value: `tab_${index}` },
+    children: index === 0 ? content : {
+      type: 'MobileContent',
+      children: {
+        type: 'Text',
+        props: { className: 'p-4 text-muted-foreground' },
+        children: `${label}页面内容`,
+      },
+    },
+  }));
+
+  // 组装完整结构
   return {
-    type: 'Page',
-    children: children,
+    type: 'MobileShell',
+    props: { hasBottomNav: true },
+    children: {
+      type: 'BottomTabs',
+      props: { defaultValue: 'tab_0' },
+      children: [
+        ...contents,
+        {
+          type: 'BottomTabsList',
+          children: triggers,
+        },
+      ],
+    },
   };
 }
 

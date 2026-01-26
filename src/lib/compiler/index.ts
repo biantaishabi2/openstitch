@@ -111,6 +111,10 @@ function createSessionState(): SessionState {
 export interface CompileOptions {
   /** 上下文描述 (用于视觉引擎场景检测) */
   context?: string;
+  /** 平台类型 - 由规划层明确指定，独立于导航配置 */
+  platform?: 'web' | 'mobile';
+  /** 移动端导航项 - 仅在 mobile 平台有效：有值时使用 BottomTabs，null 时使用 Drawer */
+  mobileNavigation?: string[] | null;
   /** Session State (用于确定性渲染) */
   session?: SessionState;
   /** SSR 选项 */
@@ -196,6 +200,8 @@ export async function compile(
 
   const {
     context = '',
+    platform: inputPlatform,
+    mobileNavigation,
     session = createSessionState(),
     ssr: ssrOptions = {},
     injectEvents = true,
@@ -205,7 +211,7 @@ export async function compile(
 
   // 1. 解析 DSL → AST
   const parseStartTime = performance.now();
-  const parseResult = compileLogic(dsl, { context });
+  const parseResult = compileLogic(dsl, { context, platform: inputPlatform, mobileNavigation });
 
   if (!parseResult.success || !parseResult.ast) {
     throw new CompileError('Parse failed', parseResult.errors || []);
@@ -214,11 +220,13 @@ export async function compile(
   const ast = parseResult.ast;
   const parseTime = performance.now() - parseStartTime;
 
-  // 2. 生成 Design Tokens
+  // 2. 生成 Design Tokens（传入 platform 进行移动端适配）
   const tokenStartTime = performance.now();
+  const platform = ast.platform || 'web';
   let tokens = generateDesignTokens({
     context,
     sessionId: session.sessionId,
+    platform,  // 传入平台，触发移动端参数调整
   });
 
   // 应用 Token 覆盖
@@ -235,6 +243,7 @@ export async function compile(
     options: {
       injectEvents,
       debug,
+      platform,  // 传入平台，触发触摸反馈等移动端样式
     },
   });
   const factoryTime = performance.now() - factoryStartTime;

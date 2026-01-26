@@ -31,6 +31,17 @@ export {
   type DesignAuditResult,
 } from './synthesizer';
 
+// 导出质感补丁工具
+export {
+  compensateDarkMode,
+  getLuminance,
+  getLetterSpacingClass,
+  calculateInnerRadius,
+  getTouchFeedbackClasses,
+  tintNeutralColor,
+  getCompensatedLineHeight,
+} from './synthesizer';
+
 // 导出色彩空间工具
 export {
   validateContrast,
