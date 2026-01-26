@@ -175,6 +175,17 @@ function astNodeToUINode(
       mergedProps.code = contentText;
       delete mergedProps.content;
     }
+    // Link/Badge/Button：content 直接作为纯文本，不包裹 Text 组件
+    else if (mappedType === 'Link' || mappedType === 'Badge' || mappedType === 'a') {
+      delete mergedProps.content;
+      if (!children && !slots) {
+        if (iconChild) {
+          children = [iconChild, contentText];
+        } else {
+          children = contentText; // 直接作为字符串，不包裹 Text
+        }
+      }
+    }
     // 其他组件：content 作为文本子节点
     else {
       delete mergedProps.content;
