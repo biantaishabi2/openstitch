@@ -16,6 +16,11 @@ import {
   inferStructure,
   type StructureInferenceResult,
 } from '../inferrers/structure-inferrer';
+import {
+  resolveAssetsViaFigma,
+  type AssetResolver,
+  type AssetResolverOptions,
+} from '../assets';
 import type { DesignTokens } from '../../lib/compiler/visual/types';
 
 // === 类型定义 ===
@@ -51,6 +56,10 @@ export interface ConversionStats {
 export interface FigmaAdapterOptions {
   /** AI 推断函数 (可选，用于处理模糊元素) */
   aiInfer?: (prompt: string) => Promise<string>;
+  /** 资产解析函数 (可选，用于导出图片/图标) */
+  assetResolver?: AssetResolver;
+  /** 资产解析参数 (fileKey + token 等) */
+  assetOptions?: AssetResolverOptions;
   /** 上下文描述 (用于场景检测) */
   context?: string;
   /** 是否使用默认值填充缺失的 tokens */
@@ -94,6 +103,8 @@ export async function convertFigmaToStitch(
 
   const {
     aiInfer,
+    assetResolver,
+    assetOptions,
     context = '',
     useDefaults = true,
     sessionId = generateSessionId(),
@@ -105,8 +116,27 @@ export async function convertFigmaToStitch(
   const allNodes = extractAllNodes(figmaFile.document);
   const validNodes = extractValidNodes(figmaFile.document);
 
+  // 1.5 解析资产 URL（可选）
+  let assetUrls: Map<string, string> | undefined;
+  const shouldResolveAssets = Boolean(
+    (assetResolver && assetOptions) ||
+      (assetOptions?.fileKey && assetOptions?.figmaToken)
+  );
+  if (shouldResolveAssets) {
+    const resolver = assetResolver || resolveAssetsViaFigma;
+    try {
+      const assetResult = await resolver(validNodes, assetOptions as AssetResolverOptions);
+      assetUrls = assetResult.byNodeId;
+      warnings.push(...assetResult.warnings);
+    } catch {
+      warnings.push('Asset resolution failed. Continuing without exported assets.');
+    }
+  } else if (assetResolver && !assetOptions) {
+    warnings.push('assetResolver provided without assetOptions. Skipping asset resolution.');
+  }
+
   // 2. 结构推断（优先产出可编译 DSL）
-  const structure = await inferStructure(validNodes, aiInfer);
+  const structure = await inferStructure(validNodes, aiInfer, assetUrls);
 
   // 3. 视觉推断 (需要传入节点数组)
   const visuals = inferVisuals(validNodes);

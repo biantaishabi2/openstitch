@@ -622,6 +622,32 @@ describe('DSL Generation', () => {
     expect(parseResult.errors).toHaveLength(0);
   });
 
+  it('should inject exported asset URLs for Image/Icon nodes', async () => {
+    const imageNode: FigmaNode = {
+      id: 'asset:img',
+      name: 'Hero Image',
+      type: 'RECTANGLE',
+      absoluteBoundingBox: { x: 0, y: 0, width: 600, height: 320 },
+      fills: [{ type: 'IMAGE' }],
+    };
+    const iconNode: FigmaNode = {
+      id: 'asset:icon',
+      name: 'Settings Icon',
+      type: 'VECTOR',
+      absoluteBoundingBox: { x: 0, y: 0, width: 24, height: 24 },
+    };
+
+    const assetUrls = new Map<string, string>([
+      ['asset:img', 'https://example.com/hero.png'],
+      ['asset:icon', 'https://example.com/settings.svg'],
+    ]);
+
+    const result = await inferStructure([imageNode, iconNode], undefined, assetUrls);
+    expect(result.dsl).toContain('Src("https://example.com/hero.png")');
+    expect(result.dsl).toContain('Alt("Hero Image")');
+    expect(result.dsl).toContain('Src("https://example.com/settings.svg")');
+  });
+
   it('should sanitize node names for IDs', async () => {
     // 节点名包含特殊字符
     const node: FigmaNode = {

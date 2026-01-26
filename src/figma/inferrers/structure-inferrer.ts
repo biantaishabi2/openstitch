@@ -627,7 +627,8 @@ export function inferComponent(
  */
 export async function inferStructure(
   nodes: FigmaNode[],
-  aiInfer?: (prompt: string) => Promise<string>
+  aiInfer?: (prompt: string) => Promise<string>,
+  assetUrls?: Map<string, string>
 ): Promise<StructureInferenceResult> {
   const inferences = new Map<string, ComponentInference>();
   const warnings: string[] = [];
@@ -651,7 +652,7 @@ export async function inferStructure(
   }
 
   // 生成 DSL
-  const dsl = generateDSL(nodes, inferences);
+  const dsl = generateDSL(nodes, inferences, assetUrls);
 
   // 计算平均置信度
   const avgConfidence = nodes.length > 0 ? totalConfidence / nodes.length : 0;
@@ -679,7 +680,8 @@ export async function inferStructure(
 
 function generateDSL(
   nodes: FigmaNode[],
-  inferences: Map<string, ComponentInference>
+  inferences: Map<string, ComponentInference>,
+  assetUrls?: Map<string, string>
 ): string {
   const lines: string[] = [];
   const nodeIdSet = new Set(nodes.map(n => n.id));
@@ -704,6 +706,7 @@ function generateDSL(
     const id = sanitizeId(node.name || node.id);
     const type = inference.componentType;
     const tag = type.toUpperCase();
+    const assetUrl = assetUrls?.get(node.id);
 
     lines.push(`${indent}[${tag}: ${id}]`);
     const aiOverrides = parseAIDslOverrides(inference.aiDsl, type, id);
@@ -749,6 +752,15 @@ function generateDSL(
       if (aiAttrParts.length > 0) {
         lines.push(`${indent}  ATTR: ${aiAttrParts.join(', ')}`);
       }
+    }
+
+    // 资产 URL 最后写入，避免被 AI 覆盖
+    if (assetUrl && (type === 'Image' || type === 'Icon')) {
+      const assetParts = [`Src("${escapeString(assetUrl)}")`];
+      if (type === 'Image') {
+        assetParts.push(`Alt("${escapeString(node.name || id)}")`);
+      }
+      lines.push(`${indent}  ATTR: ${assetParts.join(', ')}`);
     }
 
     // 递归处理子节点

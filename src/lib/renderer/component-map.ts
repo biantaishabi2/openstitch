@@ -271,8 +271,10 @@ const Image: React.FC<ImageProps> = ({ rounded, aspectRatio, className, ...props
 // ============================================
 
 interface DynamicIconProps extends React.SVGAttributes<SVGSVGElement> {
-  name: string;
+  name?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  src?: string;
+  alt?: string;
 }
 
 const sizeMap: Record<string, string> = {
@@ -283,14 +285,35 @@ const sizeMap: Record<string, string> = {
   xl: 'h-8 w-8',
 };
 
-const DynamicIcon: React.FC<DynamicIconProps> = ({ name, size = 'md', className, ...props }) => {
+const DynamicIcon: React.FC<DynamicIconProps> = ({
+  name,
+  size = 'md',
+  className,
+  src,
+  alt,
+  ...props
+}) => {
+  const mergedClassName = cn(sizeMap[size], className);
+
+  // 如果提供了导出的资产 URL，直接渲染为图片以贴合设计稿
+  if (src) {
+    return React.createElement('img', {
+      src,
+      alt: alt || name || '',
+      className: mergedClassName,
+      ...props,
+    });
+  }
+
+  if (!name) return null;
+
   const IconComponent = (LucideIcons as any)[name];
   if (!IconComponent) {
     console.warn(`Icon "${name}" not found`);
     return null;
   }
   return React.createElement(IconComponent, {
-    className: cn(sizeMap[size], className),
+    className: mergedClassName,
     ...props,
   });
 };

@@ -70,6 +70,34 @@ describe('Basic Component Rendering (TC-RENDERER-01)', () => {
     expect(html).toContain('placeholder="Enter text..."');
   });
 
+  it('should render Image with src', () => {
+    const node: UINode = {
+      type: 'Image',
+      props: {
+        src: 'https://example.com/photo.png',
+        alt: 'photo',
+      },
+    };
+
+    const html = renderToHTML(node);
+    expect(html).toContain('<img');
+    expect(html).toContain('src="https://example.com/photo.png"');
+  });
+
+  it('should render Icon as img when src is provided', () => {
+    const node: UINode = {
+      type: 'Icon',
+      props: {
+        src: 'https://example.com/icon.svg',
+        alt: 'icon',
+      },
+    };
+
+    const html = renderToHTML(node);
+    expect(html).toContain('<img');
+    expect(html).toContain('src="https://example.com/icon.svg"');
+  });
+
   it('should render Badge with variant', () => {
     const node: UINode = {
       type: 'Badge',
