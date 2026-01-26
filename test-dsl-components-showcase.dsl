@@ -298,7 +298,7 @@
             CONTENT: "设置密码"
 
     [CARD: tabs]
-      ATTR: Title("Tabs 标签页"), Description("切换不同内容面板")
+      ATTR: Title("Tabs 标签页"), Description("切换不同内容面板的标签导航")
       [TABS: demo_tabs]
         [CARD: tab1]
           ATTR: Title("概览")
@@ -314,7 +314,7 @@
             CONTENT: "生成的各类报告。"
 
     [CARD: button]
-      ATTR: Title("Button 按钮"), Description("各种变体和尺寸的按钮")
+      ATTR: Title("Button 按钮"), Description("各种变体和尺寸的按钮组件")
       [STACK: btn_demo]
         { Gap: "MD" }
         [TEXT: btn_l1]
@@ -366,7 +366,7 @@
             CONTENT: "设置"
 
     [CARD: badge]
-      ATTR: Title("Badge 徽章"), Description("标记和分类的小型组件")
+      ATTR: Title("Badge 徽章"), Description("用于标记状态或分类的徽章")
       [FLEX: badge_demo]
         { Gap: "SM" }
         [BADGE: b1]
@@ -382,7 +382,7 @@
           CONTENT: "危险"
 
     [CARD: icon]
-      ATTR: Title("Icon 图标"), Description("Lucide 图标库")
+      ATTR: Title("Icon 图标"), Description("基于 Lucide 的图标组件")
       [FLEX: icon_demo]
         { Gap: "MD", ClassName: "flex-wrap" }
         [ICON: ic1]
@@ -403,7 +403,7 @@
           ATTR: Icon("Mail")
 
     [CARD: image]
-      ATTR: Title("Image 图片"), Description("图片展示组件")
+      ATTR: Title("Image 图片"), Description("图片展示组件，支持圆角和宽高比")
       [FLEX: image_demo]
         { Gap: "MD" }
         [IMAGE: img1]
@@ -414,7 +414,7 @@
           ATTR: Src("https://picsum.photos/201/201"), Alt("示例图片2")
 
     [CARD: avatar]
-      ATTR: Title("Avatar 头像"), Description("用户头像展示")
+      ATTR: Title("Avatar 头像"), Description("用户头像展示组件")
       [FLEX: avatar_demo]
         { Gap: "MD", Align: "Center" }
         [AVATAR: av1]
@@ -425,7 +425,7 @@
           ATTR: Fallback("王")
 
     [CARD: card]
-      ATTR: Title("Card 卡片"), Description("通用容器组件")
+      ATTR: Title("Card 卡片"), Description("容器组件，用于展示相关内容")
       [GRID: card_demo]
         { Columns: "3", Gap: "MD" }
         [CARD: c1]
@@ -448,7 +448,7 @@
               CONTENT: "取消"
 
     [CARD: statistic]
-      ATTR: Title("Statistic 统计"), Description("展示统计数值")
+      ATTR: Title("Statistic 统计卡片"), Description("展示关键数据指标")
       [GRID: stat_demo]
         { Columns: "4", Gap: "MD" }
         [STATISTIC_CARD: s1]
@@ -465,7 +465,7 @@
           CONTENT: "+15.3%"
 
     [CARD: table]
-      ATTR: Title("Table 表格"), Description("数据表格展示")
+      ATTR: Title("Table 数据表格"), Description("展示结构化数据")
       [TABLE: table_demo]
         [FLEX: th]
           [TEXT: th1]
@@ -490,7 +490,7 @@
             CONTENT: "上海"
 
     [CARD: list]
-      ATTR: Title("List 列表"), Description("列表项展示")
+      ATTR: Title("List 列表"), Description("简洁的列表展示")
       [LIST: list_demo]
         [TEXT: li1]
           CONTENT: "列表项 1 - 项目概述"
@@ -594,7 +594,7 @@
             CONTENT: "重置"
 
     [CARD: alert]
-      ATTR: Title("Alert 提示"), Description("警告和信息提示")
+      ATTR: Title("Alert 提示"), Description("各种类型的提示信息")
       [STACK: alert_demo]
         { Gap: "MD" }
         [ALERT: a1]
@@ -605,7 +605,7 @@
           CONTENT: "操作失败，请重试。"
 
     [CARD: progress]
-      ATTR: Title("Progress 进度条"), Description("进度展示")
+      ATTR: Title("Progress 进度条"), Description("展示操作进度")
       [STACK: progress_demo]
         { Gap: "MD" }
         [TEXT: pg_l1]
@@ -625,7 +625,7 @@
           ATTR: Value("100")
 
     [CARD: skeleton]
-      ATTR: Title("Skeleton 骨架屏"), Description("加载占位符")
+      ATTR: Title("Skeleton 骨架屏"), Description("加载状态占位")
       [STACK: skeleton_demo]
         { Gap: "SM" }
         [FLEX: skel_row]
@@ -642,7 +642,7 @@
           { ClassName: "h-24 w-full" }
 
     [CARD: empty]
-      ATTR: Title("EmptyState 空状态"), Description("无数据时的占位")
+      ATTR: Title("EmptyState 空状态"), Description("无数据时的展示")
       [EMPTY_STATE: es1]
         ATTR: Title("暂无数据"), Icon("Inbox")
         CONTENT: "当前没有任何数据，请稍后再试。"
@@ -686,7 +686,7 @@
             CONTENT: "Stack 3"
 
     [CARD: dialog]
-      ATTR: Title("Dialog 对话框"), Description("模态对话框组件")
+      ATTR: Title("Dialog 对话框"), Description("模态对话框组件（静态预览）")
       [STACK: dialog_demo]
         { Gap: "MD" }
         [TEXT: dialog_desc]
@@ -697,7 +697,7 @@
           CONTENT: "打开对话框"
 
     [CARD: tooltip]
-      ATTR: Title("Tooltip 提示"), Description("悬停提示组件")
+      ATTR: Title("Tooltip 工具提示"), Description("鼠标悬停时显示提示信息（静态预览）")
       [FLEX: tooltip_demo]
         { Gap: "MD" }
         [TOOLTIP: tt1]
@@ -711,7 +711,7 @@
             CONTENT: "悬停我"
 
     [CARD: separator]
-      ATTR: Title("Separator 分隔线"), Description("内容分隔组件")
+      ATTR: Title("Separator 分隔线"), Description("内容分隔")
       [STACK: sep_demo]
         { Gap: "MD" }
         [TEXT: sep_t1]

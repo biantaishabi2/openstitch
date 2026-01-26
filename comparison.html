@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Components Showcase 对比</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #333;
+      color: white;
+      padding: 10px;
+      z-index: 1000;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .header button {
+      padding: 8px 16px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .header button:hover { background: #45a049; }
+    .container {
+      display: flex;
+      margin-top: 50px;
+    }
+    .frame-wrapper {
+      flex: 1;
+      border-right: 2px solid #333;
+      position: relative;
+    }
+    .frame-wrapper:last-child { border-right: none; }
+    .label {
+      position: sticky;
+      top: 50px;
+      background: #f0f0f0;
+      padding: 8px;
+      text-align: center;
+      font-weight: bold;
+      border-bottom: 1px solid #ccc;
+      z-index: 999;
+    }
+    iframe {
+      width: 100%;
+      height: calc(100vh - 100px);
+      border: none;
+    }
+    .sync { background: #2196F3 !important; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span>Components Showcase 对比</span>
+    <button onclick="syncScroll()">🔄 同步滚动</button>
+    <button onclick="resetScroll()">⬆️ 回到顶部</button>
+    <span id="status"></span>
+  </div>
+
+  <div class="container">
+    <div class="frame-wrapper">
+      <div class="label">原版 (JSON Schema)</div>
+      <iframe id="original" src="docs/demo/components-showcase.html"></iframe>
+    </div>
+    <div class="frame-wrapper">
+      <div class="label">DSL 版本</div>
+      <iframe id="dsl" src="test-output/dsl-components-showcase.html"></iframe>
+    </div>
+  </div>
+
+  <script>
+    const originalFrame = document.getElementById('original');
+    const dslFrame = document.getElementById('dsl');
+    const status = document.getElementById('status');
+    let syncing = false;
+
+    function syncScroll() {
+      syncing = !syncing;
+      const btn = event.target;
+      if (syncing) {
+        btn.classList.add('sync');
+        btn.textContent = '⏸️ 停止同步';
+        status.textContent = '✅ 滚动同步已启用';
+
+        // 同步滚动
+        originalFrame.contentWindow.addEventListener('scroll', onOriginalScroll);
+        dslFrame.contentWindow.addEventListener('scroll', onDslScroll);
+      } else {
+        btn.classList.remove('sync');
+        btn.textContent = '🔄 同步滚动';
+        status.textContent = '';
+
+        originalFrame.contentWindow.removeEventListener('scroll', onOriginalScroll);
+        dslFrame.contentWindow.removeEventListener('scroll', onDslScroll);
+      }
+    }
+
+    function onOriginalScroll() {
+      if (!syncing) return;
+      const scrollTop = originalFrame.contentWindow.scrollY;
+      dslFrame.contentWindow.scrollTo(0, scrollTop);
+    }
+
+    function onDslScroll() {
+      if (!syncing) return;
+      const scrollTop = dslFrame.contentWindow.scrollY;
+      originalFrame.contentWindow.scrollTo(0, scrollTop);
+    }
+
+    function resetScroll() {
+      originalFrame.contentWindow.scrollTo(0, 0);
+      dslFrame.contentWindow.scrollTo(0, 0);
+      status.textContent = '⬆️ 已回到顶部';
+      setTimeout(() => status.textContent = '', 2000);
+    }
+  </script>
+</body>
+</html>
