@@ -79,6 +79,26 @@ const VARIANT_MAP: Record<string, string> = {
 };
 
 /**
+ * MaxWidth 映射表
+ * DSL 语义化名称 → Tailwind max-width 类
+ */
+const MAX_WIDTH_MAP: Record<string, string> = {
+  xs: 'max-w-xs',
+  sm: 'max-w-sm',
+  md: 'max-w-md',
+  lg: 'max-w-lg',
+  xl: 'max-w-xl',
+  '2xl': 'max-w-2xl',
+  '3xl': 'max-w-3xl',
+  '4xl': 'max-w-4xl',
+  '5xl': 'max-w-5xl',
+  '6xl': 'max-w-6xl',
+  '7xl': 'max-w-7xl',
+  full: 'max-w-full',
+  screen: 'max-w-screen',
+};
+
+/**
  * 归一化单个 prop 值
  */
 function normalizeSize(
@@ -232,6 +252,21 @@ export function normalizeProps(
       case 'height': {
         styles.push({ height: value as string });
         break;
+      }
+
+      case 'maxWidth':
+      case 'maxwidth': {
+        // MaxWidth 使用语义化名称（xs, sm, md, lg, xl），转换为 Tailwind 类
+        const maxWidthValue = value as string;
+        const maxWidthClass = MAX_WIDTH_MAP[maxWidthValue];
+        if (maxWidthClass) {
+          classNames.push(maxWidthClass);
+        } else {
+          // 如果不是预定义值，直接作为 CSS 值
+          styles.push({ maxWidth: maxWidthValue });
+        }
+        // 已处理，不再作为prop传递
+        continue;
       }
 
       case 'gap': {

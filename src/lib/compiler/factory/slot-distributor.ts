@@ -189,6 +189,15 @@ export const SLOT_RULES: Record<string, SlotRule> = {
       bottom: null,
     },
   },
+
+  // Rows 行布局 - 数字插槽（自动编号）
+  Rows: {
+    slots: [], // 动态生成数字插槽
+    distribute: (child: ASTNode, index: number) => {
+      return String(index + 1); // "1", "2", "3", ...
+    },
+    render: {}, // 无包装组件
+  },
 };
 
 /**

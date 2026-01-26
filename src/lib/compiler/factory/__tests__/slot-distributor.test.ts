@@ -166,6 +166,50 @@ describe('Slot Distributor - Layout Components', () => {
     });
   });
 
+  describe('Rows 行布局', () => {
+    it('应该有 Rows 的插槽规则', () => {
+      const rule = getSlotRule('Rows');
+      expect(rule).toBeDefined();
+      expect(rule?.slots).toEqual([]);
+      expect(rule?.render).toEqual({});
+    });
+
+    it('应该将子节点分发到数字插槽 (1, 2, 3)', () => {
+      const children: ASTNode[] = [
+        createCard('row1'),
+        createCard('row2'),
+        createCard('row3'),
+      ];
+
+      const result = distributeToSlots('Rows', children);
+
+      expect(result).toBeDefined();
+      expect(result!['1']).toHaveLength(1);
+      expect(result!['1'][0].id).toBe('row1');
+      expect(result!['2']).toHaveLength(1);
+      expect(result!['2'][0].id).toBe('row2');
+      expect(result!['3']).toHaveLength(1);
+      expect(result!['3'][0].id).toBe('row3');
+    });
+
+    it('应该支持任意数量的行', () => {
+      const children: ASTNode[] = [
+        createCard('item1'),
+        createCard('item2'),
+        createCard('item3'),
+        createCard('item4'),
+        createCard('item5'),
+      ];
+
+      const result = distributeToSlots('Rows', children);
+
+      expect(result).toBeDefined();
+      expect(Object.keys(result!)).toHaveLength(5);
+      expect(result!['1'][0].id).toBe('item1');
+      expect(result!['5'][0].id).toBe('item5');
+    });
+  });
+
   describe('边界情况', () => {
     it('应该处理空子节点数组', () => {
       const result = distributeToSlots('Grid', []);
