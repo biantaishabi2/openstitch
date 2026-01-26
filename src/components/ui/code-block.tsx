@@ -28,8 +28,9 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
   ) => {
     const [copied, setCopied] = React.useState(false);
     // 初始状态使用纯文本代码，用于 SSR
+    // 添加 inline style 确保代码在深色背景上可见
     const [highlightedCode, setHighlightedCode] = React.useState<string>(
-      `<pre><code>${code?.replace(/</g, '&lt;').replace(/>/g, '&gt;') || ''}</code></pre>`
+      `<pre style="color: #f4f4f5; margin: 0;"><code style="color: #f4f4f5;">${code?.replace(/</g, '&lt;').replace(/>/g, '&gt;') || ''}</code></pre>`
     );
 
     React.useEffect(() => {
@@ -41,8 +42,8 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
           });
           setHighlightedCode(html);
         } catch {
-          // 如果高亮失败，显示纯文本
-          setHighlightedCode(`<pre><code>${code}</code></pre>`);
+          // 如果高亮失败，显示纯文本（保持浅色文字）
+          setHighlightedCode(`<pre style="color: #f4f4f5; margin: 0;"><code style="color: #f4f4f5;">${code}</code></pre>`);
         }
       };
       highlight();
