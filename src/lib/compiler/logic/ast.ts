@@ -35,7 +35,7 @@ export interface CSTNode {
 // Zod 语义收敛后的标准化输出
 // ============================================
 
-/** 组件类型枚举 (51 种) */
+/** 组件类型枚举 (59 种) */
 export type ComponentType =
   // 根节点
   | 'Root'
@@ -52,7 +52,7 @@ export type ComponentType =
   | 'Page'
   | 'Hero'
   | 'Spacer'
-  // 导航组件 (6 种)
+  // 导航组件 (6 种 Web)
   | 'Header'
   | 'Footer'
   | 'Sidebar'
@@ -60,12 +60,28 @@ export type ComponentType =
   | 'Tabs'
   | 'Breadcrumb'
   | 'Stepper'
+  // 移动端导航组件 (4 种)
+  | 'MobileShell'   // 移动端外壳 (包含 safe-area)
+  | 'BottomTabs'    // 底部标签栏
+  | 'Drawer'        // 侧滑抽屉菜单
+  | 'Segment'       // 分段控制器 (Tabs 的移动端替代)
   // 数据展示 (12 种)
   | 'Card'
   | 'Table'
   | 'List'
   | 'Timeline'
+  | 'TimelineItem'
+  | 'TimelineContent'
+  | 'TimelineHeader'
+  | 'TimelineTitle'
+  | 'TimelineDescription'
+  | 'TimelineTime'
+  | 'TimelineConnector'
+  | 'TimelineEmpty'
   | 'Accordion'
+  | 'AccordionItem'
+  | 'AccordionTrigger'
+  | 'AccordionContent'
   | 'Statistic'
   | 'StatisticCard'
   | 'Avatar'
@@ -86,13 +102,18 @@ export type ComponentType =
   | 'Radio'
   | 'Select'
   | 'Form'
-  // 反馈组件 (6 种)
+  // 反馈组件 (6 种 Web)
   | 'Alert'
   | 'Modal'
   | 'Progress'
   | 'Tooltip'
   | 'Skeleton'
   | 'EmptyState'
+  // 移动端反馈组件 (2 种)
+  | 'Sheet'         // 底部弹出层 (Modal 的移动端替代)
+  | 'ActionSheet'   // 操作菜单 (Select 的移动端替代)
+  // 移动端交互组件 (1 种)
+  | 'SwipeAction'   // 滑动操作
   // 其他
   | 'Link'
   | 'Divider';
@@ -147,10 +168,17 @@ export interface ASTNode {
   children?: ASTNode[];       // 子节点
 }
 
+/** 平台类型 */
+export type PlatformType = 'web' | 'mobile';
+
 /** Stitch AST 根节点 */
 export interface StitchAST {
   type: 'Root';
   children: ASTNode[];
+  /** 平台标识 - 由规划层明确指定，独立于导航配置 */
+  platform?: PlatformType;
+  /** 移动端导航项 - 仅在 mobile 平台有效：有值时使用 BottomTabs，null 时使用 Drawer */
+  mobileNavigation?: string[] | null;
   metadata?: {
     title?: string;
     context?: string;
@@ -208,6 +236,8 @@ export const PROP_KEY_MAP: Record<string, string> = {
   'Placeholder': 'placeholder',
   'Disabled': 'disabled',
   'Loading': 'loading',
+  // 样式透传通道：ClassName → customClassName
+  'ClassName': 'customClassName',
 };
 
 /** 属性值映射表 (DSL 别名 → 标准值) */
@@ -273,7 +303,7 @@ export const DEFAULT_PROPS: Record<string, Record<string, string>> = {
   Grid: { columns: '1' },
 };
 
-/** 标签名到组件类型的映射 (51 种) */
+/** 标签名到组件类型的映射 (59 种) */
 export const TAG_TO_TYPE: Record<string, ComponentType> = {
   // 布局组件
   'SECTION': 'Section',
@@ -288,7 +318,7 @@ export const TAG_TO_TYPE: Record<string, ComponentType> = {
   'PAGE': 'Page',
   'HERO': 'Hero',
   'SPACER': 'Spacer',
-  // 导航组件
+  // 导航组件 (Web)
   'HEADER': 'Header',
   'FOOTER': 'Footer',
   'SIDEBAR': 'Sidebar',
@@ -296,12 +326,28 @@ export const TAG_TO_TYPE: Record<string, ComponentType> = {
   'TABS': 'Tabs',
   'BREADCRUMB': 'Breadcrumb',
   'STEPPER': 'Stepper',
+  // 导航组件 (Mobile)
+  'MOBILE_SHELL': 'MobileShell',
+  'BOTTOM_TABS': 'BottomTabs',
+  'DRAWER': 'Drawer',
+  'SEGMENT': 'Segment',
   // 数据展示
   'CARD': 'Card',
   'TABLE': 'Table',
   'LIST': 'List',
   'TIMELINE': 'Timeline',
+  'TIMELINE_ITEM': 'TimelineItem',
+  'TIMELINE_CONTENT': 'TimelineContent',
+  'TIMELINE_HEADER': 'TimelineHeader',
+  'TIMELINE_TITLE': 'TimelineTitle',
+  'TIMELINE_DESCRIPTION': 'TimelineDescription',
+  'TIMELINE_TIME': 'TimelineTime',
+  'TIMELINE_CONNECTOR': 'TimelineConnector',
+  'TIMELINE_EMPTY': 'TimelineEmpty',
   'ACCORDION': 'Accordion',
+  'ACCORDION_ITEM': 'AccordionItem',
+  'ACCORDION_TRIGGER': 'AccordionTrigger',
+  'ACCORDION_CONTENT': 'AccordionContent',
   'STATISTIC': 'Statistic',
   'STATISTIC_CARD': 'StatisticCard',
   'AVATAR': 'Avatar',
@@ -322,7 +368,7 @@ export const TAG_TO_TYPE: Record<string, ComponentType> = {
   'RADIO': 'Radio',
   'SELECT': 'Select',
   'FORM': 'Form',
-  // 反馈组件
+  // 反馈组件 (Web)
   'ALERT': 'Alert',
   'MODAL': 'Modal',
   'PROGRESS': 'Progress',
@@ -330,6 +376,11 @@ export const TAG_TO_TYPE: Record<string, ComponentType> = {
   'SKELETON': 'Skeleton',
   'EMPTY': 'EmptyState',
   'EMPTY_STATE': 'EmptyState',
+  // 反馈组件 (Mobile)
+  'SHEET': 'Sheet',
+  'ACTION_SHEET': 'ActionSheet',
+  // 交互组件 (Mobile)
+  'SWIPE_ACTION': 'SwipeAction',
   // 其他
   'LINK': 'Link',
   'DIVIDER': 'Divider',
