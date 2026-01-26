@@ -7,12 +7,15 @@ import { compile } from '../src/lib/compiler';
 
 describe('Compile Components Showcase', () => {
   it('compiles DSL components showcase', async () => {
+    // 读取 DSL 文件和 JSON 配置
     const dsl = fs.readFileSync('test-dsl-components-showcase.dsl', 'utf-8');
+    const jsonConfig = JSON.parse(fs.readFileSync('test-dsl-components-showcase.json', 'utf-8'));
 
+    // 使用 JSON 配置中的 context 和 title，确保与 JSON 版本输出一致
     const result = await compile(dsl, {
-      context: 'DSL Components Showcase',
+      context: jsonConfig.context,
       ssr: {
-        title: 'Components Showcase',
+        title: jsonConfig.screens[0].title,
         lang: 'zh-CN',
       },
     });
