@@ -698,6 +698,31 @@ function generateDSL(
 
   const rootNodes = nodes.filter(n => !childIdSet.has(n.id));
 
+  function mergeAttrLines(attrLines: string[]): string | null {
+    if (attrLines.length === 0) return null;
+    let merged = attrLines[0].trim();
+    for (let i = 1; i < attrLines.length; i += 1) {
+      const next = attrLines[i].trim();
+      merged = appendAttrParts(merged, extractAttrParts(next));
+    }
+    return merged;
+  }
+
+  function extractAttrParts(line: string): string {
+    const idx = line.indexOf(':');
+    if (idx === -1) return '';
+    return line.slice(idx + 1).trim().replace(/,\s*$/, '');
+  }
+
+  function appendAttrParts(baseLine: string, additions: string): string {
+    if (!additions) return baseLine;
+    const baseParts = extractAttrParts(baseLine);
+    if (!baseParts) {
+      return `ATTR: ${additions}`;
+    }
+    return `ATTR: ${baseParts.replace(/,\s*$/, '')}, ${additions}`;
+  }
+
   function processNode(node: FigmaNode, depth: number) {
     const inference = inferences.get(node.id);
     if (!inference) return;
@@ -737,11 +762,8 @@ function generateDSL(
       }
     }
 
-    if (aiOverrides.attrLines.length > 0) {
-      for (const line of aiOverrides.attrLines) {
-        lines.push(`${indent}  ${line}`);
-      }
-    } else {
+    let attrLine = mergeAttrLines(aiOverrides.attrLines);
+    if (!attrLine) {
       const aiAttrParts: string[] = [];
       if (inference.aiProps?.className) {
         aiAttrParts.push(`ClassName("${escapeString(inference.aiProps.className)}")`);
@@ -750,17 +772,22 @@ function generateDSL(
         aiAttrParts.push(`Style("${escapeString(inference.aiProps.style)}")`);
       }
       if (aiAttrParts.length > 0) {
-        lines.push(`${indent}  ATTR: ${aiAttrParts.join(', ')}`);
+        attrLine = `ATTR: ${aiAttrParts.join(', ')}`;
       }
     }
 
-    // 资产 URL 最后写入，避免被 AI 覆盖
+    // 资产 URL 与 ATTR 合并，确保只输出一条 ATTR
     if (assetUrl && (type === 'Image' || type === 'Icon')) {
       const assetParts = [`Src("${escapeString(assetUrl)}")`];
       if (type === 'Image') {
         assetParts.push(`Alt("${escapeString(node.name || id)}")`);
       }
-      lines.push(`${indent}  ATTR: ${assetParts.join(', ')}`);
+      const merged = attrLine ? appendAttrParts(attrLine, assetParts.join(', ')) : `ATTR: ${assetParts.join(', ')}`;
+      attrLine = merged;
+    }
+
+    if (attrLine) {
+      lines.push(`${indent}  ${attrLine}`);
     }
 
     // 递归处理子节点

@@ -175,4 +175,4 @@
 
 6) 只使用以下安全属性（不要发明新属性）：
 
-`Text, Placeholder, Title, Variant, Size, ClassName, Style, Icon, Width, Height, Gap, Align, Justify, Direction, Padding, Margin`
+`Text, Placeholder, Title, Variant, Size, ClassName, Style, Icon, Width, Height, Gap, Align, Justify, Direction, Padding, Margin, Src, Alt`
