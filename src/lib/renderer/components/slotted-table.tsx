@@ -69,7 +69,8 @@ export const SlottedTable: React.FC<SlottedTableProps> = ({
   // 从 slots.body 或 data 渲染表体
   const renderBody = () => {
     if (slots?.body) {
-      return <TableBody>{slots.body}</TableBody>;
+      const bodyItems = React.Children.toArray(slots.body);
+      return <TableBody>{bodyItems}</TableBody>;
     }
 
     // 如果有 data prop，使用它生成表体
@@ -89,7 +90,8 @@ export const SlottedTable: React.FC<SlottedTableProps> = ({
 
     // 如果有 children，作为表体渲染
     if (children) {
-      return <TableBody>{children}</TableBody>;
+      const bodyItems = React.Children.toArray(children);
+      return <TableBody>{bodyItems}</TableBody>;
     }
 
     return <TableBody />;

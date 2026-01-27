@@ -120,10 +120,14 @@ function renderNode(
       if (Array.isArray(slotNode)) {
         renderedSlots[slotName] = slotNode.map((child, index) => {
           const childPath = `${slotPath}.${index}`;
-          return renderNode(child, {
+          const rendered = renderNode(child, {
             ...childContextBase,
             path: childPath,
           });
+          if (React.isValidElement(rendered)) {
+            return React.cloneElement(rendered, { key: index });
+          }
+          return <React.Fragment key={index}>{rendered}</React.Fragment>;
         });
       } else {
         renderedSlots[slotName] = renderNode(slotNode, {
