@@ -107,6 +107,7 @@ const CONTENT_PURE_TEXT_TYPES = new Set([
   'Label',
   'InlineCode',
   'AvatarFallback',
+  'Markdown',
   'span',
   'div',
   'TableHead',

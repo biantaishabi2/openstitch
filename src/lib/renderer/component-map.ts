@@ -71,6 +71,7 @@ import { Hero, Section, Container, Header, Footer } from '@/components/ui/hero';
 import { Icon } from '@/components/ui/icon';
 import { List, ListItem } from '@/components/ui/list';
 import { EmptyState } from '@/components/ui/empty-state';
+import { Markdown } from '@/components/ui/markdown';
 
 // ============================================
 // 移动端专用组件
@@ -303,6 +304,7 @@ export const componentMap: ComponentMap = {
   Div,
   Span,
   Text,
+  Markdown,
   Link,
   Image,
 

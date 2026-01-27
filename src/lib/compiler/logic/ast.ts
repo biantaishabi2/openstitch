@@ -108,6 +108,7 @@ export type ComponentType =
   | 'AvatarImage'
   | 'AvatarFallback'
   | 'Text'
+  | 'Markdown'
   | 'Span'
   | 'Div'
   | 'Image'
@@ -430,6 +431,7 @@ export const TAG_TO_TYPE: Record<string, ComponentType> = {
   'AVATAR_IMAGE': 'AvatarImage',
   'AVATAR_FALLBACK': 'AvatarFallback',
   'TEXT': 'Text',
+  'MARKDOWN': 'Markdown',
   'SPAN': 'Span',
   'DIV': 'Div',
   'IMAGE': 'Image',

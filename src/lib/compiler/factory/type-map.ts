@@ -76,6 +76,7 @@ export const TYPE_MAP: Record<ComponentType, string> = {
   AvatarImage: 'AvatarImage',
   AvatarFallback: 'AvatarFallback',
   Text: 'Text',
+  Markdown: 'Markdown',
   Span: 'Span',
   Div: 'Div',
   Image: 'Image',
