@@ -26,6 +26,13 @@ interface SlottedTabsProps {
   id?: string;
 }
 
+function hasExplicitTabsChildren(children: React.ReactNode): boolean {
+  return React.Children.toArray(children).some((child) => {
+    if (!React.isValidElement(child)) return false;
+    return child.type === TabsList || child.type === TabsContent || child.type === TabsTrigger;
+  });
+}
+
 /**
  * 从子元素中提取 tab 信息
  * 支持 Card 等组件，使用 title 作为 tab 标题
@@ -67,6 +74,25 @@ export const SlottedTabs: React.FC<SlottedTabsProps> = ({
   className,
   id,
 }) => {
+  const explicitChildren = React.useMemo(
+    () => hasExplicitTabsChildren(children),
+    [children]
+  );
+
+  if (explicitChildren) {
+    return (
+      <Tabs
+        id={id}
+        className={className}
+        defaultValue={defaultValue}
+        value={value}
+        onValueChange={onValueChange}
+      >
+        {children}
+      </Tabs>
+    );
+  }
+
   // 从 props 或 children 获取 tabs
   const normalizedTabs = React.useMemo(() => {
     if (tabs && tabs.length > 0) {

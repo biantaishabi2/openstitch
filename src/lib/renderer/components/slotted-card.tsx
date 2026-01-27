@@ -78,6 +78,15 @@ export const SlottedCard: React.FC<SlottedCardProps> = ({
   children,
   ...props
 }) => {
+  const hasExplicitStructure = React.Children.toArray(children).some((child) => {
+    if (!React.isValidElement(child)) return false;
+    return child.type === CardHeader || child.type === CardContent || child.type === CardFooter;
+  });
+
+  if (hasExplicitStructure) {
+    return <Card {...props}>{children}</Card>;
+  }
+
   // 判断是否有 header 区域内容
   const hasHeader = !!(
     slots?.header ||

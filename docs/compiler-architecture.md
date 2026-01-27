@@ -3574,3 +3574,97 @@ private interactionInstruction = this.RULE("interactionInstruction", () => {
 4. **实现组件工厂**：Props 归一化 + 插槽分发 + 事件桩函数
 5. **实现 SSR 引擎**：脱水渲染 + 样式萃取 + 资源固化
 6. **重构现有渲染器**：作为 React 后端集成到编译器中
+
+---
+
+## DSL 编写说明（简版）
+
+这是一份面向编写者的 **最小可用说明**。语法严格、规则简单，按如下写即可。
+
+### 1) 基本结构
+- DSL 由 **标签树** 组成，靠缩进表达层级。
+- 标签格式：`[TAG: id]`，`TAG` 必须大写、可含下划线（如 `CARD_HEADER`）。
+- `id` 必须是标识符格式：只能包含字母/数字/下划线（不能有 `-`）。
+- 子节点缩进必须 **大于父节点**，建议每层 2 空格。
+
+### 2) 属性顺序（非常重要）
+标签的属性必须按顺序写：
+1. 布局属性 `{ ... }`
+2. `ATTR: ...`
+3. `CONTENT: ...`
+4. 子元素
+
+写反了会直接报解析错误。
+
+### 3) 三类属性
+**A. 布局属性（Layout Props）**
+```dsl
+[STACK: stack_1]
+  { Gap: 4, Align: center }
+```
+- 写在 `{ }` 里，键值用 `:`。
+- 值可以是数字/字符串/标识符。
+- 推荐数值和布尔用 **不带引号** 的写法（编译器会自动识别）。
+
+**B. 组件属性（ATTR）**
+```dsl
+[BUTTON: btn_primary]
+  ATTR: Variant(primary), Size(lg), Disabled(false)
+```
+- `ATTR: Key(Value)`，多个属性用 `,` 分隔。
+
+**C. 内容（CONTENT）**
+```dsl
+[TEXT: t1]
+  CONTENT: "这是一段文字"
+```
+- 纯文本内容，仅支持字符串。
+- 需要转义时用 `\"`。
+
+### 4) 推荐写法示例
+```dsl
+[CARD: card_1]
+  [CARD_HEADER: card_header_1]
+    [CARD_TITLE: card_title_1]
+      CONTENT: "用户统计"
+    [CARD_DESCRIPTION: card_desc_1]
+      CONTENT: "最近 7 天趋势"
+  [CARD_CONTENT: card_content_1]
+    [STATISTIC: stat_1]
+      ATTR: Label("DAU")
+      CONTENT: "12,345"
+```
+
+### 5) 约束与注意事项
+- 不支持注释。
+- 标签名必须大写。
+- id 不能包含 `-`（用 `_` 代替）。
+- `CONTENT` 只能有 **一个**（同一节点写两次会报错）。
+
+---
+
+## 可选优化（未来可做，不影响当前写法）
+
+以下是 **可选的简化方向**，需要编译器支持后才能生效：
+
+1. **Card 自动展开**
+   - 写法：`[CARD] ATTR: Title("..."), Description("...")` + 子内容
+   - 编译器自动生成 `CARD_HEADER / CARD_CONTENT`
+
+2. **Table 简写为 columns + data**
+   - 写法：`ATTR: Columns([...]) Data([...])`
+   - 编译器自动生成 `TableHeader / TableBody / TableRow / TableCell`
+
+3. **Avatar 简写**
+   - 写法：`[AVATAR] ATTR: Src("..."), Fallback("AB")`
+   - 编译器自动生成 `AvatarImage / AvatarFallback`
+
+4. **Statistic 简写**
+   - 写法：`[STATISTIC] ATTR: Label("DAU") CONTENT: "12,345"`
+   - `CONTENT` 自动映射到 value
+
+5. **Button 简写**
+   - `Variant/Size` 可省略，使用默认值
+   - `Icon("Check")` 自动转为图标子节点
+
+> 以上属于“优化项”，可逐步引入，不会影响现有 DSL 的兼容性。

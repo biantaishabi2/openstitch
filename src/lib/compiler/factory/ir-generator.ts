@@ -122,6 +122,18 @@ const EXPLICIT_CHILD_COMPONENTS: Record<string, Set<string>> = {
     'BreadcrumbSeparator',
     'BreadcrumbEllipsis',
   ]),
+  Card: new Set([
+    'CardHeader',
+    'CardTitle',
+    'CardDescription',
+    'CardContent',
+    'CardFooter',
+  ]),
+  Tabs: new Set([
+    'TabsList',
+    'TabsTrigger',
+    'TabsContent',
+  ]),
 };
 
 function hasExplicitChildren(
@@ -281,71 +293,77 @@ function astNodeToUINode(
   let slots: Record<string, UINode> | undefined;
 
   if (node.children && node.children.length > 0) {
-    const explicitChildren = hasExplicitChildren(mappedType, node.children);
-
-    // 显式结构的子组件直接透传
-    if (explicitChildren) {
+    if (mappedType === 'Tabs') {
       children = node.children.map((child) =>
         astNodeToUINode(child, tokens, options)
       );
-    }
-    // 特殊复合组件（Timeline、Accordion 等）：直接将子节点作为 children 传递
-    // 这些组件期望从 children 中读取内容，而不是从 slots
-    else if (isSpecialCompositeComponent(mappedType)) {
-      const rule = getSlotRule(mappedType);
-      const wrapperType = rule?.render[rule.slots[0]]; // 获取包装组件类型
+    } else {
+      const explicitChildren = hasExplicitChildren(mappedType, node.children);
 
-      // 递归转换每个子节点，并用对应的包装组件包裹
-      children = node.children.map((child) => {
-        const childNode = astNodeToUINode(child, tokens, options);
-
-        // 如果有包装类型（如 TimelineItem），将子节点包装
-        if (wrapperType) {
-          return {
-            type: wrapperType,
-            props: childNode.props,
-            children: childNode.children,
-          };
-        }
-        return childNode;
-      });
-    }
-    // 普通复合组件需要插槽分发（Card、Alert 等）
-    else if (isCompositeComponent(mappedType)) {
-      const slotResult = distributeToSlots(mappedType, node.children, node.props);
-
-      if (slotResult) {
-        slots = {};
+      // 显式结构的子组件直接透传
+      if (explicitChildren) {
+        children = node.children.map((child) =>
+          astNodeToUINode(child, tokens, options)
+        );
+      }
+      // 特殊复合组件（Timeline、Accordion 等）：直接将子节点作为 children 传递
+      // 这些组件期望从 children 中读取内容，而不是从 slots
+      else if (isSpecialCompositeComponent(mappedType)) {
         const rule = getSlotRule(mappedType);
+        const wrapperType = rule?.render[rule.slots[0]]; // 获取包装组件类型
 
-        for (const [slotName, slotChildren] of Object.entries(slotResult)) {
-          // 跳过空插槽
-          if (isSlotEmpty(slotResult, slotName)) continue;
+        // 递归转换每个子节点，并用对应的包装组件包裹
+        children = node.children.map((child) => {
+          const childNode = astNodeToUINode(child, tokens, options);
 
-          // 递归转换插槽内的子节点
-          const slotChildNodes = slotChildren.map((child) =>
-            astNodeToUINode(child, tokens, options)
-          );
-
-          const wrapperType = getSlotWrapper(mappedType, slotName);
-
+          // 如果有包装类型（如 TimelineItem），将子节点包装
           if (wrapperType) {
-            // 创建插槽包装节点
-            slots[slotName] = {
+            return {
               type: wrapperType,
-              children: slotChildNodes.length === 1 ? slotChildNodes[0] : slotChildNodes,
+              props: childNode.props,
+              children: childNode.children,
             };
-          } else {
-            // 无包装类型时，直接传递子节点数组
-            slots[slotName] = slotChildNodes.length === 1 ? slotChildNodes[0] : slotChildNodes as unknown as UINode;
+          }
+          return childNode;
+        });
+      }
+      // 普通复合组件需要插槽分发（Card、Alert 等）
+      else if (isCompositeComponent(mappedType)) {
+        const slotResult = distributeToSlots(mappedType, node.children, node.props);
+
+        if (slotResult) {
+          slots = {};
+          const rule = getSlotRule(mappedType);
+
+          for (const [slotName, slotChildren] of Object.entries(slotResult)) {
+            // 跳过空插槽
+            if (isSlotEmpty(slotResult, slotName)) continue;
+
+            // 递归转换插槽内的子节点
+            const slotChildNodes = slotChildren.map((child) =>
+              astNodeToUINode(child, tokens, options)
+            );
+
+            const wrapperType = getSlotWrapper(mappedType, slotName);
+
+            if (wrapperType) {
+              // 创建插槽包装节点
+              slots[slotName] = {
+                type: wrapperType,
+                children: slotChildNodes.length === 1 ? slotChildNodes[0] : slotChildNodes,
+              };
+            } else {
+              // 无包装类型时，直接传递子节点数组
+              slots[slotName] = slotChildNodes.length === 1 ? slotChildNodes[0] : slotChildNodes as unknown as UINode;
+            }
           }
         }
+      } else {
+        // 非复合组件，直接递归转换子节点
+        children = node.children.map((child) =>
+          astNodeToUINode(child, tokens, options)
+        );
       }
-    } else {
-      // 非复合组件，直接递归转换子节点
-      children = node.children.map((child) =>
-        astNodeToUINode(child, tokens, options)
-      );
     }
   }
 
