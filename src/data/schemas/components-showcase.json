@@ -283,6 +283,14 @@
           "children": "CodeBlock 代码块"
         },
         {
+          "type": "Link",
+          "props": {
+            "href": "#markdown",
+            "className": "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline"
+          },
+          "children": "Markdown 渲染"
+        },
+        {
           "type": "Text",
           "props": {
             "className": "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2"
@@ -790,6 +798,14 @@
                 "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
               },
               "children": "InlineCode"
+            },
+            {
+              "type": "Link",
+              "props": {
+                "href": "#component-Markdown",
+                "className": "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground"
+              },
+              "children": "Markdown"
             },
             {
               "type": "Link",
@@ -2143,7 +2159,8 @@
                       "type": "Grid",
                       "props": {
                         "columns": 4,
-                        "gap": 4
+                        "gap": 4,
+                        "className": "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
                       },
                       "slots": {
                         "1": {
@@ -3474,6 +3491,35 @@
                       "id": "component-CodeBlock"
                     }
                   ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Card",
+          "id": "markdown",
+          "children": [
+            {
+              "type": "CardHeader",
+              "children": [
+                {
+                  "type": "CardTitle",
+                  "children": "Markdown 渲染"
+                },
+                {
+                  "type": "CardDescription",
+                  "children": "支持 GFM 与代码块高亮"
+                }
+              ]
+            },
+            {
+              "type": "CardContent",
+              "children": [
+                {
+                  "type": "Markdown",
+                  "id": "component-Markdown",
+                  "children": "# Markdown 示例\n\n- 支持 **粗体** 与 *斜体*\n- 支持表格\n\n| Name | Value |\n| --- | --- |\n| Alpha | 1 |\n| Beta | 2 |\n\n```ts\nconst a = 1;\nconsole.log(a);\n```"
                 }
               ]
             }

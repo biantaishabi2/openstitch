@@ -3641,6 +3641,23 @@ private interactionInstruction = this.RULE("interactionInstruction", () => {
 - id 不能包含 `-`（用 `_` 代替）。
 - `CONTENT` 只能有 **一个**（同一节点写两次会报错）。
 
+### 6) Markdown 组件
+当需要渲染 Markdown 时可使用 `MARKDOWN` 标签：
+```dsl
+[MARKDOWN: md_1]
+  CONTENT: "# 标题\\n\\n这里是 **Markdown**。\\n\\n```ts\\nconst a = 1;\\n```"
+```
+- `MARKDOWN` 会将内容解析为 Markdown，并支持 GFM（表格/任务列表等）。
+- 代码块会走 `CodeBlock` 组件，行内代码走 `InlineCode`。
+
+### 7) CodeBlock 高亮（SSR）
+- 默认会在 **编译阶段** 预渲染高亮（静态 HTML 里也有颜色）。
+- 如需关闭：`compile(dsl, { highlightCode: false })`
+
+### 8) HEEx 导出（Phoenix LiveView）
+- API：`compileToHEEx(dsl)` 返回 HEEx 字符串。
+- CLI：`npm run compile -- <input.json> --heex`
+
 ---
 
 ## 可选优化（未来可做，不影响当前写法）

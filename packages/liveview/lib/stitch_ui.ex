@@ -15,6 +15,7 @@ defmodule StitchUI do
       import StitchUI.Components.Timeline
       import StitchUI.Components.Statistic
       import StitchUI.Components.CodeBlock
+      import StitchUI.Components.Markdown
       import StitchUI.Components.Forms
       import StitchUI.Components.Feedback
       import StitchUI.Components.Stepper

@@ -31,6 +31,7 @@ defmodule StitchUI.Exporter.HEEx do
     children = Map.get(node, "children")
     id = Map.get(node, "id")
 
+    {props, children} = normalize_node(type, props, children)
     props = apply_parent_context(type, props, context)
     child_context = build_child_context(type, props, context)
 
@@ -166,6 +167,19 @@ defmodule StitchUI.Exporter.HEEx do
   end
 
   defp apply_parent_context(_type, props, _context), do: props
+
+  defp normalize_node("Markdown", props, children) when is_binary(children) do
+    props =
+      if Map.has_key?(props, "content") do
+        props
+      else
+        Map.put(props, "content", children)
+      end
+
+    {props, nil}
+  end
+
+  defp normalize_node(_type, props, children), do: {props, children}
 
   defp build_child_context(type, props, context) do
     context =

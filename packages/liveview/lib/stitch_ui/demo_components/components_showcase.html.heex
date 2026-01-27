@@ -105,6 +105,9 @@
     <.link class="block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" href="#codeblock">
       CodeBlock 代码块
     </.link>
+    <.link class="block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" href="#markdown">
+      Markdown 渲染
+    </.link>
     <.text class="text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2">
       组件清单
     </.text>
@@ -294,6 +297,9 @@
       </.link>
       <.link class="rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" href="#component-InlineCode">
         InlineCode
+      </.link>
+      <.link class="rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" href="#component-Markdown">
+        Markdown
       </.link>
       <.link class="rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" href="#component-Button">
         Button
@@ -792,7 +798,7 @@
       </.card_header>
       <.card_content>
         <.stack gap={6}>
-          <.grid columns={4} gap={4} id="component-Grid">
+          <.grid columns={4} gap={4} class="grid-cols-1 md:grid-cols-2 lg:grid-cols-4" id="component-Grid">
             <div data-slot="1">
               <.card class="p-6">
                 <.statistic id="component-Statistic" title="总用户" trend="up" trend_value="+15%" value="12,345" />
@@ -1301,6 +1307,19 @@ function render(schema: UINode) {
   return createElement(schema);
 }" id="component-CodeBlock" language="typescript" />
         </.stack>
+      </.card_content>
+    </.card>
+    <.card id="markdown">
+      <.card_header>
+        <.card_title>
+          Markdown 渲染
+        </.card_title>
+        <.card_description>
+          支持 GFM 与代码块高亮
+        </.card_description>
+      </.card_header>
+      <.card_content>
+        <.markdown id="component-Markdown" content="# Markdown 示例\n\n- 支持 **粗体** 与 *斜体*\n- 支持表格\n\n| Name | Value |\n| --- | --- |\n| Alpha | 1 |\n| Beta | 2 |\n\n```ts\nconst a = 1;\nconsole.log(a);\n```" />
       </.card_content>
     </.card>
     <.card id="separator">

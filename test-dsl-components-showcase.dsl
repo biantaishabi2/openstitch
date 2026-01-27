@@ -133,6 +133,10 @@
       { ClassName: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }
       ATTR: Href("#codeblock")
       CONTENT: "CodeBlock 代码块"
+    [LINK: link_37b]
+      { ClassName: "block text-sm py-1 px-2 rounded hover:bg-muted text-foreground no-underline" }
+      ATTR: Href("#markdown")
+      CONTENT: "Markdown 渲染"
     [TEXT: text_38]
       { ClassName: "text-xs text-muted-foreground font-medium uppercase tracking-wider mt-4 mb-2" }
       CONTENT: "组件清单"
@@ -386,6 +390,10 @@
         { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" }
         ATTR: Href("#component_InlineCode")
         CONTENT: "InlineCode"
+      [LINK: link_101b]
+        { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" }
+        ATTR: Href("#component_Markdown")
+        CONTENT: "Markdown"
       [LINK: link_102]
         { ClassName: "rounded bg-muted px-1.5 py-0.5 no-underline hover:bg-muted/80 text-foreground" }
         ATTR: Href("#component_Button")
@@ -853,7 +861,7 @@
         [STACK: stack_241]
           { Gap: "6" }
           [GRID: component_Grid]
-            { Columns: "4", Gap: "4" }
+            { Columns: "4", Gap: "4", ClassName: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4" }
             [CARD: card_242]
               { ClassName: "p-6" }
               [STATISTIC: component_Statistic]
@@ -1246,6 +1254,15 @@
               CONTENT: " 标记行内代码。"
           [CODE_BLOCK: component_CodeBlock]
             ATTR: Language("typescript"), Code("const greeting = 'Hello, Stitch!';\nconsole.log(greeting);\n\n// JSON Schema 渲染引擎\nfunction render(schema: UINode) {\n  return createElement(schema);\n}")
+    [CARD: markdown]
+      [CARD_HEADER: card_header_389b]
+        [CARD_TITLE: card_title_389b]
+          CONTENT: "Markdown 渲染"
+        [CARD_DESCRIPTION: card_description_389b]
+          CONTENT: "支持 GFM 与代码块高亮"
+      [CARD_CONTENT: card_content_389b]
+        [MARKDOWN: component_Markdown]
+          CONTENT: "# Markdown 示例\n\n- 支持 **粗体** 与 *斜体*\n- 支持表格\n\n| Name | Value |\n| --- | --- |\n| Alpha | 1 |\n| Beta | 2 |\n\n```ts\nconst a = 1;\nconsole.log(a);\n```"
     [CARD: separator]
       [CARD_HEADER: card_header_382]
         [CARD_TITLE: card_title_383]

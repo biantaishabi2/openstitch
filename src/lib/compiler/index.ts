@@ -80,6 +80,7 @@ export {
   renderToStaticHTML,
   renderToHTML,
   renderFactoryOutput,
+  renderToHEEx,
   dehydrate,
   purgeCSS,
   solidifyAssets,
@@ -96,7 +97,7 @@ import { compile as compileLogic, parse } from './logic';
 import { generateDesignTokens, createSession, type SessionState } from './visual';
 import { componentFactory, ThemeProvider } from './factory';
 import * as React from 'react';
-import { renderToStaticHTML, type SSROptions, type SSRResult } from './ssr';
+import { renderToHEEx, renderToStaticHTML, type SSROptions, type SSRResult } from './ssr';
 import { precomputeCodeHighlights } from './ssr/code-highlighter';
 import { render as renderUINode } from '../renderer';
 import type { StitchAST } from './logic';
@@ -302,6 +303,17 @@ export async function compileToHTML(
 ): Promise<string> {
   const result = await compile(dsl, options);
   return result.ssr.html;
+}
+
+/**
+ * 快捷函数：编译 DSL 为 HEEx 字符串
+ */
+export async function compileToHEEx(
+  dsl: string,
+  options: CompileOptions = {}
+): Promise<string> {
+  const result = await compile(dsl, options);
+  return renderToHEEx(result.factory.ir);
 }
 
 /**

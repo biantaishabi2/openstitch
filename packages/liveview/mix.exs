@@ -18,7 +18,8 @@ defmodule StitchUI.MixProject do
   defp deps do
     [
       {:phoenix_live_view, "~> 1.0"},
-      {:jason, "~> 1.4"}
+      {:jason, "~> 1.4"},
+      {:earmark, "~> 1.4"}
     ]
   end
 end

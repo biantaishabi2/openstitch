@@ -22,6 +22,9 @@ export {
   renderFactoryOutput,
 } from './renderer';
 
+// HEEx 导出
+export { renderToHEEx } from './heex-exporter';
+
 // 脱水渲染
 export {
   dehydrate,

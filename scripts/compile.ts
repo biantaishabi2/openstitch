@@ -9,7 +9,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { compile } from '../src/lib/compiler';
+import { compile, renderToHEEx } from '../src/lib/compiler';
 
 // 项目 JSON 结构
 interface ProjectScreen {
@@ -30,6 +30,7 @@ function parseArgs(args: string[]): {
   outputDir: string;
   screenId?: string;
   showStats: boolean;
+  target: 'html' | 'heex';
   help: boolean;
 } {
   const result = {
@@ -37,6 +38,7 @@ function parseArgs(args: string[]): {
     outputDir: '',
     screenId: undefined as string | undefined,
     showStats: false,
+    target: 'html' as const,
     help: false,
   };
 
@@ -45,6 +47,8 @@ function parseArgs(args: string[]): {
 
     if (arg === '--help' || arg === '-h') {
       result.help = true;
+    } else if (arg === '--heex') {
+      result.target = 'heex';
     } else if (arg === '--stats' || arg === '-s') {
       result.showStats = true;
     } else if (arg === '-o' || arg === '--output') {
@@ -73,6 +77,7 @@ Stitch UI Compiler CLI
   -o, --output <dir>      输出目录或文件 (默认: output/)
   --screen <id>           只编译指定的页面
   --stats                 显示编译统计信息
+  --heex                  输出 HEEx 模板
   -h, --help              显示帮助信息
 
 示例:
@@ -100,7 +105,8 @@ async function compileScreen(
   screen: ProjectScreen,
   context: string,
   outputPath: string,
-  showStats: boolean
+  showStats: boolean,
+  target: 'html' | 'heex'
 ): Promise<void> {
   const startTime = Date.now();
 
@@ -119,8 +125,12 @@ async function compileScreen(
       fs.mkdirSync(dir, { recursive: true });
     }
 
-    // 写入 HTML 文件
-    fs.writeFileSync(outputPath, result.ssr.html);
+    const outputContent = target === 'heex'
+      ? renderToHEEx(result.factory.ir)
+      : result.ssr.html;
+
+    // 写入输出文件
+    fs.writeFileSync(outputPath, outputContent);
 
     const elapsed = Date.now() - startTime;
 
@@ -185,13 +195,15 @@ async function main(): Promise<void> {
   let successCount = 0;
   let failCount = 0;
 
+  const extension = args.target === 'heex' ? 'heex' : 'html';
+
   for (const screen of screensToCompile) {
     const outputPath = args.screenId
-      ? args.outputDir || path.join(outputDir, `${screen.screen_id}.html`)
-      : path.join(outputDir, `${screen.screen_id}.html`);
+      ? args.outputDir || path.join(outputDir, `${screen.screen_id}.${extension}`)
+      : path.join(outputDir, `${screen.screen_id}.${extension}`);
 
     try {
-      await compileScreen(screen, projectJSON.context, outputPath, args.showStats);
+      await compileScreen(screen, projectJSON.context, outputPath, args.showStats, args.target);
       successCount++;
     } catch {
       failCount++;
