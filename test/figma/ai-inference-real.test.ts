@@ -1778,6 +1778,31 @@ figmaAPIDescribe('Real Figma File API Test', () => {
     figmaFile = fetchFigmaFile(FIGMA_FILE_KEY, FIGMA_ACCESS_TOKEN);
   });
 
+  it('should download all assets automatically', async () => {
+    if (!figmaFile) return;
+
+    const { resolveAssetsViaFigma, collectAssetNodeIds } = await import('../../src/figma/assets');
+
+    const validNodes = extractValidNodes(figmaFile.document);
+    const assetIds = collectAssetNodeIds(validNodes);
+    console.log(`\n需要下载的资源: ${assetIds.length} 个`);
+
+    const assetResult = await resolveAssetsViaFigma(validNodes, {
+      fileKey: FIGMA_FILE_KEY,
+      figmaToken: FIGMA_ACCESS_TOKEN,
+      format: 'png',
+      scale: 2,
+    });
+
+    console.log(`成功下载: ${assetResult.byNodeId.size} 个资源`);
+
+    for (const [nodeId, url] of assetResult.byNodeId) {
+      console.log(`  ${nodeId} -> ${url?.substring(0, 80)}...`);
+    }
+
+    expect(assetResult.byNodeId.size).toBeGreaterThan(0);
+  }, 60000);
+
   it('should fetch Figma file successfully', () => {
     expect(figmaFile).not.toBeNull();
   });
