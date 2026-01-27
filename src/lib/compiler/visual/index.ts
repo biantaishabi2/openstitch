@@ -48,6 +48,10 @@ export {
   auditColorContrast,
   generatePerceptualColorScale,
   type ContrastResult,
+  hexToRgb,
+  rgbToHex,
+  rgbToHsl,
+  hslToRgb,
 } from './color-space';
 
 // 导出 Session 管理

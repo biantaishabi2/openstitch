@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>胸科首页</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'hsl(var(--background))',
+            foreground: 'hsl(var(--foreground))',
+            card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+            popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
+            primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+            secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+            muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+            accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+            destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+            border: 'hsl(var(--border))',
+            input: 'hsl(var(--input))',
+            ring: 'hsl(var(--ring))',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root {
+      --base-unit: 4px;--rhythm-base: 4px;--spacing-xs: 4px;--spacing-sm: 8px;--spacing-md: 16px;--spacing-lg: 32px;--spacing-xl: 64px;--gap-card: 16px;--padding-card: 16px;--padding-section: 32px;--line-height-body: 1.50;--line-height-xs: 1.67;--line-height-sm: 1.71;--line-height-base: 1.50;--line-height-lg: 1.60;--line-height-xl: 1.50;--margin-block-xs: 4px;--margin-block-sm: 8px;--margin-block-md: 16px;--margin-block-lg: 24px;--font-scale: 1.333;--font-size-xs: 9.00px;--font-size-sm: 12.00px;--font-size-base: 16px;--font-size-lg: 21.33px;--font-size-xl: 28.43px;--font-size-2xl: 37.90px;--font-size-3xl: 50.52px;--font-weight-normal: 400;--font-weight-medium: 500;--font-weight-semibold: 600;--font-weight-bold: 700;--radius-sm: 6px;--radius-md: 12px;--radius-lg: 24px;--radius-full: 9999px;--squeezing-factor: 2.40;--squeezing-factor-lg: 4.80;--padding-squeezing: 4px;--padding-squeezing-lg: 4px;--shadow-sm: 0 1px 2px rgba(0,0,0,0.03);--shadow-md: 0 4px 6px rgba(0,0,0,0.06);--shadow-lg: 0 10px 15px rgba(0,0,0,0.07);--shadow-elevation-0: 0 0px 1px rgba(0,0,0,0.05), 0 1px 2px 0px rgba(0,0,0,0.03);--shadow-elevation-1: 0 1px 2px rgba(0,0,0,0.05), 0 2px 4px 0px rgba(0,0,0,0.03);--shadow-elevation-2: 0 2px 3px rgba(0,0,0,0.05), 0 4px 8px -1px rgba(0,0,0,0.03);--shadow-elevation-3: 0 3px 4px rgba(0,0,0,0.05), 0 8px 16px -2px rgba(0,0,0,0.03);--shadow-elevation-4: 0 4px 6px rgba(0,0,0,0.05), 0 16px 32px -4px rgba(0,0,0,0.03);--shadow-overlay: 0 0 0 1px rgba(0,0,0,0.05), 0 3px 4px rgba(0,0,0,0.05), 0 8px 16px -2px rgba(0,0,0,0.03);--shadow-inset: inset 0 2px 4px rgba(0,0,0,0.02);--pattern-type: wave;--pattern-dots: radial-gradient(circle, rgba(0,0,0,0.00) 1px, transparent 1px);--pattern-dots-size: 20px 20px;--pattern-grid: linear-gradient(rgba(0,0,0,0.00) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.00) 1px, transparent 1px);--pattern-grid-size: 24px 24px;--gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity: 0.00;--pattern-layer-1: rgba(0,0,0,0.000);--pattern-layer-2: rgba(0,0,0,0.000);--pattern-layer-3: rgba(0,0,0,0.000);--noise-factor: 0.00;--noise-simplify: 1;--sibling-border-opacity: 0;--sibling-border-hover-opacity: 0.15;--sibling-bg-offset: 0%;--chromatic-aberration: 0.3%;--primary-color: #8253e9;--primary-50: #d4f7ff;--primary-100: #c6eaff;--primary-200: #add3ff;--primary-300: #8bb3f0;--primary-400: #648dcd;--primary-500: #3e68aa;--primary-600: #274e8c;--primary-700: #143870;--primary-800: #022356;--primary-900: #000b3a;--secondary-color: #d090de;--accent-color: #b4da62;--positive-color: #059669;--negative-color: #F59E0B;--background: 0 0% 100%;--foreground: 222 47% 11%;--card: 0 0% 100%;--card-foreground: 222 47% 11%;--popover: 0 0% 100%;--popover-foreground: 222 47% 11%;--primary: 259 78% 62%;--primary-foreground: 0 0% 100%;--secondary: 289 54% 96%;--secondary-foreground: 289 54% 20%;--muted: 210 40% 96%;--muted-foreground: 215 16% 47%;--accent: 79 40% 96%;--accent-foreground: 79 62% 20%;--destructive: 0 84% 60%;--destructive-foreground: 0 0% 100%;--border: 214 32% 91%;--input: 214 32% 91%;--ring: 259 78% 62%;
+    }
+    * { border-color: hsl(var(--border)); }
+    body { font-family: system-ui, -apple-system, sans-serif; }
+:root {
+  --base-unit: 4px;
+  --rhythm-base: 4px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 32px;
+  --spacing-xl: 64px;
+  --gap-card: 16px;
+  --padding-card: 16px;
+  --padding-section: 32px;
+  --line-height-body: 1.50;
+  --line-height-xs: 1.67;
+  --line-height-sm: 1.71;
+  --line-height-base: 1.50;
+  --line-height-lg: 1.60;
+  --line-height-xl: 1.50;
+  --margin-block-xs: 4px;
+  --margin-block-sm: 8px;
+  --margin-block-md: 16px;
+  --margin-block-lg: 24px;
+  --font-scale: 1.333;
+  --font-size-xs: 9.00px;
+  --font-size-sm: 12.00px;
+  --font-size-base: 16px;
+  --font-size-lg: 21.33px;
+  --font-size-xl: 28.43px;
+  --font-size-2xl: 37.90px;
+  --font-size-3xl: 50.52px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+  --squeezing-factor: 2.40;
+  --squeezing-factor-lg: 4.80;
+  --padding-squeezing: 4px;
+  --padding-squeezing-lg: 4px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.07);
+  --shadow-elevation-0: 0 0px 1px rgba(0,0,0,0.05), 0 1px 2px 0px rgba(0,0,0,0.03);
+  --shadow-elevation-1: 0 1px 2px rgba(0,0,0,0.05), 0 2px 4px 0px rgba(0,0,0,0.03);
+  --shadow-elevation-2: 0 2px 3px rgba(0,0,0,0.05), 0 4px 8px -1px rgba(0,0,0,0.03);
+  --shadow-elevation-3: 0 3px 4px rgba(0,0,0,0.05), 0 8px 16px -2px rgba(0,0,0,0.03);
+  --shadow-elevation-4: 0 4px 6px rgba(0,0,0,0.05), 0 16px 32px -4px rgba(0,0,0,0.03);
+  --shadow-overlay: 0 0 0 1px rgba(0,0,0,0.05), 0 3px 4px rgba(0,0,0,0.05), 0 8px 16px -2px rgba(0,0,0,0.03);
+  --shadow-inset: inset 0 2px 4px rgba(0,0,0,0.02);
+  --pattern-type: wave;
+  --pattern-dots: radial-gradient(circle, rgba(0,0,0,0.00) 1px, transparent 1px);
+  --pattern-dots-size: 20px 20px;
+  --pattern-grid: linear-gradient(rgba(0,0,0,0.00) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.00) 1px, transparent 1px);
+  --pattern-grid-size: 24px 24px;
+  --gradient-fade: linear-gradient(180deg, transparent 0%, var(--background) 100%);
+  --noise-opacity: 0.00;
+  --pattern-layer-1: rgba(0,0,0,0.000);
+  --pattern-layer-2: rgba(0,0,0,0.000);
+  --pattern-layer-3: rgba(0,0,0,0.000);
+  --noise-factor: 0.00;
+  --noise-simplify: 1;
+  --sibling-border-opacity: 0;
+  --sibling-border-hover-opacity: 0.15;
+  --sibling-bg-offset: 0%;
+  --chromatic-aberration: 0.3%;
+  --primary-color: #8253e9;
+  --primary-50: #d4f7ff;
+  --primary-100: #c6eaff;
+  --primary-200: #add3ff;
+  --primary-300: #8bb3f0;
+  --primary-400: #648dcd;
+  --primary-500: #3e68aa;
+  --primary-600: #274e8c;
+  --primary-700: #143870;
+  --primary-800: #022356;
+  --primary-900: #000b3a;
+  --secondary-color: #d090de;
+  --accent-color: #b4da62;
+  --positive-color: #059669;
+  --negative-color: #F59E0B;
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 259 78% 62%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 289 54% 96%;
+  --secondary-foreground: 289 54% 20%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 79 40% 96%;
+  --accent-foreground: 79 62% 20%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 259 78% 62%;
+}
+
+/* Tailwind 基础重置 */
+*, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; }
+img { display: block; max-width: 100%; height: auto; }
+
+/* 常用工具类 */
+.flex { display: flex; }
+.grid { display: grid; }
+
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-6 { gap: 1.5rem; }
+.p-2 { padding: 0.5rem; }
+.p-3 { padding: 0.75rem; }
+.p-4 { padding: 1rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.w-full { width: 100%; }
+.min-h-screen { min-height: 100vh; }
+
+.text-xs { font-size: 0.75rem; line-height: 1rem; }
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-base { font-size: 1rem; line-height: 1.5rem; }
+.text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.text-center { text-align: center; }
+.font-medium { font-weight: 500; }
+.font-bold { font-weight: 700; }
+
+.rounded { border-radius: 0.25rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-full { border-radius: 9999px; }
+
+.border { border-width: 1px; }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+.transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+
+/* HSL 颜色工具类 */
+.bg-card { background-color: hsl(var(--card)); }
+.text-card-foreground { color: hsl(var(--card-foreground)); }
+
+/* 按钮变体样式 */
+
+  </style>
+
+</head>
+<body>
+<link rel="preload" as="image" href="/figma-images/13_42.png"/><link rel="preload" as="image" href="/figma-images/13_53.png"/><link rel="preload" as="image" href="/figma-images/17_44.png"/><link rel="preload" as="image" href="/figma-images/17_43.png"/><link rel="preload" as="image" href="/figma-images/15_229.png"/><link rel="preload" as="image" href="/figma-images/15_238.png"/><div style="--base-unit:4px;--rhythm-base:4px;--spacing-xs:4px;--spacing-sm:8px;--spacing-md:16px;--spacing-lg:32px;--spacing-xl:64px;--gap-card:16px;--padding-card:16px;--padding-section:32px;--line-height-body:1.50;--line-height-xs:1.67;--line-height-sm:1.71;--line-height-base:1.50;--line-height-lg:1.60;--line-height-xl:1.50;--margin-block-xs:4px;--margin-block-sm:8px;--margin-block-md:16px;--margin-block-lg:24px;--font-scale:1.333;--font-size-xs:9.00px;--font-size-sm:12.00px;--font-size-base:16px;--font-size-lg:21.33px;--font-size-xl:28.43px;--font-size-2xl:37.90px;--font-size-3xl:50.52px;--font-weight-normal:400;--font-weight-medium:500;--font-weight-semibold:600;--font-weight-bold:700;--radius-sm:6px;--radius-md:12px;--radius-lg:24px;--radius-full:9999px;--squeezing-factor:2.40;--squeezing-factor-lg:4.80;--padding-squeezing:4px;--padding-squeezing-lg:4px;--shadow-sm:0 1px 2px rgba(0,0,0,0.03);--shadow-md:0 4px 6px rgba(0,0,0,0.06);--shadow-lg:0 10px 15px rgba(0,0,0,0.07);--shadow-elevation-0:0 0px 1px rgba(0,0,0,0.05), 0 1px 2px 0px rgba(0,0,0,0.03);--shadow-elevation-1:0 1px 2px rgba(0,0,0,0.05), 0 2px 4px 0px rgba(0,0,0,0.03);--shadow-elevation-2:0 2px 3px rgba(0,0,0,0.05), 0 4px 8px -1px rgba(0,0,0,0.03);--shadow-elevation-3:0 3px 4px rgba(0,0,0,0.05), 0 8px 16px -2px rgba(0,0,0,0.03);--shadow-elevation-4:0 4px 6px rgba(0,0,0,0.05), 0 16px 32px -4px rgba(0,0,0,0.03);--shadow-overlay:0 0 0 1px rgba(0,0,0,0.05), 0 3px 4px rgba(0,0,0,0.05), 0 8px 16px -2px rgba(0,0,0,0.03);--shadow-inset:inset 0 2px 4px rgba(0,0,0,0.02);--pattern-type:wave;--pattern-dots:radial-gradient(circle, rgba(0,0,0,0.00) 1px, transparent 1px);--pattern-dots-size:20px 20px;--pattern-grid:linear-gradient(rgba(0,0,0,0.00) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.00) 1px, transparent 1px);--pattern-grid-size:24px 24px;--gradient-fade:linear-gradient(180deg, transparent 0%, var(--background) 100%);--noise-opacity:0.00;--pattern-layer-1:rgba(0,0,0,0.000);--pattern-layer-2:rgba(0,0,0,0.000);--pattern-layer-3:rgba(0,0,0,0.000);--noise-factor:0.00;--noise-simplify:1;--sibling-border-opacity:0;--sibling-border-hover-opacity:0.15;--sibling-bg-offset:0%;--chromatic-aberration:0.3%;--primary-color:#8253e9;--primary-50:#d4f7ff;--primary-100:#c6eaff;--primary-200:#add3ff;--primary-300:#8bb3f0;--primary-400:#648dcd;--primary-500:#3e68aa;--primary-600:#274e8c;--primary-700:#143870;--primary-800:#022356;--primary-900:#000b3a;--secondary-color:#d090de;--accent-color:#b4da62;--positive-color:#059669;--negative-color:#F59E0B;--background:0 0% 100%;--foreground:222 47% 11%;--card:0 0% 100%;--card-foreground:222 47% 11%;--popover:0 0% 100%;--popover-foreground:222 47% 11%;--primary:259 78% 62%;--primary-foreground:0 0% 100%;--secondary:289 54% 96%;--secondary-foreground:289 54% 20%;--muted:210 40% 96%;--muted-foreground:215 16% 47%;--accent:79 40% 96%;--accent-foreground:79 62% 20%;--destructive:0 84% 60%;--destructive-foreground:0 0% 100%;--border:214 32% 91%;--input:214 32% 91%;--ring:259 78% 62%"><section class="py-12 md:py-16 lg:py-20 px-4 md:px-6 min-h-screen" id="chest_hospital_home"><section class="md:py-16 lg:py-20 md:px-6 bg-white p-4" id="main_nav"><p class="font-bold text-lg" id="nav_title">胸科首页</p></section><section class="py-12 md:py-16 lg:py-20 px-4 md:px-6 relative" id="banner_carousel"><img class="w-full h-48 object-cover" src="/figma-images/13_42.png" alt="轮播图" id="carousel_image"/></section><section class="md:py-16 lg:py-20 md:px-6 flex items-center gap-3 p-4 bg-white" id="user_info"><img class="object-cover w-10 h-10 rounded-full" src="/figma-images/13_53.png" alt="头像" id="avatar"/><section class="py-12 md:py-16 lg:py-20 px-4 md:px-6 flex-1 flex flex-col" id="user_detail"><p class="text-base font-medium" id="username">xkyy0325</p><p class="text-xs text-gray-500" id="activity_label">活跃度:20</p></section></section><section class="md:py-16 lg:py-20 md:px-6 grid grid-cols-3 gap-2 p-2 bg-white" id="feature_entries"><div data-slot="card" class="text-card-foreground flex flex-col gap-6 shadow-sm bg-white rounded-lg p-2 text-center border" id="welfare_platform"><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><img class="object-cover w-8 h-8 mx-auto" src="/figma-images/17_44.png" alt="福利图标" id="welfare_icon"/><p class="text-xs mt-1" id="welfare_text">福利平台</p></div></div></div><div data-slot="card" class="text-card-foreground flex flex-col gap-6 shadow-sm bg-white rounded-lg p-2 text-center border" id="member_register"><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><img class="object-cover w-8 h-8 mx-auto" src="/figma-images/17_43.png" alt="会员图标" id="member_icon"/><p class="text-xs mt-1" id="member_text">会员登记</p></div></div></div><div data-slot="card" class="text-card-foreground flex flex-col gap-6 shadow-sm bg-white rounded-lg p-2 text-center border" id="union_news"><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><p class="text-xs mt-1" id="news_text">工会动态</p></div></div></div><div data-slot="card" class="text-card-foreground flex flex-col gap-6 shadow-sm bg-white rounded-lg p-2 text-center border" id="difficulty_help"><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><p class="text-xs mt-1" id="help_text">困难帮扶</p></div></div></div><div data-slot="card" class="text-card-foreground flex flex-col gap-6 shadow-sm bg-white rounded-lg p-2 text-center border" id="organization"><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><p class="text-xs mt-1" id="org_text">组织机构</p></div></div></div><div data-slot="card" class="text-card-foreground flex flex-col gap-6 shadow-sm bg-white rounded-lg p-2 text-center border" id="worker_congress"><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><p class="text-xs mt-1" id="congress_text">职代会</p></div></div></div><div data-slot="card" class="text-card-foreground flex flex-col gap-6 shadow-sm bg-white rounded-lg p-2 text-center border" id="worker_home"><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><p class="text-xs mt-1" id="home_text">职工之家</p></div></div></div><div data-slot="card" class="text-card-foreground flex flex-col gap-6 shadow-sm bg-white rounded-lg p-2 text-center border" id="personal_center"><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><p class="text-xs mt-1" id="personal_text">个人中心</p></div></div></div><div data-slot="card" class="text-card-foreground flex flex-col gap-6 shadow-sm bg-white rounded-lg p-2 text-center border" id="idle_market"><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><p class="text-xs mt-1" id="market_text">胸科闲余</p></div></div></div></section><section class="md:py-16 lg:py-20 md:px-6 bg-white mt-2 p-4" id="news_section"><p class="font-bold text-lg mb-3" id="news_section_title">新闻专区</p><div data-slot="card" class="bg-card text-card-foreground flex-col shadow-sm flex gap-3 p-3 border rounded-lg" id="news_item_1"><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><img class="w-16 h-16 object-cover rounded" src="/figma-images/15_229.png" alt="新闻图片1" id="news_image_1"/><section class="py-12 md:py-16 lg:py-20 px-4 md:px-6 flex-1 flex flex-col" id="news_1_content"><p class="font-medium text-sm" id="news_title_1">新闻政策</p><p class="text-xs text-gray-500" id="news_desc_1">关注时事热点</p></section></div></div></div><div data-slot="card" class="bg-card text-card-foreground flex-col shadow-sm flex gap-3 p-3 border rounded-lg" id="news_item_2"><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><img class="w-16 h-16 object-cover rounded" src="/figma-images/15_238.png" alt="新闻图片2" id="news_image_2"/><section class="py-12 md:py-16 lg:py-20 px-4 md:px-6 flex-1 flex flex-col" id="news_2_content"><p class="font-medium text-sm" id="news_title_2">劳模风采</p><p class="text-xs text-gray-500" id="news_desc_2">彰显榜样力量</p></section></div></div></div></section><section class="md:py-16 lg:py-20 md:px-6 bg-white mt-2 p-4" id="activity_section"><p class="font-bold text-lg mb-3" id="activity_section_title">活动专区</p><div data-slot="card" class="bg-card text-card-foreground flex-col shadow-sm flex gap-3 p-3 border rounded-lg" id="activity_item_1"><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><img class="w-12 h-12 object-cover rounded" src="/figma-images/17_43.png" alt="活动图片1" id="activity_image_1"/><section class="py-12 md:py-16 lg:py-20 px-4 md:px-6 flex-1 flex flex-col" id="activity_1_content"><p class="font-medium text-sm" id="activity_title_1">线上活动</p><p class="text-xs text-gray-500" id="activity_desc_1">丰富业余生活</p></section></div></div></div><div data-slot="card" class="bg-card text-card-foreground flex-col shadow-sm flex gap-3 p-3 border rounded-lg" id="activity_item_2"><div data-slot="card-content" class="px-6"><div data-slot="card-content" class="px-6"><img class="w-12 h-12 object-cover rounded" src="/figma-images/17_44.png" alt="活动图片2" id="activity_image_2"/><section class="py-12 md:py-16 lg:py-20 px-4 md:px-6 flex-1 flex flex-col" id="activity_2_content"><p class="font-medium text-sm" id="activity_title_2">兴趣小组</p><p class="text-xs text-gray-500" id="activity_desc_2">寻找志同道合</p></section></div></div></div></section></section></div>
+
+</body>
+</html>

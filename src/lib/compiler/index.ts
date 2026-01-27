@@ -94,7 +94,7 @@ export {
 // ============================================
 
 import { compile as compileLogic, parse } from './logic';
-import { generateDesignTokens, createSession, type SessionState } from './visual';
+import { generateDesignTokens, createSession, type SessionState, hexToRgb, rgbToHsl } from './visual';
 import { componentFactory, ThemeProvider } from './factory';
 import * as React from 'react';
 import { renderToHEEx, renderToStaticHTML, type SSROptions, type SSRResult } from './ssr';
@@ -104,9 +104,72 @@ import type { StitchAST } from './logic';
 import type { DesignTokens } from './visual';
 import type { FactoryOutput } from './factory';
 
+// HEX 颜色正则
+const HEX_COLOR_REGEX = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
+
+/**
+ * 将颜色值转换为 HSL 格式字符串
+ * 支持 HEX 和已有的 HSL 格式
+ */
+function convertToHslString(value: string): string {
+  // 如果已经是 HSL 格式（包含空格和百分号），直接返回
+  if (/^\d+\s+\d+%?\s+\d+%?$/.test(value)) {
+    return value;
+  }
+
+  // 如果是 HEX 颜色，转换为 HSL
+  if (HEX_COLOR_REGEX.test(value)) {
+    const rgb = hexToRgb(value);
+    const hsl = rgbToHsl(rgb);
+    return `${Math.round(hsl.h)} ${Math.round(hsl.s)}% ${Math.round(hsl.l)}%`;
+  }
+
+  return value;
+}
+
+/**
+ * 深度转换 tokenOverrides 中的颜色值为 HSL 格式
+ * 支持两种结构：
+ * 1. 直接结构: { "--primary": "#00B5FF", ... }
+ * 2. 嵌套结构: { "colors": { "primary": "#00B5FF", ... } }
+ */
+function processTokenOverrides(overrides: Record<string, unknown>): Partial<DesignTokens> {
+  const result: Partial<DesignTokens> = {};
+
+  // 首先处理嵌套的 colors 对象
+  if ('colors' in overrides && typeof overrides.colors === 'object' && overrides.colors !== null) {
+    const colorsObj = overrides.colors as Record<string, string>;
+    for (const [key, value] of Object.entries(colorsObj)) {
+      if (typeof value === 'string') {
+        // 将 colors.primary 转换为 --primary 格式
+        const cssVarKey = `--${key}`;
+        (result as Record<string, unknown>)[cssVarKey] = convertToHslString(value);
+      }
+    }
+  }
+
+  // 然后处理直接属性
+  for (const [key, value] of Object.entries(overrides)) {
+    if (key === 'colors') continue; // 已经处理过
+
+    if (typeof value === 'string') {
+      // 检查是否是颜色相关的 token（以 -- 开头且不是以 -color/-50/-100 等结尾）
+      if (key.startsWith('--') && !key.match(/-(color|50|100|200|300|400|500|600|700|800|900)$/)) {
+        (result as Record<string, unknown>)[key] = convertToHslString(value);
+      } else {
+        (result as Record<string, unknown>)[key] = value;
+      }
+    } else {
+      (result as Record<string, unknown>)[key] = value;
+    }
+  }
+
+  return result;
+}
+
 // 创建 Session State 的便捷函数
-function createSessionState(): SessionState {
-  return createSession();
+function createSessionState(context: string = ''): SessionState {
+  return createSession(context);
 }
 
 /**
@@ -129,6 +192,8 @@ export interface CompileOptions {
   injectEvents?: boolean;
   /** 调试模式 */
   debug?: boolean;
+  /** 预生成的 Design Tokens（用于 Figma 还原，跳过自动生成） */
+  tokens?: DesignTokens;
   /** Token 覆盖 (用于自定义颜色等) */
   tokenOverrides?: Partial<DesignTokens>;
 }
@@ -213,6 +278,7 @@ export async function compile(
     injectEvents = true,
     debug = false,
     highlightCode = true,
+    tokens: providedTokens,
     tokenOverrides,
   } = options;
 
@@ -227,14 +293,22 @@ export async function compile(
   const ast = parseResult.ast;
   const parseTime = performance.now() - parseStartTime;
 
-  // 2. 生成 Design Tokens（传入 platform 进行移动端适配）
+  // 2. 生成 Design Tokens
   const tokenStartTime = performance.now();
   const platform = ast.platform || 'web';
-  let tokens = generateDesignTokens({
-    context,
-    sessionId: session.sessionId,
-    platform,  // 传入平台，触发移动端参数调整
-  });
+  let tokens: DesignTokens;
+
+  if (providedTokens) {
+    // 如果已提供 Design Tokens，直接使用（Figma 还原场景）
+    tokens = providedTokens;
+  } else {
+    // 否则根据 context 生成（AI 生成场景）
+    tokens = generateDesignTokens({
+      context,
+      sessionId: session.sessionId,
+      platform,
+    });
+  }
 
   // 应用 Token 覆盖
   if (tokenOverrides) {
@@ -261,7 +335,10 @@ export async function compile(
   if (highlightCode !== false) {
     await precomputeCodeHighlights(factory.ir);
     const rendered = renderUINode(factory.ir, { debug });
-    ssrElement = React.createElement(ThemeProvider, { tokens }, rendered);
+    ssrElement = React.createElement(
+      ThemeProvider,
+      { tokens, children: rendered, className: undefined } as React.ComponentProps<typeof ThemeProvider>
+    );
   }
 
   const ssrResult = await renderToStaticHTML(ssrElement, {

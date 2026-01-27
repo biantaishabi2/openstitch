@@ -117,22 +117,38 @@ export const RParen = createToken({
 // 值 Token
 // ============================================
 
-// 字符串（双引号）
+// 字符串（双引号，支持中文等 Unicode 字符）
 export const StringLiteral = createToken({
   name: 'StringLiteral',
-  pattern: /"(?:[^"\\]|\\.)*"/,
+  pattern: /"(?:[^"\\]|\\.)*"/u,
 });
 
-// 标识符（变量名、属性名）
+// 中文字符（用于 StringLiteral 内容中的中文字符）
+// \p{Script=Han} 匹配所有汉字，配合 u flag
+export const ChineseText = createToken({
+  name: 'ChineseText',
+  pattern: /\p{Script=Han}+/u,
+  group: Lexer.SKIPPED,
+});
+
+// 标识符（变量名、属性名，支持字母、数字、下划线、连字符）
+// 注意：- 放在最后避免被解释为范围
 export const Identifier = createToken({
   name: 'Identifier',
-  pattern: /[a-zA-Z_][a-zA-Z0-9_]*/,
+  pattern: /[a-zA-Z_][a-zA-Z0-9_-]*/,
 });
 
 // 数字
 export const NumberLiteral = createToken({
   name: 'NumberLiteral',
   pattern: /\d+(?:\.\d+)?(?:px|em|rem|%|vh|vw)?/,
+});
+
+// 未知字符（用于跳过无法解析的字符，如替换的 ?）
+export const UnknownChar = createToken({
+  name: 'UnknownChar',
+  pattern: /[^\s\w]/,
+  group: Lexer.SKIPPED,
 });
 
 // ============================================
@@ -167,6 +183,12 @@ export const allTokens = [
   StringLiteral,
   NumberLiteral,
   Identifier,
+
+  // 中文字符（放在 StringLiteral 之后，处理字符串内容中的中文）
+  ChineseText,
+
+  // 未知字符（放在最后，跳过无法解析的字符）
+  UnknownChar,
 ];
 
 // ============================================
@@ -183,12 +205,29 @@ export const StitchLexer = new Lexer(allTokens, {
 // ============================================
 
 /**
+ * 预处理 DSL，清理特殊字符
+ * 保留中文字符，由 ChineseText Token 处理
+ */
+function preprocessInput(input: string): string {
+  return input
+    .replace(/[：：]/g, ':')
+    .replace(/[\u201C\u201D]/g, '"')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[＜＞]/g, m => m === '＜' ? '<' : '>')
+    .replace(/[［］]/g, m => m === '［' ? '[' : ']')
+    .replace(/[－]/g, '-')
+    // 使用 Unicode range 匹配非 ASCII（保留中文范围 0x4E00-0x9FFF）
+    .replace(/[^\x20-\x7E\n\t\u4e00-\u9fff]/g, '?');
+}
+
+/**
  * 词法分析入口
  * @param input DSL 文本
  * @returns Token 流和错误信息
  */
 export function tokenize(input: string) {
-  const result = StitchLexer.tokenize(input);
+  const processedInput = preprocessInput(input);
+  const result = StitchLexer.tokenize(processedInput);
 
   if (result.errors.length > 0) {
     console.error('Lexer errors:', result.errors);
@@ -198,6 +237,8 @@ export function tokenize(input: string) {
     tokens: result.tokens,
     errors: result.errors,
     groups: result.groups,
+    originalInput: input,
+    processedInput,
   };
 }
 

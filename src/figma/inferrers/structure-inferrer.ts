@@ -731,7 +731,22 @@ function generateDSL(
     const indent = '  '.repeat(depth);
     const id = sanitizeId(node.name || node.id);
     const type = inference.componentType;
-    const tag = type.toUpperCase();
+
+    // 映射组件类型到 DSL 标签
+    const tagMap: Record<string, string> = {
+      'Container': 'SECTION',
+      'Section': 'SECTION',
+      'Row': 'SECTION',
+      'Card': 'CARD',
+      'Button': 'BUTTON',
+      'Text': 'TEXT',
+      'Heading': 'TEXT',
+      'Image': 'IMAGE',
+      'Icon': 'IMAGE',
+      'Input': 'INPUT',
+    };
+    const tag = tagMap[type] || 'SECTION';
+
     const assetUrl = assetUrls?.get(node.id);
 
     lines.push(`${indent}[${tag}: ${id}]`);
@@ -742,8 +757,9 @@ function generateDSL(
     const defaultAttrParts: string[] = [];
     if (type === 'Text' || type === 'Heading') {
       const text = node.characters || '';
-      if (text) {
-        lines.push(`${indent}  CONTENT: "${escapeString(text)}"`);
+      const escapedText = escapeString(text);
+      if (escapedText) {
+        lines.push(`${indent}  CONTENT: "${escapedText}"`);
         hasContentLine = true;
       }
     } else if (type === 'Button') {
@@ -819,17 +835,41 @@ function generateDSL(
 }
 
 function sanitizeId(name: string): string {
-  return name
-    .replace(/[^a-zA-Z0-9_-]/g, '_')
-    .replace(/^_+|_+$/g, '')
-    .substring(0, 32) || 'unnamed';
+  // 第一步：移除所有非字母数字字符（保留 ASCII 字母、数字、下划线、连字符）
+  let result = name.replace(/[^a-zA-Z0-9_-]/g, '_');
+
+  // 第二步：如果结果以非字母开头，添加前缀
+  if (result.length === 0 || !/^[a-zA-Z]/.test(result)) {
+    result = 'id_' + result;
+  }
+
+  // 第三步：移除首尾的下划线
+  result = result.replace(/^_+|_+$/g, '');
+
+  // 第四步：限制长度
+  result = result.substring(0, 32);
+
+  // 最终检查：如果为空，使用 unnamed
+  if (!result) {
+    result = 'unnamed';
+  }
+
+  return result;
 }
 
 function escapeString(str: string): string {
   return str
     .replace(/\\/g, '\\\\')
     .replace(/"/g, '\\"')
-    .replace(/\n/g, '\\n');
+    .replace(/\n/g, '\\n')
+    .replace(/[：：]/g, ':')  // 全角冒号 → ASCII 冒号
+    .replace(/[＜＞]/g, m => m === '＜' ? '<' : '>')  // 全角小于/大于号 → ASCII
+    .replace(/[［］]/g, m => m === '［' ? '[' : ']')  // 全角方括号 → ASCII
+    .replace(/[－]/g, '-')  // 全角连字符 → ASCII 连字符
+    .replace(/[\u201C\u201D]/g, '')  // 弯引号 → 移除
+    .replace(/[\u2018\u2019]/g, '')  // 弯单引号 → 移除
+    .replace(/\.\.\."*$/, '')  // 移除末尾的截断标记及可能的引号
+    .trim();
 }
 
 function hasVisibleStroke(node: FigmaNode): boolean {

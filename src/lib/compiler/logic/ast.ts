@@ -298,8 +298,6 @@ export const PROP_KEY_MAP: Record<string, string> = {
   'style': 'style',
   'Disabled': 'disabled',
   'Loading': 'loading',
-  // 样式透传通道：ClassName → customClassName
-  'ClassName': 'customClassName',
 };
 
 /** 属性值映射表 (DSL 别名 → 标准值) */
@@ -341,7 +339,7 @@ export const PROP_VALUE_MAP: Record<string, Record<string, string>> = {
 /** 默认属性值 */
 export const DEFAULT_PROPS: Record<string, Record<string, string>> = {
   // 表单组件
-  Button: { variant: 'primary', size: 'default' },
+  Button: { variant: 'primary', size: 'md' },
   Input: { size: 'md' },
   Checkbox: { size: 'md' },
   Switch: { size: 'md' },
