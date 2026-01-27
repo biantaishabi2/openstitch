@@ -261,24 +261,21 @@ class SimpleParser {
     if (id) node.id = id;
     if (text) node.text = text;
 
-    // 可选：布局属性 { ... }
-    if (this.match('LBrace')) {
-      node.layoutProps = this.parseLayoutProps();
-    }
-
-    // 可选：ATTR: ...
-    if (this.match('AttrKeyword')) {
-      node.attrs = this.parseAttrDecl();
-    }
-
-    // 可选：CONTENT: ...
-    if (this.match('ContentKeyword')) {
-      node.content = this.parseContentDecl();
-    }
-
-    // 可选：CSS: "tailwind classes" (样式透传通道)
-    if (this.match('CssKeyword')) {
-      node.css = this.parseCssDecl();
+    // 解析可选属性：layoutProps, ATTR, CONTENT, CSS（任意顺序）
+    // 循环直到遇到子元素（TagOpen）或结束
+    while (true) {
+      if (this.match('LBrace')) {
+        node.layoutProps = this.parseLayoutProps();
+      } else if (this.match('AttrKeyword')) {
+        node.attrs = this.parseAttrDecl();
+      } else if (this.match('ContentKeyword')) {
+        node.content = this.parseContentDecl();
+      } else if (this.match('CssKeyword')) {
+        node.css = this.parseCssDecl();
+      } else {
+        // 不是属性 token，可能是子元素或结束
+        break;
+      }
     }
 
     // 解析子元素：只有缩进更深的才是子元素

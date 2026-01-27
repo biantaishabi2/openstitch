@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "context": "胸科医院首页",
+    "platform": "mobile",
+    "version": "3.0.0",
+    "generatedAt": "2026-01-28T00:40:00.000Z",
+    "figmaFile": "胸科医院"
+  },
+  "screens": [
+    {
+      "id": "chest_hospital_home",
+      "title": "胸科医院首页",
+      "dsl": "[SECTION: chest_hospital_home]\n  { ClassName: \"min-h-screen bg-gray-50\" }\n\n  [SECTION: header]\n    { ClassName: \"bg-white px-4 py-3 flex items-center\" }\n    [TEXT: app_title]\n      { ClassName: \"text-lg font-semibold\" }\n      CONTENT: \"胸科医院\"\n\n  [SECTION: banner]\n    { ClassName: \"mx-4 mt-4\" }\n    [IMAGE: banner_image]\n      { ClassName: \"w-full h-40 object-cover\" }\n      ATTR: Src(\"/figma-images/13_42.png\"), Alt(\"首页轮播图\")\n\n  [SECTION: user_card]\n    { ClassName: \"mx-4 mt-4 p-4 bg-white flex items-center gap-3\" }\n    [IMAGE: avatar]\n      { ClassName: \"w-10 h-10 rounded-full\" }\n      ATTR: Src(\"/figma-images/13_53.png\"), Alt(\"用户头像\")\n    [SECTION: user_info]\n      [TEXT: username]\n        { ClassName: \"font-medium\" }\n        CONTENT: \"xkyy0325\"\n      [TEXT: activity]\n        { ClassName: \"text-xs text-gray-500\" }\n        CONTENT: \"活跃度：20\"\n\n  [SECTION: stats]\n    { ClassName: \"mx-4 mt-4 p-3 bg-white flex justify-around\" }\n    [SECTION: stat_item]\n      [TEXT: steps]\n        { ClassName: \"text-2xl font-bold text-center\" }\n        CONTENT: \"3098\"\n      [TEXT: steps_label]\n        { ClassName: \"text-xs text-gray-500 text-center\" }\n        CONTENT: \"步\"\n\n  [SECTION: feature_grid]\n    { ClassName: \"mx-4 mt-4 grid grid-cols-3 gap-px bg-gray-200\" }\n    [CARD: welfare]\n      { ClassName: \"bg-white p-3 text-center\" }\n      [IMAGE: welfare_icon]\n        { ClassName: \"w-8 h-8 mx-auto\" }\n        ATTR: Src(\"/figma-images/17_44.png\"), Alt(\"福利平台图标\")\n      [TEXT: welfare_text]\n        { ClassName: \"text-xs mt-1\" }\n        CONTENT: \"福利平台\"\n    [CARD: member]\n      { ClassName: \"bg-white p-3 text-center\" }\n      [IMAGE: member_icon]\n        { ClassName: \"w-8 h-8 mx-auto\" }\n        ATTR: Src(\"/figma-images/17_43.png\"), Alt(\"会员登记图标\")\n      [TEXT: member_text]\n        { ClassName: \"text-xs mt-1\" }\n        CONTENT: \"会员登记\"\n    [CARD: news]\n      { ClassName: \"bg-white p-3 text-center\" }\n      [TEXT: news_text]\n        { ClassName: \"text-xs mt-1\" }\n        CONTENT: \"工会动态\"\n    [CARD: help]\n      { ClassName: \"bg-white p-3 text-center\" }\n      [TEXT: help_text]\n        { ClassName: \"text-xs mt-1\" }\n        CONTENT: \"困难帮扶\"\n    [CARD: org]\n      { ClassName: \"bg-white p-3 text-center\" }\n      [TEXT: org_text]\n        { ClassName: \"text-xs mt-1\" }\n        CONTENT: \"组织机构\"\n    [CARD: congress]\n      { ClassName: \"bg-white p-3 text-center\" }\n      [TEXT: congress_text]\n        { ClassName: \"text-xs mt-1\" }\n        CONTENT: \"职代会\"\n    [CARD: home]\n      { ClassName: \"bg-white p-3 text-center\" }\n      [TEXT: home_text]\n        { ClassName: \"text-xs mt-1\" }\n        CONTENT: \"职工之家\"\n    [CARD: profile]\n      { ClassName: \"bg-white p-3 text-center\" }\n      [TEXT: profile_text]\n        { ClassName: \"text-xs mt-1\" }\n        CONTENT: \"个人中心\"\n    [CARD: market]\n      { ClassName: \"bg-white p-3 text-center\" }\n      [TEXT: market_text]\n        { ClassName: \"text-xs mt-1\" }\n        CONTENT: \"胸科闲余\"\n\n  [SECTION: news_section]\n    { ClassName: \"mx-4 mt-4 p-4 bg-white\" }\n    [TEXT: news_title]\n      { ClassName: \"text-lg font-semibold mb-3\" }\n      CONTENT: \"新闻专区\"\n    [CARD: news_1]\n      { ClassName: \"flex gap-3 p-3\" }\n      [IMAGE: news_1_image]\n        { ClassName: \"w-16 h-16 object-cover\" }\n        ATTR: Src(\"/figma-images/15_229.png\"), Alt(\"新闻图片1\")\n      [SECTION: news_1_content]\n        [TEXT: news_1_title]\n          { ClassName: \"font-medium text-sm\" }\n          CONTENT: \"新闻政策\"\n        [TEXT: news_1_desc]\n          { ClassName: \"text-xs text-gray-500\" }\n          CONTENT: \"关注时事热点\"\n    [CARD: news_2]\n      { ClassName: \"flex gap-3 p-3 mt-3\" }\n      [IMAGE: news_2_image]\n        { ClassName: \"w-16 h-16 object-cover\" }\n        ATTR: Src(\"/figma-images/15_238.png\"), Alt(\"新闻图片2\")\n      [SECTION: news_2_content]\n        [TEXT: news_2_title]\n          { ClassName: \"font-medium text-sm\" }\n          CONTENT: \"劳模风采\"\n        [TEXT: news_2_desc]\n          { ClassName: \"text-xs text-gray-500\" }\n          CONTENT: \"彰显榜样力量\"\n",
+      "tokens": {
+        "--primary-color": "#0098ff",
+        "--primary-50": "#f2f8fd",
+        "--primary-100": "#e3f2fc",
+        "--primary-200": "#bbe1fb",
+        "--primary-300": "#7ac9ff",
+        "--primary-400": "#33adff",
+        "--primary-500": "#0098ff",
+        "--primary-600": "#008ceb",
+        "--primary-700": "#0080d6",
+        "--primary-800": "#0074c2",
+        "--primary-900": "#0067ad",
+        "--secondary-color": "#65C47A",
+        "--accent-color": "#FF9D00",
+        "--background": "#FFFFFF",
+        "--foreground": "#333333",
+        "--muted": "#F7F7F7",
+        "--muted-foreground": "#666666",
+        "--border": "#E5E5E5"
+      },
+      "overrides": {}
+    }
+  ]
+}

@@ -331,6 +331,25 @@ A: 可能原因：
 2. 颜色透明度被忽略
 3. 渐变颜色需要特殊处理
 
+### Q: 如何覆盖组件默认样式
+
+A: 使用 CSS 属性或 SECTION 替代 CARD：
+
+```dsl
+# 方案 A: CSS 属性覆盖（任意顺序）
+[CARD: welfare]
+  CSS: "rounded-none shadow-none"
+  { ClassName: "bg-white p-3" }
+  [TEXT: text] CONTENT: "福利平台"
+
+# 方案 B: 用 SECTION 替代 CARD
+[SECTION: welfare]
+  { ClassName: "bg-white p-3" }
+  [TEXT: text] CONTENT: "福利平台"
+```
+
+**注意**: CSS 属性可以在 `{ ClassName }`、`ATTR`、`CONTENT` 之后任意位置，不影响子元素解析。
+
 ### Q: 如何查看提取的 Design Tokens
 
 ```typescript
