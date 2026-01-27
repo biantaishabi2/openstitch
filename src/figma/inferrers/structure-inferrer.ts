@@ -443,7 +443,8 @@ export function buildAIPrompt(node: FigmaNode): string {
     .replace(/\{\{inferredLayout\}\}/g, layoutHints.inferredLayout)
     .replace(/\{\{inferredGap\}\}/g, layoutHints.inferredGap)
     .replace(/\{\{inferredPadding\}\}/g, layoutHints.inferredPadding)
-    .replace(/\{\{inferredAlignment\}\}/g, layoutHints.inferredAlignment);
+    .replace(/\{\{inferredAlignment\}\}/g, layoutHints.inferredAlignment)
+    .replace(/\{\{overflowChildCount\}\}/g, String(layoutHints.overflowChildCount));
 }
 
 /**
@@ -880,6 +881,7 @@ type LayoutHints = {
   inferredGap: string;
   inferredPadding: string;
   inferredAlignment: string;
+  overflowChildCount: number;
 };
 
 function getBox(node: FigmaNode | undefined): Box | null {
@@ -1003,11 +1005,13 @@ function analyzeAbsoluteLayout(node: FigmaNode): LayoutHints {
       inferredGap: 'unknown',
       inferredPadding: 'unknown',
       inferredAlignment: 'unknown',
+      overflowChildCount: 0,
     };
   }
 
   let backgroundChildCount = 0;
   const relChildren: Box[] = [];
+  let overflowChildCount = 0;
 
   for (const child of children) {
     const childBox = getBox(child);
@@ -1016,7 +1020,16 @@ function analyzeAbsoluteLayout(node: FigmaNode): LayoutHints {
       backgroundChildCount += 1;
       continue;
     }
-    relChildren.push(relBox(childBox, parent));
+    const rel = relBox(childBox, parent);
+    if (
+      rel.x < 0 ||
+      rel.y < 0 ||
+      rel.x + rel.width > parent.width ||
+      rel.y + rel.height > parent.height
+    ) {
+      overflowChildCount += 1;
+    }
+    relChildren.push(rel);
   }
 
   const layoutChildCount = relChildren.length;
@@ -1028,6 +1041,7 @@ function analyzeAbsoluteLayout(node: FigmaNode): LayoutHints {
       inferredGap: 'unknown',
       inferredPadding: 'unknown',
       inferredAlignment: 'unknown',
+      overflowChildCount,
     };
   }
 
@@ -1099,6 +1113,7 @@ function analyzeAbsoluteLayout(node: FigmaNode): LayoutHints {
     inferredGap,
     inferredPadding,
     inferredAlignment,
+    overflowChildCount,
   };
 }
 

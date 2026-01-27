@@ -37,6 +37,7 @@
 - 位置推断间距：{{inferredGap}}
 - 位置推断内边距（top/right/bottom/left）：{{inferredPadding}}
 - 位置推断对齐：{{inferredAlignment}}
+- 子节点超出父容器边界数量：{{overflowChildCount}}
 
 ## 可选类型
 
@@ -78,6 +79,27 @@
   - 没有文本子节点（`textChildCount = 0`）
   - 主要是布局壳（多个 `FRAME/GROUP/RECTANGLE` 子节点）
   - 节点尺寸偏大（`sizeBucket = large` 或 `xlarge`）
+
+## 低质量 Figma 设计补充规则（务必参考）
+
+- **INSTANCE / COMPONENT / COMPONENT_SET**：
+  - 名字可能是 `Button/Primary`、`Icon/Settings`、`ic_24/outline/home` 这类分层命名。
+  - 请解析名字中的关键词（`button/card/input/icon/image/section/row`）作为强提示。
+  - 如果是小尺寸正方形且含 `icon/logo`，优先 `Icon`。
+
+- **容器缺失或图层结构不规范**：
+  - 即使 `layoutMode = none`，只要位置推断布局明显（vertical/horizontal）且子节点数量足够，
+    仍应优先 `Section/Row`。
+  - `overflowChildCount > 0` 表示子节点坐标超出父容器边界，可能是图层摆放不规范，
+    仍要使用这些子节点推断布局，而不是直接判为 `Container`。
+
+- **绝对间距 / 非等距间距**：
+  - 间距和内边距可能是不等值的硬编码（例如 12/16/20），
+    但只要整体呈“竖向堆叠”或“横向排列”，仍应判为 `Section/Row`。
+
+- **网格状布局但没有 Auto Layout**：
+  - 若 `inferredLayout = grid-like-from-positions`，且无明确语义，
+    优先 `Container`（除非名字提示为 `Section/Row`）。
 - 如果你选择 `Button`，请确保理由里明确提到“存在文本子节点且文本像动作词”。
 
 ## 结构判别补充（Section vs Card，Row vs Button）
