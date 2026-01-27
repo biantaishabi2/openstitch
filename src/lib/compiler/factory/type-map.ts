@@ -35,6 +35,9 @@ export const TYPE_MAP: Record<ComponentType, string> = {
   Sidebar: 'Stack',   // 降级为 Stack (带暗色背景样式)
   Nav: 'Stack',       // 降级为 Stack (垂直导航)
   Tabs: 'Tabs',
+  TabsList: 'TabsList',
+  TabsTrigger: 'TabsTrigger',
+  TabsContent: 'TabsContent',
   Breadcrumb: 'Breadcrumb',
   BreadcrumbList: 'BreadcrumbList',
   BreadcrumbItem: 'BreadcrumbItem',
@@ -42,6 +45,7 @@ export const TYPE_MAP: Record<ComponentType, string> = {
   BreadcrumbPage: 'BreadcrumbPage',
   BreadcrumbSeparator: 'BreadcrumbSeparator',
   Stepper: 'Stepper',
+  Step: 'Step',
 
   // 导航组件 (Mobile) - 移动端专用
   MobileShell: 'MobileShell',   // 移动端外壳 (safe-area + 布局容器)
@@ -51,6 +55,11 @@ export const TYPE_MAP: Record<ComponentType, string> = {
 
   // 数据展示 - 直接映射
   Card: 'Card',
+  CardHeader: 'CardHeader',
+  CardTitle: 'CardTitle',
+  CardDescription: 'CardDescription',
+  CardContent: 'CardContent',
+  CardFooter: 'CardFooter',
   Table: 'Table',
   TableHeader: 'TableHeader',
   TableBody: 'TableBody',
@@ -64,11 +73,17 @@ export const TYPE_MAP: Record<ComponentType, string> = {
   Statistic: 'Statistic',
   StatisticCard: 'StatisticCard',
   Avatar: 'Avatar',
+  AvatarImage: 'AvatarImage',
+  AvatarFallback: 'AvatarFallback',
   Text: 'Text',
+  Span: 'Span',
+  Div: 'Div',
   Image: 'Image',
   Icon: 'Icon',
   Badge: 'Badge',
   Code: 'CodeBlock',  // 名称映射
+  CodeBlock: 'CodeBlock',
+  InlineCode: 'InlineCode',
   Quote: 'Text',      // Quote → Text (with blockquote style)
   Heading: 'Text',    // Heading → Text (with title variant)
 
@@ -80,14 +95,28 @@ export const TYPE_MAP: Record<ComponentType, string> = {
   Switch: 'Switch',
   Slider: 'Slider',
   Radio: 'RadioGroup',  // 名称映射
+  RadioGroup: 'RadioGroup',
+  RadioGroupItem: 'RadioGroupItem',
   Select: 'Select',
   Form: 'Stack',      // 降级为 Stack (表单布局)
 
   // 反馈组件 (Web)
   Alert: 'Alert',
+  AlertTitle: 'AlertTitle',
+  AlertDescription: 'AlertDescription',
   Modal: 'Dialog',    // 名称映射
+  Dialog: 'Dialog',
+  DialogTrigger: 'DialogTrigger',
+  DialogContent: 'DialogContent',
+  DialogHeader: 'DialogHeader',
+  DialogTitle: 'DialogTitle',
+  DialogDescription: 'DialogDescription',
+  DialogFooter: 'DialogFooter',
   Progress: 'Progress',
   Tooltip: 'Tooltip',
+  TooltipProvider: 'TooltipProvider',
+  TooltipTrigger: 'TooltipTrigger',
+  TooltipContent: 'TooltipContent',
   Skeleton: 'Skeleton',
   EmptyState: 'EmptyState',
 
@@ -100,6 +129,9 @@ export const TYPE_MAP: Record<ComponentType, string> = {
 
   // 其他
   Link: 'Link',
+  Layout: 'Layout',
+  LayoutDivider: 'LayoutDivider',
+  Separator: 'Separator',
   Divider: 'Separator',  // 名称映射
 };
 

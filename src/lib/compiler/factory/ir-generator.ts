@@ -41,12 +41,74 @@ const TEXT_SIZE_CLASS_MAP: Record<string, string> = {
   '9xl': 'text-9xl',
 };
 
+function removeTextSizeStyles(
+  props: Record<string, unknown>,
+  sizeValue: string
+): void {
+  const sizeClass = TEXT_SIZE_CLASS_MAP[sizeValue];
+  if (sizeClass && typeof props.className === 'string') {
+    const classes = props.className
+      .split(' ')
+      .filter((cls) => cls && cls !== sizeClass);
+    props.className = classes.length > 0 ? classes.join(' ') : undefined;
+  }
+
+  if (props.style && typeof props.style === 'object') {
+    const style = props.style as Record<string, string>;
+    if (style.fontSize) {
+      const { fontSize: _fontSize, ...rest } = style;
+      props.style = Object.keys(rest).length > 0 ? rest : undefined;
+    }
+  }
+}
+
+function coerceBoolean(value: unknown): boolean | undefined {
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'string') {
+    const lower = value.toLowerCase();
+    if (lower === 'true') return true;
+    if (lower === 'false') return false;
+  }
+  return undefined;
+}
+
+function coerceNumber(value: unknown): number | undefined {
+  if (typeof value === 'number') return value;
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (!trimmed) return undefined;
+    const num = Number(trimmed);
+    if (!Number.isNaN(num)) return num;
+  }
+  return undefined;
+}
+
 const CONTENT_PURE_TEXT_TYPES = new Set([
   'Link',
   'Badge',
   'Button',
   'BreadcrumbLink',
   'BreadcrumbPage',
+  'CardTitle',
+  'CardDescription',
+  'AlertTitle',
+  'AlertDescription',
+  'DialogTrigger',
+  'DialogTitle',
+  'DialogDescription',
+  'TooltipTrigger',
+  'TooltipContent',
+  'TabsTrigger',
+  'AccordionTrigger',
+  'AccordionContent',
+  'TimelineTitle',
+  'TimelineDescription',
+  'TimelineEmpty',
+  'Label',
+  'InlineCode',
+  'AvatarFallback',
+  'span',
+  'div',
   'TableHead',
   'TableCell',
 ]);
@@ -119,21 +181,83 @@ function astNodeToUINode(
   if (node.type === 'Button' && node.props.size) {
     const sizeValue = String(node.props.size);
     mergedProps.size = sizeValue;
+    removeTextSizeStyles(mergedProps, sizeValue);
+  }
 
-    const sizeClass = TEXT_SIZE_CLASS_MAP[sizeValue];
-    if (sizeClass && typeof mergedProps.className === 'string') {
-      const classes = mergedProps.className
-        .split(' ')
-        .filter((cls) => cls && cls !== sizeClass);
-      mergedProps.className = classes.length > 0 ? classes.join(' ') : undefined;
+  if (node.type === 'Icon' && node.props.size) {
+    const sizeValue = String(node.props.size);
+    mergedProps.size = sizeValue;
+    removeTextSizeStyles(mergedProps, sizeValue);
+  }
+
+  if (node.type === 'Hero' && node.props.size) {
+    const sizeValue = String(node.props.size);
+    mergedProps.size = sizeValue;
+    removeTextSizeStyles(mergedProps, sizeValue);
+  }
+
+  if (node.type === 'Container' && node.props.size) {
+    const sizeValue = String(node.props.size);
+    mergedProps.size = sizeValue;
+    removeTextSizeStyles(mergedProps, sizeValue);
+  }
+
+  if (node.type === 'Spacer' && node.props.size !== undefined) {
+    const sizeNumber = coerceNumber(node.props.size);
+    mergedProps.size = sizeNumber ?? node.props.size;
+  }
+
+  if (node.type === 'Page') {
+    const paddingValue = coerceNumber(node.props.padding);
+    if (paddingValue !== undefined) {
+      mergedProps.padding = paddingValue;
+    }
+
+    const fullHeightValue = coerceBoolean(node.props.fullHeight);
+    if (fullHeightValue !== undefined) {
+      mergedProps.fullHeight = fullHeightValue;
+    }
+
+    const centeredValue = coerceBoolean(node.props.centered);
+    if (centeredValue !== undefined) {
+      mergedProps.centered = centeredValue;
     }
 
     if (mergedProps.style && typeof mergedProps.style === 'object') {
       const style = mergedProps.style as Record<string, string>;
-      if (style.fontSize) {
-        const { fontSize: _fontSize, ...rest } = style;
+      if (style.padding) {
+        const { padding: _padding, ...rest } = style;
         mergedProps.style = Object.keys(rest).length > 0 ? rest : undefined;
       }
+    }
+  }
+
+  // Slider 期望 value/defaultValue 为 number[]
+  if (mappedType === 'Slider') {
+    const normalizeSliderValues = (value: unknown): unknown => {
+      if (value == null) return value;
+      if (Array.isArray(value)) {
+        const parsed = value.map((v) => (typeof v === 'number' ? v : Number(v)));
+        return parsed.every((v) => Number.isFinite(v)) ? parsed : value;
+      }
+      if (typeof value === 'number') return [value];
+      if (typeof value === 'string') {
+        const parts = value.split(',').map((part) => part.trim()).filter(Boolean);
+        if (parts.length > 1) {
+          const parsed = parts.map((part) => Number(part));
+          return parsed.every((v) => Number.isFinite(v)) ? parsed : value;
+        }
+        const single = Number(value);
+        return Number.isFinite(single) ? [single] : value;
+      }
+      return value;
+    };
+
+    if ('defaultValue' in mergedProps) {
+      mergedProps.defaultValue = normalizeSliderValues(mergedProps.defaultValue);
+    }
+    if ('value' in mergedProps) {
+      mergedProps.value = normalizeSliderValues(mergedProps.value);
     }
   }
 

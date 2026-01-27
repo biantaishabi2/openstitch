@@ -58,6 +58,9 @@ export type ComponentType =
   | 'Sidebar'
   | 'Nav'
   | 'Tabs'
+  | 'TabsList'
+  | 'TabsTrigger'
+  | 'TabsContent'
   | 'Breadcrumb'
   | 'BreadcrumbList'
   | 'BreadcrumbItem'
@@ -65,6 +68,7 @@ export type ComponentType =
   | 'BreadcrumbPage'
   | 'BreadcrumbSeparator'
   | 'Stepper'
+  | 'Step'
   // 移动端导航组件 (4 种)
   | 'MobileShell'   // 移动端外壳 (包含 safe-area)
   | 'BottomTabs'    // 底部标签栏
@@ -72,6 +76,11 @@ export type ComponentType =
   | 'Segment'       // 分段控制器 (Tabs 的移动端替代)
   // 数据展示 (12 种)
   | 'Card'
+  | 'CardHeader'
+  | 'CardTitle'
+  | 'CardDescription'
+  | 'CardContent'
+  | 'CardFooter'
   | 'Table'
   | 'TableHeader'
   | 'TableBody'
@@ -96,11 +105,17 @@ export type ComponentType =
   | 'Statistic'
   | 'StatisticCard'
   | 'Avatar'
+  | 'AvatarImage'
+  | 'AvatarFallback'
   | 'Text'
+  | 'Span'
+  | 'Div'
   | 'Image'
   | 'Icon'
   | 'Badge'
   | 'Code'
+  | 'CodeBlock'
+  | 'InlineCode'
   | 'Quote'
   | 'Heading'
   // 表单组件 (9 种)
@@ -111,13 +126,27 @@ export type ComponentType =
   | 'Switch'
   | 'Slider'
   | 'Radio'
+  | 'RadioGroup'
+  | 'RadioGroupItem'
   | 'Select'
   | 'Form'
   // 反馈组件 (6 种 Web)
   | 'Alert'
+  | 'AlertTitle'
+  | 'AlertDescription'
   | 'Modal'
+  | 'Dialog'
+  | 'DialogTrigger'
+  | 'DialogContent'
+  | 'DialogHeader'
+  | 'DialogTitle'
+  | 'DialogDescription'
+  | 'DialogFooter'
   | 'Progress'
   | 'Tooltip'
+  | 'TooltipProvider'
+  | 'TooltipTrigger'
+  | 'TooltipContent'
   | 'Skeleton'
   | 'EmptyState'
   // 移动端反馈组件 (2 种)
@@ -127,6 +156,9 @@ export type ComponentType =
   | 'SwipeAction'   // 滑动操作
   // 其他
   | 'Link'
+  | 'Layout'
+  | 'LayoutDivider'
+  | 'Separator'
   | 'Divider';
 
 /** 通用 Props 类型 */
@@ -141,7 +173,7 @@ export interface BaseProps {
   margin?: string;
 
   // 尺寸相关
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'default' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   width?: string;
   height?: string;
 
@@ -230,9 +262,14 @@ export interface CompileResult {
 /** 属性键名映射表 (DSL 大写 → AST 小写) */
 export const PROP_KEY_MAP: Record<string, string> = {
   'Title': 'title',
+  'Description': 'description',
   'Icon': 'icon',
   'Variant': 'variant',
   'Size': 'size',
+  'Value': 'value',
+  'ValuePrefix': 'valuePrefix',
+  'ValueSuffix': 'valueSuffix',
+  'Trend': 'trend',
   'TrendValue': 'trendValue',
   'Gutter': 'gutter',
   'Align': 'align',
@@ -243,6 +280,13 @@ export const PROP_KEY_MAP: Record<string, string> = {
   'Margin': 'margin',
   'Width': 'width',
   'Height': 'height',
+  'MaxWidth': 'maxWidth',
+  'AspectRatio': 'aspectRatio',
+  'CurrentStep': 'currentStep',
+  'DefaultOpen': 'defaultOpen',
+  'DefaultValue': 'defaultValue',
+  'FullHeight': 'fullHeight',
+  'HtmlFor': 'htmlFor',
   'Text': 'text',
   'Label': 'label',
   'Placeholder': 'placeholder',
@@ -291,7 +335,7 @@ export const PROP_VALUE_MAP: Record<string, Record<string, string>> = {
 /** 默认属性值 */
 export const DEFAULT_PROPS: Record<string, Record<string, string>> = {
   // 表单组件
-  Button: { variant: 'primary', size: 'md' },
+  Button: { variant: 'primary', size: 'default' },
   Input: { size: 'md' },
   Checkbox: { size: 'md' },
   Switch: { size: 'md' },
@@ -336,6 +380,9 @@ export const TAG_TO_TYPE: Record<string, ComponentType> = {
   'SIDEBAR': 'Sidebar',
   'NAV': 'Nav',
   'TABS': 'Tabs',
+  'TABS_LIST': 'TabsList',
+  'TABS_TRIGGER': 'TabsTrigger',
+  'TABS_CONTENT': 'TabsContent',
   'BREADCRUMB': 'Breadcrumb',
   'BREADCRUMB_LIST': 'BreadcrumbList',
   'BREADCRUMB_ITEM': 'BreadcrumbItem',
@@ -343,6 +390,7 @@ export const TAG_TO_TYPE: Record<string, ComponentType> = {
   'BREADCRUMB_PAGE': 'BreadcrumbPage',
   'BREADCRUMB_SEPARATOR': 'BreadcrumbSeparator',
   'STEPPER': 'Stepper',
+  'STEP': 'Step',
   // 导航组件 (Mobile)
   'MOBILE_SHELL': 'MobileShell',
   'BOTTOM_TABS': 'BottomTabs',
@@ -350,6 +398,11 @@ export const TAG_TO_TYPE: Record<string, ComponentType> = {
   'SEGMENT': 'Segment',
   // 数据展示
   'CARD': 'Card',
+  'CARD_HEADER': 'CardHeader',
+  'CARD_TITLE': 'CardTitle',
+  'CARD_DESCRIPTION': 'CardDescription',
+  'CARD_CONTENT': 'CardContent',
+  'CARD_FOOTER': 'CardFooter',
   'TABLE': 'Table',
   'TABLE_HEADER': 'TableHeader',
   'TABLE_BODY': 'TableBody',
@@ -374,11 +427,17 @@ export const TAG_TO_TYPE: Record<string, ComponentType> = {
   'STATISTIC': 'Statistic',
   'STATISTIC_CARD': 'StatisticCard',
   'AVATAR': 'Avatar',
+  'AVATAR_IMAGE': 'AvatarImage',
+  'AVATAR_FALLBACK': 'AvatarFallback',
   'TEXT': 'Text',
+  'SPAN': 'Span',
+  'DIV': 'Div',
   'IMAGE': 'Image',
   'ICON': 'Icon',
   'BADGE': 'Badge',
   'CODE': 'Code',
+  'CODE_BLOCK': 'CodeBlock',
+  'INLINE_CODE': 'InlineCode',
   'QUOTE': 'Quote',
   'HEADING': 'Heading',
   // 表单组件
@@ -389,13 +448,27 @@ export const TAG_TO_TYPE: Record<string, ComponentType> = {
   'SWITCH': 'Switch',
   'SLIDER': 'Slider',
   'RADIO': 'Radio',
+  'RADIO_GROUP': 'RadioGroup',
+  'RADIO_GROUP_ITEM': 'RadioGroupItem',
   'SELECT': 'Select',
   'FORM': 'Form',
   // 反馈组件 (Web)
   'ALERT': 'Alert',
+  'ALERT_TITLE': 'AlertTitle',
+  'ALERT_DESCRIPTION': 'AlertDescription',
   'MODAL': 'Modal',
+  'DIALOG': 'Dialog',
+  'DIALOG_TRIGGER': 'DialogTrigger',
+  'DIALOG_CONTENT': 'DialogContent',
+  'DIALOG_HEADER': 'DialogHeader',
+  'DIALOG_TITLE': 'DialogTitle',
+  'DIALOG_DESCRIPTION': 'DialogDescription',
+  'DIALOG_FOOTER': 'DialogFooter',
   'PROGRESS': 'Progress',
   'TOOLTIP': 'Tooltip',
+  'TOOLTIP_PROVIDER': 'TooltipProvider',
+  'TOOLTIP_TRIGGER': 'TooltipTrigger',
+  'TOOLTIP_CONTENT': 'TooltipContent',
   'SKELETON': 'Skeleton',
   'EMPTY': 'EmptyState',
   'EMPTY_STATE': 'EmptyState',
@@ -406,5 +479,8 @@ export const TAG_TO_TYPE: Record<string, ComponentType> = {
   'SWIPE_ACTION': 'SwipeAction',
   // 其他
   'LINK': 'Link',
+  'LAYOUT': 'Layout',
+  'LAYOUT_DIVIDER': 'LayoutDivider',
+  'SEPARATOR': 'Separator',
   'DIVIDER': 'Divider',
 };

@@ -124,6 +124,33 @@ const MAX_WIDTH_MAP: Record<string, string> = {
   screen: 'max-w-screen',
 };
 
+const BOOLEAN_PROP_KEYS = new Set([
+  'checked',
+  'defaultchecked',
+  'disabled',
+  'loading',
+  'fullheight',
+  'fullwidth',
+  'centered',
+  'wrap',
+  'rounded',
+  'divided',
+  'collapsible',
+  'vertical',
+  'defaultopen',
+]);
+
+const NUMERIC_PROP_KEYS = new Set([
+  'gap',
+  'columns',
+  'currentstep',
+  'max',
+  'step',
+  'value',
+  'padding',
+  'size',
+]);
+
 /**
  * 归一化单个 prop 值
  */
@@ -370,9 +397,32 @@ export function normalizeProps(
         result[key] = value;
         break;
 
-      default:
+      default: {
+        if (typeof value === 'string') {
+          const lower = value.toLowerCase();
+          const keyLower = key.toLowerCase();
+          if (BOOLEAN_PROP_KEYS.has(keyLower)) {
+            if (lower === 'true') {
+              result[key] = true;
+              break;
+            }
+            if (lower === 'false') {
+              result[key] = false;
+              break;
+            }
+          }
+          if (NUMERIC_PROP_KEYS.has(keyLower)) {
+            const numberValue = Number(value);
+            if (!Number.isNaN(numberValue)) {
+              result[key] = numberValue;
+              break;
+            }
+          }
+        }
         // 其他 props 直接透传
         result[key] = value;
+        break;
+      }
     }
   }
 
