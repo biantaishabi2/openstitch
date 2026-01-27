@@ -14,14 +14,19 @@ import { execFileSync, execSync } from 'child_process';
 import * as os from 'os';
 import * as fs from 'fs';
 import * as path from 'path';
+import https from 'https';
 
-import type { FigmaNode } from '../../src/figma/types';
-import { buildAIPrompt, parseAIResponse } from '../../src/figma/inferrers';
+import type { FigmaNode, FigmaFile } from '../../src/figma/types';
+import { buildAIPrompt, parseAIResponse, extractValidNodes } from '../../src/figma/inferrers';
 
 const RUN_REAL_AI = process.env.RUN_REAL_AI === '1';
+const RUN_FIGMA_API = process.env.RUN_FIGMA_API === '1';
 const realAIDescribe = RUN_REAL_AI ? describe : describe.skip;
+const figmaAPIDescribe = RUN_FIGMA_API ? describe : describe.skip;
 const USE_CODEX = process.env.USE_CODEX === '1';
 const AI_PROVIDER = USE_CODEX ? 'codex' : 'claude';
+const FIGMA_ACCESS_TOKEN = process.env.FIGMA_ACCESS_TOKEN || '';
+const FIGMA_FILE_KEY = process.env.FIGMA_FILE_KEY || 'GgNqIztxMCacqG0u4TnRtm';
 let claudeBinPath: string | null = null;
 let claudeScriptPath: string | null = null;
 
@@ -46,6 +51,36 @@ function getClaudeScriptPath(): string {
     claudeScriptPath = binPath;
   }
   return claudeScriptPath;
+}
+
+// === Figma API 工具函数 ===
+
+function fetchFigmaFile(fileKey: string, accessToken: string): FigmaFile | null {
+  if (!accessToken) {
+    console.warn('FIGMA_ACCESS_TOKEN 未设置，跳过 Figma API 测试');
+    return null;
+  }
+
+  const url = `https://api.figma.com/v1/files/${fileKey}`;
+  console.log(`正在从 Figma 获取文件: ${url}`);
+
+  try {
+    const response = execFileSync('curl', [
+      '-s', '-H', `X-FIGMA-TOKEN: ${accessToken}`,
+      url
+    ], {
+      encoding: 'utf-8',
+      timeout: 60000,
+      maxBuffer: 10 * 1024 * 1024,
+    });
+
+    const file = JSON.parse(response) as FigmaFile;
+    console.log(`成功获取 Figma 文件，文档节点数: ${file.document.children?.length || 0}`);
+    return file;
+  } catch (error: any) {
+    console.error('Figma API 调用失败:', error?.message || 'unknown error');
+    return null;
+  }
 }
 
 // === 工具函数 ===
@@ -1731,6 +1766,84 @@ realAIDescribe('Real AI Inference Tests', () => {
 
     // 真实 AI 具有波动性，用温和阈值避免偶发失败
     expect(accuracy).toBeGreaterThanOrEqual(0.6);
+  });
+});
+
+// === 真实 Figma 文件 API 测试 ===
+
+figmaAPIDescribe('Real Figma File API Test', () => {
+  let figmaFile: FigmaFile | null = null;
+
+  beforeAll(() => {
+    figmaFile = fetchFigmaFile(FIGMA_FILE_KEY, FIGMA_ACCESS_TOKEN);
+  });
+
+  it('should fetch Figma file successfully', () => {
+    expect(figmaFile).not.toBeNull();
+  });
+
+  it('should have valid document structure', () => {
+    if (!figmaFile) return;
+    expect(figmaFile.document).toBeDefined();
+    expect(figmaFile.document.children).toBeDefined();
+    expect(figmaFile.document.children!.length).toBeGreaterThan(0);
+  });
+
+  it('should extract valid nodes and analyze structure', () => {
+    if (!figmaFile) return;
+
+    const validNodes = extractValidNodes(figmaFile.document);
+    console.log(`\n提取到 ${validNodes.length} 个有效节点`);
+
+    expect(validNodes.length).toBeGreaterThan(0);
+
+    // 显示前 10 个节点用于调试
+    console.log('\n前 10 个节点:');
+    validNodes.slice(0, 10).forEach((node, i) => {
+      console.log(`  ${i + 1}. [${node.type}] ${node.name} (id: ${node.id})`);
+    });
+  });
+
+  it('should run AI inference on first page nodes', () => {
+    if (!figmaFile || !RUN_REAL_AI) return;
+
+    const page = figmaFile.document.children?.[0];
+    if (!page) {
+      console.log('没有找到页面节点');
+      return;
+    }
+
+    const validNodes = extractValidNodes(page);
+    console.log(`\n页面 "${page.name}" 包含 ${validNodes.length} 个有效节点`);
+
+    // 只测试前 5 个节点
+    const testNodes = validNodes.slice(0, 5);
+    const predictions: Array<{ name: string; type: string; predicted: string }> = [];
+
+    for (const node of testNodes) {
+      const prompt = buildAIPrompt(node);
+      const aiResponse = callRealAI(prompt);
+
+      if (!aiResponse) {
+        console.log(`跳过节点 "${node.name}"：AI 不可用`);
+        continue;
+      }
+
+      const parsed = parseAIResponse(aiResponse);
+      const predictedType = parsed?.componentType || 'UNKNOWN';
+      console.log(`  [${node.type}] ${node.name} -> ${predictedType}`);
+
+      predictions.push({
+        name: node.name,
+        type: node.type,
+        predicted: predictedType,
+      });
+    }
+
+    console.log(`\nAI 推断结果 (${predictions.length} 个节点):`);
+    predictions.forEach(p => {
+      console.log(`  - ${p.name} (${p.type}): ${p.predicted}`);
+    });
   });
 });
 
