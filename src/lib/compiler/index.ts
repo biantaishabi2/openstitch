@@ -103,6 +103,7 @@ import { render as renderUINode } from '../renderer';
 import type { StitchAST } from './logic';
 import type { DesignTokens } from './visual';
 import type { FactoryOutput } from './factory';
+import type { StitchConfig } from '../../figma/config-types';
 
 // HEX 颜色正则
 const HEX_COLOR_REGEX = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
@@ -193,9 +194,9 @@ export interface CompileOptions {
   /** 调试模式 */
   debug?: boolean;
   /** 预生成的 Design Tokens（用于 Figma 还原，跳过自动生成） */
-  tokens?: DesignTokens;
+  tokens?: Record<string, string>;
   /** Token 覆盖 (用于自定义颜色等) */
-  tokenOverrides?: Partial<DesignTokens>;
+  tokenOverrides?: Record<string, string>;
 }
 
 /**
@@ -299,8 +300,14 @@ export async function compile(
   let tokens: DesignTokens;
 
   if (providedTokens) {
-    // 如果已提供 Design Tokens，直接使用（Figma 还原场景）
-    tokens = providedTokens;
+    // 如果已提供 Record<string, string> 格式的 Tokens，直接使用
+    // 合并默认的必填字段，确保 DesignTokens 接口完整
+    const defaultTokens = generateDesignTokens({
+      context: context || 'default',
+      sessionId: session.sessionId,
+      platform,
+    });
+    tokens = { ...defaultTokens, ...providedTokens } as DesignTokens;
   } else {
     // 否则根据 context 生成（AI 生成场景）
     tokens = generateDesignTokens({
@@ -312,7 +319,7 @@ export async function compile(
 
   // 应用 Token 覆盖
   if (tokenOverrides) {
-    tokens = { ...tokens, ...tokenOverrides };
+    tokens = { ...tokens, ...tokenOverrides } as DesignTokens;
   }
   const tokenGenTime = performance.now() - tokenStartTime;
 
@@ -391,6 +398,57 @@ export async function compileToHEEx(
 ): Promise<string> {
   const result = await compile(dsl, options);
   return renderToHEEx(result.factory.ir);
+}
+
+/**
+ * 从 JSON 配置编译
+ *
+ * @param config Stitch JSON 配置
+ * @param screenId 要编译的屏幕 ID
+ * @param options 编译选项
+ * @returns 编译结果
+ */
+export async function compileFromJSON(
+  config: StitchConfig,
+  screenId: string,
+  options: CompileOptions = {}
+): Promise<CompileResult> {
+  const screen = config.screens.find(s => s.id === screenId);
+
+  if (!screen) {
+    throw new CompileError(`Screen "${screenId}" not found in config`, []);
+  }
+
+  // 将 TokenOverrides 展平为 Record<string, string>
+  const tokenOverrides: Record<string, string> = {};
+
+  if (screen.overrides) {
+    const { colors, typography, spacing, radius } = screen.overrides;
+
+    if (colors) {
+      Object.assign(tokenOverrides, colors);
+    }
+    if (typography) {
+      Object.assign(tokenOverrides, typography);
+    }
+    if (spacing) {
+      Object.assign(tokenOverrides, spacing);
+    }
+    if (radius) {
+      Object.assign(tokenOverrides, radius);
+    }
+  }
+
+  // 构建编译选项
+  const compileOptions: CompileOptions = {
+    ...options,
+    context: options.context || config.meta.context,
+    platform: options.platform || config.meta.platform as 'web' | 'mobile',
+    tokens: screen.tokens,
+    tokenOverrides: Object.keys(tokenOverrides).length > 0 ? tokenOverrides : undefined,
+  };
+
+  return compile(screen.dsl, compileOptions);
 }
 
 /**

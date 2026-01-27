@@ -28,9 +28,9 @@ import type { DesignTokens } from '../../lib/compiler/visual/types';
 export interface FigmaToStitchResult {
   /** 生成的 DSL */
   dsl: string;
-  /** 生成的 Design Tokens */
-  tokens: DesignTokens;
-  /** 视觉推断结果 */
+  /** 编译后的 Design Tokens (Record<string, string> 格式) */
+  tokens: Record<string, string>;
+  /** 原始视觉推断结果 */
   visuals: VisualInferenceResult;
   /** 结构推断结果 */
   structure: StructureInferenceResult;
@@ -188,12 +188,12 @@ interface TokenConversionOptions {
 }
 
 /**
- * 将 VisualInferenceResult 转换为 DesignTokens (Stitch 编译器格式)
+ * 将 VisualInferenceResult 转换为编译后的 Design Tokens (Record<string, string> 格式)
  */
 export function convertVisualResultToTokens(
   visuals: VisualInferenceResult,
   options: TokenConversionOptions = {}
-): DesignTokens {
+): Record<string, string> {
   const {
     context = '',
     sessionId = generateSessionId(),
@@ -283,12 +283,6 @@ export function convertVisualResultToTokens(
     ...spacingTokens,
     ...shapeTokens,
     ...ornamentTokens,
-    _meta: {
-      context,
-      sessionId,
-      seed: hashString(sessionId),
-      generatedAt: new Date().toISOString(),
-    },
   };
 }
 
