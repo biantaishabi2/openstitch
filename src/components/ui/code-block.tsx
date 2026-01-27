@@ -11,6 +11,7 @@ interface CodeBlockProps extends React.HTMLAttributes<HTMLDivElement> {
   filename?: string;
   showLineNumbers?: boolean;
   theme?: 'github-dark' | 'github-light' | 'one-dark-pro' | 'dracula';
+  highlightedCode?: string;
 }
 
 const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
@@ -22,6 +23,7 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
       filename,
       showLineNumbers = true,
       theme = 'github-dark',
+      highlightedCode,
       ...props
     },
     ref
@@ -29,25 +31,31 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
     const [copied, setCopied] = React.useState(false);
     // 初始状态使用纯文本代码，用于 SSR
     // 添加 inline style 确保代码在深色背景上可见
-    const [highlightedCode, setHighlightedCode] = React.useState<string>(
-      `<pre style="color: #f4f4f5; margin: 0;"><code style="color: #f4f4f5;">${code?.replace(/</g, '&lt;').replace(/>/g, '&gt;') || ''}</code></pre>`
+    const fallbackHtml = `<pre style="color: #f4f4f5; margin: 0;"><code style="color: #f4f4f5;">${code?.replace(/</g, '&lt;').replace(/>/g, '&gt;') || ''}</code></pre>`;
+    const [highlightedHtml, setHighlightedHtml] = React.useState<string>(
+      highlightedCode || fallbackHtml
     );
 
     React.useEffect(() => {
+      if (highlightedCode) {
+        setHighlightedHtml(highlightedCode);
+        return;
+      }
+
       const highlight = async () => {
         try {
           const html = await codeToHtml(code, {
             lang: language,
             theme: theme,
           });
-          setHighlightedCode(html);
+          setHighlightedHtml(html);
         } catch {
           // 如果高亮失败，显示纯文本（保持浅色文字）
-          setHighlightedCode(`<pre style="color: #f4f4f5; margin: 0;"><code style="color: #f4f4f5;">${code}</code></pre>`);
+          setHighlightedHtml(`<pre style="color: #f4f4f5; margin: 0;"><code style="color: #f4f4f5;">${code}</code></pre>`);
         }
       };
       highlight();
-    }, [code, language, theme]);
+    }, [highlightedCode, code, language, theme]);
 
     const handleCopy = async () => {
       await navigator.clipboard.writeText(code);
@@ -101,7 +109,7 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
             'overflow-x-auto p-4',
             showLineNumbers && '[&_pre]:!pl-12 [&_code]:relative [&_.line]:before:absolute [&_.line]:before:left-0 [&_.line]:before:w-8 [&_.line]:before:text-right [&_.line]:before:text-zinc-600 [&_.line]:before:pr-4 [&_.line]:before:content-[counter(line)] [&_.line]:before:[counter-increment:line] [&_code]:[counter-reset:line]'
           )}
-          dangerouslySetInnerHTML={{ __html: highlightedCode }}
+          dangerouslySetInnerHTML={{ __html: highlightedHtml }}
         />
       </div>
     );

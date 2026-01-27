@@ -94,8 +94,11 @@ export {
 
 import { compile as compileLogic, parse } from './logic';
 import { generateDesignTokens, createSession, type SessionState } from './visual';
-import { componentFactory } from './factory';
+import { componentFactory, ThemeProvider } from './factory';
+import * as React from 'react';
 import { renderToStaticHTML, type SSROptions, type SSRResult } from './ssr';
+import { precomputeCodeHighlights } from './ssr/code-highlighter';
+import { render as renderUINode } from '../renderer';
 import type { StitchAST } from './logic';
 import type { DesignTokens } from './visual';
 import type { FactoryOutput } from './factory';
@@ -119,6 +122,8 @@ export interface CompileOptions {
   session?: SessionState;
   /** SSR 选项 */
   ssr?: Omit<SSROptions, 'tokens'>;
+  /** SSR 预渲染代码高亮 */
+  highlightCode?: boolean;
   /** 是否注入事件桩函数 */
   injectEvents?: boolean;
   /** 调试模式 */
@@ -206,6 +211,7 @@ export async function compile(
     ssr: ssrOptions = {},
     injectEvents = true,
     debug = false,
+    highlightCode = true,
     tokenOverrides,
   } = options;
 
@@ -250,7 +256,14 @@ export async function compile(
 
   // 4. SSR 引擎：React → HTML
   const ssrStartTime = performance.now();
-  const ssrResult = await renderToStaticHTML(factory.element, {
+  let ssrElement = factory.element;
+  if (highlightCode !== false) {
+    await precomputeCodeHighlights(factory.ir);
+    const rendered = renderUINode(factory.ir, { debug });
+    ssrElement = React.createElement(ThemeProvider, { tokens }, rendered);
+  }
+
+  const ssrResult = await renderToStaticHTML(ssrElement, {
     ...ssrOptions,
     tokens,
     debug,
