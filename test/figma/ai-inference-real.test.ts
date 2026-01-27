@@ -1,7 +1,7 @@
 /**
  * AI 推断真实测试
  *
- * 这个测试会真正调用 Claude CLI 来测试 AI 推断能力
+ * 这个测试会真正调用 AI CLI 来测试 AI 推断能力
  *
  * 重要说明：
  * AI 仍然不是多模态，但我们现在会提供一些"轻量视觉线索"
@@ -11,6 +11,7 @@
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { execFileSync, execSync } from 'child_process';
+import * as os from 'os';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -19,6 +20,8 @@ import { buildAIPrompt, parseAIResponse } from '../../src/figma/inferrers';
 
 const RUN_REAL_AI = process.env.RUN_REAL_AI === '1';
 const realAIDescribe = RUN_REAL_AI ? describe : describe.skip;
+const USE_CODEX = process.env.USE_CODEX === '1';
+const AI_PROVIDER = USE_CODEX ? 'codex' : 'claude';
 let claudeBinPath: string | null = null;
 let claudeScriptPath: string | null = null;
 
@@ -48,7 +51,7 @@ function getClaudeScriptPath(): string {
 // === 工具函数 ===
 
 /**
- * 调用 Claude CLI 进行推断
+ * 调用 AI CLI 进行推断
  */
 function callClaudeAI(prompt: string): string {
   const args = ['--print', '--dangerously-skip-permissions'];
@@ -88,6 +91,45 @@ function callClaudeAI(prompt: string): string {
 
   console.error('Claude CLI 调用失败:', lastError?.message || 'unknown error');
   return '';
+}
+
+function callCodexAI(prompt: string): string {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'codex-ai-'));
+  const outputPath = path.join(tmpDir, 'last-message.txt');
+  const args = [
+    'exec',
+    '--color',
+    'never',
+    '--output-last-message',
+    outputPath,
+    '-',
+  ];
+
+  try {
+    execFileSync('codex', args, {
+      input: prompt,
+      encoding: 'utf-8' as const,
+      timeout: 120000,
+      maxBuffer: 1024 * 1024,
+    });
+    if (fs.existsSync(outputPath)) {
+      return fs.readFileSync(outputPath, 'utf-8').trim();
+    }
+  } catch (error: any) {
+    console.error('Codex CLI 调用失败:', error?.message || 'unknown error');
+  } finally {
+    try {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    } catch {
+      // ignore cleanup failures
+    }
+  }
+
+  return '';
+}
+
+function callRealAI(prompt: string): string {
+  return USE_CODEX ? callCodexAI(prompt) : callClaudeAI(prompt);
 }
 
 // === 测试数据：需要 AI 识别的模糊节点 ===
@@ -1589,10 +1631,10 @@ realAIDescribe('Real AI Inference Tests', () => {
   const TIMEOUT = 120000; // 2 分钟
   const predictions: Array<{ expected: string; predicted: string }> = [];
 
-  describe('Claude CLI 可用性', () => {
-    it('should have Claude CLI installed', () => {
-      const result = execSync('which claude', { encoding: 'utf-8' });
-      expect(result.trim()).toContain('claude');
+  describe('AI CLI 可用性', () => {
+    it('should have AI CLI installed', () => {
+      const result = execSync(`which ${AI_PROVIDER}`, { encoding: 'utf-8' });
+      expect(result.trim()).toContain(AI_PROVIDER);
     });
   });
 
@@ -1608,10 +1650,10 @@ realAIDescribe('Real AI Inference Tests', () => {
           console.log(`期望类型: ${testCase.expectedType}`);
           console.log(`\nPrompt:\n${prompt.substring(0, 200)}...`);
 
-          // 2. 调用 Claude CLI
-          const aiResponse = callClaudeAI(prompt);
+          // 2. 调用 AI CLI
+          const aiResponse = callRealAI(prompt);
           if (!aiResponse) {
-            console.warn('Claude CLI 不可用，跳过该用例');
+            console.warn('AI CLI 不可用，跳过该用例');
             return;
           }
           console.log(`\nAI 响应:\n${aiResponse.substring(0, 500)}`);
@@ -1626,9 +1668,9 @@ realAIDescribe('Real AI Inference Tests', () => {
               `${prompt}\n\n` +
               `你上一次没有返回合法 JSON（或 componentType 字段缺失）。\n` +
               `请只返回符合格式的 JSON，不要解释。`;
-            const retryResponse = callClaudeAI(retryPrompt);
+            const retryResponse = callRealAI(retryPrompt);
             if (!retryResponse) {
-              console.warn('Claude CLI 重试不可用，跳过该用例');
+              console.warn('AI CLI 重试不可用，跳过该用例');
               return;
             }
             console.log(`\nAI 重试响应:\n${retryResponse.substring(0, 500)}`);

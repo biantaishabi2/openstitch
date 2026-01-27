@@ -111,9 +111,20 @@
 - **Card 更可能**：
   - 有明显“卡片装饰”：例如 `hasShadow = yes`、圆角更强、或像单个信息块
   - 常见为一个主要容器承载少量关键内容（如标题 + 数值/描述）
+  - `backgroundChildCount >= 1` 且 `hasFill = yes`，并且有文本内容（`textChildCount >= 1`）
+  - 子节点数量不多（例如 `childCount <= 6`）但内部内容聚合为一个信息块
+  - **注意**：卡片装饰常在“子矩形背景层”上，父节点本身可能 `hasFill = no` / `hasShadow = no`。
+    只要 `backgroundChildCount >= 1` 且 `childTypes` 含 `RECTANGLE`，并有文本（`textChildCount >= 2`），依然优先 `Card`
 - 避免把 Section 误判成 Card：
   - 如果是竖向布局（`layoutMode = VERTICAL`）且文本较多，
     且没有明显卡片装饰（`hasShadow = no` 且没有强描边），优先 `Section`
+
+- **避免把 Card 误判成 Container（非常重要）**：
+  - 只要满足以下任一组合，就不要选 `Container`，优先 `Card`：
+    - `hasShadow = yes` 且 `textChildCount >= 1`
+    - `backgroundChildCount >= 1` 且 `hasFill = yes` 且 `cornerRadius` 明显不为 0
+    - `childCount` 较少（<= 6）且包含标题/数值等文本（`textChildCount >= 1`）
+    - `backgroundChildCount >= 1` 且 `childTypes` 含 `RECTANGLE`，并有多个文本（`textChildCount >= 2`）
 
 - **Section vs Container（非常重要，尤其是表单/页面区块）**：
   - 如果 `layoutMode = VERTICAL`，且 `childCount >= 3`，
