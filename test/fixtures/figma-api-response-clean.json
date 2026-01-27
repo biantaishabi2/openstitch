@@ -1,0 +1,257 @@
+{
+  "name": "Clean Design System",
+  "lastModified": "2024-01-20T10:30:00Z",
+  "thumbnailUrl": "https://example.com/thumbnail.png",
+  "version": "1234567890",
+  "document": {
+    "id": "0:0",
+    "name": "Document",
+    "type": "DOCUMENT",
+    "children": [
+      {
+        "id": "0:1",
+        "name": "Page 1",
+        "type": "CANVAS",
+        "children": [
+          {
+            "id": "1:1",
+            "name": "Card Component",
+            "type": "FRAME",
+            "absoluteBoundingBox": { "x": 0, "y": 0, "width": 320, "height": 200 },
+            "absoluteRenderBounds": { "x": 0, "y": 0, "width": 320, "height": 200 },
+            "blendMode": "PASS_THROUGH",
+            "clipsContent": true,
+            "cornerRadius": 8,
+            "rectangleCornerRadii": [8, 8, 8, 8],
+            "fills": [
+              {
+                "blendMode": "NORMAL",
+                "type": "SOLID",
+                "color": { "r": 1, "g": 1, "b": 1, "a": 1 }
+              }
+            ],
+            "strokes": [],
+            "strokeWeight": 0,
+            "effects": [
+              {
+                "type": "DROP_SHADOW",
+                "visible": true,
+                "color": { "r": 0, "g": 0, "b": 0, "a": 0.1 },
+                "blendMode": "NORMAL",
+                "offset": { "x": 0, "y": 4 },
+                "radius": 16,
+                "spread": 0
+              }
+            ],
+            "children": [
+              {
+                "id": "1:2",
+                "name": "Card Header",
+                "type": "FRAME",
+                "absoluteBoundingBox": { "x": 0, "y": 0, "width": 320, "height": 56 },
+                "absoluteRenderBounds": { "x": 0, "y": 0, "width": 320, "height": 56 },
+                "blendMode": "PASS_THROUGH",
+                "clipsContent": false,
+                "fills": [
+                  {
+                    "blendMode": "NORMAL",
+                    "type": "SOLID",
+                    "color": { "r": 0.145, "g": 0.388, "b": 0.921, "a": 1 }
+                  }
+                ],
+                "strokes": [],
+                "strokeWeight": 0,
+                "effects": [],
+                "layoutMode": "HORIZONTAL",
+                "primaryAxisSizingMode": "FIXED",
+                "counterAxisSizingMode": "FIXED",
+                "paddingLeft": 16,
+                "paddingRight": 16,
+                "paddingTop": 16,
+                "paddingBottom": 16,
+                "itemSpacing": 8,
+                "children": [
+                  {
+                    "id": "1:3",
+                    "name": "Title",
+                    "type": "TEXT",
+                    "absoluteBoundingBox": { "x": 16, "y": 16, "width": 200, "height": 24 },
+                    "absoluteRenderBounds": { "x": 16, "y": 16, "width": 200, "height": 24 },
+                    "blendMode": "PASS_THROUGH",
+                    "fills": [
+                      {
+                        "blendMode": "NORMAL",
+                        "type": "SOLID",
+                        "color": { "r": 1, "g": 1, "b": 1, "a": 1 }
+                      }
+                    ],
+                    "strokes": [],
+                    "strokeWeight": 0,
+                    "effects": [],
+                    "characters": "Card Title",
+                    "style": {
+                      "fontFamily": "Inter",
+                      "fontPostScriptName": "Inter-SemiBold",
+                      "fontWeight": 600,
+                      "fontSize": 18,
+                      "textAlignHorizontal": "LEFT",
+                      "textAlignVertical": "CENTER",
+                      "letterSpacing": 0,
+                      "lineHeightPx": 24,
+                      "lineHeightPercent": 133.33,
+                      "lineHeightUnit": "PIXELS"
+                    },
+                    "characterStyleOverrides": [],
+                    "styleOverrideTable": {}
+                  }
+                ]
+              },
+              {
+                "id": "1:4",
+                "name": "Card Body",
+                "type": "FRAME",
+                "absoluteBoundingBox": { "x": 0, "y": 56, "width": 320, "height": 144 },
+                "absoluteRenderBounds": { "x": 0, "y": 56, "width": 320, "height": 144 },
+                "blendMode": "PASS_THROUGH",
+                "clipsContent": false,
+                "fills": [],
+                "strokes": [],
+                "strokeWeight": 0,
+                "effects": [],
+                "layoutMode": "VERTICAL",
+                "primaryAxisSizingMode": "FIXED",
+                "counterAxisSizingMode": "FIXED",
+                "paddingLeft": 16,
+                "paddingRight": 16,
+                "paddingTop": 16,
+                "paddingBottom": 16,
+                "itemSpacing": 12,
+                "children": [
+                  {
+                    "id": "1:5",
+                    "name": "Description",
+                    "type": "TEXT",
+                    "absoluteBoundingBox": { "x": 16, "y": 72, "width": 288, "height": 48 },
+                    "absoluteRenderBounds": { "x": 16, "y": 72, "width": 288, "height": 48 },
+                    "blendMode": "PASS_THROUGH",
+                    "fills": [
+                      {
+                        "blendMode": "NORMAL",
+                        "type": "SOLID",
+                        "color": { "r": 0.4, "g": 0.4, "b": 0.4, "a": 1 }
+                      }
+                    ],
+                    "strokes": [],
+                    "strokeWeight": 0,
+                    "effects": [],
+                    "characters": "This is a description text that explains what this card is about.",
+                    "style": {
+                      "fontFamily": "Inter",
+                      "fontPostScriptName": "Inter-Regular",
+                      "fontWeight": 400,
+                      "fontSize": 14,
+                      "textAlignHorizontal": "LEFT",
+                      "textAlignVertical": "TOP",
+                      "letterSpacing": 0,
+                      "lineHeightPx": 20,
+                      "lineHeightPercent": 142.86,
+                      "lineHeightUnit": "PIXELS"
+                    },
+                    "characterStyleOverrides": [],
+                    "styleOverrideTable": {}
+                  },
+                  {
+                    "id": "1:6",
+                    "name": "Button",
+                    "type": "FRAME",
+                    "absoluteBoundingBox": { "x": 16, "y": 136, "width": 120, "height": 40 },
+                    "absoluteRenderBounds": { "x": 16, "y": 136, "width": 120, "height": 40 },
+                    "blendMode": "PASS_THROUGH",
+                    "clipsContent": false,
+                    "cornerRadius": 6,
+                    "rectangleCornerRadii": [6, 6, 6, 6],
+                    "fills": [
+                      {
+                        "blendMode": "NORMAL",
+                        "type": "SOLID",
+                        "color": { "r": 0.145, "g": 0.388, "b": 0.921, "a": 1 }
+                      }
+                    ],
+                    "strokes": [],
+                    "strokeWeight": 0,
+                    "effects": [],
+                    "layoutMode": "HORIZONTAL",
+                    "primaryAxisAlignItems": "CENTER",
+                    "counterAxisAlignItems": "CENTER",
+                    "paddingLeft": 16,
+                    "paddingRight": 16,
+                    "paddingTop": 10,
+                    "paddingBottom": 10,
+                    "children": [
+                      {
+                        "id": "1:7",
+                        "name": "Button Text",
+                        "type": "TEXT",
+                        "absoluteBoundingBox": { "x": 32, "y": 146, "width": 88, "height": 20 },
+                        "absoluteRenderBounds": { "x": 32, "y": 146, "width": 88, "height": 20 },
+                        "blendMode": "PASS_THROUGH",
+                        "fills": [
+                          {
+                            "blendMode": "NORMAL",
+                            "type": "SOLID",
+                            "color": { "r": 1, "g": 1, "b": 1, "a": 1 }
+                          }
+                        ],
+                        "strokes": [],
+                        "strokeWeight": 0,
+                        "effects": [],
+                        "characters": "Learn More",
+                        "style": {
+                          "fontFamily": "Inter",
+                          "fontPostScriptName": "Inter-Medium",
+                          "fontWeight": 500,
+                          "fontSize": 14,
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER",
+                          "letterSpacing": 0,
+                          "lineHeightPx": 20,
+                          "lineHeightPercent": 142.86,
+                          "lineHeightUnit": "PIXELS"
+                        },
+                        "characterStyleOverrides": [],
+                        "styleOverrideTable": {}
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "backgroundColor": { "r": 0.96, "g": 0.96, "b": 0.96, "a": 1 }
+      }
+    ]
+  },
+  "styles": {
+    "1:100": {
+      "key": "primary-color",
+      "name": "Primary/500",
+      "styleType": "FILL",
+      "description": "Primary brand color"
+    },
+    "1:101": {
+      "key": "text-primary",
+      "name": "Text/Primary",
+      "styleType": "FILL",
+      "description": "Primary text color"
+    },
+    "1:102": {
+      "key": "heading-lg",
+      "name": "Heading/Large",
+      "styleType": "TEXT",
+      "description": "Large heading style"
+    }
+  },
+  "components": {},
+  "componentSets": {}
+}

@@ -738,6 +738,7 @@ function generateDSL(
 
     // 添加属性
     let hasContentLine = false;
+    const defaultAttrParts: string[] = [];
     if (type === 'Text' || type === 'Heading') {
       const text = node.characters || '';
       if (text) {
@@ -747,12 +748,12 @@ function generateDSL(
     } else if (type === 'Button') {
       const textChild = node.children?.find(c => c.type === 'TEXT');
       if (textChild?.characters) {
-        lines.push(`${indent}  ATTR: Text("${escapeString(textChild.characters)}")`);
+        defaultAttrParts.push(`Text("${escapeString(textChild.characters)}")`);
       }
     } else if (type === 'Input') {
       const textChild = node.children?.find(c => c.type === 'TEXT');
       if (textChild?.characters) {
-        lines.push(`${indent}  ATTR: Placeholder("${escapeString(textChild.characters)}")`);
+        defaultAttrParts.push(`Placeholder("${escapeString(textChild.characters)}")`);
       }
     }
 
@@ -762,6 +763,7 @@ function generateDSL(
       }
     }
 
+    const hasAIAttrOverride = aiOverrides.attrLines.length > 0;
     let attrLine = mergeAttrLines(aiOverrides.attrLines);
     if (!attrLine) {
       const aiAttrParts: string[] = [];
@@ -774,6 +776,12 @@ function generateDSL(
       if (aiAttrParts.length > 0) {
         attrLine = `ATTR: ${aiAttrParts.join(', ')}`;
       }
+    }
+
+    if (!hasAIAttrOverride && defaultAttrParts.length > 0) {
+      attrLine = attrLine
+        ? appendAttrParts(attrLine, defaultAttrParts.join(', '))
+        : `ATTR: ${defaultAttrParts.join(', ')}`;
     }
 
     // 资产 URL 与 ATTR 合并，确保只输出一条 ATTR

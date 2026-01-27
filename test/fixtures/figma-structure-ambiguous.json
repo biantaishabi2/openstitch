@@ -1,0 +1,188 @@
+{
+  "name": "模糊结构 - 需要 AI 识别",
+  "lastModified": "2024-01-20T10:30:00Z",
+  "version": "1",
+  "document": {
+    "id": "0:0",
+    "name": "Document",
+    "type": "DOCUMENT",
+    "children": [
+      {
+        "id": "0:1",
+        "name": "Page 1",
+        "type": "CANVAS",
+        "children": [
+          {
+            "id": "ambig:1",
+            "name": "Rectangle 47",
+            "type": "FRAME",
+            "absoluteBoundingBox": { "x": 0, "y": 0, "width": 120, "height": 44 },
+            "cornerRadius": 6,
+            "fills": [{ "type": "SOLID", "color": { "r": 0.2, "g": 0.5, "b": 0.9, "a": 1 } }],
+            "strokes": [],
+            "effects": [],
+            "children": [
+              {
+                "id": "ambig:2",
+                "name": "Text 1",
+                "type": "TEXT",
+                "absoluteBoundingBox": { "x": 30, "y": 12, "width": 60, "height": 20 },
+                "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1, "a": 1 } }],
+                "characters": "Submit",
+                "style": {
+                  "fontFamily": "Inter",
+                  "fontWeight": 500,
+                  "fontSize": 14,
+                  "textAlignHorizontal": "CENTER"
+                }
+              }
+            ]
+          },
+          {
+            "id": "ambig:3",
+            "name": "Group 12",
+            "type": "GROUP",
+            "absoluteBoundingBox": { "x": 0, "y": 60, "width": 300, "height": 180 },
+            "clipsContent": false,
+            "children": [
+              {
+                "id": "ambig:4",
+                "name": "Rectangle 48",
+                "type": "RECTANGLE",
+                "absoluteBoundingBox": { "x": 0, "y": 60, "width": 300, "height": 180 },
+                "cornerRadius": 12,
+                "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1, "a": 1 } }],
+                "strokes": [],
+                "effects": [
+                  {
+                    "type": "DROP_SHADOW",
+                    "visible": true,
+                    "color": { "r": 0, "g": 0, "b": 0, "a": 0.1 },
+                    "offset": { "x": 0, "y": 4 },
+                    "radius": 16
+                  }
+                ]
+              },
+              {
+                "id": "ambig:5",
+                "name": "lorem text",
+                "type": "TEXT",
+                "absoluteBoundingBox": { "x": 16, "y": 76, "width": 268, "height": 24 },
+                "fills": [{ "type": "SOLID", "color": { "r": 0.1, "g": 0.1, "b": 0.1, "a": 1 } }],
+                "characters": "Product Name",
+                "style": { "fontFamily": "Inter", "fontWeight": 600, "fontSize": 18 }
+              },
+              {
+                "id": "ambig:6",
+                "name": "more text",
+                "type": "TEXT",
+                "absoluteBoundingBox": { "x": 16, "y": 108, "width": 268, "height": 40 },
+                "fills": [{ "type": "SOLID", "color": { "r": 0.4, "g": 0.4, "b": 0.4, "a": 1 } }],
+                "characters": "This is a product description that goes here.",
+                "style": { "fontFamily": "Inter", "fontWeight": 400, "fontSize": 14 }
+              },
+              {
+                "id": "ambig:7",
+                "name": "price tag",
+                "type": "TEXT",
+                "absoluteBoundingBox": { "x": 16, "y": 160, "width": 80, "height": 24 },
+                "fills": [{ "type": "SOLID", "color": { "r": 0.2, "g": 0.5, "b": 0.9, "a": 1 } }],
+                "characters": "$99.00",
+                "style": { "fontFamily": "Inter", "fontWeight": 700, "fontSize": 20 }
+              }
+            ]
+          },
+          {
+            "id": "ambig:8",
+            "name": "Frame 99",
+            "type": "FRAME",
+            "absoluteBoundingBox": { "x": 0, "y": 260, "width": 280, "height": 48 },
+            "cornerRadius": 8,
+            "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1, "a": 1 } }],
+            "strokes": [{ "type": "SOLID", "color": { "r": 0.85, "g": 0.85, "b": 0.85, "a": 1 } }],
+            "strokeWeight": 1,
+            "effects": [],
+            "children": [
+              {
+                "id": "ambig:9",
+                "name": "placeholder text",
+                "type": "TEXT",
+                "absoluteBoundingBox": { "x": 16, "y": 274, "width": 150, "height": 20 },
+                "fills": [{ "type": "SOLID", "color": { "r": 0.6, "g": 0.6, "b": 0.6, "a": 1 } }],
+                "characters": "Enter your email...",
+                "style": { "fontFamily": "Inter", "fontWeight": 400, "fontSize": 15 }
+              }
+            ]
+          },
+          {
+            "id": "ambig:10",
+            "name": "icon thing",
+            "type": "VECTOR",
+            "absoluteBoundingBox": { "x": 0, "y": 330, "width": 24, "height": 24 },
+            "fills": [{ "type": "SOLID", "color": { "r": 0.3, "g": 0.3, "b": 0.3, "a": 1 } }],
+            "strokes": [],
+            "effects": []
+          },
+          {
+            "id": "ambig:11",
+            "name": "weird box",
+            "type": "FRAME",
+            "absoluteBoundingBox": { "x": 0, "y": 370, "width": 200, "height": 200 },
+            "cornerRadius": 0,
+            "fills": [{ "type": "SOLID", "color": { "r": 0.95, "g": 0.95, "b": 0.95, "a": 1 } }],
+            "strokes": [],
+            "effects": [],
+            "children": [
+              {
+                "id": "ambig:12",
+                "name": "nested thing",
+                "type": "FRAME",
+                "absoluteBoundingBox": { "x": 20, "y": 390, "width": 160, "height": 80 },
+                "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1, "a": 1 } }],
+                "strokes": [],
+                "effects": []
+              }
+            ]
+          },
+          {
+            "id": "ambig:13",
+            "name": "something 123",
+            "type": "FRAME",
+            "absoluteBoundingBox": { "x": 220, "y": 370, "width": 180, "height": 50 },
+            "cornerRadius": 25,
+            "fills": [
+              {
+                "type": "GRADIENT_LINEAR",
+                "gradientStops": [
+                  { "position": 0, "color": { "r": 0.9, "g": 0.3, "b": 0.5, "a": 1 } },
+                  { "position": 1, "color": { "r": 0.6, "g": 0.2, "b": 0.8, "a": 1 } }
+                ]
+              }
+            ],
+            "strokes": [],
+            "effects": [],
+            "children": [
+              {
+                "id": "ambig:14",
+                "name": "txt",
+                "type": "TEXT",
+                "absoluteBoundingBox": { "x": 250, "y": 385, "width": 120, "height": 20 },
+                "fills": [{ "type": "SOLID", "color": { "r": 1, "g": 1, "b": 1, "a": 1 } }],
+                "characters": "Get Started",
+                "style": {
+                  "fontFamily": "Inter",
+                  "fontWeight": 600,
+                  "fontSize": 16,
+                  "textAlignHorizontal": "CENTER"
+                }
+              }
+            ]
+          }
+        ],
+        "backgroundColor": { "r": 0.98, "g": 0.98, "b": 0.98, "a": 1 }
+      }
+    ]
+  },
+  "styles": {},
+  "components": {}
+}
