@@ -1,6 +1,25 @@
 import { codeToHtml } from 'shiki';
 import type { UINode } from '../factory/types';
 
+interface MarkdownBlock {
+  code: string;
+  language: string;
+}
+
+function extractMarkdownCodeBlocks(markdown: string): MarkdownBlock[] {
+  const blocks: MarkdownBlock[] = [];
+  const fenceRegex = /```([^\n`]*)\n([\s\S]*?)```/g;
+  let match: RegExpExecArray | null;
+
+  while ((match = fenceRegex.exec(markdown)) !== null) {
+    const language = match[1]?.trim() || 'text';
+    const code = match[2]?.replace(/\n$/, '') ?? '';
+    blocks.push({ code, language });
+  }
+
+  return blocks;
+}
+
 async function visitNode(value: unknown): Promise<void> {
   if (!value) return;
 
@@ -31,6 +50,38 @@ async function visitNode(value: unknown): Promise<void> {
           node.props = props;
         } catch {
           // 忽略高亮失败，保留纯文本渲染
+        }
+      }
+    }
+
+    if (node.type === 'Markdown') {
+      const props = (node.props || {}) as Record<string, unknown>;
+      const markdown =
+        typeof props.content === 'string'
+          ? props.content
+          : typeof node.children === 'string'
+            ? node.children
+            : undefined;
+
+      if (markdown && !Array.isArray(props.highlightedBlocks)) {
+        const blocks = extractMarkdownCodeBlocks(markdown);
+        if (blocks.length > 0) {
+          const highlightedBlocks: Array<string | undefined> = [];
+
+          for (const block of blocks) {
+            try {
+              const html = await codeToHtml(block.code, {
+                lang: block.language,
+                theme: 'github-dark',
+              });
+              highlightedBlocks.push(html);
+            } catch {
+              highlightedBlocks.push(undefined);
+            }
+          }
+
+          props.highlightedBlocks = highlightedBlocks;
+          node.props = props;
         }
       }
     }

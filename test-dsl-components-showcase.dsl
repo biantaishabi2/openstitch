@@ -861,7 +861,7 @@
         [STACK: stack_241]
           { Gap: "6" }
           [GRID: component_Grid]
-            { Columns: "4", Gap: "4", ClassName: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4" }
+            { Columns: "4", Gap: "4", ClassName: "grid-cols-1 lg:grid-cols-2 xl:grid-cols-4" }
             [CARD: card_242]
               { ClassName: "p-6" }
               [STATISTIC: component_Statistic]

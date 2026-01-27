@@ -8,6 +8,7 @@ import { CodeBlock, InlineCode } from '@/components/ui/code-block';
 
 export interface MarkdownProps extends React.HTMLAttributes<HTMLDivElement> {
   content?: string;
+  highlightedBlocks?: Array<string | undefined>;
 }
 
 function normalizeMarkdownContent(value: React.ReactNode): string {
@@ -19,8 +20,9 @@ function normalizeMarkdownContent(value: React.ReactNode): string {
 }
 
 const Markdown = React.forwardRef<HTMLDivElement, MarkdownProps>(
-  ({ className, content, children, ...props }, ref) => {
+  ({ className, content, highlightedBlocks, children, ...props }, ref) => {
     const markdown = content ?? normalizeMarkdownContent(children);
+    let blockIndex = 0;
 
     return (
       <div
@@ -40,7 +42,15 @@ const Markdown = React.forwardRef<HTMLDivElement, MarkdownProps>(
 
               const match = /language-(\\w+)/.exec(codeClassName || '');
               const language = match?.[1] || 'text';
-              return <CodeBlock code={code} language={language} />;
+              const highlightedCode = highlightedBlocks?.[blockIndex];
+              blockIndex += 1;
+              return (
+                <CodeBlock
+                  code={code}
+                  language={language}
+                  highlightedCode={highlightedCode}
+                />
+              );
             },
             a: ({ children: linkChildren, ...linkProps }) => (
               <a className="text-primary underline" {...linkProps}>
