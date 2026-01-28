@@ -165,7 +165,28 @@ export function extractValidNodes(document: FigmaNode): FigmaNode[] {
     }
   }
 
-  traverse(document);
+  function traverseCanvas(canvasNode: FigmaNode) {
+    // 处理 CANVAS 层：只处理 FRAME 类型的设计稿，忽略其他独立元素
+    if (canvasNode.type === 'CANVAS' && canvasNode.children) {
+      for (const child of canvasNode.children) {
+        // 只处理 FRAME 类型的节点（真正的设计稿）
+        // 忽略独立的 RECTANGLE、IMAGE 等参考图片
+        if (child.type === 'FRAME') {
+          traverse(child);
+        }
+      }
+    }
+  }
+
+  // 从 DOCUMENT 开始遍历
+  if (document.type === 'DOCUMENT' && document.children) {
+    for (const canvas of document.children) {
+      if (canvas.type === 'CANVAS') {
+        traverseCanvas(canvas);
+      }
+    }
+  }
+
   return nodes;
 }
 
