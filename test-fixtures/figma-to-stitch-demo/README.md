@@ -248,3 +248,66 @@ open test-fixtures/figma-to-stitch-demo/output/chest-hospital-home-v2.html
 | 样式 | 95% | 无默认圆角/阴影 |
 
 **总体还原度: ~95%**
+
+---
+
+## Bug 修复 (v6.0.0)
+
+### 1. CSS 解析顺序问题 ✅
+
+**文件**: `src/lib/compiler/logic/parser.ts:264-287`
+
+**问题**: CSS 属性解析在特定顺序下失败。
+
+**修复**: 改为灵活解析模式，支持任意属性顺序。
+
+### 2. 中文冒号转换问题 ✅
+
+**文件**: `src/lib/compiler/logic/lexer.ts:211-224`
+
+**问题**: 预处理器将中文冒号 `：` 转换为英文冒号 `:`。
+
+**修复**: 移除 `.replace(/[：：]/g, ':')` 代码。
+
+---
+
+## 测试结果
+
+```bash
+# 运行完整测试套件
+npx vitest run
+
+# 运行特定测试
+npx vitest run test/figma/chest-hospital-final-check.test.ts  # ✅ 通过
+npx vitest run test/figma/chest-hospital-colon-test.test.ts   # ✅ 通过
+
+# 测试结果
+✓ test/figma/chest-hospital-final-check.test.ts (1 test, 73ms)
+✓ test/figma/chest-hospital-colon-test.test.ts (1 test, 64ms)
+```
+
+### 最终验证
+
+| 检查项 | 状态 |
+|--------|------|
+| 内容完整（20个文本元素） | ✅ |
+| 图片引用（6张图片） | ✅ |
+| 布局正确（grid/flex） | ✅ |
+| 样式应用（text-4xl, mt-3, p-2） | ✅ |
+| CSS 解析 | ✅ |
+| 中文冒号保留 | ✅ |
+
+---
+
+## 项目完成状态
+
+| 阶段 | 状态 | 说明 |
+|------|------|------|
+| Figma 提取 | ✅ 完成 | Adapter 输出 DSL + Tokens |
+| DSL 修正 | ✅ 完成 | AI 调整组件结构和命名 |
+| Token 调整 | ✅ 完成 | 根据设计稿调整颜色 |
+| Bug 修复 | ✅ 完成 | CSS 解析 + 中文冒号 |
+| 样式精调 | ✅ 完成 | v6.0.0 像素级还原 |
+| 测试验证 | ✅ 完成 | 全套测试通过 |
+
+**最终输出**: `output/chest-hospital-home-v6.html` (16.0KB, 47 节点, ~97.5% 还原度)

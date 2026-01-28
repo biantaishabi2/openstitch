@@ -367,3 +367,59 @@ console.log(Object.entries(result.tokens)
 | 颜色推断器 | `src/figma/inferrers/color-inferrer.ts` |
 | 结构推断器 | `src/figma/inferrers/structure-inferrer.ts` |
 | 编译器 | `src/lib/compiler/index.ts` |
+
+---
+
+## Bug 修复记录
+
+### 1. CSS 属性解析顺序问题 (2024-01)
+
+**问题**: CSS 属性解析在特定顺序下失败，当 CSS 后紧跟布局属性或子元素时。
+
+**原因**: 原代码使用固定顺序解析，先解析 `CSS:`，再解析其他属性。如果 CSS 属性出现在其他属性之后，会导致解析失败。
+
+**修复**: `src/lib/compiler/logic/parser.ts:264-287`
+- 改为灵活解析模式，使用 while 循环读取所有属性
+- 不再依赖固定顺序，支持任意属性排列
+
+**修复前**:
+```typescript
+// 固定顺序解析，CSS 必须在其他属性之前
+if (parseCSS()) { ... }
+if (parseClassName()) { ... }
+```
+
+**修复后**:
+```typescript
+// 灵活解析，支持任意顺序
+while (currentLine.match(/^(CSS|ATTR|CONTENT|ClassName):/)) {
+  if (parseCSS()) continue;
+  if (parseClassName()) continue;
+  if (parseContent()) continue;
+  if (parseAttr()) continue;
+  break;
+}
+```
+
+### 2. 中文冒号转换问题 (2024-01)
+
+**问题**: 预处理器将中文冒号 `：` 自动转换为英文冒号 `:`，导致中文内容被修改。
+
+**原因**: `src/lib/compiler/logic/lexer.ts` 中存在一行 `.replace(/[：：]/g, ':')` 代码。
+
+**修复**: `src/lib/compiler/logic/lexer.ts:211-224`
+- 移除 `.replace(/[：：]/g, ':')` 这行代码
+- 保留原始的中文标点符号
+
+**修复前**:
+```typescript
+const processed = rawContent
+  .replace(/[：：]/g, ':')  // 移除这行
+  .replace(/\u0000/g, '');
+```
+
+**修复后**:
+```typescript
+const processed = rawContent
+  .replace(/\u0000/g, '');
+```

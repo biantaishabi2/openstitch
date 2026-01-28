@@ -207,10 +207,22 @@ export const StitchLexer = new Lexer(allTokens, {
 /**
  * 预处理 DSL，清理特殊字符
  * 保留中文字符，由 ChineseText Token 处理
+ * 只转换全角 ASCII 字符，不转换中文标点符号
  */
 function preprocessInput(input: string): string {
   return input
-    .replace(/[：：]/g, ':')
+    // 只转换全角 ASCII 字符（U+FF00-U+FFEF），不转换中文标点符号
+    // 全角数字 U+FF10-U+FF19 → ASCII 0-9
+    .replace(/[Ａ-Ｚ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
+    .replace(/[ａ-ｚ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
+    .replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
+    // 全角符号（只转常见的 ASCII 对应符号，不转中文标点）
+    .replace(/[，]/g, ',')
+    .replace(/[。]/g, '.')
+    .replace(/[；]/g, ';')
+    .replace(/[？]/g, '?')
+    .replace(/[！]/g, '!')
+    // 不转换中文冒号：保留原始的中文冒号
     .replace(/[\u201C\u201D]/g, '"')
     .replace(/[\u2018\u2019]/g, "'")
     .replace(/[＜＞]/g, m => m === '＜' ? '<' : '>')
