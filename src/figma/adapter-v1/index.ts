@@ -1,248 +1,220 @@
 /**
- * Adapter V1 - 增强版 Figma 适配器
- * 
- * 主要改进：
- * 1. 智能过滤装饰节点（白色背景、小装饰等）
- * 2. 基于位置推断布局属性（Tailwind ClassName）
- * 3. 智能识别卡片结构
- * 4. 语义化命名推断
+ * Adapter V1 - 主入口
  */
 
 import type { FigmaFile, FigmaNode } from '../types';
-import type { 
-  AdapterV1Options, 
-  AdapterV1Result, 
-  ProcessedNode 
-} from './types';
-import { 
-  isDecorationNode, 
-  inferLayoutClasses, 
-  inferSemanticName 
-} from './node-processor';
-import { generateDSL, generateSimpleDSL } from './dsl-generator';
-import { extractValidNodes } from '../inferrers/visual-inferrer';
-import { inferVisuals } from '../inferrers/visual-inferrer';
-
-/** 默认选项 */
-const DEFAULT_OPTIONS: AdapterV1Options = {
-  context: '',
-  filterDecorations: true,
-  inferLayout: true,
-  smartCardDetection: true,
-  flattenIcons: true,
-};
+import type { AdapterV1Options, AdapterV1Result, ProcessedNode } from './types';
+import { processNode } from './processor';
+import { detectPattern } from './pattern';
+import { generateDSL } from './dsl';
 
 /**
- * 处理单个节点
+ * 提取有效节点（只处理 FRAME）
  */
-function processNode(
-  node: FigmaNode,
-  parent: FigmaNode | null,
-  siblings: FigmaNode[],
-  options: AdapterV1Options,
-  logs: string[]
-): ProcessedNode {
-  const processed: ProcessedNode = {
-    original: node,
-    semanticName: inferSemanticName(node, options.context),
-    componentType: inferComponentType(node),
-    classNames: {},
-    filtered: false,
-    children: [],
-  };
-  
-  // 1. 检查是否是装饰节点
-  if (options.filterDecorations) {
-    if (isDecorationNode(node, parent)) {
-      processed.filtered = true;
-      processed.filterReason = 'decoration node (white background or small element)';
-      logs.push(`[FILTER] ${node.name} (${node.type}): decoration`);
+function extractRootNodes(document: FigmaNode): FigmaNode[] {
+  const roots: FigmaNode[] = [];
+
+  function traverse(node: FigmaNode) {
+    // 在 CANVAS 层提取 FRAME 节点（设计稿主容器）
+    if (node.type === 'CANVAS' && node.children) {
+      for (const child of node.children) {
+        if (child.type === 'FRAME') {
+          // 这个 FRAME 是设计稿主容器，处理它的子节点
+          roots.push(child);
+        }
+      }
+      return;
+    }
+
+    if (node.children) {
+      for (const child of node.children) {
+        traverse(child);
+      }
     }
   }
-  
-  // 2. 推断布局属性
-  if (options.inferLayout && !processed.filtered) {
-    processed.classNames = inferLayoutClasses(node, parent, siblings);
-    const classStr = Object.values(processed.classNames)
-      .flat()
-      .filter(Boolean)
-      .join(' ');
-    if (classStr) {
-      logs.push(`[LAYOUT] ${node.name}: ${classStr.substring(0, 60)}...`);
-    }
-  }
-  
-  // 3. 智能卡片检测
-  if (options.smartCardDetection && !processed.filtered) {
-    if (isCardPattern(node)) {
-      processed.componentType = 'Card';
-      logs.push(`[DETECT] ${node.name}: detected as Card`);
-    }
-  }
-  
-  // 4. 处理子节点
-  const children = node.children || [];
-  for (let i = 0; i < children.length; i++) {
-    const child = children[i];
-    const siblingSiblings = children.filter((_, idx) => idx !== i);
-    const processedChild = processNode(child, node, siblingSiblings, options, logs);
-    processed.children.push(processedChild);
-  }
-  
-  return processed;
+
+  traverse(document);
+  return roots;
 }
 
 /**
- * 推断组件类型
+ * 提取设计稿中的主要节点（卡片、区块等）
  */
-function inferComponentType(node: FigmaNode): string {
-  // 基于类型的基础映射
-  const typeMap: Record<string, string> = {
-    'TEXT': 'Text',
-    'RECTANGLE': 'Container',
-    'ELLIPSE': 'Container',
-    'VECTOR': 'Icon',
-    'IMAGE': 'Image',
-    'FRAME': 'Frame',
-    'GROUP': 'Group',
-    'INSTANCE': 'Container',
-    'COMPONENT': 'Container',
-  };
+function extractDesignNodes(rootFrame: FigmaNode): FigmaNode[] {
+  const nodes: FigmaNode[] = [];
   
-  const baseType = typeMap[node.type] || 'Container';
+  for (const child of rootFrame.children || []) {
+    // 跳过不可见节点
+    if (child.visible === false) continue;
+    
+    // 跳过参考图片（独立的大尺寸 RECTANGLE）
+    if (child.type === 'RECTANGLE' && child.fills?.some(f => f.type === 'IMAGE')) {
+      const box = child.absoluteBoundingBox;
+      if (box && box.width > 300 && box.height > 600) {
+        continue; // 可能是参考截图
+      }
+    }
+    
+    nodes.push(child);
+  }
   
-  // 基于命名增强识别
-  const name = node.name?.toLowerCase() || '';
-  if (name.includes('button') || name.includes('btn')) return 'Button';
-  if (name.includes('card')) return 'Card';
-  if (name.includes('input') || name.includes('field')) return 'Input';
-  if (name.includes('icon') || name.includes('logo')) return 'Icon';
-  if (name.includes('header') || name.includes('title')) return 'Heading';
-  if (name.includes('image') || name.includes('img') || name.includes('pic')) return 'Image';
-  
-  return baseType;
+  return nodes;
 }
 
 /**
- * 检测卡片模式
+ * 提取 Design Tokens
  */
-function isCardPattern(node: FigmaNode): boolean {
-  const box = node.absoluteBoundingBox;
-  if (!box) return false;
-  
-  // 尺寸检查
-  const isCardSize = box.width >= 80 && box.width <= 200 && 
-                     box.height >= 60 && box.height <= 200;
-  
-  if (!isCardSize) return false;
-  
-  const children = node.children || [];
-  
-  // 检查是否包含文本
-  const hasText = children.some(c => c.type === 'TEXT');
-  
-  // 检查是否包含图标或图片
-  const hasIconOrImage = children.some(c => 
-    c.type === 'FRAME' || c.type === 'VECTOR' || c.type === 'IMAGE' || c.type === 'INSTANCE'
-  );
-  
-  // 检查是否有背景（矩形填充）
-  const hasBackground = children.some(c => {
-    if (c.type !== 'RECTANGLE') return false;
-    const fills = c.fills || [];
-    return fills.length > 0 && fills[0].type === 'SOLID';
-  });
-  
-  return hasText && hasIconOrImage && hasBackground;
+function extractTokens(nodes: ProcessedNode[]): Record<string, string> {
+  const colors = new Set<string>();
+  const fontSizes = new Set<number>();
+
+  function collect(node: ProcessedNode) {
+    if (node.visual.backgroundColor) {
+      colors.add(node.visual.backgroundColor);
+    }
+    if (node.visual.textColor) {
+      colors.add(node.visual.textColor);
+    }
+    if (node.visual.fontSize) {
+      fontSizes.add(node.visual.fontSize);
+    }
+
+    for (const child of node.children) {
+      collect(child);
+    }
+  }
+
+  for (const node of nodes) {
+    collect(node);
+  }
+
+  // 简单映射到 tokens
+  const colorArray = [...colors];
+  const tokens: Record<string, string> = {};
+
+  // 找主色（使用最多的非黑白灰颜色）
+  const nonNeutralColors = colorArray.filter(c => !isNeutralColor(c));
+  if (nonNeutralColors.length > 0) {
+    tokens['--primary-color'] = nonNeutralColors[0];
+  }
+
+  // 背景色（最浅的）
+  const bgColor = colorArray.find(c => isLightColor(c));
+  if (bgColor) {
+    tokens['--background'] = bgColor;
+  }
+
+  // 文字色（最深的）
+  const textColor = colorArray.find(c => isDarkColor(c));
+  if (textColor) {
+    tokens['--foreground'] = textColor;
+  }
+
+  return tokens;
+}
+
+/**
+ * 判断是否中性色
+ */
+function isNeutralColor(hex: string): boolean {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return false;
+  const { r, g, b } = rgb;
+  return Math.abs(r - g) < 10 && Math.abs(g - b) < 10;
+}
+
+/**
+ * 判断是否浅色
+ */
+function isLightColor(hex: string): boolean {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return false;
+  const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+  return brightness > 240;
+}
+
+/**
+ * 判断是否深色
+ */
+function isDarkColor(hex: string): boolean {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return false;
+  const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+  return brightness < 50;
+}
+
+/**
+ * Hex 转 RGB
+ */
+function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (!result) return null;
+  return {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16),
+  };
 }
 
 /**
  * 主转换函数
  */
-export async function convertFigmaToStitchV1(
+export function convertFigmaToStitchV1(
   figmaFile: FigmaFile,
   options: AdapterV1Options = {}
-): Promise<AdapterV1Result> {
-  const opts = { ...DEFAULT_OPTIONS, ...options };
-  const logs: string[] = [];
-  
-  logs.push(`[START] Adapter V1 processing: ${figmaFile.name}`);
-  logs.push(`[OPTIONS] filterDecorations=${opts.filterDecorations}, inferLayout=${opts.inferLayout}`);
-  
-  // 1. 提取有效节点（只处理 FRAME）
-  const validNodes = extractValidNodes(figmaFile.document);
-  logs.push(`[NODES] Extracted ${validNodes.length} valid nodes`);
-  
-  // 2. 找到根节点（CANVAS 下的 FRAME）
-  const rootFrames = validNodes.filter(n => {
-    // 根节点是没有父节点在 validNodes 中的节点
-    const parentIds = new Set(validNodes.flatMap(n => n.children?.map(c => c.id) || []));
-    return !parentIds.has(n.id);
-  });
-  logs.push(`[ROOTS] Found ${rootFrames.length} root frames`);
-  
-  // 3. 处理节点树
-  const processedTree: ProcessedNode[] = [];
-  for (const root of rootFrames) {
-    const processed = processNode(root, null, [], opts, logs);
-    processedTree.push(processed);
-  }
-  
-  // 4. 生成 DSL
-  const dsl = generateDSL(processedTree);
-  logs.push(`[DSL] Generated ${dsl.split('\n').length} lines`);
-  
-  // 5. 提取 Design Tokens
-  const visuals = inferVisuals(validNodes);
-  const tokens: Record<string, string> = {};
-  
-  // 转换颜色 tokens
-  if (visuals.tokens.colors) {
-    tokens['--primary-color'] = visuals.tokens.colors.primary;
-    tokens['--secondary-color'] = visuals.tokens.colors.secondary || '#6b7280';
-    tokens['--accent-color'] = visuals.tokens.colors.accent || visuals.tokens.colors.primary;
-    tokens['--background'] = visuals.tokens.colors.background;
-    tokens['--foreground'] = visuals.tokens.colors.foreground;
-    tokens['--muted'] = visuals.tokens.colors.muted || '#f3f4f6';
-    tokens['--border'] = visuals.tokens.colors.border || '#e5e7eb';
-  }
-  
-  // 6. 统计
+): AdapterV1Result {
+  // 1. 提取根节点
+  const rootFrames = extractRootNodes(figmaFile.document);
+
+  // 2. 提取设计节点并处理
+  const processedNodes: ProcessedNode[] = [];
   let filteredCount = 0;
-  let inferredLayoutCount = 0;
-  let detectedCardCount = 0;
-  
-  function countStats(node: ProcessedNode) {
-    if (node.filtered) filteredCount++;
-    if (Object.keys(node.classNames).length > 0) inferredLayoutCount++;
-    if (node.componentType === 'Card') detectedCardCount++;
-    for (const child of node.children) {
-      countStats(child);
+  let cardCount = 0;
+
+  for (const root of rootFrames) {
+    const designNodes = extractDesignNodes(root);
+    
+    for (const node of designNodes) {
+      const processed = processNode(node, root);
+      if (processed) {
+        processedNodes.push(processed);
+        
+        // 统计
+        function countStats(node: ProcessedNode) {
+          if (node.filtered) filteredCount++;
+          if (node.componentType === 'Card') cardCount++;
+          for (const child of node.children) {
+            countStats(child);
+          }
+        }
+        countStats(processed);
+      }
     }
   }
-  
-  for (const root of processedTree) {
-    countStats(root);
-  }
-  
-  logs.push(`[STATS] filtered=${filteredCount}, layouts=${inferredLayoutCount}, cards=${detectedCardCount}`);
-  logs.push('[DONE] Adapter V1 processing complete');
-  
+
+  // 3. 检测结构模式
+  const pattern = detectPattern(processedNodes);
+
+  // 4. 生成 DSL
+  const dsl = generateDSL(processedNodes, pattern);
+
+  // 5. 提取 tokens
+  const tokens = extractTokens(processedNodes);
+
   return {
-    processedTree,
     dsl,
     tokens,
+    rootNodes: processedNodes,
     stats: {
-      totalNodes: validNodes.length,
-      filteredNodes: filteredCount,
-      inferredLayouts: inferredLayoutCount,
-      detectedCards: detectedCardCount,
+      total: processedNodes.length,
+      filtered: filteredCount,
+      cards: cardCount,
     },
-    logs,
   };
 }
 
 // 导出子模块
 export * from './types';
-export * from './node-processor';
-export * from './dsl-generator';
+export * from './processor';
+export * from './pattern';
+export * from './dsl';
