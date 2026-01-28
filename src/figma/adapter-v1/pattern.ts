@@ -34,7 +34,7 @@ export function detectPattern(nodes: ProcessedNode[]): StructurePattern {
 }
 
 /**
- * 检测网格布局
+ * 检测网格布局（支持不规则网格如 5+4）
  */
 function detectGrid(nodes: ProcessedNode[]): { cols: number; gap: number } | null {
   if (nodes.length < 4) return null;
@@ -43,23 +43,24 @@ function detectGrid(nodes: ProcessedNode[]): { cols: number; gap: number } | nul
   const yGroups = groupByY(nodes);
   if (yGroups.length < 2) return null;
 
-  // 检查每行列数是否一致
+  // 检查是否是网格（每行至少2个）
   const colCounts = yGroups.map(g => g.length);
-  const allSameCols = colCounts.every(c => c === colCounts[0]);
-  if (!allSameCols) return null;
+  const allHaveMultiple = colCounts.every(c => c >= 2);
+  if (!allHaveMultiple) return null;
 
-  const cols = colCounts[0];
-  if (cols < 2) return null;
+  // 取最大列数作为网格列数（处理 5+4 这种情况）
+  const cols = Math.max(...colCounts);
 
   // 计算间距
-  const firstRow = yGroups[0];
   const gaps: number[] = [];
   
-  for (let i = 1; i < firstRow.length; i++) {
-    const prev = firstRow[i - 1];
-    const curr = firstRow[i];
-    const gap = curr.visual.x - (prev.visual.x + prev.visual.width);
-    if (gap > 0) gaps.push(gap);
+  for (const row of yGroups) {
+    for (let i = 1; i < row.length; i++) {
+      const prev = row[i - 1];
+      const curr = row[i];
+      const gap = curr.visual.x - (prev.visual.x + prev.visual.width);
+      if (gap > 0) gaps.push(gap);
+    }
   }
 
   // 行间间距
