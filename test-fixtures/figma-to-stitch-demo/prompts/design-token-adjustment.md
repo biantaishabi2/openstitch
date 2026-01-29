@@ -1,6 +1,13 @@
 # Design Token 调整提示词
 
-> 用于 AI 介入调整 Design Tokens，主要用于步骤 5
+> 用于 Workflow 步骤 5: AI 调整颜色分配
+
+## 参考图片
+
+请查看 Figma 设计原图来确认颜色实际用途：
+- 路径：`reference/figma-design.png`
+
+## 颜色聚类结果分析
 
 ## 颜色聚类结果分析
 

@@ -17,12 +17,23 @@
 
 ## 完整工作流程
 
+### 步骤 1: 获取 Figma 资源
+
+```bash
+# 使用脚本下载 Figma JSON 和截图
+FIGMA_TOKEN=figd_xxx npx tsx scripts/download-figma.ts GgNqIztxMCacqG0u4TnRtm ./test-fixtures/figma-to-stitch-demo
+
+# 或使用 curl 手动下载
+# curl -H "X-Figma-Token: $FIGMA_TOKEN" \
+#   "https://api.figma.com/v1/files/$FILE_KEY" > figma.json
 ```
-┌─────────────────────────────────────────────────────────────┐
-│  步骤 1: 获取 Figma 资源                                      │
-│          - figma.json (API 响应)                              │
-│          - assets/ (下载的图片)                                │
-└─────────────────────────────────────────────────────────────┘
+
+下载完成后目录结构：
+```
+├── figma.json              # Figma API 原始数据
+├── reference/
+│   └── figma-design.png    # Figma 设计截图
+```
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
 │  步骤 2: Figma Adapter 提取                                   │
@@ -33,14 +44,14 @@
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
 │  步骤 3: AI 检查/调整 DSL (✅ 已完成)                          │
-│          - 对比 screenshots/设计截图                           │
+│          - 对比 reference/figma-design.png                     │
 │          - 修正结构、布局、组件命名                             │
 │          - 修正后: stitch-config-v2.json                      │
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
 │  步骤 4: Design Tokens 调整 (✅ 已完成)                        │
-│          - 根据截图调整颜色分配                                 │
+│          - 根据 reference/figma-design.png 调整颜色分配         │
 │          - secondary: #0077ff → #65C47A (绿色)                │
 │          - foreground: #000000 → #333333 (深灰)               │
 └─────────────────────────────────────────────────────────────┘
@@ -79,10 +90,11 @@ figma-to-stitch-demo/
 │   ├── 17_44.png          # 图标2
 │   ├── 9_13.png
 │   └── 9_14.png
-├── screenshots/           # 设计稿截图 + 编译对比
-│   ├── chest-hospital-home-screenshot.png      # Figma 原稿
-│   ├── chest-hospital-home-preview.png         # 编译结果
-│   └── chest-hospital-home-fixed-preview.png   # 修正后
+├── reference/
+│   └── figma-design.png           # Figma 设计原图
+├── generated/
+│   ├── index.html                 # 编译生成的 HTML
+│   └── screenshot.png             # HTML 截图
 └── output/                # 编译器历史输出
     ├── chest-hospital-home.html        # 初始版本 (v1.0)
     ├── chest-hospital-home-fixed.html  # 修正版 (v1.1)

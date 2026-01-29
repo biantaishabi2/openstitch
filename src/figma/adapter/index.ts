@@ -10,3 +10,29 @@ export {
   type FigmaToStitchResult,
   type FigmaAdapterOptions,
 } from './figma-adapter';
+
+export {
+  fetchFigmaFile,
+  downloadImage,
+  saveFigmaJson,
+  downloadFigmaData,
+  type FigmaFetcherOptions,
+  type FigmaFetchResult,
+  type DownloadOptions,
+  type DownloadResult,
+} from './fetcher';
+
+export {
+  extractFonts,
+  generateGoogleFontsLink,
+  generateFontCSS,
+  extractIcons,
+  exportIconsAsSVG,
+  downloadSVGIcons,
+  generateIconMapping,
+  exportAssets,
+  type FontInfo,
+  type IconInfo,
+  type AssetExportOptions,
+  type AssetExportResult,
+} from './asset-exporter';
